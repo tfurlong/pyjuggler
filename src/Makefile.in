@@ -1,0 +1,226 @@
+# ************** <auto-copyright.pl BEGIN do not edit this line> **************
+#
+# PyJuggler is (C) Copyright 2002, 2003 by Patrick Hartling
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Library General Public License for more details.
+#
+# You should have received a copy of the GNU Library General Public
+# License along with this library; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+#
+# -----------------------------------------------------------------
+# File:          $RCSfile$
+# Date modified: $Date$
+# Version:       $Revision$
+# -----------------------------------------------------------------
+#
+# *************** <auto-copyright.pl END do not edit this line> ***************
+
+srcdir=		@srcdir@
+prefix=		@prefix@
+scriptdir=	$(top_srcdir)/release/scripts
+topdir=		@topdir@
+top_srcdir=	@top_srcdir@
+
+MKINSTALLDIRS=	$(scriptdir)/mkinstalldirs
+
+CXX=		@CXX@
+CXXFLAGS=	@CXXFLAGS_DYNLIB@
+
+ifeq (@OS_TYPE@, Win32)
+   CXXFLAGS=	$(shell vrjuggler-config --includes) /Zm800 /GX /GR /Op	\
+		/DBOOST_PYTHON_DYNAMIC_LIB /Zc:wchar_t,forScope
+   CXXFLAGS_DBG=/Z7 /Od /Ob0 /MDd /D_DEBUG
+   CXXFLAGS_OPT=/Ogity /O2 /Gs /Ob2 /MD /D_OPT
+   LDFLAGS_DBG=	/DEBUG
+   LDFLAGS_OPT=	/RELEASE
+   MODEXT_DBG=	_d
+   MODEXT_OPT=	
+else
+   CXXFLAGS=	$(shell vrjuggler-config --cxxflags)
+   CXXFLAGS_DBG=-D_DEBUG -g
+   CXXFLAGS_OPT=-D_OPT -O2
+   LDFLAGS_DBG=	-g
+   LDFLAGS_OPT=	-O2
+   MODEXT_DBG=	
+   MODEXT_OPT=	
+endif
+
+CXXFLAGS+=	@PYTHON_INCLUDES@ -I$(top_srcdir) -I$(srcdir)
+CXX_PLUGIN=	@CXX_PLUGIN@
+INCLUDES=	$(shell vrjuggler-config --includes) -I$(top_srcdir)	\
+		-I$(srcdir)
+OBJDIR_DBG=	obj.dbg
+OBJDIR_OPT=	obj.opt
+PYTHON=		@PYTHON@
+PYSTE=		$(PYTHON) @PYSTE@ $(INCLUDES)
+
+VJ_LIBS=		$(shell vrjuggler-config --libs)
+VJ_EXTRA_LIBS=		$(shell vrjuggler-config --extra-libs)
+
+PYTHON_VERSION=		@PYTHON_VERSION@
+PYTHON_PACKAGES=	$(prefix)/lib/python$(PYTHON_VERSION)/site-packages
+
+PYTHON_LDFLAGS=		@PYTHON_LIB_DEPS@
+
+# Linker flags needed by all extension modules.
+LDFLAGS=		@EXTRA_LINK_FLAGS@ $(BOOST_PYTHON_LDFLAGS)	\
+			$(PYTHON_LDFLAGS)
+
+ifeq (@OS_TYPE@, Win32)
+   LDFLAGS+=		/nologo /subsystem:console /INCREMENTAL:NO
+endif
+
+ifeq ($(BUILD_TYPE), DEBUG)
+   CXXFLAGS+=			$(CXXFLAGS_DBG)
+   LDFLAGS+=			$(LDFLAGS_DBG)
+   MODEXT=			$(MODEXT_DBG)
+   OBJDIR=			$(OBJDIR_DBG)
+   BOOST_PYTHON_LDFLAGS=	@BOOST_PYTHON_LDFLAGS_DBG@
+   PYJUTIL_LIB=			@PYJUTIL_LDFLAGS_DBG@
+else
+   CXXFLAGS+=			$(CXXFLAGS_OPT)
+   LDFLAGS+=			$(LDFLAGS_OPT)
+   MODEXT=			$(MODEXT_OPT)
+   OBJDIR=			$(OBJDIR_OPT)
+   BOOST_PYTHON_LDFLAGS=	@BOOST_PYTHON_LDFLAGS_OPT@
+   PYJUTIL_LIB=			@PYJUTIL_LDFLAGS_OPT@
+endif
+
+DLLEXT=			@DYNAMICLIB_EXT@
+DYLIB_NAME_FLAG=	@DYLIB_NAME_FLAG@
+OBJEXT=			@OBJEXT@
+OBJ_NAME_FLAG=		@OBJ_NAME_FLAG@
+
+PYSTE_FILES=	vpr.pyste	\
+		jccl.pyste	\
+		gadget.pyste	\
+		vrj.pyste
+
+MODS=		PyJuggler$(MODEXT).$(DLLEXT)
+
+VPR_SRCS= \
+	vpr/_GUID.cpp		\
+	vpr/_Interval.cpp	\
+	vpr/_ReturnStatus.cpp
+
+JCCL_SRCS= \
+	jccl/_ConfigChunk.cpp		\
+	jccl/_ConfigChunkHandler.cpp
+
+GADGET_SRCS= \
+	gadget/_Analog.cpp				\
+	gadget/_AnalogData.cpp				\
+	gadget/_AnalogInterface.cpp			\
+	gadget/_AnalogProxy.cpp				\
+	gadget/_BaseDeviceInterface.cpp			\
+	gadget/_Digital.cpp				\
+	gadget/_DigitalData.cpp				\
+	gadget/_DigitalInterface.cpp			\
+	gadget/_DigitalProxy.cpp			\
+	gadget/_Event.cpp				\
+	gadget/_KeyEvent.cpp				\
+	gadget/_MouseEvent.cpp				\
+	gadget/_Position.cpp				\
+	gadget/_PositionData.cpp			\
+	gadget/_PositionInterface.cpp			\
+	gadget/_PositionProxy.cpp			\
+	gadget/_gadget_Type_EventWindow_Event_h.cpp	\
+	gadget/_gadget_Type_EventWindow_Keys_h.cpp
+
+VRJ_SRCS= \
+	vrj/_App.cpp			\
+	vrj/_CameraProjection.cpp	\
+	vrj/_Display.cpp		\
+	vrj/_Frustum.cpp		\
+	vrj/_GlApp.cpp			\
+	vrj/_Kernel.cpp			\
+	vrj/_Projection.cpp		\
+	vrj/_SimViewport.cpp		\
+	vrj/_User.cpp			\
+	vrj/_Viewport.cpp
+
+VPR_OBJS=	$(VPR_SRCS:.cpp=.$(OBJEXT))
+JCCL_OBJS=	$(JCCL_SRCS:.cpp=.$(OBJEXT))
+GADGET_OBJS=	$(GADGET_SRCS:.cpp=.$(OBJEXT))
+VRJ_OBJS=	$(VRJ_SRCS:.cpp=.$(OBJEXT))
+
+OBJ_LIST=	$(VPR_OBJS) $(JCCL_OBJS) $(GADGET_OBJS) $(VRJ_OBJS)	\
+		PyJuggler.$(OBJEXT)
+OBJS=		$(addprefix $(OBJDIR)/, $(OBJ_LIST))
+
+vpath %.cpp $(srcdir)
+vpath %.pyste $(srcdir)/../pyste
+
+@SET_MAKE@
+
+# -----------------------------------------------------------------------------
+# Targets
+# -----------------------------------------------------------------------------
+
+default: optim
+
+all: optim debug
+
+beforebuild:
+	@$(MKINSTALLDIRS) $(OBJDIR)/vpr
+	@$(MKINSTALLDIRS) $(OBJDIR)/jccl
+	@$(MKINSTALLDIRS) $(OBJDIR)/gadget
+	@$(MKINSTALLDIRS) $(OBJDIR)/vrj
+
+optim:
+	$(MAKE) BUILD_TYPE=OPTIMIZED beforebuild
+	$(MAKE) BUILD_TYPE=OPTIMIZED modules
+	$(MAKE) BUILD_TYPE=OPTIMIZED prefix="$(topdir)" install
+
+debug:
+	$(MAKE) BUILD_TYPE=DEBUG beforebuild
+	$(MAKE) BUILD_TYPE=DEBUG modules
+	$(MAKE) BUILD_TYPE=DEBUG prefix="$(topdir)" install
+
+modules: $(MODS)
+
+install:
+	$(MKINSTALLDIRS) $(PYTHON_PACKAGES)
+	cp -p $(MODS) $(PYTHON_PACKAGES)
+
+# Rule for generating a .cpp file from a .pyste file.
+%.cpp: %.pyste
+	$(PYSTE) --python-ns=pyj --module=$(basename $(@F)) $<
+
+$(OBJDIR)/%.$(OBJEXT): %.cpp
+	$(CXX) $(CXXFLAGS) $(OBJ_NAME_FLAG) -c $<
+
+%.$(DLLEXT): %.$(OBJEXT)
+	$(CXX_PLUGIN) $(DYLIB_NAME_FLAG) $< $(LDFLAGS) $(LIBS) $(EXTRA_LIBS)
+
+PyJuggler$(MODEXT).$(DLLEXT): $(OBJS)
+	$(CXX_PLUGIN) $(DYLIB_NAME_FLAG) $(OBJS) $(LDFLAGS)		\
+          $(PYJUTIL_LIB) $(VJ_LIBS) $(VJ_EXTRA_LIBS)
+
+clean:
+	rm -rf $(OBJDIR_DBG)
+	rm -rf $(OBJDIR_OPT)
+
+clobber:
+	$(MAKE) clean
+	rm -f $(MODS)
+
+# -----------------------------------------------------------------------------
+# Dependency generation.
+# XXX: This doesn't work quite right yet ...
+# -----------------------------------------------------------------------------
+BASIC_OBJECTS=	$(OBJS)
+CXX_COMPILE=	$(CXX) $(CXXFLAGS)
+
+include $(top_srcdir)/Doozer++/mk/dpp.dep.mk
+#-include $(DEPEND_FILES)
