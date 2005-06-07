@@ -243,7 +243,7 @@ class PyOsgNav(vrj.OsgApp):
       self.mModel = osgDB.readNodeFile(self.mFileToLoad)
       print "done."
 
-      self.mModelTrans.preMult(osg.Matrix.rotate(gmtl.deg2Rad(-90.0),
+      self.mModelTrans.preMult(osg.Matrix.rotate(gmtl.Math.deg2Rad(-90.0),
                                                  1.0, 0.0, 0.0))
 
       if self.mModel is None:
