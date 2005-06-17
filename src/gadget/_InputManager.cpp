@@ -131,7 +131,7 @@ void _Export_InputManager()
              "Post-condition:\n"
              "   (element is proxy) ==> (returns == False)\n"
              "   (element is device) ==> (device is removed && proxies are\n"
-             "                           stupified)\n"
+             "                           stupefied)\n"
              "   (element is proxy_alias) ==> (proxy_alias is removed &&\n"
              "                                devInterfaces.refreshAll())"
          )
