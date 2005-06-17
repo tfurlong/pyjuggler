@@ -6,10 +6,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PyJuggler.vpr module", "vpr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PyJuggler.jccl module", "jccl\jccl.vcproj", "{09B1EA98-0701-410D-B0E9-5582F2748220}"
 	ProjectSection(ProjectDependencies) = postProject
+		{9A13DC64-2EB4-40CF-95A8-5B17965D771A} = {9A13DC64-2EB4-40CF-95A8-5B17965D771A}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PyJuggler.gadget module", "gadget\gadget.vcproj", "{26D13DFB-7670-4FF0-90AC-991171367DFC}"
 	ProjectSection(ProjectDependencies) = postProject
+		{9A13DC64-2EB4-40CF-95A8-5B17965D771A} = {9A13DC64-2EB4-40CF-95A8-5B17965D771A}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PyJuggler.__vrj module", "vrj\vrj.vcproj", "{E3475F16-816E-4CC8-B90A-606EE2D2A705}"
@@ -33,6 +35,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PyJuggler.cluster module", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PyJuggler.snx module", "snx\snx.vcproj", "{F8FDFE2C-4471-433A-A7A4-3F2ECCB55BE0}"
 	ProjectSection(ProjectDependencies) = postProject
+		{9A13DC64-2EB4-40CF-95A8-5B17965D771A} = {9A13DC64-2EB4-40CF-95A8-5B17965D771A}
 	EndProjectSection
 EndProject
 Global
