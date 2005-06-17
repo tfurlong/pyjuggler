@@ -32,7 +32,16 @@ struct snx_SoundHandle_Adapter : snx::SoundHandle
 
     virtual tuple getPositionWrapper()
     {
-        return call_method<tuple>(self, "getPosition");
+        try
+        {
+            return call_method<tuple>(self, "getPosition");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return make_tuple();
     }
 
     PyObject* self;
@@ -50,7 +59,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
         snx_SoundHandle_Adapter(self_, p0) {}
 
     void trigger(const int& p0) {
-        call_method< void >(self, "trigger", p0);
+        try
+        {
+            call_method< void >(self, "trigger", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_trigger_0() {
@@ -62,7 +78,16 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     bool isPlaying() {
-        return call_method< bool >(self, "isPlaying");
+        try
+        {
+            return call_method< bool >(self, "isPlaying");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_isPlaying() {
@@ -70,7 +95,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void setRetriggerable(bool p0) {
-        call_method< void >(self, "setRetriggerable", p0);
+        try
+        {
+            call_method< void >(self, "setRetriggerable", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setRetriggerable(bool p0) {
@@ -78,7 +110,16 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     bool isRetriggerable() {
-        return call_method< bool >(self, "isRetriggerable");
+        try
+        {
+            return call_method< bool >(self, "isRetriggerable");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_isRetriggerable() {
@@ -86,7 +127,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void stop() {
-        call_method< void >(self, "stop");
+        try
+        {
+            call_method< void >(self, "stop");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_stop() {
@@ -94,7 +142,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void pause() {
-        call_method< void >(self, "pause");
+        try
+        {
+            call_method< void >(self, "pause");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_pause() {
@@ -102,7 +157,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void unpause() {
-        call_method< void >(self, "unpause");
+        try
+        {
+            call_method< void >(self, "unpause");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_unpause() {
@@ -110,7 +172,16 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     bool isPaused() {
-        return call_method< bool >(self, "isPaused");
+        try
+        {
+            return call_method< bool >(self, "isPaused");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_isPaused() {
@@ -118,7 +189,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void setAmbient(const bool p0) {
-        call_method< void >(self, "setAmbient", p0);
+        try
+        {
+            call_method< void >(self, "setAmbient", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setAmbient_0() {
@@ -130,7 +208,16 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     bool isAmbient() {
-        return call_method< bool >(self, "isAmbient");
+        try
+        {
+            return call_method< bool >(self, "isAmbient");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_isAmbient() {
@@ -138,7 +225,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void setPitchBend(float p0) {
-        call_method< void >(self, "setPitchBend", p0);
+        try
+        {
+            call_method< void >(self, "setPitchBend", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setPitchBend(float p0) {
@@ -146,7 +240,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void setVolume(float p0) {
-        call_method< void >(self, "setVolume", p0);
+        try
+        {
+            call_method< void >(self, "setVolume", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setVolume(float p0) {
@@ -154,7 +255,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void setCutoff(float p0) {
-        call_method< void >(self, "setCutoff", p0);
+        try
+        {
+            call_method< void >(self, "setCutoff", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setCutoff(float p0) {
@@ -162,7 +270,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void setPosition(const float& p0, const float& p1, const float& p2) {
-        call_method< void >(self, "setPosition", p0, p1, p2);
+        try
+        {
+            call_method< void >(self, "setPosition", p0, p1, p2);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setPosition(const float& p0, const float& p1, const float& p2) {
@@ -183,7 +298,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void setListenerPosition(const gmtl::Matrix44f& p0) {
-        call_method< void >(self, "setListenerPosition", p0);
+        try
+        {
+            call_method< void >(self, "setListenerPosition", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setListenerPosition(const gmtl::Matrix44f& p0) {
@@ -191,7 +313,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void getListenerPosition(gmtl::Matrix44f& p0) {
-        call_method< void >(self, "getListenerPosition", p0);
+        try
+        {
+            call_method< void >(self, "getListenerPosition", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_getListenerPosition(gmtl::Matrix44f& p0) {
@@ -199,7 +328,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void configure(const snx::SoundInfo& p0) {
-        call_method< void >(self, "configure", p0);
+        try
+        {
+            call_method< void >(self, "configure", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_configure(const snx::SoundInfo& p0) {
@@ -207,7 +343,14 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
     }
 
     void remove() {
-        call_method< void >(self, "remove");
+        try
+        {
+            call_method< void >(self, "remove");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_remove() {

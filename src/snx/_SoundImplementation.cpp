@@ -46,11 +46,25 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
         snx_SoundImplementation_Adapter(self_) {}
 
     void clone(snx::ISoundImplementation*& p0) {
-        call_method< void >(self, "clone", p0);
+        try
+        {
+            call_method< void >(self, "clone", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void trigger(const std::string& p0, const int& p1) {
-        call_method< void >(self, "trigger", p0, p1);
+        try
+        {
+            call_method< void >(self, "trigger", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_trigger_1(const std::string& p0) {
@@ -62,7 +76,16 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     bool isPlaying(const std::string& p0) {
-        return call_method< bool >(self, "isPlaying", p0);
+        try
+        {
+            return call_method< bool >(self, "isPlaying", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_isPlaying(const std::string& p0) {
@@ -70,7 +93,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void setRetriggerable(const std::string& p0, bool p1) {
-        call_method< void >(self, "setRetriggerable", p0, p1);
+        try
+        {
+            call_method< void >(self, "setRetriggerable", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setRetriggerable(const std::string& p0, bool p1) {
@@ -78,7 +108,16 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     bool isRetriggerable(const std::string& p0) {
-        return call_method< bool >(self, "isRetriggerable", p0);
+        try
+        {
+            return call_method< bool >(self, "isRetriggerable", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_isRetriggerable(const std::string& p0) {
@@ -86,7 +125,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void stop(const std::string& p0) {
-        call_method< void >(self, "stop", p0);
+        try
+        {
+            call_method< void >(self, "stop", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_stop(const std::string& p0) {
@@ -94,7 +140,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void pause(const std::string& p0) {
-        call_method< void >(self, "pause", p0);
+        try
+        {
+            call_method< void >(self, "pause", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_pause(const std::string& p0) {
@@ -102,7 +155,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void unpause(const std::string& p0) {
-        call_method< void >(self, "unpause", p0);
+        try
+        {
+            call_method< void >(self, "unpause", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_unpause(const std::string& p0) {
@@ -110,7 +170,16 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     bool isPaused(const std::string& p0) {
-        return call_method< bool >(self, "isPaused", p0);
+        try
+        {
+            return call_method< bool >(self, "isPaused", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_isPaused(const std::string& p0) {
@@ -118,7 +187,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void setAmbient(const std::string& p0, bool p1) {
-        call_method< void >(self, "setAmbient", p0, p1);
+        try
+        {
+            call_method< void >(self, "setAmbient", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setAmbient_1(const std::string& p0) {
@@ -130,7 +206,16 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     bool isAmbient(const std::string& p0) {
-        return call_method< bool >(self, "isAmbient", p0);
+        try
+        {
+            return call_method< bool >(self, "isAmbient", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_isAmbient(const std::string& p0) {
@@ -138,7 +223,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void setPitchBend(const std::string& p0, float p1) {
-        call_method< void >(self, "setPitchBend", p0, p1);
+        try
+        {
+            call_method< void >(self, "setPitchBend", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setPitchBend(const std::string& p0, float p1) {
@@ -146,7 +238,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void setVolume(const std::string& p0, float p1) {
-        call_method< void >(self, "setVolume", p0, p1);
+        try
+        {
+            call_method< void >(self, "setVolume", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setVolume(const std::string& p0, float p1) {
@@ -154,7 +253,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void setCutoff(const std::string& p0, float p1) {
-        call_method< void >(self, "setCutoff", p0, p1);
+        try
+        {
+            call_method< void >(self, "setCutoff", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setCutoff(const std::string& p0, float p1) {
@@ -162,7 +268,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void setPosition(const std::string& p0, float p1, float p2, float p3) {
-        call_method< void >(self, "setPosition", p0, p1, p2, p3);
+        try
+        {
+            call_method< void >(self, "setPosition", p0, p1, p2, p3);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setPosition(const std::string& p0, float p1, float p2, float p3) {
@@ -183,7 +296,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void setListenerPosition(const gmtl::Matrix44f& p0) {
-        call_method< void >(self, "setListenerPosition", p0);
+        try
+        {
+            call_method< void >(self, "setListenerPosition", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setListenerPosition(const gmtl::Matrix44f& p0) {
@@ -191,7 +311,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void getListenerPosition(gmtl::Matrix44f& p0) {
-        call_method< void >(self, "getListenerPosition", p0);
+        try
+        {
+            call_method< void >(self, "getListenerPosition", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_getListenerPosition(gmtl::Matrix44f& p0) {
@@ -199,7 +326,16 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     int startAPI() {
-        return call_method< int >(self, "startAPI");
+        try
+        {
+           return call_method< int >(self, "startAPI");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return 0;
     }
 
     bool isStarted() const {
@@ -207,7 +343,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void shutdownAPI() {
-        call_method< void >(self, "shutdownAPI");
+        try
+        {
+            call_method< void >(self, "shutdownAPI");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_shutdownAPI() {
@@ -215,7 +358,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void configure(const snx::SoundAPIInfo& p0) {
-        call_method< void >(self, "configure", p0);
+        try
+        {
+            call_method< void >(self, "configure", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_configure(const snx::SoundAPIInfo& p0) {
@@ -223,7 +373,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void configure(const std::string& p0, const snx::SoundInfo& p1) {
-        call_method< void >(self, "configure", p0, p1);
+        try
+        {
+            call_method< void >(self, "configure", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_configure(const std::string& p0, const snx::SoundInfo& p1) {
@@ -231,7 +388,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void remove(const std::string& p0) {
-        call_method< void >(self, "remove", p0);
+        try
+        {
+            call_method< void >(self, "remove", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_remove(const std::string& p0) {
@@ -239,7 +403,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void step(const float& p0) {
-        call_method< void >(self, "step", p0);
+        try
+        {
+            call_method< void >(self, "step", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_step(const float& p0) {
@@ -247,7 +418,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void clear() {
-        call_method< void >(self, "clear");
+        try
+        {
+            call_method< void >(self, "clear");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_clear() {
@@ -255,7 +433,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void bindAll() {
-        call_method< void >(self, "bindAll");
+        try
+        {
+            call_method< void >(self, "bindAll");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_bindAll() {
@@ -263,7 +448,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void unbindAll() {
-        call_method< void >(self, "unbindAll");
+        try
+        {
+            call_method< void >(self, "unbindAll");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_unbindAll() {
@@ -271,7 +463,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void bind(const std::string& p0) {
-        call_method< void >(self, "bind", p0);
+        try
+        {
+            call_method< void >(self, "bind", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void unbind(const std::string& p0) {
@@ -279,7 +478,17 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     snx::SoundInfo& lookup(const std::string& p0) {
-        return call_method< snx::SoundInfo& >(self, "lookup", p0);
+        try
+        {
+            return call_method< snx::SoundInfo& >(self, "lookup", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        // XXX: I am not sure if this is the best way to handle this case.
+        return default_lookup(p0);
     }
 
     snx::SoundInfo& default_lookup(const std::string& p0) {
@@ -287,7 +496,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void setName(const std::string& p0) {
-        call_method< void >(self, "setName", p0);
+        try
+        {
+            call_method< void >(self, "setName", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setName(const std::string& p0) {
@@ -295,7 +511,16 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     std::string& name() {
-        return call_method< std::string& >(self, "name");
+        try
+        {
+            return call_method< std::string& >(self, "name");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return default_name();
     }
 
     std::string& default_name() {
@@ -303,7 +528,14 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
     }
 
     void destroy() {
-        call_method< void >(self, "destroy");
+        try
+        {
+            call_method< void >(self, "destroy");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 };
 

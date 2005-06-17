@@ -40,7 +40,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
         snx_sonix_Adapter(self_, p0) {}
 
     void trigger(const std::string& p0, const int& p1) {
-        call_method< void >(self, "trigger", p0, p1);
+        try
+        {
+            call_method< void >(self, "trigger", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_trigger_1(const std::string& p0) {
@@ -52,7 +59,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     bool isPlaying(const std::string& p0) {
-        return call_method< bool >(self, "isPlaying", p0);
+        try
+        {
+            return call_method< bool >(self, "isPlaying", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     bool default_isPlaying(const std::string& p0) {
@@ -60,7 +74,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void setRetriggerable(const std::string& p0, bool p1) {
-        call_method< void >(self, "setRetriggerable", p0, p1);
+        try
+        {
+            call_method< void >(self, "setRetriggerable", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setRetriggerable(const std::string& p0, bool p1) {
@@ -68,7 +89,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     bool isRetriggerable(const std::string& p0) {
-        return call_method< bool >(self, "isRetriggerable", p0);
+        try
+        {
+            return call_method< bool >(self, "isRetriggerable", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     bool default_isRetriggerable(const std::string& p0) {
@@ -76,7 +104,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void stop(const std::string& p0) {
-        call_method< void >(self, "stop", p0);
+        try
+        {
+            call_method< void >(self, "stop", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_stop(const std::string& p0) {
@@ -84,7 +119,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void pause(const std::string& p0) {
-        call_method< void >(self, "pause", p0);
+        try
+        {
+            call_method< void >(self, "pause", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_pause(const std::string& p0) {
@@ -92,7 +134,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void unpause(const std::string& p0) {
-        call_method< void >(self, "unpause", p0);
+        try
+        {
+            call_method< void >(self, "unpause", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_unpause(const std::string& p0) {
@@ -100,7 +149,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     bool isPaused(const std::string& p0) {
-        return call_method< bool >(self, "isPaused", p0);
+        try
+        {
+            return call_method< bool >(self, "isPaused", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     bool default_isPaused(const std::string& p0) {
@@ -108,7 +164,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void setAmbient(const std::string& p0, const bool p1) {
-        call_method< void >(self, "setAmbient", p0, p1);
+        try
+        {
+            call_method< void >(self, "setAmbient", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setAmbient_1(const std::string& p0) {
@@ -120,7 +183,16 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     bool isAmbient(const std::string& p0) {
-        return call_method< bool >(self, "isAmbient", p0);
+        try
+        {
+            return call_method< bool >(self, "isAmbient", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_isAmbient(const std::string& p0) {
@@ -128,7 +200,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void setPitchBend(const std::string& p0, float p1) {
-        call_method< void >(self, "setPitchBend", p0, p1);
+        try
+        {
+            call_method< void >(self, "setPitchBend", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setPitchBend(const std::string& p0, float p1) {
@@ -136,7 +215,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void setVolume(const std::string& p0, float p1) {
-        call_method< void >(self, "setVolume", p0, p1);
+        try
+        {
+            call_method< void >(self, "setVolume", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setVolume(const std::string& p0, float p1) {
@@ -144,7 +230,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void setCutoff(const std::string& p0, float p1) {
-        call_method< void >(self, "setCutoff", p0, p1);
+        try
+        {
+            call_method< void >(self, "setCutoff", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setCutoff(const std::string& p0, float p1) {
@@ -152,7 +245,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void setPosition(const std::string& p0, const float& p1, const float& p2, const float& p3) {
-        call_method< void >(self, "setPosition", p0, p1, p2, p3);
+        try
+        {
+            call_method< void >(self, "setPosition", p0, p1, p2, p3);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setPosition(const std::string& p0, const float& p1, const float& p2, const float& p3) {
@@ -173,7 +273,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void setListenerPosition(const gmtl::Matrix44f& p0) {
-        call_method< void >(self, "setListenerPosition", p0);
+        try
+        {
+            call_method< void >(self, "setListenerPosition", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_setListenerPosition(const gmtl::Matrix44f& p0) {
@@ -181,7 +288,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void getListenerPosition(gmtl::Matrix44f& p0) {
-        call_method< void >(self, "getListenerPosition", p0);
+        try
+        {
+            call_method< void >(self, "getListenerPosition", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_getListenerPosition(gmtl::Matrix44f& p0) {
@@ -189,7 +303,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void changeAPI(const std::string& p0) {
-        call_method< void >(self, "changeAPI", p0);
+        try
+        {
+            call_method< void >(self, "changeAPI", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_changeAPI(const std::string& p0) {
@@ -197,7 +318,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void configure(const snx::SoundAPIInfo& p0) {
-        call_method< void >(self, "configure", p0);
+        try
+        {
+            call_method< void >(self, "configure", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_configure(const snx::SoundAPIInfo& p0) {
@@ -205,7 +333,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void configure(const std::string& p0, const snx::SoundInfo& p1) {
-        call_method< void >(self, "configure", p0, p1);
+        try
+        {
+            call_method< void >(self, "configure", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_configure(const std::string& p0, const snx::SoundInfo& p1) {
@@ -213,7 +348,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void remove(const std::string p0) {
-        call_method< void >(self, "remove", p0);
+        try
+        {
+            call_method< void >(self, "remove", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_remove(const std::string p0) {
@@ -221,7 +363,14 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
     }
 
     void step(const float& p0) {
-        call_method< void >(self, "step", p0);
+        try
+        {
+            call_method< void >(self, "step", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_step(const float& p0) {

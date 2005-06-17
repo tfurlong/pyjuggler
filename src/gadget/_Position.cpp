@@ -62,7 +62,16 @@ struct gadget_Position_Wrapper: gadget::Position
     }
 
     vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0) {
-        return call_method< vpr::ReturnStatus >(self, "writeObject", p0);
+        try
+        {
+            return call_method< vpr::ReturnStatus >(self, "writeObject", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return vpr::ReturnStatus::Fail;
     }
 
     vpr::ReturnStatus default_writeObject(vpr::ObjectWriter* p0) {

@@ -23,7 +23,16 @@ namespace pyj {
 struct gadget_InputManager_Wrapper: gadget::InputManager
 {
     bool configAdd(jccl::ConfigElementPtr p0) {
-        return call_method< bool >(self, "configAdd", p0);
+        try
+        {
+            return call_method< bool >(self, "configAdd", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_configAdd(jccl::ConfigElementPtr p0) {
@@ -31,7 +40,16 @@ struct gadget_InputManager_Wrapper: gadget::InputManager
     }
 
     bool configRemove(jccl::ConfigElementPtr p0) {
-        return call_method< bool >(self, "configRemove", p0);
+        try
+        {
+            return call_method< bool >(self, "configRemove", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_configRemove(jccl::ConfigElementPtr p0) {
@@ -39,7 +57,16 @@ struct gadget_InputManager_Wrapper: gadget::InputManager
     }
 
     bool configCanHandle(jccl::ConfigElementPtr p0) {
-        return call_method< bool >(self, "configCanHandle", p0);
+        try
+        {
+            return call_method< bool >(self, "configCanHandle", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_configCanHandle(jccl::ConfigElementPtr p0) {
@@ -47,7 +74,16 @@ struct gadget_InputManager_Wrapper: gadget::InputManager
     }
 
     int configProcessPending() {
-        return call_method< int >(self, "configProcessPending");
+        try
+        {
+            return call_method< int >(self, "configProcessPending");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return 0;
     }
 
     int default_configProcessPending() {
