@@ -125,10 +125,10 @@ struct gadget_PositionProxy_Wrapper: gadget::PositionProxy
         return gadget::PositionProxy::getDeviceName();
     }
 
-    bool isStupified() const {
+    bool isStupefied() const {
         try
         {
-            return call_method< bool >(self, "isStupified");
+            return call_method< bool >(self, "isStupefied");
         }
         catch(error_already_set)
         {
@@ -138,8 +138,8 @@ struct gadget_PositionProxy_Wrapper: gadget::PositionProxy
         return false;
     }
 
-    bool default_isStupified() const {
-        return gadget::PositionProxy::isStupified();
+    bool default_isStupefied() const {
+        return gadget::PositionProxy::isStupefied();
     }
 
     PyObject* self;
@@ -202,7 +202,7 @@ void _Export_PositionProxy()
              "refresh() -> Boolean\n"
              "Refreshes the proxy.  This attempts to lookup the device that\n"
              "we are proxying.  If the lookup fails, then we become\n"
-             "stupified.  If not, then the proxy is pointed at this\n"
+             "stupefied.  If not, then the proxy is pointed at this\n"
              "potentially new device."
          )
         .def("getDeviceName",
@@ -211,11 +211,11 @@ void _Export_PositionProxy()
              "getDeviceName() -> string object\n"
              "Gets the name of the device that we are proxying."
          )
-        .def("isStupified",
-             (bool (gadget::Proxy::*)() const)&gadget::Proxy::isStupified,
-             (bool (pyj::gadget_PositionProxy_Wrapper::*)() const)&pyj::gadget_PositionProxy_Wrapper::default_isStupified,
-             "isStupified() -> Boolean\n"
-             "Is the proxy currently stupified?\n"
+        .def("isStupefied",
+             (bool (gadget::Proxy::*)() const)&gadget::Proxy::isStupefied,
+             (bool (pyj::gadget_PositionProxy_Wrapper::*)() const)&pyj::gadget_PositionProxy_Wrapper::default_isStupefied,
+             "isStupefied() -> Boolean\n"
+             "Is the proxy currently stupefied?\n"
              "If the device we are proxying does not exist, then this will\n"
              "return True."
          )
@@ -259,11 +259,11 @@ void _Export_PositionProxy()
              "Arguments:\n"
              "name -- The name for this proxy as a string object."
          )
-        .def("stupify", &gadget::Proxy::stupify,
-             "stupify(newState = True)\n"
-             "Sets the stupification state of this proxy.\n"
+        .def("stupefy", &gadget::Proxy::stupefy,
+             "stupefy(newState = True)\n"
+             "Sets the stupefication state of this proxy.\n"
              "Keyword arguments:\n"
-             "newState -- The new state of stupification."
+             "newState -- The new state of stupefication."
          )
         .staticmethod("getElementType")
     ;
