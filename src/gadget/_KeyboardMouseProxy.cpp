@@ -61,7 +61,7 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
         return gadget::KeyboardMouseProxy::config(p0);
     }
 
-    void set(const std::basic_string<char,std::char_traits<char>,std::allocator<char> >& p0, gadget::KeyboardMouse* p1) {
+    void set(const std::string& p0, gadget::KeyboardMouse* p1) {
         try
         {
             call_method< void >(self, "set", p0, p1);
@@ -72,7 +72,7 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
         }
     }
 
-    void default_set(const std::basic_string<char,std::char_traits<char>,std::allocator<char> >& p0, gadget::KeyboardMouse* p1) {
+    void default_set(const std::string& p0, gadget::KeyboardMouse* p1) {
         gadget::TypedProxy<gadget::KeyboardMouse>::set(p0, p1);
     }
 
@@ -93,10 +93,10 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
         return gadget::TypedProxy<gadget::KeyboardMouse>::refresh();
     }
 
-    std::basic_string<char,std::char_traits<char>,std::allocator<char> > getDeviceName() const {
+    std::string getDeviceName() const {
         try
         {
-            return call_method< std::basic_string<char,std::char_traits<char>,std::allocator<char> > >(self, "getDeviceName");
+            return call_method< std::string >(self, "getDeviceName");
         }
         catch (error_already_set)
         {
@@ -106,7 +106,7 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
         return std::string("UNKNOWN");
     }
 
-    std::basic_string<char,std::char_traits<char>,std::allocator<char> > default_getDeviceName() const {
+    std::string default_getDeviceName() const {
         return gadget::TypedProxy<gadget::KeyboardMouse>::getDeviceName();
     }
 
@@ -176,8 +176,8 @@ void _Export_KeyboardMouseProxy()
              "instance."
          )
         .def("set",
-             (void (gadget::TypedProxy<gadget::KeyboardMouse>::*)(const std::basic_string<char,std::char_traits<char>,std::allocator<char> >&, gadget::KeyboardMouse*) )&gadget::TypedProxy<gadget::KeyboardMouse>::set, (void (pyj::gadget_KeyboardMouseProxy_Wrapper::*)(const std::basic_string<char,std::char_traits<char>,std::allocator<char> >&,
-             gadget::KeyboardMouse*))&pyj::gadget_KeyboardMouseProxy_Wrapper::default_set,
+             (void (gadget::TypedProxy<gadget::KeyboardMouse>::*)(const std::string&, gadget::KeyboardMouse*) )&gadget::TypedProxy<gadget::KeyboardMouse>::set,
+             (void (pyj::gadget_KeyboardMouseProxy_Wrapper::*)(const std::string&, gadget::KeyboardMouse*))&pyj::gadget_KeyboardMouseProxy_Wrapper::default_set,
              "set(devName, devPtr)\n"
              "Sets the proxy to point to the given type-specific device.\n"
              "Pre-condition:\n"
@@ -200,8 +200,8 @@ void _Export_KeyboardMouseProxy()
              "potentially new device."
          )
         .def("getDeviceName",
-             (std::basic_string<char,std::char_traits<char>,std::allocator<char> > (gadget::TypedProxy<gadget::KeyboardMouse>::*)() const)&gadget::TypedProxy<gadget::KeyboardMouse>::getDeviceName,
-             (std::basic_string<char,std::char_traits<char>,std::allocator<char> > (pyj::gadget_KeyboardMouseProxy_Wrapper::*)() const)&pyj::gadget_KeyboardMouseProxy_Wrapper::default_getDeviceName,
+             (std::string (gadget::TypedProxy<gadget::KeyboardMouse>::*)() const)&gadget::TypedProxy<gadget::KeyboardMouse>::getDeviceName,
+             (std::string (pyj::gadget_KeyboardMouseProxy_Wrapper::*)() const)&pyj::gadget_KeyboardMouseProxy_Wrapper::default_getDeviceName,
              "getDeviceName() -> string object\n"
              "Gets the name of the device that we are proxying."
          )
