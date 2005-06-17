@@ -43,7 +43,16 @@ struct gadget_PositionProxy_Wrapper: gadget::PositionProxy
     }
 
     vpr::Interval getTimeStamp() const {
-        return call_method< vpr::Interval >(self, "getTimeStamp");
+        try
+        {
+            return call_method< vpr::Interval >(self, "getTimeStamp");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return vpr::Interval();
     }
 
     vpr::Interval default_getTimeStamp() const {

@@ -28,7 +28,16 @@ struct gadget_String_Wrapper: gadget::String
         gadget::String(), self(self_) {}
 
     bool config(jccl::ConfigElementPtr p0) {
-        return call_method< bool >(self, "config", p0);
+        try
+        {
+            return call_method< bool >(self, "config", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_config(jccl::ConfigElementPtr p0) {
@@ -36,7 +45,16 @@ struct gadget_String_Wrapper: gadget::String
     }
 
     std::string getInputTypeName() {
-        return call_method< std::string >(self, "getInputTypeName");
+        try
+        {
+            return call_method< std::string >(self, "getInputTypeName");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return std::string("UNKONWN");
     }
 
     std::string default_getInputTypeName() {
@@ -44,7 +62,16 @@ struct gadget_String_Wrapper: gadget::String
     }
 
     vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0) {
-        return call_method< vpr::ReturnStatus >(self, "writeObject", p0);
+        try
+        {
+            return call_method< vpr::ReturnStatus >(self, "writeObject", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return vpr::ReturnStatus::Fail;
     }
 
     vpr::ReturnStatus default_writeObject(vpr::ObjectWriter* p0) {
@@ -52,7 +79,16 @@ struct gadget_String_Wrapper: gadget::String
     }
 
     vpr::ReturnStatus readObject(vpr::ObjectReader* p0) {
-        return call_method< vpr::ReturnStatus >(self, "readObject", p0);
+        try
+        {
+            return call_method< vpr::ReturnStatus >(self, "readObject", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return vpr::ReturnStatus::Fail;
     }
 
     vpr::ReturnStatus default_readObject(vpr::ObjectReader* p0) {

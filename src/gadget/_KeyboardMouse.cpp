@@ -31,7 +31,16 @@ struct gadget_KeyboardMouse_Wrapper: gadget::KeyboardMouse
         gadget::KeyboardMouse(), self(self_) {}
 
     std::string getInputTypeName() {
-        return call_method< std::string >(self, "getInputTypeName");
+        try
+        {
+            return call_method< std::string >(self, "getInputTypeName");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return std::string("UNKNOWN");
     }
 
     std::string default_getInputTypeName() {
@@ -39,7 +48,16 @@ struct gadget_KeyboardMouse_Wrapper: gadget::KeyboardMouse
     }
 
     vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0) {
-        return call_method< vpr::ReturnStatus >(self, "writeObject", p0);
+        try
+        {
+            return call_method< vpr::ReturnStatus >(self, "writeObject", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return vpr::ReturnStatus::Fail;
     }
 
     vpr::ReturnStatus default_writeObject(vpr::ObjectWriter* p0) {
@@ -47,7 +65,16 @@ struct gadget_KeyboardMouse_Wrapper: gadget::KeyboardMouse
     }
 
     vpr::ReturnStatus readObject(vpr::ObjectReader* p0) {
-        return call_method< vpr::ReturnStatus >(self, "readObject", p0);
+        try
+        {
+            return call_method< vpr::ReturnStatus >(self, "readObject", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return vpr::ReturnStatus::Fail;
     }
 
     vpr::ReturnStatus default_readObject(vpr::ObjectReader* p0) {
@@ -55,7 +82,16 @@ struct gadget_KeyboardMouse_Wrapper: gadget::KeyboardMouse
     }
 
     bool config(jccl::ConfigElementPtr p0) {
-        return call_method< bool >(self, "config", p0);
+        try
+        {
+            return call_method< bool >(self, "config", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_config(jccl::ConfigElementPtr p0) {

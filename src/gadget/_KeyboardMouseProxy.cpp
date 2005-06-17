@@ -28,7 +28,16 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
         gadget::KeyboardMouseProxy(), self(self_) {}
 
     vpr::Interval getTimeStamp() const {
-        return call_method< vpr::Interval >(self, "getTimeStamp");
+        try
+        {
+            return call_method< vpr::Interval >(self, "getTimeStamp");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return vpr::Interval();
     }
 
     vpr::Interval default_getTimeStamp() const {
@@ -36,7 +45,16 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
     }
 
     bool config(jccl::ConfigElementPtr p0) {
-        return call_method< bool >(self, "config", p0);
+        try
+        {
+            return call_method< bool >(self, "config", p0);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_config(jccl::ConfigElementPtr p0) {
@@ -44,7 +62,14 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
     }
 
     void set(const std::basic_string<char,std::char_traits<char>,std::allocator<char> >& p0, gadget::KeyboardMouse* p1) {
-        call_method< void >(self, "set", p0, p1);
+        try
+        {
+            call_method< void >(self, "set", p0, p1);
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_set(const std::basic_string<char,std::char_traits<char>,std::allocator<char> >& p0, gadget::KeyboardMouse* p1) {
@@ -52,7 +77,16 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
     }
 
     bool refresh() {
-        return call_method< bool >(self, "refresh");
+        try
+        {
+            return call_method< bool >(self, "refresh");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_refresh() {
@@ -60,7 +94,16 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
     }
 
     std::basic_string<char,std::char_traits<char>,std::allocator<char> > getDeviceName() const {
-        return call_method< std::basic_string<char,std::char_traits<char>,std::allocator<char> > >(self, "getDeviceName");
+        try
+        {
+            return call_method< std::basic_string<char,std::char_traits<char>,std::allocator<char> > >(self, "getDeviceName");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return std::string("UNKNOWN");
     }
 
     std::basic_string<char,std::char_traits<char>,std::allocator<char> > default_getDeviceName() const {
@@ -68,7 +111,14 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
     }
 
     void updateData() {
-        call_method< void >(self, "updateData");
+        try
+        {
+            call_method< void >(self, "updateData");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
     }
 
     void default_updateData() {
@@ -84,7 +134,16 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
     }
 
     bool isStupified() const {
-        return call_method< bool >(self, "isStupified");
+        try
+        {
+            return call_method< bool >(self, "isStupified");
+        }
+        catch (error_already_set)
+        {
+            PyErr_Print();
+        }
+
+        return false;
     }
 
     bool default_isStupified() const {

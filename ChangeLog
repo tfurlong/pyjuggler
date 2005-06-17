@@ -1,7 +1,15 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Jun-17-2005 patrickh    Exposed isStupefied() and stupefy() in the classes
+                        gadget.AnalogProxy, gadget.CommandProxy,
+                        gadget.DigitalProxy, gadget.KeyboardMouseProxy,
+                        gadget.PositionProxy, and gadget.StringProxy.
+                        Merged exception handling improvements and other bug
+                        fixes from HEAD.
+                        NEW VERSIO: 0.92.1
+
 [1.0 Beta 2 released - 6.7.2005]===============================================
-Dec-24-2004 patrickh    NEW VERSION: 0.92.0
+Jun-07-2005 patrickh    NEW VERSION: 0.92.0
 Apr-18-2005 patrickh    Removed jccl.ConfigDefinition.assertValid(),
                         jccl.ConfigElement.assertValid(), and
                         jccl.PropertyDefinition.assertValid().
