@@ -75,6 +75,14 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
         gadget::Proxy::updateData();
     }
 
+    bool isStupefied() const {
+        return call_method< bool >(self, "isStupefied");
+    }
+
+    bool default_isStupefied() const {
+        return gadget::Proxy::isStupefied();
+    }
+
     bool isStupified() const {
         return call_method< bool >(self, "isStupified");
     }
@@ -137,7 +145,7 @@ void _Export_KeyboardMouseProxy()
              "refresh() -> Boolean\n"
              "Refreshes the proxy.  This attempts to lookup the device that\n"
              "we are proxying.  If the lookup fails, then we become\n"
-             "stupified.  If not, then the proxy is pointed at this\n"
+             "stupefied.  If not, then the proxy is pointed at this\n"
              "potentially new device."
          )
         .def("getDeviceName",
@@ -153,13 +161,24 @@ void _Export_KeyboardMouseProxy()
              "Updates the cached data copy from the device.  Copies the\n"
              "device data to local storage and transforms it if necessary."
          )
+        .def("isStupefied",
+             (bool (gadget::Proxy::*)() const)&gadget::Proxy::isStupefied,
+             (bool (pyj::gadget_KeyboardMouseProxy_Wrapper::*)() const)&pyj::gadget_KeyboardMouseProxy_Wrapper::default_isStupefied,
+             "isStupefied() -> Boolean\n"
+             "Is the proxy currently stupefied?\n"
+             "If the device we are proxying does not exist, then this will\n"
+             "return True."
+         )
         .def("isStupified",
              (bool (gadget::Proxy::*)() const)&gadget::Proxy::isStupified,
              (bool (pyj::gadget_KeyboardMouseProxy_Wrapper::*)() const)&pyj::gadget_KeyboardMouseProxy_Wrapper::default_isStupified,
              "isStupified() -> Boolean\n"
-             "Is the proxy currently stupified?\n"
+             "Is the proxy currently stupefied?\n"
              "If the device we are proxying does not exist, then this will\n"
-             "return True."
+             "return True.\n\n"
+             "NOTE: The name of this method is spelled incorrectly, and it\n"
+             "      will be removed in PyJuggler 1.2.  Use isStupefied()\n"
+             "      instead."
          )
         .def("getKeyboardMousePtr",
              &gadget::KeyboardMouseProxy::getKeyboardMousePtr,
@@ -211,11 +230,19 @@ void _Export_KeyboardMouseProxy()
              "Arguments:\n"
              "name -- The name for this proxy as a string object."
          )
-        .def("stupify", &gadget::Proxy::stupify,
-             "stupify(newState = True)\n"
-             "Sets the stupification state of this proxy.\n"
+        .def("stupefy", &gadget::Proxy::stupefy,
+             "stupefy(newState = True)\n"
+             "Sets the stupefication state of this proxy.\n"
              "Keyword arguments:\n"
-             "newState -- The new state of stupification."
+             "newState -- The new state of stupefication."
+         )
+        .def("stupify", &gadget::Proxy::stupefy,
+             "stupify(newState = True)\n"
+             "Sets the stupefication state of this proxy.\n"
+             "Keyword arguments:\n"
+             "newState -- The new state of stupefication.\n\n"
+             "NOTE: The name of this method is spelled incorrectly, and it\n"
+             "      will be removed in PyJuggler 1.2.  Use stupefy() instead."
          )
         .staticmethod("getElementType")
     ;
