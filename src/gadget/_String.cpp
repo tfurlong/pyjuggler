@@ -27,6 +27,11 @@ struct gadget_String_Wrapper: gadget::String
     gadget_String_Wrapper(PyObject* self_):
         gadget::String(), self(self_) {}
 
+    virtual ~gadget_String_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     bool config(jccl::ConfigElementPtr p0) {
         try
         {

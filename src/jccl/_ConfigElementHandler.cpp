@@ -27,6 +27,11 @@ struct jccl_ConfigElementHandler_Wrapper: jccl::ConfigElementHandler
     jccl_ConfigElementHandler_Wrapper(PyObject* self_):
         jccl::ConfigElementHandler(), self(self_) {}
 
+    virtual ~jccl_ConfigElementHandler_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     bool configCanHandle(jccl::ConfigElementPtr p0) {
         try
         {

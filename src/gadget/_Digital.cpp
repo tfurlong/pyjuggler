@@ -27,6 +27,11 @@ struct gadget_Digital_Wrapper: gadget::Digital
     gadget_Digital_Wrapper(PyObject* self_):
         gadget::Digital(), self(self_) {}
 
+    virtual ~gadget_Digital_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     bool config(jccl::ConfigElementPtr p0) {
         try
         {

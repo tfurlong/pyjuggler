@@ -27,6 +27,11 @@ struct gadget_KeyboardMouseProxy_Wrapper: gadget::KeyboardMouseProxy
     gadget_KeyboardMouseProxy_Wrapper(PyObject* self_):
         gadget::KeyboardMouseProxy(), self(self_) {}
 
+    virtual ~gadget_KeyboardMouseProxy_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     vpr::Interval getTimeStamp() const {
         try
         {

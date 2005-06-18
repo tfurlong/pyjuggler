@@ -24,6 +24,11 @@ namespace pyj {
 
 struct vrj_Kernel_Wrapper: vrj::Kernel
 {
+    virtual ~vrj_Kernel_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     bool configCanHandle(jccl::ConfigElementPtr p0) {
         try
         {

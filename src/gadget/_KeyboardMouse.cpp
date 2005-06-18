@@ -30,6 +30,11 @@ struct gadget_KeyboardMouse_Wrapper: gadget::KeyboardMouse
     gadget_KeyboardMouse_Wrapper(PyObject* self_):
         gadget::KeyboardMouse(), self(self_) {}
 
+    virtual ~gadget_KeyboardMouse_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     std::string getInputTypeName() {
         try
         {

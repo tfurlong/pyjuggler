@@ -24,6 +24,10 @@ struct vrj_User_Wrapper: vrj::User
     vrj_User_Wrapper(PyObject* self_):
         vrj::User(), self(self_) {}
 
+    virtual ~vrj_User_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
 
     PyObject* self;
 };

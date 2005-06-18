@@ -36,6 +36,10 @@ struct vpr_GUID_Wrapper: vpr::GUID
     vpr_GUID_Wrapper(PyObject* self_, const vpr::GUID& p0):
         vpr::GUID(p0), self(self_) {}
 
+    virtual ~vpr_GUID_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
 
     PyObject* self;
 };

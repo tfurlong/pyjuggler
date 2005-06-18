@@ -28,6 +28,10 @@ struct vrj_Display_Wrapper: vrj::Display
     vrj_Display_Wrapper(PyObject* self_):
         vrj::Display(), self(self_) {}
 
+    virtual ~vrj_Display_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
 
     PyObject* self;
 };

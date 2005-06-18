@@ -29,6 +29,11 @@ struct vrj_SimViewport_Wrapper: vrj::SimViewport
     vrj_SimViewport_Wrapper(PyObject* self_, const vrj::SimViewport& p0):
         vrj::SimViewport(p0), self(self_) {}
 
+    virtual ~vrj_SimViewport_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     void updateProjections(const float p0) {
         try
         {

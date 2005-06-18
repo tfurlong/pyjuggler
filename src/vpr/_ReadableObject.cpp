@@ -24,6 +24,11 @@ namespace pyj {
 
 struct vpr_ReadableObject_Wrapper: vpr::ReadableObject
 {
+    virtual ~vpr_ReadableObject_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     vpr::ReturnStatus readObject(vpr::ObjectReader* p0) {
         vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                  "vpr_ReadableObject_Wrapper::readObject()\n",

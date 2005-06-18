@@ -27,6 +27,11 @@ struct vrj_Projection_Wrapper: vrj::Projection
     vrj_Projection_Wrapper(PyObject* self_, const vrj::Projection& p0):
         vrj::Projection(p0), self(self_) {}
 
+    virtual ~vrj_Projection_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     void calcViewMatrix(gmtl::Matrix44f& p0, const float p1) {
         try
         {

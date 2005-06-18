@@ -27,6 +27,11 @@ struct gadget_Analog_Wrapper: gadget::Analog
     gadget_Analog_Wrapper(PyObject* self_):
         gadget::Analog(), self(self_) {}
 
+    virtual ~gadget_Analog_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0) {
         try
         {
