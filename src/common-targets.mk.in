@@ -14,9 +14,11 @@ moddir=		$(topdir)/src/mods
 include @topdir@/src/common.mk
 
 MKINSTALLDIRS=	$(scriptdir)/mkinstalldirs
+WARNS?=		0
 
 CXX=		@CXX@
-CXXFLAGS=	@BOOST_PYTHON_CXXFLAGS@ @BOOST_PYTHON_INCLUDES@		\
+CXXFLAGS=	@CXXFLAGS@ $(CXX_WARNS_LEVEL_$(WARNS))			\
+		@BOOST_PYTHON_CXXFLAGS@ @BOOST_PYTHON_INCLUDES@		\
 		@CXXFLAGS_DYNLIB@ $(EXTRA_CXXFLAGS)
 
 ifeq (@OS_TYPE@, Win32)
