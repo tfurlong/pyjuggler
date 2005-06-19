@@ -10,6 +10,13 @@ prefix=		@prefix@
 scriptdir=	$(top_srcdir)/release/scripts
 top_srcdir=	@abs_top_srcdir@
 
+CXX_WARNS_LEVEL_0=	@CXX_WARNS_LEVEL_0@
+CXX_WARNS_LEVEL_1=	@CXX_WARNS_LEVEL_1@
+CXX_WARNS_LEVEL_2=	@CXX_WARNS_LEVEL_2@
+CXX_WARNS_LEVEL_3=	@CXX_WARNS_LEVEL_3@
+CXX_WARNS_LEVEL_4=	@CXX_WARNS_LEVEL_4@
+CXX_WARNS_LEVEL_5=	@CXX_WARNS_LEVEL_5@
+
 MKINSTALLDIRS=		$(scriptdir)/mkinstalldirs
 PYTHON_VERSION=		@PYTHON_VERSION@
 PYTHON_PACKAGES=	$(prefix)/lib/python$(PYTHON_VERSION)/site-packages/PyJuggler
