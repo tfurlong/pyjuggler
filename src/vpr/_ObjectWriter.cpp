@@ -23,6 +23,11 @@ namespace pyj {
 
 struct vpr_ObjectWriter_Wrapper: vpr::ObjectWriter
 {
+    virtual ~vpr_ObjectWriter_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     vpr::ReturnStatus beginTag(std::string p0) {
         vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                  "vpr_ObjectWriter_Wrapper::beginTag()\n",

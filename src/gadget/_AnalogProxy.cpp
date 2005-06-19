@@ -27,6 +27,11 @@ struct gadget_AnalogProxy_Wrapper: gadget::AnalogProxy
     gadget_AnalogProxy_Wrapper(PyObject* self_):
         gadget::AnalogProxy(), self(self_) {}
 
+    virtual ~gadget_AnalogProxy_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     void updateData() {
         try
         {

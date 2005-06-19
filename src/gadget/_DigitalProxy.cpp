@@ -27,6 +27,11 @@ struct gadget_DigitalProxy_Wrapper: gadget::DigitalProxy
     gadget_DigitalProxy_Wrapper(PyObject* self_):
         gadget::DigitalProxy(), self(self_) {}
 
+    virtual ~gadget_DigitalProxy_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     void updateData() {
         try
         {

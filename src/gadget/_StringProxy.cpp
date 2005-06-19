@@ -27,6 +27,11 @@ struct gadget_StringProxy_Wrapper: gadget::StringProxy
     gadget_StringProxy_Wrapper(PyObject* self_):
         gadget::StringProxy(), self(self_) {}
 
+    virtual ~gadget_StringProxy_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     void updateData() {
         try
         {

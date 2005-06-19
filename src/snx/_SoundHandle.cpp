@@ -30,6 +30,11 @@ struct snx_SoundHandle_Adapter : snx::SoundHandle
     snx_SoundHandle_Adapter(PyObject* self_, const std::string& p0):
         snx::SoundHandle(p0), self(self_) {}
 
+    virtual ~snx_SoundHandle_Adapter()
+    {
+        /* Do nothing. */ ;
+    }
+
     virtual tuple getPositionWrapper()
     {
         try
@@ -57,6 +62,11 @@ struct snx_SoundHandle_Wrapper: snx_SoundHandle_Adapter
 
     snx_SoundHandle_Wrapper(PyObject* self_, const std::string& p0):
         snx_SoundHandle_Adapter(self_, p0) {}
+
+    virtual ~snx_SoundHandle_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
 
     void trigger(const int& p0) {
         try

@@ -27,6 +27,11 @@ struct gadget_PositionProxy_Wrapper: gadget::PositionProxy
     gadget_PositionProxy_Wrapper(PyObject* self_):
         gadget::PositionProxy(), self(self_) {}
 
+    virtual ~gadget_PositionProxy_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     void updateData() {
         try
         {

@@ -24,6 +24,11 @@ struct snx_sonix_Adapter: snx::sonix
     snx_sonix_Adapter(PyObject* self_, const snx::sonix& p0):
         snx::sonix(p0), self(self_) {}
 
+    virtual ~snx_sonix_Adapter()
+    {
+        /* Do nothing. */ ;
+    }
+
    virtual tuple getPositionWrapper(const std::string& alias)
    {
       float p0, p1, p2;
@@ -38,6 +43,11 @@ struct snx_sonix_Wrapper: snx_sonix_Adapter
 {
     snx_sonix_Wrapper(PyObject* self_, const snx::sonix& p0):
         snx_sonix_Adapter(self_, p0) {}
+
+    virtual ~snx_sonix_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
 
     void trigger(const std::string& p0, const int& p1) {
         try

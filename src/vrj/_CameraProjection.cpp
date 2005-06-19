@@ -27,6 +27,11 @@ struct vrj_CameraProjection_Wrapper: vrj::CameraProjection
     vrj_CameraProjection_Wrapper(PyObject* self_):
         vrj::CameraProjection(), self(self_) {}
 
+    virtual ~vrj_CameraProjection_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     void calcViewMatrix(gmtl::Matrix44f& p0, const float p1) {
         try
         {

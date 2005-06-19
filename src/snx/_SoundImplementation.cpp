@@ -27,6 +27,11 @@ struct snx_SoundImplementation_Adapter: snx::SoundImplementation
     snx_SoundImplementation_Adapter(PyObject* self_):
         snx::SoundImplementation(), self(self_) {}
 
+    virtual ~snx_SoundImplementation_Adapter()
+    {
+        /* Do nothing. */ ;
+    }
+
    virtual tuple getPositionWrapper(const std::string& alias)
    {
       float p0, p1, p2;
@@ -44,6 +49,11 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
 
     snx_SoundImplementation_Wrapper(PyObject* self_):
         snx_SoundImplementation_Adapter(self_) {}
+
+    virtual ~snx_SoundImplementation_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
 
     void clone(snx::ISoundImplementation*& p0) {
         try

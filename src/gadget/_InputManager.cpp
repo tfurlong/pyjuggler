@@ -22,6 +22,11 @@ namespace pyj {
 
 struct gadget_InputManager_Wrapper: gadget::InputManager
 {
+    virtual ~gadget_InputManager_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     bool configAdd(jccl::ConfigElementPtr p0) {
         try
         {

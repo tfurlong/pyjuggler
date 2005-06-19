@@ -23,6 +23,11 @@ namespace pyj {
 
 struct vpr_ObjectReader_Wrapper: vpr::ObjectReader
 {
+    virtual ~vpr_ObjectReader_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     vpr::ReturnStatus beginTag(std::string p0) {
         vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                  "vpr_ObjectReader_Wrapper::beginTag()\n",

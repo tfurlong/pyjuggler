@@ -32,6 +32,11 @@ struct gadget_MouseEvent_Wrapper: gadget::MouseEvent
     gadget_MouseEvent_Wrapper(PyObject* self_):
         gadget::MouseEvent(), self(self_) {}
 
+    virtual ~gadget_MouseEvent_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0) {
         try
         {

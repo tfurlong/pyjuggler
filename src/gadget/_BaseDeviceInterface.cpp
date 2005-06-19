@@ -27,6 +27,11 @@ struct gadget_BaseDeviceInterface_Wrapper: gadget::BaseDeviceInterface
     gadget_BaseDeviceInterface_Wrapper(PyObject* self_):
         gadget::BaseDeviceInterface(), self(self_) {}
 
+    virtual ~gadget_BaseDeviceInterface_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     void refresh() {
         try
         {

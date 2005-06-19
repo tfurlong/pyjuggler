@@ -30,6 +30,11 @@ struct vrj_Viewport_Wrapper: vrj::Viewport
     vrj_Viewport_Wrapper(PyObject* self_, const vrj::Viewport& p0):
         vrj::Viewport(p0), self(self_) {}
 
+    virtual ~vrj_Viewport_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     void updateProjections(const float p0) {
         try
         {

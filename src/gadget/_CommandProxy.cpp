@@ -27,6 +27,11 @@ struct gadget_CommandProxy_Wrapper: gadget::CommandProxy
     gadget_CommandProxy_Wrapper(PyObject* self_):
         gadget::CommandProxy(), self(self_) {}
 
+    virtual ~gadget_CommandProxy_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     void updateData() {
         try
         {

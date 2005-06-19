@@ -24,6 +24,11 @@ namespace pyj {
 
 struct vpr_WriteableObject_Wrapper: vpr::WriteableObject
 {
+    virtual ~vpr_WriteableObject_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0) {
         vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                  "vpr_WriteableObject_Wrapper::writeObject()\n",

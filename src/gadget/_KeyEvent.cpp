@@ -35,6 +35,11 @@ struct gadget_KeyEvent_Wrapper: gadget::KeyEvent
     gadget_KeyEvent_Wrapper(PyObject* self_):
         gadget::KeyEvent(), self(self_) {}
 
+    virtual ~gadget_KeyEvent_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0) {
         try
         {

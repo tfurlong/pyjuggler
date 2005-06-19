@@ -27,6 +27,11 @@ struct gadget_Position_Wrapper: gadget::Position
     gadget_Position_Wrapper(PyObject* self_):
         gadget::Position(), self(self_) {}
 
+    virtual ~gadget_Position_Wrapper()
+    {
+        /* Do nothing. */ ;
+    }
+
     bool config(jccl::ConfigElementPtr p0) {
         try
         {
