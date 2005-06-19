@@ -122,12 +122,12 @@ private:
    static vpr::TSObjectProxy<State> mState;
 
    /** Prevent copying. */
-   InterpreterGuard(const InterpreterGuard& o)
+   InterpreterGuard(const InterpreterGuard&)
    {
       /* Do nothing. */ ;
    }
 
-   void operator=(const InterpreterGuard& o)
+   void operator=(const InterpreterGuard&)
    {
       /* Do nothing. */ ;
    }
