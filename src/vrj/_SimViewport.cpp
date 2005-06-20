@@ -19,37 +19,48 @@
 using namespace boost::python;
 
 // Declarations ================================================================
-namespace pyj {
-
-struct vrj_SimViewport_Wrapper: vrj::SimViewport
+namespace pyj
 {
-    vrj_SimViewport_Wrapper(PyObject* self_):
-        vrj::SimViewport(), self(self_) {}
 
-    vrj_SimViewport_Wrapper(PyObject* self_, const vrj::SimViewport& p0):
-        vrj::SimViewport(p0), self(self_) {}
+struct vrj_SimViewport_Wrapper : vrj::SimViewport
+{
+   vrj_SimViewport_Wrapper(PyObject* self_)
+      : vrj::SimViewport()
+      , self(self_)
+   {
+      /* Do nothing. */ ;
+   }
 
-    virtual ~vrj_SimViewport_Wrapper()
-    {
-        /* Do nothing. */ ;
-    }
+   vrj_SimViewport_Wrapper(PyObject* self_, const vrj::SimViewport& p0)
+      : vrj::SimViewport(p0)
+      , self(self_)
+   {
+      /* Do nothing. */ ;
+   }
 
-    void updateProjections(const float p0) {
-        try
-        {
-        call_method< void >(self, "updateProjections", p0);
-        }
-        catch(error_already_set)
-        {
-            PyErr_Print();
-        }
-    }
+   virtual ~vrj_SimViewport_Wrapper()
+   {
+      /* Do nothing. */ ;
+   }
 
-    void default_updateProjections(const float p0) {
-        vrj::SimViewport::updateProjections(p0);
-    }
+   void updateProjections(const float p0)
+   {
+      try
+      {
+         call_method<void>(self, "updateProjections", p0);
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+   }
 
-    PyObject* self;
+   void default_updateProjections(const float p0)
+   {
+      vrj::SimViewport::updateProjections(p0);
+   }
+
+   PyObject* self;
 };
 
 inline tuple vrj_SimViewport_getOriginAndSize_wrapper(vrj::SimViewport* vp)
@@ -65,20 +76,20 @@ inline tuple vrj_SimViewport_getOriginAndSize_wrapper(vrj::SimViewport* vp)
 // Module ======================================================================
 void _Export_SimViewport()
 {
-    class_< vrj::SimViewport, bases< vrj::Viewport >, pyj::vrj_SimViewport_Wrapper >("SimViewport", init<  >())
-        .def(init< const vrj::SimViewport& >())
-        .def("updateProjections",
-             (void (vrj::SimViewport::*)(const float) )&vrj::SimViewport::updateProjections,
-             (void (pyj::vrj_SimViewport_Wrapper::*)(const float))&pyj::vrj_SimViewport_Wrapper::default_updateProjections,
-             "updateProjections(positionScale)\n"
-             "Updates the projections.\n\n"
-             "Arguments:\n"
-             "positionScale -- Floating-point scale value for converting\n"
-             "                 from Juggler units (meters) to the display\n"
-             "                 units."
-         )
-        .def("getDrawSimInterface", &vrj::SimViewport::getDrawSimInterface,
-             return_internal_reference< 1 >())
-    ;
+   class_<vrj::SimViewport, bases<vrj::Viewport>, pyj::vrj_SimViewport_Wrapper>
+      ("SimViewport", init<>())
+      .def(init<const vrj::SimViewport&>())
+      .def("updateProjections",
+           (void (vrj::SimViewport::*)(const float)) &vrj::SimViewport::updateProjections,
+           (void (pyj::vrj_SimViewport_Wrapper::*)(const float)) &pyj::vrj_SimViewport_Wrapper::default_updateProjections,
+           "updateProjections(positionScale)\n"
+           "Updates the projections.\n\n"
+           "Arguments:\n"
+           "positionScale -- Floating-point scale value for converting\n"
+           "                 from Juggler units (meters) to the display\n"
+           "                 units."
+      )
+      .def("getDrawSimInterface", &vrj::SimViewport::getDrawSimInterface,
+           return_internal_reference<1>())
+   ;
 }
-

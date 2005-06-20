@@ -20,32 +20,34 @@
 using namespace boost::python;
 
 // Declarations ================================================================
-namespace pyj {
-
-struct vpr_WriteableObject_Wrapper: vpr::WriteableObject
+namespace pyj
 {
-    virtual ~vpr_WriteableObject_Wrapper()
-    {
-        /* Do nothing. */ ;
-    }
 
-    vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0) {
-        vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
-                                 "vpr_WriteableObject_Wrapper::writeObject()\n",
-                                 "vpr_WriteableObject_Wrapper::writeObject() done.\n");
-        PyJuggler::InterpreterGuard guard;
+struct vpr_WriteableObject_Wrapper : vpr::WriteableObject
+{
+   virtual ~vpr_WriteableObject_Wrapper()
+   {
+      /* Do nothing. */ ;
+   }
 
-        try
-        {
-            return call_method< vpr::ReturnStatus >(self, "writeObject", p0);
-        }
-        catch(error_already_set)
-        {
-            PyErr_Print();
-        }
-    }
+   vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0)
+   {
+      vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
+                               "vpr_WriteableObject_Wrapper::writeObject()\n",
+                               "vpr_WriteableObject_Wrapper::writeObject() done.\n");
+      PyJuggler::InterpreterGuard guard;
 
-    PyObject* self;
+      try
+      {
+         return call_method<vpr::ReturnStatus>(self, "writeObject", p0);
+      }
+      catch(error_already_set)
+      {
+         PyErr_Print();
+      }
+   }
+
+   PyObject* self;
 };
 
 
@@ -55,11 +57,13 @@ struct vpr_WriteableObject_Wrapper: vpr::WriteableObject
 // Module ======================================================================
 void _Export_WriteableObject()
 {
-    class_< vpr::WriteableObject, boost::noncopyable, pyj::vpr_WriteableObject_Wrapper >("WriteableObject", no_init)
-        .def("writeObject", pure_virtual(&vpr::WriteableObject::writeObject),
-             "writeObject(writer) -> PyJuggler.vpr.ReturnStatus object\n"
-             "Template method for writing this object to the given stream.\n"
-             "<b>Post condition:</b> All object data is written to the writer.")
-    ;
-
+   class_<vpr::WriteableObject, boost::noncopyable,
+          pyj::vpr_WriteableObject_Wrapper>
+      ("WriteableObject", no_init)
+      .def("writeObject", pure_virtual(&vpr::WriteableObject::writeObject),
+           "writeObject(writer) -> PyJuggler.vpr.ReturnStatus object\n"
+           "Template method for writing this object to the given stream.\n"
+           "<b>Post condition:</b> All object data is written to the writer."
+      )
+   ;
 }

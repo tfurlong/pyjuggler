@@ -17,37 +17,49 @@
 using namespace boost::python;
 
 // Declarations ================================================================
-namespace pyj {
-
-struct gadget_BaseDeviceInterface_Wrapper: gadget::BaseDeviceInterface
+namespace pyj
 {
-    gadget_BaseDeviceInterface_Wrapper(PyObject* self_, const gadget::BaseDeviceInterface& p0):
-        gadget::BaseDeviceInterface(p0), self(self_) {}
 
-    gadget_BaseDeviceInterface_Wrapper(PyObject* self_):
-        gadget::BaseDeviceInterface(), self(self_) {}
+struct gadget_BaseDeviceInterface_Wrapper : gadget::BaseDeviceInterface
+{
+   gadget_BaseDeviceInterface_Wrapper(PyObject* self_,
+                                      const gadget::BaseDeviceInterface& p0)
+      : gadget::BaseDeviceInterface(p0)
+      , self(self_)
+   {
+      /* Do nothing. */ ;
+   }
 
-    virtual ~gadget_BaseDeviceInterface_Wrapper()
-    {
-        /* Do nothing. */ ;
-    }
+   gadget_BaseDeviceInterface_Wrapper(PyObject* self_)
+      : gadget::BaseDeviceInterface()
+      , self(self_)
+   {
+      /* Do nothing. */ ;
+   }
 
-    void refresh() {
-        try
-        {
-            call_method< void >(self, "refresh");
-        }
-        catch(error_already_set)
-        {
-            PyErr_Print();
-        }
-    }
+   virtual ~gadget_BaseDeviceInterface_Wrapper()
+   {
+      /* Do nothing. */ ;
+   }
 
-    void default_refresh() {
-        gadget::BaseDeviceInterface::refresh();
-    }
+   void refresh()
+   {
+      try
+      {
+         call_method<void>(self, "refresh");
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+   }
 
-    PyObject* self;
+   void default_refresh()
+   {
+      gadget::BaseDeviceInterface::refresh();
+   }
+
+   PyObject* self;
 };
 
 }// namespace 
@@ -56,37 +68,35 @@ struct gadget_BaseDeviceInterface_Wrapper: gadget::BaseDeviceInterface
 // Module ======================================================================
 void _Export_BaseDeviceInterface()
 {
-    class_< gadget::BaseDeviceInterface, pyj::gadget_BaseDeviceInterface_Wrapper >("BaseDeviceInterface",
-         ""
-         ,
-         init<  >()
-        )
-        .def(init< const gadget::BaseDeviceInterface& >())
-        .def("refresh", &gadget::BaseDeviceInterface::refresh,
-             &pyj::gadget_BaseDeviceInterface_Wrapper::default_refresh,
-             ""
-         )
-        .def("init", &gadget::BaseDeviceInterface::init,
-             "init(proxyName)\n"
-             "Initializes this object.\n"
-             "Arguments:\n"
-             "proxyName -- String name of the proxy to connect to."
-         )
-        .def("getProxyName", &gadget::BaseDeviceInterface::getProxyName,
-             "getProxyName() -> string object\n"
-             "Returns the name of the proxy."
-         )
-        .def("isConnected", &gadget::BaseDeviceInterface::isConnected,
-            "isConnected() -> Boolean\n"
-            "Identifies whether this device interface is connected to a\n"
-            "proxy."
-         )
-        .def("refreshAllDevices",
-             &gadget::BaseDeviceInterface::refreshAllDevices,
-             "refreshAllDevices()\n"
-             "Refreshes all the known device interface objects."
-         )
-        .staticmethod("refreshAllDevices")
-    ;
-
+   class_<gadget::BaseDeviceInterface, pyj::gadget_BaseDeviceInterface_Wrapper>(
+       "BaseDeviceInterface", "",
+       init<>()
+      )
+      .def(init<const gadget::BaseDeviceInterface&>())
+      .def("refresh", &gadget::BaseDeviceInterface::refresh,
+           &pyj::gadget_BaseDeviceInterface_Wrapper::default_refresh,
+           ""
+      )
+      .def("init", &gadget::BaseDeviceInterface::init,
+           "init(proxyName)\n"
+           "Initializes this object.\n"
+           "Arguments:\n"
+           "proxyName -- String name of the proxy to connect to."
+      )
+      .def("getProxyName", &gadget::BaseDeviceInterface::getProxyName,
+           "getProxyName() -> string object\n"
+           "Returns the name of the proxy."
+      )
+      .def("isConnected", &gadget::BaseDeviceInterface::isConnected,
+          "isConnected() -> Boolean\n"
+          "Identifies whether this device interface is connected to a\n"
+          "proxy."
+      )
+      .def("refreshAllDevices",
+           &gadget::BaseDeviceInterface::refreshAllDevices,
+           "refreshAllDevices()\n"
+           "Refreshes all the known device interface objects."
+      )
+      .staticmethod("refreshAllDevices")
+   ;
 }

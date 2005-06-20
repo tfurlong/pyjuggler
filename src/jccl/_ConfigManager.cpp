@@ -62,7 +62,7 @@ void _Export_ConfigManager()
            "caller.  If not, an empty jccl.ConfigElement is returned.\n"
            "Arguments:\n"
            "elementName -- The name of the element to find."
-       )
+      )
       .def("getElementFromPending",
            &jccl::ConfigManager::getElementFromPending,
            "getElementFromPending(elementName) -> ConfigElement object\n"
@@ -71,7 +71,7 @@ void _Export_ConfigManager()
            "caller.  If not, an empty jccl.ConfigElement is returned.\n"
            "Arguments:\n"
            "elementName -- The name of the element to find."
-       )
+      )
       .def("getElementNamed", &jccl::ConfigManager::getElementNamed,
            "getElementNamed(elementName) -> ConfigElement object\n"
            "Attempts to find a config element matching the given name, first\n"
@@ -81,7 +81,7 @@ void _Export_ConfigManager()
            "caller.  If not, an empty jccl.ConfigElement is returned.\n"
            "Arguments:\n"
            "elementName -- The name of the element to find."
-       )
+      )
       .def("isElementInActiveList",
            &jccl::ConfigManager::isElementInActiveList,
            "isElementInActiveList(elementName) -> Boolean\n"
@@ -90,7 +90,7 @@ void _Export_ConfigManager()
            "Arguments:\n"
            "elementName -- The name of the element to find.\n\n"
            "NOTE: This should not be used often.  Use at your own risk."
-       )
+      )
       .def("isElementTypeInActiveList",
            &jccl::ConfigManager::isElementTypeInActiveList,
            "isElementTypeInActiveList(elementType) -> Boolean\n"
@@ -99,7 +99,7 @@ void _Export_ConfigManager()
            "Arguments:\n"
            "elementType -- The type of the element to find.\n\n"
            "NOTE: This should not be used often.  Use at your own risk."
-       )
+      )
       .def("isElementTypeInPendingList",
            &jccl::ConfigManager::isElementTypeInPendingList,
            "isElementTypeInPendingList(elementType) -> Boolean\n"
@@ -108,7 +108,7 @@ void _Export_ConfigManager()
            "Arguments:\n"
            "elementType -- The type of the element to find.\n\n"
            "NOTE: This should not be used often.  Use at your own risk."
-       )
+      )
       .def("hasElementType", &jccl::ConfigManager::hasElementType,
            "hasElementType(elementType) -> Boolean\n"
            "Searches the active list for an element matching the given type.\n"
@@ -120,19 +120,19 @@ void _Export_ConfigManager()
            "True is returned if an element of the given type is found in\n"
            "either the active or the pending list (in that order).  False is\n"
            "returned if no such element is found in either list."
-       )
+      )
       .def("addConfigElementHandler",
            &jccl::ConfigManager::addConfigElementHandler,
            "addConfigElementHandler(handler)"
            "Registers the given handler (a subclass of\n"
            "jccl.ConfigElementHandler."
-       )
+      )
       .def("removeConfigElementHandler",
            &jccl::ConfigManager::removeConfigElementHandler,
            "removeConfigElementHandler(handler)"
            "Un-registers the given handler (a subclass of\n"
            "jccl.ConfigElementHandler."
-       )
+      )
       .def("instance", &jccl::ConfigManager::instance,
            return_value_policy< reference_existing_object >())
       .staticmethod("instance")

@@ -19,13 +19,12 @@ using namespace boost::python;
 // Module ======================================================================
 void _Export_gadget_Type_KeyboardMouse_Event_h()
 {
-    enum_< gadget::EventType >("EventType")
-        .value("KeyPressEvent", gadget::KeyPressEvent)
-        .value("MouseButtonReleaseEvent", gadget::MouseButtonReleaseEvent)
-        .value("MouseMoveEvent", gadget::MouseMoveEvent)
-        .value("MouseButtonPressEvent", gadget::MouseButtonPressEvent)
-        .value("NoEvent", gadget::NoEvent)
-        .value("KeyReleaseEvent", gadget::KeyReleaseEvent)
-    ;
-
+   enum_<gadget::EventType>("EventType")
+      .value("KeyPressEvent", gadget::KeyPressEvent)
+      .value("MouseButtonReleaseEvent", gadget::MouseButtonReleaseEvent)
+      .value("MouseMoveEvent", gadget::MouseMoveEvent)
+      .value("MouseButtonPressEvent", gadget::MouseButtonPressEvent)
+      .value("NoEvent", gadget::NoEvent)
+      .value("KeyReleaseEvent", gadget::KeyReleaseEvent)
+   ;
 }

@@ -19,17 +19,18 @@ using namespace boost::python;
 // Module ======================================================================
 void _Export_StringData()
 {
-    class_< gadget::StringData >("StringData",
-         "gadget.InputData subclass for string data.",
-         init<  >()
-        )
-        .def(init< const gadget::StringData& >())
-        .def("getString", &gadget::StringData::getString,
-             return_value_policy<copy_const_reference>())
-        .def("setString", &gadget::StringData::setString)
-        .def("setTime", (void (gadget::InputData::*)() )&gadget::InputData::setTime)
-        .def("setTime", (void (gadget::InputData::*)(const vpr::Interval&) )&gadget::InputData::setTime)
-        .def("getTime", &gadget::InputData::getTime)
-    ;
-
+   class_<gadget::StringData>("StringData",
+       "gadget.InputData subclass for string data.",
+       init<>()
+      )
+      .def(init<const gadget::StringData&>())
+      .def("getString", &gadget::StringData::getString,
+           return_value_policy<copy_const_reference>())
+      .def("setString", &gadget::StringData::setString)
+      .def("setTime",
+           (void (gadget::InputData::*)()) &gadget::InputData::setTime)
+      .def("setTime",
+           (void (gadget::InputData::*)(const vpr::Interval&)) &gadget::InputData::setTime)
+      .def("getTime", &gadget::InputData::getTime)
+   ;
 }

@@ -22,34 +22,34 @@ using namespace boost::python;
 void _Export_ConfigDefinition()
 {
    scope* jccl_ConfigDefinition_scope = new scope(
-   class_< jccl::ConfigDefinition >("ConfigDefinition",
-      "Definition of a single configuration element type.",
-      init<  >(
-         "__init__()\n"
-         "Default constructor.\n\n"
-         "__init__(def)\n"
-         "Copy constructor."
+   class_<jccl::ConfigDefinition>("ConfigDefinition",
+       "Definition of a single configuration element type.",
+       init<>(
+          "__init__()\n"
+          "Default constructor.\n\n"
+          "__init__(def)\n"
+          "Copy constructor."
        )
       )
-      .def(init< const jccl::ConfigDefinition& >())
+      .def(init<const jccl::ConfigDefinition&>())
       .def("getName", &jccl::ConfigDefinition::getName,
            "getName() -> string object\n"
            "Returns the human-readable name of this definition."
-       )
+      )
       .def("getToken", &jccl::ConfigDefinition::getToken,
            "getToken() -> string object\n"
            "Returns the token (a valid XML element identifier) of this\n"
            "definition.  This corresponds to the ID of a config element."
-       )
+      )
       .def("getVersion", &jccl::ConfigDefinition::getVersion,
            "getVersion() -> int\n"
            "Gets the version of this definition.  If it is not set, 0 is\n"
            "returned."
-       )
+      )
       .def("getHelp", &jccl::ConfigDefinition::getHelp,
            "getHelp() -> string object\n"
            "Returns the help text for this definition."
-       )
+      )
       .def("isParent", &jccl::ConfigDefinition::isParent,
            "isParent(token) -> Boolean\n"
            "Tests to see if we derive from the given ConfigDefinition.\n"
@@ -59,7 +59,7 @@ void _Export_ConfigDefinition()
            "Returns:\n"
            "True is returned if the named ConfigDefinition type is a\n"
            "parent of this definition.  False is returned otherwise."
-       )
+      )
       .def("getPropertyDefinition",
            &jccl::ConfigDefinition::getPropertyDefinition,
            "getPropertyDefinition(token) -> PropertyDefinition object\n"
@@ -70,23 +70,23 @@ void _Export_ConfigDefinition()
            "Returns:\n"
            "A PropertyDefinition object in self whose token matches the\n"
            "given value."
-       )
+      )
       .def("getAllPropertyDefinitions",
-          &jccl::ConfigDefinition::getAllPropertyDefinitions,
-          "getAllPropertyDefinitions() -> jccl.PropertyDefinitionVec (indexable container)\n"
-          "Gets an indexable container of all the PropertyDefinition objects\n"
-          "from self."
-       )
+           &jccl::ConfigDefinition::getAllPropertyDefinitions,
+           "getAllPropertyDefinitions() -> jccl.PropertyDefinitionVec (indexable container)\n"
+           "Gets an indexable container of all the PropertyDefinition objects\n"
+           "from self."
+      )
       .def(self_ns::str(self))
-      .def( self == self )
-      .def( self != self )
+      .def(self == self)
+      .def(self != self)
    );
-   register_ptr_to_python< boost::shared_ptr< jccl::ConfigDefinition > >();
+   register_ptr_to_python< boost::shared_ptr<jccl::ConfigDefinition> >();
    delete jccl_ConfigDefinition_scope;
 
    class_< std::vector<jccl::PropertyDefinition> >("PropertyDefinitionVec",
        "An indexable container of jccl.PropertyDefinition objects"
-       )
-       .def(vector_indexing_suite< std::vector<jccl::PropertyDefinition> >())
+      )
+      .def(vector_indexing_suite< std::vector<jccl::PropertyDefinition> >())
    ;
 }
