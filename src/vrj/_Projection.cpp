@@ -47,7 +47,7 @@ struct vrj_Projection_Wrapper : vrj::Projection
       {
          call_method<void>(self, "calcViewMatrix", p0, p1);
       }
-      catch(error_already_set)
+      catch (error_already_set)
       {
          PyErr_Print();
       }

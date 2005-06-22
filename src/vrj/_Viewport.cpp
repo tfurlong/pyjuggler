@@ -73,8 +73,8 @@ inline tuple vrj_Viewport_getOriginAndSize_wrapper(vrj::Viewport* vp)
 void _Export_Viewport()
 {
    scope* vrj_Viewport_scope = new scope(
-   class_<vrj::Viewport, boost::noncopyable, pyj::vrj_Viewport_Wrapper>(
-       "Viewport",
+   class_<vrj::Viewport, boost::noncopyable, pyj::vrj_Viewport_Wrapper>
+      ("Viewport",
        "Base class for window viewports and all viewport data.  This\n"
        "stores projection data, viewport info, and relevant user."
        ,
