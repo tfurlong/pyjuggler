@@ -42,7 +42,7 @@ struct snx_SoundImplementation_Adapter: snx::SoundImplementation
    virtual tuple getPositionWrapper(const std::string& alias)
    {
       float p0, p1, p2;
-      getPosition(alias, p0, p1, p2);
+      snx::SoundImplementation::getPosition(alias, p0, p1, p2);
       return make_tuple(p0, p1, p2);
    }
 };
@@ -362,9 +362,7 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
 
    tuple default_getPositionWrapper(const std::string& p0)
    {
-      float p1, p2, p3;
-      snx::SoundImplementation::getPosition(p0, p1, p2, p3);
-      return make_tuple(p1, p2, p3);
+      return snx_SoundImplementation_Adapter::getPositionWrapper(p0);
    }
 
    void setListenerPosition(const gmtl::Matrix44f& p0)

@@ -36,7 +36,7 @@ struct snx_sonix_Adapter : snx::sonix
    virtual tuple getPositionWrapper(const std::string& alias)
    {
       float p0, p1, p2;
-      getPosition(alias, p0, p1, p2);
+      snx::sonix::getPosition(alias, p0, p1, p2);
       return make_tuple(p0, p1, p2);
    }
 };
@@ -331,9 +331,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
 
    tuple default_getPositionWrapper(const std::string& p0)
    {
-      float p1, p2, p3;
-      snx::sonix::getPosition(p0, p1, p2, p3);
-      return make_tuple(p1, p2, p3);
+      return snx_sonix_Adapter::getPositionWrapper(p0);
    }
 
    void setListenerPosition(const gmtl::Matrix44f& p0)

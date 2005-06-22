@@ -48,7 +48,7 @@ struct snx_SoundHandle_Adapter : snx::SoundHandle
    virtual tuple getPositionWrapper()
    {
       float p0, p1, p2;
-      getPosition(p0, p1, p2);
+      snx::SoundHandle::getPosition(p0, p1, p2);
       return make_tuple(p0, p1, p2);
    }
 };
@@ -361,9 +361,7 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
 
    tuple default_getPositionWrapper()
    {
-      float p0, p1, p2;
-      snx::SoundHandle::getPosition(p0, p1, p2);
-      return make_tuple(p0, p1, p2);
+      return snx_SoundHandle_Adapter::getPositionWrapper();
    }
 
    void setListenerPosition(const gmtl::Matrix44f& p0)
