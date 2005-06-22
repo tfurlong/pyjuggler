@@ -97,7 +97,7 @@ struct gadget_PositionProxy_Wrapper : gadget::PositionProxy
       return gadget::PositionProxy::config(p0);
    }
 
-   void set(std::string p0, gadget::Position* p1)
+   void set(const std::string& p0, gadget::Position* p1)
    {
       try
       {
@@ -109,7 +109,7 @@ struct gadget_PositionProxy_Wrapper : gadget::PositionProxy
       }
    }
 
-   void default_set(std::string p0, gadget::Position* p1)
+   void default_set(const std::string& p0, gadget::Position* p1)
    {
       gadget::PositionProxy::set(p0, p1);
    }
@@ -212,8 +212,8 @@ void _Export_PositionProxy()
            "instance."
       )
       .def("set",
-           (void (gadget::TypedProxy<gadget::Position>::*)(std::string, gadget::Position*)) &gadget::TypedProxy<gadget::Position>::set,
-           (void (pyj::gadget_PositionProxy_Wrapper::*)(std::string, gadget::Position*)) &pyj::gadget_PositionProxy_Wrapper::default_set,
+           (void (gadget::TypedProxy<gadget::Position>::*)(const std::string&, gadget::Position*)) &gadget::TypedProxy<gadget::Position>::set,
+           (void (pyj::gadget_PositionProxy_Wrapper::*)(const std::string&, gadget::Position*)) &pyj::gadget_PositionProxy_Wrapper::default_set,
            "set(devName, devPtr)\n"
            "Sets the proxy to point to the given type-specific device.\n"
            "Pre-condition:\n"

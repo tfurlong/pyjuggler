@@ -96,7 +96,7 @@ struct gadget_AnalogProxy_Wrapper : gadget::AnalogProxy
       return gadget::AnalogProxy::config(p0);
    }
 
-   void set(std::string p0, gadget::Analog* p1)
+   void set(const std::string& p0, gadget::Analog* p1)
    {
       try
       {
