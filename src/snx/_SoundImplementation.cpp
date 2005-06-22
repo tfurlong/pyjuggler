@@ -22,17 +22,14 @@ namespace pyj
 
 struct snx_SoundImplementation_Adapter: snx::SoundImplementation
 {
-   snx_SoundImplementation_Adapter(PyObject* self_,
-                                   const snx::SoundImplementation& p0)
+   snx_SoundImplementation_Adapter(const snx::SoundImplementation& p0)
       : snx::SoundImplementation(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   snx_SoundImplementation_Adapter(PyObject* self_)
+   snx_SoundImplementation_Adapter()
       : snx::SoundImplementation()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -45,24 +42,24 @@ struct snx_SoundImplementation_Adapter: snx::SoundImplementation
    virtual tuple getPositionWrapper(const std::string& alias)
    {
       float p0, p1, p2;
-      getPosition(alias, p0, p1, p2);
+      snx::SoundImplementation::getPosition(alias, p0, p1, p2);
       return make_tuple(p0, p1, p2);
    }
-
-   PyObject* self;
 };
 
 struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
 {
    snx_SoundImplementation_Wrapper(PyObject* self_,
                                    const snx::SoundImplementation& p0)
-      : snx_SoundImplementation_Adapter(self_, p0)
+      : snx_SoundImplementation_Adapter(p0)
+      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
    snx_SoundImplementation_Wrapper(PyObject* self_)
-      : snx_SoundImplementation_Adapter(self_)
+      : snx_SoundImplementation_Adapter()
+      , self(self)
    {
       /* Do nothing. */ ;
    }
@@ -349,11 +346,23 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
       p3 = extract<float>(result[2]);
    }
 
+   tuple getPositionWrapper(const std::string& p0)
+   {
+      try
+      {
+         return call_method<tuple>(self, "getPosition", p0);
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+
+      return make_tuple();
+   }
+
    tuple default_getPositionWrapper(const std::string& p0)
    {
-      float p1, p2, p3;
-      snx::SoundImplementation::getPosition(p0, p1, p2, p3);
-      return make_tuple(p1, p2, p3);
+      return snx_SoundImplementation_Adapter::getPositionWrapper(p0);
    }
 
    void setListenerPosition(const gmtl::Matrix44f& p0)
@@ -629,6 +638,8 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
          PyErr_Print();
       }
    }
+
+   PyObject* self;
 };
 
 

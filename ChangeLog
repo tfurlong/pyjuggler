@@ -1,5 +1,9 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Jun-22-2005 patrickh    Fixed several problems with the getPosition() method in
+                        snx.SoundHandle, snx.SoundImplementation, and
+                        snx.sonix.
+                        NEW VERSION: 0.92.3
 Jun-22-2005 patrickh    Fixed signature mismatch problems with the Python
                         bindings for the method gadget::TypedProxy<T>::set().
                         NEW VERSION: 0.92.2

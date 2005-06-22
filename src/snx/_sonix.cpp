@@ -22,9 +22,8 @@ namespace pyj
 
 struct snx_sonix_Adapter : snx::sonix
 {
-   snx_sonix_Adapter(PyObject* self_, const snx::sonix& p0)
+   snx_sonix_Adapter(const snx::sonix& p0)
       : snx::sonix(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -37,17 +36,16 @@ struct snx_sonix_Adapter : snx::sonix
    virtual tuple getPositionWrapper(const std::string& alias)
    {
       float p0, p1, p2;
-      getPosition(alias, p0, p1, p2);
+      snx::sonix::getPosition(alias, p0, p1, p2);
       return make_tuple(p0, p1, p2);
    }
-
-   PyObject* self;
 };
 
 struct snx_sonix_Wrapper : snx_sonix_Adapter
 {
    snx_sonix_Wrapper(PyObject* self_, const snx::sonix& p0)
-      : snx_sonix_Adapter(self_, p0)
+      : snx_sonix_Adapter(p0)
+      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -317,11 +315,23 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
       p3 = extract<float>(result[2]);
    }
 
+   tuple getPositionWrapper(const std::string& p0)
+   {
+      try
+      {
+         return call_method<tuple>(self, "getPosition", p0);
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+
+      return make_tuple();
+   }
+
    tuple default_getPositionWrapper(const std::string& p0)
    {
-      float p1, p2, p3;
-      snx::sonix::getPosition(p0, p1, p2, p3);
-      return make_tuple(p1, p2, p3);
+      return snx_sonix_Adapter::getPositionWrapper(p0);
    }
 
    void setListenerPosition(const gmtl::Matrix44f& p0)
@@ -442,6 +452,8 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       snx::sonix::step(p0);
    }
+
+   PyObject* self;
 };
 
 
