@@ -163,9 +163,9 @@ void _Export_MouseEvent()
       )
       .def("getY", &gadget::MouseEvent::getY,
            return_value_policy<copy_const_reference>(),
-          "getY() -> int\n"
-          "Returns the Y coordinate of the mouse pointer relative to the\n"
-          "window."
+           "getY() -> int\n"
+           "Returns the Y coordinate of the mouse pointer relative to the\n"
+           "window."
       )
       .def("getGlobalX", &gadget::MouseEvent::getGlobalX,
            return_value_policy<copy_const_reference>(),
