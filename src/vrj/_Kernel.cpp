@@ -136,8 +136,8 @@ void _Export_Kernel()
        no_init
       )
       .def("configProcessPending",
-           (int (jccl::ConfigElementHandler::*)()) &jccl::ConfigElementHandler::configProcessPending,
-           (int (pyj::vrj_Kernel_Wrapper::*)()) &pyj::vrj_Kernel_Wrapper::default_configProcessPending,
+           &jccl::ConfigElementHandler::configProcessPending,
+           &pyj::vrj_Kernel_Wrapper::default_configProcessPending,
            "configProcessPending() -> int\n"
            "Inherited from jccl.ConfigElementHandler and not overridden."
       )

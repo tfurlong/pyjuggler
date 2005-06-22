@@ -90,15 +90,13 @@ void _Export_Event()
        ,
        init<const gadget::Event&>()
       )
-      .def("writeObject",
-           (vpr::ReturnStatus (gadget::Event::*)(vpr::ObjectWriter*)) &gadget::Event::writeObject,
-           (vpr::ReturnStatus (pyj::gadget_Event_Wrapper::*)(vpr::ObjectWriter*)) &pyj::gadget_Event_Wrapper::default_writeObject,
+      .def("writeObject", &gadget::Event::writeObject,
+           &pyj::gadget_Event_Wrapper::default_writeObject,
            "writeObject(writer) -> vpr.ReturnStatus object\n"
            "Serializes this object."
       )
-      .def("readObject",
-           (vpr::ReturnStatus (gadget::Event::*)(vpr::ObjectReader*)) &gadget::Event::readObject,
-           (vpr::ReturnStatus (pyj::gadget_Event_Wrapper::*)(vpr::ObjectReader*)) &pyj::gadget_Event_Wrapper::default_readObject,
+      .def("readObject", &gadget::Event::readObject,
+           &pyj::gadget_Event_Wrapper::default_readObject,
            "readObject(reader) -> vpr.ReturnStatus object\n"
            "De-serializes this object."
       )

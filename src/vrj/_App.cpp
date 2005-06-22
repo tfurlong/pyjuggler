@@ -54,18 +54,18 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-        call_method<void>(self, "init");
+         call_method<void>(self, "init");
       }
       catch (error_already_set)
       {
-        PyErr_Print();
+         PyErr_Print();
       }
    }
 
    void default_init()
    {
-       vrj::App::init();
-  }
+      vrj::App::init();
+   }
 
    void apiInit()
    {
@@ -534,8 +534,7 @@ void _Export_App()
            "application wants to use.  For example, to render in feet,\n"
            "return 3.28 (gadget.PositionUnitConversion.ConvertToFeet)."
       )
-      .def("configCanHandle",
-           (bool (vrj::App::*)(jccl::ConfigElementPtr)) &vrj::App::configCanHandle,
+      .def("configCanHandle", &vrj::App::configCanHandle,
            &pyj::vrj_App_Wrapper::default_configCanHandle,
            "configCanHandle(element) -> Boolean\n"
            "Defaults to handling nothing.\n\n"
@@ -554,8 +553,8 @@ void _Export_App()
       )
 //      .def("getDrawManager", pure_virtual(&vrj::App::getDrawManager))
       .def("configProcessPending",
-           (int (jccl::ConfigElementHandler::*)()) &jccl::ConfigElementHandler::configProcessPending,
-           (int (pyj::vrj_App_Wrapper::*)()) &pyj::vrj_App_Wrapper::default_configProcessPending,
+           &jccl::ConfigElementHandler::configProcessPending,
+           &pyj::vrj_App_Wrapper::default_configProcessPending,
            "configProcessPending() -> int\n"
            "Inherited from jccl.ConfigElementHandler and not overridden."
       )

@@ -84,8 +84,8 @@ struct snx_SoundImplementation_Wrapper: snx_SoundImplementation_Adapter
       }
    }
 
-    void trigger(const std::string& p0, const int& p1)
-    {
+   void trigger(const std::string& p0, const int& p1)
+   {
       try
       {
          call_method<void>(self, "trigger", p0, p1);
@@ -646,14 +646,12 @@ void _Export_SoundImplementation()
           "Default constructor."
        )
       )
-      .def("clone",
-           pure_virtual((void (snx::SoundImplementation::*)(snx::ISoundImplementation*&)) &snx::SoundImplementation::clone),
+      .def("clone", pure_virtual(&snx::SoundImplementation::clone),
            "clone(newCopy)\n"
            "Every implementation can return a new copy of itself."
       )
-      .def("trigger",
-           (void (snx::SoundImplementation::*)(const std::string&, const int&)) &snx::SoundImplementation::trigger,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&, const int&)) &pyj::snx_SoundImplementation_Wrapper::default_trigger_2,
+      .def("trigger", &snx::SoundImplementation::trigger,
+           &pyj::snx_SoundImplementation_Wrapper::default_trigger_2,
            "trigger(alias, repeat)\n"
            "Triggers a sound.\n\n"
            "Pre-condition:\n"
@@ -668,20 +666,17 @@ void _Export_SoundImplementation()
            "trigger(alias)\n"
            "Triggers a sound once."
       )
-      .def("trigger",
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_trigger_1
+      .def("trigger", &pyj::snx_SoundImplementation_Wrapper::default_trigger_1
       )
-      .def("isPlaying",
-           (bool (snx::SoundImplementation::*)(const std::string&)) &snx::SoundImplementation::isPlaying,
-           (bool (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_isPlaying,
+      .def("isPlaying", &snx::SoundImplementation::isPlaying,
+           &pyj::snx_SoundImplementation_Wrapper::default_isPlaying,
            "isPlaying(alias) -> Boolean\n"
            "Is the named sound currently playing?\n\n"
            "Arguments:\n"
            "alias -- The alias of the sound to query."
       )
-      .def("setRetriggerable",
-           (void (snx::SoundImplementation::*)(const std::string&, bool)) &snx::SoundImplementation::setRetriggerable,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&, bool)) &pyj::snx_SoundImplementation_Wrapper::default_setRetriggerable,
+      .def("setRetriggerable", &snx::SoundImplementation::setRetriggerable,
+           &pyj::snx_SoundImplementation_Wrapper::default_setRetriggerable,
            "setRetriggerable(alias, onOff)\n"
            "Specifies whether the named sound retriggers from the beginning\n"
            "when triggered while playing.  In other words, when the named\n"
@@ -691,51 +686,45 @@ void _Export_SoundImplementation()
            "alias -- The alias of the sound to change.\n"
            "onOff -- A Boolean value enabling or disabling retriggering."
       )
-      .def("isRetriggerable",
-           (bool (snx::SoundImplementation::*)(const std::string&)) &snx::SoundImplementation::isRetriggerable,
-           (bool (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_isRetriggerable,
+      .def("isRetriggerable", &snx::SoundImplementation::isRetriggerable,
+           &pyj::snx_SoundImplementation_Wrapper::default_isRetriggerable,
            "isRetriggerable(alais) -> Boolean\n"
            "Is the named sound retriggerable?\n\n"
            "Arguments:\n"
            "alias -- The alias of the sound to query."
       )
-      .def("stop",
-           (void (snx::SoundImplementation::*)(const std::string&)) &snx::SoundImplementation::stop,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_stop,
+      .def("stop", &snx::SoundImplementation::stop,
+           &pyj::snx_SoundImplementation_Wrapper::default_stop,
            "stop(alias)\n"
            "Stops the named sound.\n\n"
            "Arguments:\n"
            "alias -- The alias of the sound to stop."
       )
-      .def("pause",
-           (void (snx::SoundImplementation::*)(const std::string&)) &snx::SoundImplementation::pause,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_pause,
+      .def("pause", &snx::SoundImplementation::pause,
+           &pyj::snx_SoundImplementation_Wrapper::default_pause,
            "pause(alias)\n"
            "Pauses the sound.  Use unpause() to return playback from where\n"
            "the sound was paused.\n\n"
            "Arguments:\n"
            "alias -- The alias of the sound to pause."
       )
-      .def("unpause",
-           (void (snx::SoundImplementation::*)(const std::string&)) &snx::SoundImplementation::unpause,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_unpause,
+      .def("unpause", &snx::SoundImplementation::unpause,
+           &pyj::snx_SoundImplementation_Wrapper::default_unpause,
            "unpause(alias)\n"
            "Resumes playback of the named sound from a paused state.  This\n"
            "does nothing if the sound was not paused.\n\n"
            "Arguments:\n"
            "alias -- The alias of the sound to unpause."
       )
-      .def("isPaused",
-           (bool (snx::SoundImplementation::*)(const std::string&)) &snx::SoundImplementation::isPaused,
-           (bool (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_isPaused,
+      .def("isPaused", &snx::SoundImplementation::isPaused,
+           &pyj::snx_SoundImplementation_Wrapper::default_isPaused,
            "isPaused(alias) -> Boolean\n"
            "If the sound is paused, then return True.\n\n"
            "Arguments:\n"
            "alias -- The alias of the sound to query."
       )
-      .def("setAmbient",
-           (void (snx::SoundImplementation::*)(const std::string&, bool)) &snx::SoundImplementation::setAmbient,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&, bool)) &pyj::snx_SoundImplementation_Wrapper::default_setAmbient_2,
+      .def("setAmbient", &snx::SoundImplementation::setAmbient,
+           &pyj::snx_SoundImplementation_Wrapper::default_setAmbient_2,
            "setAmbient(alias, ambient)\n"
            "Sets the named sound as either ambient or positional depending\n"
            "on the value of the given argument.  If the sound is ambient,\n"
@@ -752,19 +741,17 @@ void _Export_SoundImplementation()
            "alias -- The alias of the sound to change\n"
       )
       .def("setAmbient",
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_setAmbient_1
+           &pyj::snx_SoundImplementation_Wrapper::default_setAmbient_1
       )
-      .def("isAmbient",
-           (bool (snx::SoundImplementation::*)(const std::string&)) &snx::SoundImplementation::isAmbient,
-           (bool (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_isAmbient,
+      .def("isAmbient", &snx::SoundImplementation::isAmbient,
+           &pyj::snx_SoundImplementation_Wrapper::default_isAmbient,
            "isAmbient(alias) -> Boolean\n"
            "Is the named sound ambient?\n\n"
            "Arguments:\n"
            "alias -- The name of the sound to query."
       )
-      .def("setPitchBend",
-           (void (snx::SoundImplementation::*)(const std::string&, float)) &snx::SoundImplementation::setPitchBend,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&, float)) &pyj::snx_SoundImplementation_Wrapper::default_setPitchBend,
+      .def("setPitchBend", &snx::SoundImplementation::setPitchBend,
+           &pyj::snx_SoundImplementation_Wrapper::default_setPitchBend,
            "setPitchBend(alias, amount)\n"
            "Alters the frequency of the named sound.\n\n"
            "Arguments:\n"
@@ -774,9 +761,8 @@ void _Export_SoundImplementation()
            "          less than 1.0 is low; a value greather than 1.0 is\n"
            "          high."
       )
-      .def("setVolume",
-           (void (snx::SoundImplementation::*)(const std::string&, float)) &snx::SoundImplementation::setVolume,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&, float)) &pyj::snx_SoundImplementation_Wrapper::default_setVolume,
+      .def("setVolume", &snx::SoundImplementation::setVolume,
+           &pyj::snx_SoundImplementation_Wrapper::default_setVolume,
            "setVolume(alias, amount)\n"
            "Sets the effect volume of the named sound.  The value must be\n"
            "in the range [0,1].\n\n"
@@ -785,9 +771,8 @@ void _Export_SoundImplementation()
            "amount -- A floating-point value that determines the volume.\n"
            "          It must be between 0.0 and 1.0 inclusive."
       )
-      .def("setCutoff",
-           (void (snx::SoundImplementation::*)(const std::string&, float)) &snx::SoundImplementation::setCutoff,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&, float)) &pyj::snx_SoundImplementation_Wrapper::default_setCutoff,
+      .def("setCutoff", &snx::SoundImplementation::setCutoff,
+           &pyj::snx_SoundImplementation_Wrapper::default_setCutoff,
            "setCutoff(alias, amount)\n"
            "Sets the effect cutoff of the named sound.  Set to a value in\n"
            "the range [0,1].\n\n"
@@ -797,9 +782,8 @@ void _Export_SoundImplementation()
            "          The value must be between 0.0 and 1.0 inclusive.\n"
            "          1.0 means no change; 0.0 is total cutoff."
       )
-      .def("setPosition",
-           (void (snx::SoundImplementation::*)(const std::string&, float, float, float)) &snx::SoundImplementation::setPosition,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&, float, float, float)) &pyj::snx_SoundImplementation_Wrapper::default_setPosition,
+      .def("setPosition", &snx::SoundImplementation::setPosition,
+           &pyj::snx_SoundImplementation_Wrapper::default_setPosition,
            "setPosition(alias, x, y, z)\n"
            "Sets the named sound's three-dimensional position.\n\n"
            "Arguments:\n"
@@ -810,7 +794,7 @@ void _Export_SoundImplementation()
       )
       .def("getPosition",
            &pyj::snx_SoundImplementation_Adapter::getPositionWrapper,
-           (tuple (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_getPositionWrapper,
+           &pyj::snx_SoundImplementation_Wrapper::default_getPositionWrapper,
            "getPosition(alias) -> tuple\n"
            "Gets the named sound's 3D position.\n\n"
            "Arguments:\n"
@@ -820,8 +804,8 @@ void _Export_SoundImplementation()
            "position of the named sound."
       )
       .def("setListenerPosition",
-           (void (snx::SoundImplementation::*)(const gmtl::Matrix44f&)) &snx::SoundImplementation::setListenerPosition,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const gmtl::Matrix44f&)) &pyj::snx_SoundImplementation_Wrapper::default_setListenerPosition,
+           &snx::SoundImplementation::setListenerPosition,
+           &pyj::snx_SoundImplementation_Wrapper::default_setListenerPosition,
            "setListenerPosition(matrix)\n"
            "Sets the position of the listener.\n\n"
            "Arguments:\n"
@@ -829,16 +813,15 @@ void _Export_SoundImplementation()
            "          of the listener."
       )
       .def("getListenerPosition",
-           (void (snx::SoundImplementation::*)(gmtl::Matrix44f&)) &snx::SoundImplementation::getListenerPosition,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(gmtl::Matrix44f&)) &pyj::snx_SoundImplementation_Wrapper::default_getListenerPosition,
+           &snx::SoundImplementation::getListenerPosition,
+           &pyj::snx_SoundImplementation_Wrapper::default_getListenerPosition,
            "getListenerPosition(matrix)\n"
            "Gets the listeners's 3D position.\n\n"
            "Arguments:\n"
            "matrix -- A gmtl.Matrix44f object used to store the position\n"
            "          of the listener."
       )
-      .def("startAPI",
-           pure_virtual((int (snx::SoundImplementation::*)()) &snx::SoundImplementation::startAPI),
+      .def("startAPI", pure_virtual(&snx::SoundImplementation::startAPI),
            "startAPI() -> integer\n"
            "Starts the sound API, creating any contexts or other\n"
            "configurations at startup.  This function should be callled\n"
@@ -848,16 +831,14 @@ void _Export_SoundImplementation()
            "Returns:\n"
            "1 if success, 0 otherwise."
       )
-      .def("isStarted",
-           pure_virtual((bool (snx::SoundImplementation::*)() const) &snx::SoundImplementation::isStarted),
+      .def("isStarted", pure_virtual(&snx::SoundImplementation::isStarted),
            "isStarted() -> Boolean\n"
            "Queries whether the API has been started.\n\n"
            "Returns:\n"
            "True if the API has been started, False otherwise."
       )
-      .def("shutdownAPI",
-           (void (snx::SoundImplementation::*)()) &snx::SoundImplementation::shutdownAPI,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)()) &pyj::snx_SoundImplementation_Wrapper::default_shutdownAPI,
+      .def("shutdownAPI", &snx::SoundImplementation::shutdownAPI,
+           &pyj::snx_SoundImplementation_Wrapper::default_shutdownAPI,
            "shutdownAPI()\n"
            "Kills the sound API, deallocating any sounds, etc.  This\n"
            "function could be called any time.  The function could be\n"
@@ -895,9 +876,8 @@ void _Export_SoundImplementation()
            "description -- A snx.SoundInfo object that describes the sound\n"
            "               for which this object will be a handle."
       )
-      .def("remove",
-           (void (snx::SoundImplementation::*)(const std::string&)) &snx::SoundImplementation::remove,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_remove,
+      .def("remove", &snx::SoundImplementation::remove,
+           &pyj::snx_SoundImplementation_Wrapper::default_remove,
            "remove(alias)\n"
            "Removes a configured sound.  Any future reference to the alias\n"
            "will not cause an error, but it will not result in a rendered\n"
@@ -905,9 +885,8 @@ void _Export_SoundImplementation()
            "Arguments:\n"
            "alias -- The alias of the sound to remove."
       )
-      .def("step",
-           (void (snx::SoundImplementation::*)(const float&)) &snx::SoundImplementation::step,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const float&)) &pyj::snx_SoundImplementation_Wrapper::default_step,
+      .def("step", &snx::SoundImplementation::step,
+           &pyj::snx_SoundImplementation_Wrapper::default_step,
            "step(timeElapsed)\n"
            "Call once per sound frame (which does not have to be the same\n"
            "as the graphics frame).\n\n"
@@ -915,32 +894,28 @@ void _Export_SoundImplementation()
            "timeElapsed -- A floating-point value giving the time elapsed\n"
            "               since the last sound frame."
       )
-      .def("clear",
-           (void (snx::SoundImplementation::*)()) &snx::SoundImplementation::clear,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)()) &pyj::snx_SoundImplementation_Wrapper::default_clear,
+      .def("clear", &snx::SoundImplementation::clear,
+           &pyj::snx_SoundImplementation_Wrapper::default_clear,
            "clear()\n"
            "Clears all associations.\n\n"
            "Post-conditions:\n"
            "Any existing aliases will be stubbed.  Sounds will be unbound."
       )
-      .def("bindAll",
-           (void (snx::SoundImplementation::*)()) &snx::SoundImplementation::bindAll,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)()) &pyj::snx_SoundImplementation_Wrapper::default_bindAll,
+      .def("bindAll", &snx::SoundImplementation::bindAll,
+           &pyj::snx_SoundImplementation_Wrapper::default_bindAll,
            "bindAll()\n"
            "Bind: load (or reload) all associated sounds.\n\n"
            "Post-condition:\n"
            "All sound associations are buffered by the sound API."
       )
-      .def("unbindAll",
-           (void (snx::SoundImplementation::*)() )&snx::SoundImplementation::unbindAll,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)())&pyj::snx_SoundImplementation_Wrapper::default_unbindAll,
+      .def("unbindAll", &snx::SoundImplementation::unbindAll,
+           &pyj::snx_SoundImplementation_Wrapper::default_unbindAll,
            "unbindAll()\n"
            "Unbind: unload/deallocate all associated sounds.\n\n"
            "Post-conditions:\n"
            "All sound associations are unbuffered by the sound API."
       )
-      .def("bind",
-           pure_virtual((void (snx::SoundImplementation::*)(const std::string&)) &snx::SoundImplementation::bind),
+      .def("bind", pure_virtual(&snx::SoundImplementation::bind),
            "bind(alias)\n"
            "Loads/allocates the sound data this alias refers to in the\n"
            "sound API.\n\n"
@@ -949,8 +924,7 @@ void _Export_SoundImplementation()
            "Arguments:\n"
            "alias -- The alias of the sound data to be bound."
       )
-      .def("unbind",
-           pure_virtual((void (snx::SoundImplementation::*)(const std::string&)) &snx::SoundImplementation::unbind),
+      .def("unbind", pure_virtual(&snx::SoundImplementation::unbind),
            "unbind(alias)\n"
            "Unloads/deallocates the sound data this alias refers to in the\n"
            "sound API.\n\n"
@@ -959,18 +933,15 @@ void _Export_SoundImplementation()
            "Arguments:\n"
            "alias -- The alias of the sound data to be unbound."
       )
-      .def("lookup",
-           (snx::SoundInfo& (snx::SoundImplementation::*)(const std::string&)) &snx::SoundImplementation::lookup,
-           (snx::SoundInfo& (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_lookup,
+      .def("lookup", &snx::SoundImplementation::lookup,
+           &pyj::snx_SoundImplementation_Wrapper::default_lookup,
            return_internal_reference<1>()
       )
-      .def("setName",
-           (void (snx::SoundImplementation::*)(const std::string&)) &snx::SoundImplementation::setName,
-           (void (pyj::snx_SoundImplementation_Wrapper::*)(const std::string&)) &pyj::snx_SoundImplementation_Wrapper::default_setName
+      .def("setName", &snx::SoundImplementation::setName,
+           &pyj::snx_SoundImplementation_Wrapper::default_setName
       )
-      .def("name",
-           (std::string& (snx::SoundImplementation::*)()) &snx::SoundImplementation::name,
-           (std::string& (pyj::snx_SoundImplementation_Wrapper::*)()) &pyj::snx_SoundImplementation_Wrapper::default_name,
+      .def("name", &snx::SoundImplementation::name,
+           &pyj::snx_SoundImplementation_Wrapper::default_name,
            return_internal_reference<1>()
       )
       .def("copy", &snx::SoundImplementation::copy,

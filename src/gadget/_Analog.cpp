@@ -135,15 +135,13 @@ void _Export_Analog()
        ,
        init<>()
       )
-      .def("writeObject",
-           (vpr::ReturnStatus (gadget::Analog::*)(vpr::ObjectWriter*)) &gadget::Analog::writeObject,
-           (vpr::ReturnStatus (pyj::gadget_Analog_Wrapper::*)(vpr::ObjectWriter*)) &pyj::gadget_Analog_Wrapper::default_writeObject,
+      .def("writeObject", &gadget::Analog::writeObject,
+           &pyj::gadget_Analog_Wrapper::default_writeObject,
            "writeObject(writer) -> vpr.ReturnStatus object\n"
            "Serializes this object."
       )
-      .def("readObject",
-           (vpr::ReturnStatus (gadget::Analog::*)(vpr::ObjectReader*)) &gadget::Analog::readObject,
-           (vpr::ReturnStatus (pyj::gadget_Analog_Wrapper::*)(vpr::ObjectReader*))&pyj::gadget_Analog_Wrapper::default_readObject,
+      .def("readObject", &gadget::Analog::readObject,
+           &pyj::gadget_Analog_Wrapper::default_readObject,
            "readObject(reader) -> vpr.ReturnStatus object\n"
            "De-serializes this object."
       )

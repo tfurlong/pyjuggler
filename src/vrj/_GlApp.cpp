@@ -288,8 +288,8 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
                                "vrj_GlApp_Wrapper::latePreFrame() done.\n");
       PyJuggler::InterpreterGuard guard;
 
-     try
-     {
+      try
+      {
          call_method<void>(self, "latePreFrame");
       }
       catch (error_already_set)
@@ -382,7 +382,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
       }
       catch (error_already_set)
       {
-          PyErr_Print();
+         PyErr_Print();
       }
    }
 
@@ -731,9 +731,8 @@ void _Export_GlApp()
            "application wants to use.  For example, to render in feet,\n"
            "return 3.28 (gadget.PositionUnitConversion.ConvertToFeet)."
       )
-      .def("configCanHandle",
-           (bool (vrj::App::*)(jccl::ConfigElementPtr)) &vrj::App::configCanHandle,
-           (bool (pyj::vrj_GlApp_Wrapper::*)(jccl::ConfigElementPtr)) &pyj::vrj_GlApp_Wrapper::default_configCanHandle,
+      .def("configCanHandle", &vrj::App::configCanHandle,
+           &pyj::vrj_GlApp_Wrapper::default_configCanHandle,
            "configCanHandle(element) -> Boolean\n"
            "Defaults to handling nothing.\n\n"
            "Arguments:\n"

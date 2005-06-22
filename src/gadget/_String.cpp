@@ -147,15 +147,13 @@ void _Export_String()
       .def("getInputTypeName", &gadget::String::getInputTypeName,
            &pyj::gadget_String_Wrapper::default_getInputTypeName
       )
-      .def("writeObject",
-          (vpr::ReturnStatus (gadget::String::*)(vpr::ObjectWriter*)) &gadget::String::writeObject,
-          (vpr::ReturnStatus (pyj::gadget_String_Wrapper::*)(vpr::ObjectWriter*)) &pyj::gadget_String_Wrapper::default_writeObject,
-          "writeObject(writer) -> vpr.ReturnStatus object\n"
-          "Serializes this object."
+      .def("writeObject", &gadget::String::writeObject,
+           &pyj::gadget_String_Wrapper::default_writeObject,
+           "writeObject(writer) -> vpr.ReturnStatus object\n"
+           "Serializes this object."
       )
-      .def("readObject",
-           (vpr::ReturnStatus (gadget::String::*)(vpr::ObjectReader*)) &gadget::String::readObject,
-           (vpr::ReturnStatus (pyj::gadget_String_Wrapper::*)(vpr::ObjectReader*)) &pyj::gadget_String_Wrapper::default_readObject,
+      .def("readObject", &gadget::String::readObject,
+           &pyj::gadget_String_Wrapper::default_readObject,
            "readObject(reader) -> vpr.ReturnStatus object\n"
            "De-serializes this object."
       )

@@ -129,17 +129,15 @@ void _Export_InputManager()
        ,
        no_init
       )
-      .def("configAdd",
-           (bool (gadget::InputManager::*)(jccl::ConfigElementPtr)) &gadget::InputManager::configAdd,
-           (bool (pyj::gadget_InputManager_Wrapper::*)(jccl::ConfigElementPtr)) &pyj::gadget_InputManager_Wrapper::default_configAdd,
+      .def("configAdd", &gadget::InputManager::configAdd,
+           &pyj::gadget_InputManager_Wrapper::default_configAdd,
            "configAdd(element) -> Boolean\n"
            "Adds the element to the configuration.\n"
            "Pre-condition:\n"
            "configCanHandle(element) == True\n"
       )
-      .def("configRemove",
-           (bool (gadget::InputManager::*)(jccl::ConfigElementPtr)) &gadget::InputManager::configRemove,
-           (bool (pyj::gadget_InputManager_Wrapper::*)(jccl::ConfigElementPtr)) &pyj::gadget_InputManager_Wrapper::default_configRemove,
+      .def("configRemove", &gadget::InputManager::configRemove,
+           &pyj::gadget_InputManager_Wrapper::default_configRemove,
            "configRemove(element) -> Boolean\n"
            "Removes the element from the current configuration.\n"
            "Pre-condition:\n"
@@ -151,9 +149,8 @@ void _Export_InputManager()
            "   (element is proxy_alias) ==> (proxy_alias is removed &&\n"
            "                                devInterfaces.refreshAll())"
       )
-      .def("configCanHandle",
-           (bool (gadget::InputManager::*)(jccl::ConfigElementPtr)) &gadget::InputManager::configCanHandle,
-           (bool (pyj::gadget_InputManager_Wrapper::*)(jccl::ConfigElementPtr)) &pyj::gadget_InputManager_Wrapper::default_configCanHandle,
+      .def("configCanHandle", &gadget::InputManager::configCanHandle,
+           &pyj::gadget_InputManager_Wrapper::default_configCanHandle,
            "configCanHandle(element) -> Boolean\n"
            "Can we handle the given element?\n"
            "Returns:\n"
@@ -161,8 +158,8 @@ void _Export_InputManager()
            "is returned otherwise."
       )
       .def("configProcessPending",
-           (int (jccl::ConfigElementHandler::*)()) &jccl::ConfigElementHandler::configProcessPending,
-           (int (pyj::gadget_InputManager_Wrapper::*)()) &pyj::gadget_InputManager_Wrapper::default_configProcessPending,
+           &jccl::ConfigElementHandler::configProcessPending,
+           &pyj::gadget_InputManager_Wrapper::default_configProcessPending,
            "configProcessPending(element) -> Boolean\n"
            "Checks if this handler can process the given config element.\n"
            "Typically, an implementation of this method will check the\n"

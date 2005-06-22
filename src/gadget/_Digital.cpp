@@ -148,15 +148,13 @@ void _Export_Digital()
       .def("getInputTypeName", &gadget::Digital::getInputTypeName,
            &pyj::gadget_Digital_Wrapper::default_getInputTypeName
       )
-      .def("writeObject",
-           (vpr::ReturnStatus (gadget::Digital::*)(vpr::ObjectWriter*)) &gadget::Digital::writeObject,
-           (vpr::ReturnStatus (pyj::gadget_Digital_Wrapper::*)(vpr::ObjectWriter*)) &pyj::gadget_Digital_Wrapper::default_writeObject,
+      .def("writeObject", &gadget::Digital::writeObject,
+           &pyj::gadget_Digital_Wrapper::default_writeObject,
            "writeObject(writer) -> vpr.ReturnStatus object\n"
            "Serializes this object."
       )
-      .def("readObject",
-           (vpr::ReturnStatus (gadget::Digital::*)(vpr::ObjectReader*)) &gadget::Digital::readObject,
-           (vpr::ReturnStatus (pyj::gadget_Digital_Wrapper::*)(vpr::ObjectReader*)) &pyj::gadget_Digital_Wrapper::default_readObject,
+      .def("readObject", &gadget::Digital::readObject,
+           &pyj::gadget_Digital_Wrapper::default_readObject,
            "readObject(reader) -> vpr.ReturnStatus object\n"
            "De-serializes this object."
       )

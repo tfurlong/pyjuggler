@@ -148,15 +148,13 @@ void _Export_Position()
       .def("getInputTypeName", &gadget::Position::getInputTypeName,
            &pyj::gadget_Position_Wrapper::default_getInputTypeName
       )
-      .def("writeObject",
-           (vpr::ReturnStatus (gadget::Position::*)(vpr::ObjectWriter*)) &gadget::Position::writeObject,
-           (vpr::ReturnStatus (pyj::gadget_Position_Wrapper::*)(vpr::ObjectWriter*)) &pyj::gadget_Position_Wrapper::default_writeObject,
+      .def("writeObject", &gadget::Position::writeObject,
+           &pyj::gadget_Position_Wrapper::default_writeObject,
            "writeObject(writer) -> vpr.ReturnStatus object\n"
            "Serializes this object."
       )
-      .def("readObject",
-           (vpr::ReturnStatus (gadget::Position::*)(vpr::ObjectReader*)) &gadget::Position::readObject,
-           (vpr::ReturnStatus (pyj::gadget_Position_Wrapper::*)(vpr::ObjectReader*)) &pyj::gadget_Position_Wrapper::default_readObject,
+      .def("readObject", &gadget::Position::readObject,
+           &pyj::gadget_Position_Wrapper::default_readObject,
            "readObject(reader) -> vpr.ReturnStatus object\n"
            "De-serializes this object."
       )

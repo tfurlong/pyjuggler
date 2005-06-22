@@ -139,15 +139,13 @@ void _Export_MouseEvent()
       .def(init<const gadget::EventType&, const gadget::Keys&, const int&,
                 const int&, const int&, const int&, const int&,
                 const long unsigned int&>())
-      .def("writeObject",
-           (vpr::ReturnStatus (gadget::MouseEvent::*)(vpr::ObjectWriter*)) &gadget::MouseEvent::writeObject,
-           (vpr::ReturnStatus (pyj::gadget_MouseEvent_Wrapper::*)(vpr::ObjectWriter*)) &pyj::gadget_MouseEvent_Wrapper::default_writeObject,
+      .def("writeObject", &gadget::MouseEvent::writeObject,
+           &pyj::gadget_MouseEvent_Wrapper::default_writeObject,
            "writeObject(writer) -> vpr.ReturnStatus object\n"
            "Serializes this event using the given vpr.ObjectWriter."
       )
-      .def("readObject",
-           (vpr::ReturnStatus (gadget::MouseEvent::*)(vpr::ObjectReader*)) &gadget::MouseEvent::readObject,
-           (vpr::ReturnStatus (pyj::gadget_MouseEvent_Wrapper::*)(vpr::ObjectReader*)) &pyj::gadget_MouseEvent_Wrapper::default_readObject,
+      .def("readObject", &gadget::MouseEvent::readObject,
+           &pyj::gadget_MouseEvent_Wrapper::default_readObject,
            "readObject(reader) -> vpr.ReturnStatus object\n"
            "De-serializes this event using the given vpr.ObjectReader."
       )
