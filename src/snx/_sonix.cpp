@@ -34,12 +34,12 @@ struct snx_sonix_Adapter : snx::sonix
       /* Do nothing. */ ;
    }
 
-  virtual tuple getPositionWrapper(const std::string& alias)
-  {
-     float p0, p1, p2;
-     getPosition(alias, p0, p1, p2);
-     return make_tuple(p0, p1, p2);
-  }
+   virtual tuple getPositionWrapper(const std::string& alias)
+   {
+      float p0, p1, p2;
+      getPosition(alias, p0, p1, p2);
+      return make_tuple(p0, p1, p2);
+   }
 
    PyObject* self;
 };
@@ -228,7 +228,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
       }
       catch (error_already_set)
       {
-          PyErr_Print();
+         PyErr_Print();
       }
 
       return false;
@@ -430,7 +430,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method< void >(self, "step", p0);
+         call_method<void>(self, "step", p0);
       }
       catch (error_already_set)
       {
@@ -681,7 +681,7 @@ void _Export_sonix()
            "               since the last sound frame."
       )
       .def("instance", &snx::sonix::instance,
-           return_value_policy< reference_existing_object >(),
+           return_value_policy<reference_existing_object>(),
            "instance() -> snx.sonix object\n"
            "Retruns the singleton snx.sonix object."
       )

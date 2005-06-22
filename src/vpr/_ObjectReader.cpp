@@ -306,7 +306,8 @@ void _Export_ObjectReader()
        "<tag1>\n"
        "  <tag2 attrib1=\"XXX\">\n"
        "  </tag2>\n"
-       "</tag1>",
+       "</tag1>"
+       ,
        no_init
       )
       .def("beginTag", pure_virtual(&vpr::ObjectReader::beginTag),
@@ -351,13 +352,13 @@ void _Export_ObjectReader()
       .def("readUint64",
            pure_virtual((vpr::Uint64 (vpr::ObjectReader::*)()) &vpr::ObjectReader::readUint64))
       .def("readFloat",
-           pure_virtual((float (vpr::ObjectReader::*)() )&vpr::ObjectReader::readFloat))
+           pure_virtual((float (vpr::ObjectReader::*)()) &vpr::ObjectReader::readFloat))
       .def("readDouble",
-           pure_virtual((double (vpr::ObjectReader::*)() )&vpr::ObjectReader::readDouble))
+           pure_virtual((double (vpr::ObjectReader::*)()) &vpr::ObjectReader::readDouble))
       .def("readString",
-           pure_virtual((std::string (vpr::ObjectReader::*)() )&vpr::ObjectReader::readString))
+           pure_virtual((std::string (vpr::ObjectReader::*)()) &vpr::ObjectReader::readString))
       .def("readBool",
-           pure_virtual((bool (vpr::ObjectReader::*)() )&vpr::ObjectReader::readBool))
+           pure_virtual((bool (vpr::ObjectReader::*)()) &vpr::ObjectReader::readBool))
       .def("isBinary", &vpr::ObjectReader::isBinary,
            "Returns true if the reader is using a binary-based format.\n"
            "This can be used to choose whether to use human-readable forms\n"

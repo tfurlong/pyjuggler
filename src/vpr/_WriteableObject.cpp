@@ -41,7 +41,7 @@ struct vpr_WriteableObject_Wrapper : vpr::WriteableObject
       {
          return call_method<vpr::ReturnStatus>(self, "writeObject", p0);
       }
-      catch(error_already_set)
+      catch (error_already_set)
       {
          PyErr_Print();
       }

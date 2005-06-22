@@ -41,7 +41,7 @@ struct vpr_ReadableObject_Wrapper : vpr::ReadableObject
       {
          return call_method<vpr::ReturnStatus>(self, "readObject", p0);
       }
-      catch(error_already_set)
+      catch (error_already_set)
       {
          PyErr_Print();
       }

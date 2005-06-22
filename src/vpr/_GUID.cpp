@@ -115,7 +115,8 @@ void _Export_GUID()
       .def_readwrite("generateTag", &vpr::GUID::generateTag)
       .def_readonly("NullGUID", &vpr::GUID::NullGUID)
       .def("toString", &vpr::GUID::toString,
-          "Converts this GUID to its corresponding string representation.")
+           "Converts this GUID to its corresponding string representation."
+      )
       .def("generate", (void (vpr::GUID::*)()) &vpr::GUID::generate)
       .def("generate",
            (void (vpr::GUID::*)(const vpr::GUID &, const std::string&)) &vpr::GUID::generate
@@ -134,12 +135,11 @@ void _Export_GUID()
       .def(init<const vpr::GUID::GenerateTag&>())
    ;
 
-   class_<vpr::GUID::hash>(
-       "hash",
+   class_<vpr::GUID::hash>("hash",
        "Hasher for vpr.GUID.  This can be used with std::hash_map and\n"
        "friends."
        ,
-       init<  >()
+       init<>()
       )
       .def(init<const vpr::GUID::hash&>())
       .def("__call__", &vpr::GUID::hash::operator())
