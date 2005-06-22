@@ -44,46 +44,46 @@ void _Export_PositionUnitConversion();
 // Module ======================================================================
 BOOST_PYTHON_MODULE(gadget)
 {
-    boost::python::scope().attr("__doc__") =
-       "PyJuggler.gadget is an extension module written in Boost.Python that\n"
-       "exposes some C++ classes from the 'gadget' namespace of the\n"
-       "Gadgeteer library.  The exposed classes are those that tend to be of\n"
-       "the most value for writing VR Juggler application objects.  Some\n"
-       "accomodations are made for writing device drivers in Python, but\n"
-       "that capability is not the focus of this extension module.\n\n"
-       "Refer to the Gadgeteer and VR Juggler 2.0 C++ documentation for\n"
-       "general usage details:\n"
-       "   http://www.vrjuggler.org/gadgeteer/docs.php\n"
-       "   http://www.vrjuggler.org/vrjuggler/docs.php"
-    ;
-    _Export_InputManager();
-    _Export_AnalogData();
-    _Export_DigitalData();
-    _Export_PositionData();
-    _Export_StringData();
-    _Export_Analog();
-    _Export_Digital();
-    _Export_Position();
-    _Export_KeyboardMouse();
-    _Export_Command();
-    _Export_String();
-    _Export_AnalogProxy();
-    _Export_DigitalProxy();
-    _Export_PositionProxy();
-    _Export_KeyboardMouseProxy();
-    _Export_CommandProxy();
-    _Export_StringProxy();
-    _Export_BaseDeviceInterface();
-    _Export_AnalogInterface();
-    _Export_DigitalInterface();
-    _Export_PositionInterface();
-    _Export_KeyboardMouseInterface();
-    _Export_CommandInterface();
-    _Export_StringInterface();
-    _Export_gadget_Type_KeyboardMouse_Keys_h();
-    _Export_gadget_Type_KeyboardMouse_Event_h();
-    _Export_Event();
-    _Export_KeyEvent();
-    _Export_MouseEvent();
-    _Export_PositionUnitConversion();
+   boost::python::scope().attr("__doc__") =
+      "PyJuggler.gadget is an extension module written in Boost.Python that\n"
+      "exposes some C++ classes from the 'gadget' namespace of the\n"
+      "Gadgeteer library.  The exposed classes are those that tend to be of\n"
+      "the most value for writing VR Juggler application objects.  Some\n"
+      "accomodations are made for writing device drivers in Python, but\n"
+      "that capability is not the focus of this extension module.\n\n"
+      "Refer to the Gadgeteer and VR Juggler 2.0 C++ documentation for\n"
+      "general usage details:\n"
+      "   http://www.vrjuggler.org/gadgeteer/docs.php\n"
+      "   http://www.vrjuggler.org/vrjuggler/docs.php"
+   ;
+   _Export_InputManager();
+   _Export_AnalogData();
+   _Export_DigitalData();
+   _Export_PositionData();
+   _Export_StringData();
+   _Export_Analog();
+   _Export_Digital();
+   _Export_Position();
+   _Export_KeyboardMouse();
+   _Export_Command();
+   _Export_String();
+   _Export_AnalogProxy();
+   _Export_DigitalProxy();
+   _Export_PositionProxy();
+   _Export_KeyboardMouseProxy();
+   _Export_CommandProxy();
+   _Export_StringProxy();
+   _Export_BaseDeviceInterface();
+   _Export_AnalogInterface();
+   _Export_DigitalInterface();
+   _Export_PositionInterface();
+   _Export_KeyboardMouseInterface();
+   _Export_CommandInterface();
+   _Export_StringInterface();
+   _Export_gadget_Type_KeyboardMouse_Keys_h();
+   _Export_gadget_Type_KeyboardMouse_Event_h();
+   _Export_Event();
+   _Export_KeyEvent();
+   _Export_MouseEvent();
+   _Export_PositionUnitConversion();
 }

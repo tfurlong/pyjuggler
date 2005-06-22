@@ -20,7 +20,9 @@ using namespace boost::python;
 // Module ======================================================================
 void _Export_SerializableObject()
 {
-    class_< vpr::SerializableObject, bases< vpr::WriteableObject, vpr::ReadableObject > , boost::noncopyable >("SerializableObject", no_init)
-    ;
-
+   class_<vpr::SerializableObject,
+          bases<vpr::WriteableObject, vpr::ReadableObject>,
+          boost::noncopyable>
+      ("SerializableObject", no_init)
+   ;
 }

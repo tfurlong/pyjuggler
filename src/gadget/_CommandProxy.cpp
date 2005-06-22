@@ -17,154 +17,179 @@
 using namespace boost::python;
 
 // Declarations ================================================================
-namespace pyj {
-
-struct gadget_CommandProxy_Wrapper: gadget::CommandProxy
+namespace pyj
 {
-    gadget_CommandProxy_Wrapper(PyObject* self_, const gadget::CommandProxy& p0):
-        gadget::CommandProxy(p0), self(self_) {}
 
-    gadget_CommandProxy_Wrapper(PyObject* self_):
-        gadget::CommandProxy(), self(self_) {}
+struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
+{
+   gadget_CommandProxy_Wrapper(PyObject* self_, const gadget::CommandProxy& p0)
+      : gadget::CommandProxy(p0)
+      , self(self_)
+   {
+      /* Do nothing. */ ;
+   }
 
-    virtual ~gadget_CommandProxy_Wrapper()
-    {
-        /* Do nothing. */ ;
-    }
+   gadget_CommandProxy_Wrapper(PyObject* self_)
+      : gadget::CommandProxy()
+      , self(self_)
+   {
+      /* Do nothing. */ ;
+   }
 
-    void updateData() {
-        try
-        {
-            call_method< void >(self, "updateData");
-        }
-        catch(error_already_set)
-        {
-            PyErr_Print();
-        }
-    }
+   virtual ~gadget_CommandProxy_Wrapper()
+   {
+      /* Do nothing. */ ;
+   }
 
-    void default_updateData() {
-        gadget::CommandProxy::updateData();
-    }
+   void updateData()
+   {
+      try
+      {
+         call_method<void>(self, "updateData");
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+   }
 
-    vpr::Interval getTimeStamp() const {
-        try
-        {
-           return call_method< vpr::Interval >(self, "getTimeStamp");
-        }
-        catch(error_already_set)
-        {
-            PyErr_Print();
-        }
+   void default_updateData()
+   {
+      gadget::CommandProxy::updateData();
+   }
 
-        return vpr::Interval();
-    }
+   vpr::Interval getTimeStamp() const
+   {
+      try
+      {
+        return call_method<vpr::Interval>(self, "getTimeStamp");
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
 
-    vpr::Interval default_getTimeStamp() const {
-        return gadget::CommandProxy::getTimeStamp();
-    }
+      return vpr::Interval();
+   }
 
-    bool config(jccl::ConfigElementPtr p0) {
-        try
-        {
-            return call_method< bool >(self, "config", p0);
-        }
-        catch(error_already_set)
-        {
-            PyErr_Print();
-        }
+   vpr::Interval default_getTimeStamp() const
+   {
+      return gadget::CommandProxy::getTimeStamp();
+   }
 
-        return false;
-    }
+   bool config(jccl::ConfigElementPtr p0)
+   {
+      try
+      {
+         return call_method<bool>(self, "config", p0);
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
 
-    bool default_config(jccl::ConfigElementPtr p0) {
-        return gadget::CommandProxy::config(p0);
-    }
+      return false;
+   }
 
-    void set(std::string p0, gadget::Command* p1) {
-        try
-        {
-            call_method< void >(self, "set", p0, p1);
-        }
-        catch(error_already_set)
-        {
-            PyErr_Print();
-        }
-    }
+   bool default_config(jccl::ConfigElementPtr p0)
+   {
+      return gadget::CommandProxy::config(p0);
+   }
 
-    void default_set(std::string p0, gadget::Command* p1) {
-        gadget::CommandProxy::set(p0, p1);
-    }
+   void set(std::string p0, gadget::Command* p1)
+   {
+      try
+      {
+         call_method<void>(self, "set", p0, p1);
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+   }
 
-    bool refresh() {
-        try
-        {
-            return call_method< bool >(self, "refresh");
-        }
-        catch(error_already_set)
-        {
-            PyErr_Print();
-        }
+   void default_set(std::string p0, gadget::Command* p1)
+   {
+      gadget::CommandProxy::set(p0, p1);
+   }
 
-        return false;
-    }
+   bool refresh()
+   {
+      try
+      {
+         return call_method<bool>(self, "refresh");
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
 
-    bool default_refresh() {
-        return gadget::CommandProxy::refresh();
-    }
+      return false;
+   }
 
-    std::string getDeviceName() const {
-        try
-        {
-            return call_method< std::string >(self, "getDeviceName");
-        }
-        catch(error_already_set)
-        {
-            PyErr_Print();
-        }
+   bool default_refresh()
+   {
+      return gadget::CommandProxy::refresh();
+   }
 
-        return std::string("UNKNOWN");
-    }
+   std::string getDeviceName() const
+   {
+      try
+      {
+         return call_method<std::string>(self, "getDeviceName");
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
 
-    std::string default_getDeviceName() const {
-        return gadget::CommandProxy::getDeviceName();
-    }
+      return std::string("UNKNOWN");
+   }
 
-    bool isStupefied() const {
-        try
-        {
-            return call_method< bool >(self, "isStupefied");
-        }
-        catch(error_already_set)
-        {
-            PyErr_Print();
-        }
+   std::string default_getDeviceName() const
+   {
+      return gadget::CommandProxy::getDeviceName();
+   }
 
-        return false;
-    }
+   bool isStupefied() const
+   {
+      try
+      {
+         return call_method<bool>(self, "isStupefied");
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
 
-    bool default_isStupefied() const {
-        return gadget::CommandProxy::isStupefied();
-    }
+      return false;
+   }
 
-    bool isStupified() const {
-        try
-        {
-            return call_method< bool >(self, "isStupified");
-        }
-        catch(error_already_set)
-        {
-            PyErr_Print();
-        }
+   bool default_isStupefied() const
+   {
+      return gadget::CommandProxy::isStupefied();
+   }
 
-        return false;
-    }
+   bool isStupified() const
+   {
+      try
+      {
+         return call_method<bool>(self, "isStupified");
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
 
-    bool default_isStupified() const {
-        return gadget::CommandProxy::isStupified();
-    }
+      return false;
+   }
 
-    PyObject* self;
+   bool default_isStupified() const
+   {
+      return gadget::CommandProxy::isStupified();
+   }
+
+   PyObject* self;
 };
 
 }// namespace 
@@ -173,132 +198,130 @@ struct gadget_CommandProxy_Wrapper: gadget::CommandProxy
 // Module ======================================================================
 void _Export_CommandProxy()
 {
-    class_< gadget::CommandProxy, pyj::gadget_CommandProxy_Wrapper >("CommandProxy",
-         "A proxy class to command-oriented devices used by the Input\n"
-         "Manager.\n\n"
-         "A command proxy always points to a command-oriented device and a\n"
-         "unit number within that device.  The Input Manager can therefore\n"
-         "keep an array of these around and treat them as command-oriented\n"
-         "devices that only return a single sub-device's amount of data (one\n"
-         "int)."
-         ,
-         init<  >()
-        )
-        .def(init< const gadget::CommandProxy& >())
-        .def("updateData",
-             (void (gadget::CommandProxy::*)() )&gadget::CommandProxy::updateData,
-             (void (pyj::gadget_CommandProxy_Wrapper::*)())&pyj::gadget_CommandProxy_Wrapper::default_updateData,
-             "updateData()\n"
-             "Updates the cached data copy from the device."
-         )
-        .def("getTimeStamp",
-             (vpr::Interval (gadget::CommandProxy::*)() const)&gadget::CommandProxy::getTimeStamp,
-             (vpr::Interval (pyj::gadget_CommandProxy_Wrapper::*)() const)&pyj::gadget_CommandProxy_Wrapper::default_getTimeStamp,
-             "getTimeStamp() -> vpr.Interval object\n"
-             "Returns the time of the last update."
-         )
-        .def("config",
-             (bool (gadget::CommandProxy::*)(jccl::ConfigElementPtr) )&gadget::CommandProxy::config,
-             (bool (pyj::gadget_CommandProxy_Wrapper::*)(jccl::ConfigElementPtr))&pyj::gadget_CommandProxy_Wrapper::default_config,
-             "config(element) -> Boolean\n"
-             "Configures this proxy using the given jccl.ConfigElement\n"
-             "instance."
-         )
-        .def("set",
-             (void (gadget::TypedProxy<gadget::Command>::*)(std::string,gadget::Command*) )&gadget::TypedProxy<gadget::Command>::set,
-             (void (pyj::gadget_CommandProxy_Wrapper::*)(std::string, gadget::Command*))&pyj::gadget_CommandProxy_Wrapper::default_set,
-             "set(devName, devPtr)\n"
-             "Sets the proxy to point to the given type-specific device.\n"
-             "Pre-condition:\n"
-             "devPtr must be a valid device of type gadget.Command\n"
-             "Post-condition:\n"
-             "The proxy now references the given device.  The device name we\n"
-             "are proxying is set to devPtr.getInstanceName().\n"
-             "Arguments:\n"
-             "devName -- The name of the device at which we are pointing.\n"
-             "devPtr  -- Pointer to the device.  For gadget.Command,\n"
-             "           this points to an instance of gadget.Command."
-         )
-        .def("refresh",
-             (bool (gadget::TypedProxy<gadget::Command>::*)() )&gadget::TypedProxy<gadget::Command>::refresh,
-             (bool (pyj::gadget_CommandProxy_Wrapper::*)())&pyj::gadget_CommandProxy_Wrapper::default_refresh,
-             "refresh() -> Boolean\n"
-             "Refreshes the proxy.  This attempts to lookup the device that\n"
-             "we are proxying.  If the lookup fails, then we become\n"
-             "stupefied.  If not, then the proxy is pointed at this\n"
-             "potentially new device."
-         )
-        .def("getDeviceName",
-             (std::string (gadget::TypedProxy<gadget::Command>::*)() const)&gadget::TypedProxy<gadget::Command>::getDeviceName,
-             (std::string (pyj::gadget_CommandProxy_Wrapper::*)() const)&pyj::gadget_CommandProxy_Wrapper::default_getDeviceName,
-             "getDeviceName() -> string object\n"
-             "Gets the name of the device that we are proxying."
-         )
-        .def("isStupefied",
-             (bool (gadget::Proxy::*)() const)&gadget::Proxy::isStupefied,
-             (bool (pyj::gadget_CommandProxy_Wrapper::*)() const)&pyj::gadget_CommandProxy_Wrapper::default_isStupefied,
-             "isStupefied() -> Boolean\n"
-             "Is the proxy currently stupefied?\n"
-             "If the device we are proxying does not exist, then this will\n"
-             "return True."
-         )
-        .def("isStupified",
-             (bool (gadget::Proxy::*)() const)&gadget::Proxy::isStupified,
-             (bool (pyj::gadget_CommandProxy_Wrapper::*)() const)&pyj::gadget_CommandProxy_Wrapper::default_isStupified,
-             "isStupified() -> Boolean\n"
-             "Is the proxy currently stupefied?\n"
-             "If the device we are proxying does not exist, then this will\n"
-             "return True.\n\n"
-             "NOTE: The name of this method is spelled incorrectly, and it\n"
-             "      will be removed in PyJuggler 1.2.  Use isStupefied()\n"
-             "      instead."
-         )
-        .def("getData", &gadget::CommandProxy::getData,
-             "getData() -> float\n"
-             "Gets the current command data value."
-         )
-        .def("getCommandData", &gadget::CommandProxy::getCommandData,
-             return_internal_reference< 1 >()
-         )
-        .def("getCommandPtr",
-             &gadget::CommandProxy::getCommandPtr,
-             return_internal_reference< 1 >(),
-             "getCommandPtr() -> gadget.Command object\n"
-         )
-        .def("getUnit", &gadget::CommandProxy::getUnit,
-             "getUnit() -> int\n"
-             "Returns the unit index into the command device from which this\n"
-             "proxy is reading data."
-         )
-        .def("getElementType",
-             &gadget::CommandProxy::getElementType,
-             "getElementType() -> string object"
-         )
-        .def("getName", &gadget::Proxy::getName,
-             "getName() -> string object\n"
-             "Gets the name of the proxy."
-         )
-        .def("setName", &gadget::Proxy::setName,
-             "setName(name)\n"
-             "Sets the name of the proxy.\n"
-             "Arguments:\n"
-             "name -- The name for this proxy as a string object."
-         )
-        .def("stupefy", &gadget::Proxy::stupefy,
-             "stupefy(newState = True)\n"
-             "Sets the stupefication state of this proxy.\n"
-             "Keyword arguments:\n"
-             "newState -- The new state of stupefication."
-         )
-        .def("stupify", &gadget::Proxy::stupefy,
-             "stupify(newState = True)\n"
-             "Sets the stupefication state of this proxy.\n"
-             "Keyword arguments:\n"
-             "newState -- The new state of stupefication.\n\n"
-             "NOTE: The name of this method is spelled incorrectly, and it\n"
-             "      will be removed in PyJuggler 1.2.  Use stupefy() instead."
-         )
-        .staticmethod("getElementType")
-    ;
-
+   class_<gadget::CommandProxy, pyj::gadget_CommandProxy_Wrapper>(
+       "CommandProxy",
+       "A proxy class to command-oriented devices used by the Input\n"
+       "Manager.\n\n"
+       "A command proxy always points to a command-oriented device and a\n"
+       "unit number within that device.  The Input Manager can therefore\n"
+       "keep an array of these around and treat them as command-oriented\n"
+       "devices that only return a single sub-device's amount of data (one\n"
+       "int)."
+       ,
+       init<>()
+      )
+      .def(init<const gadget::CommandProxy&>())
+      .def("updateData",
+           (void (gadget::CommandProxy::*)()) &gadget::CommandProxy::updateData,
+           (void (pyj::gadget_CommandProxy_Wrapper::*)()) &pyj::gadget_CommandProxy_Wrapper::default_updateData,
+           "updateData()\n"
+           "Updates the cached data copy from the device."
+      )
+      .def("getTimeStamp",
+           (vpr::Interval (gadget::CommandProxy::*)() const) &gadget::CommandProxy::getTimeStamp,
+           (vpr::Interval (pyj::gadget_CommandProxy_Wrapper::*)() const) &pyj::gadget_CommandProxy_Wrapper::default_getTimeStamp,
+           "getTimeStamp() -> vpr.Interval object\n"
+           "Returns the time of the last update."
+      )
+      .def("config",
+           (bool (gadget::CommandProxy::*)(jccl::ConfigElementPtr)) &gadget::CommandProxy::config,
+           (bool (pyj::gadget_CommandProxy_Wrapper::*)(jccl::ConfigElementPtr)) &pyj::gadget_CommandProxy_Wrapper::default_config,
+           "config(element) -> Boolean\n"
+           "Configures this proxy using the given jccl.ConfigElement\n"
+           "instance."
+      )
+      .def("set",
+           (void (gadget::TypedProxy<gadget::Command>::*)(std::string,gadget::Command*)) &gadget::TypedProxy<gadget::Command>::set,
+           (void (pyj::gadget_CommandProxy_Wrapper::*)(std::string, gadget::Command*)) &pyj::gadget_CommandProxy_Wrapper::default_set,
+           "set(devName, devPtr)\n"
+           "Sets the proxy to point to the given type-specific device.\n"
+           "Pre-condition:\n"
+           "devPtr must be a valid device of type gadget.Command\n"
+           "Post-condition:\n"
+           "The proxy now references the given device.  The device name we\n"
+           "are proxying is set to devPtr.getInstanceName().\n"
+           "Arguments:\n"
+           "devName -- The name of the device at which we are pointing.\n"
+           "devPtr  -- Pointer to the device.  For gadget.Command,\n"
+           "           this points to an instance of gadget.Command."
+      )
+      .def("refresh",
+           (bool (gadget::TypedProxy<gadget::Command>::*)()) &gadget::TypedProxy<gadget::Command>::refresh,
+           (bool (pyj::gadget_CommandProxy_Wrapper::*)()) &pyj::gadget_CommandProxy_Wrapper::default_refresh,
+           "refresh() -> Boolean\n"
+           "Refreshes the proxy.  This attempts to lookup the device that\n"
+           "we are proxying.  If the lookup fails, then we become\n"
+           "stupefied.  If not, then the proxy is pointed at this\n"
+           "potentially new device."
+      )
+      .def("getDeviceName",
+          (std::string (gadget::TypedProxy<gadget::Command>::*)() const) &gadget::TypedProxy<gadget::Command>::getDeviceName,
+          (std::string (pyj::gadget_CommandProxy_Wrapper::*)() const) &pyj::gadget_CommandProxy_Wrapper::default_getDeviceName,
+          "getDeviceName() -> string object\n"
+          "Gets the name of the device that we are proxying."
+      )
+      .def("isStupefied",
+           (bool (gadget::Proxy::*)() const) &gadget::Proxy::isStupefied,
+           (bool (pyj::gadget_CommandProxy_Wrapper::*)() const) &pyj::gadget_CommandProxy_Wrapper::default_isStupefied,
+           "isStupefied() -> Boolean\n"
+           "Is the proxy currently stupefied?\n"
+           "If the device we are proxying does not exist, then this will\n"
+           "return True."
+      )
+      .def("isStupified",
+           (bool (gadget::Proxy::*)() const)&gadget::Proxy::isStupified,
+           (bool (pyj::gadget_CommandProxy_Wrapper::*)() const)&pyj::gadget_CommandProxy_Wrapper::default_isStupified,
+           "isStupified() -> Boolean\n"
+           "Is the proxy currently stupefied?\n"
+           "If the device we are proxying does not exist, then this will\n"
+           "return True.\n\n"
+           "NOTE: The name of this method is spelled incorrectly, and it\n"
+           "      will be removed in PyJuggler 1.2.  Use isStupefied()\n"
+           "      instead."
+      )
+      .def("getData", &gadget::CommandProxy::getData,
+           "getData() -> float\n"
+           "Gets the current command data value."
+      )
+      .def("getCommandData", &gadget::CommandProxy::getCommandData,
+           return_internal_reference<1>()
+      )
+      .def("getCommandPtr", &gadget::CommandProxy::getCommandPtr,
+           return_internal_reference<1>(),
+           "getCommandPtr() -> gadget.Command object\n"
+      )
+      .def("getUnit", &gadget::CommandProxy::getUnit,
+           "getUnit() -> int\n"
+           "Returns the unit index into the command device from which this\n"
+           "proxy is reading data."
+      )
+      .def("getElementType", &gadget::CommandProxy::getElementType,
+           "getElementType() -> string object"
+      )
+      .def("getName", &gadget::Proxy::getName,
+           "getName() -> string object\n"
+           "Gets the name of the proxy."
+      )
+      .def("setName", &gadget::Proxy::setName,
+           "setName(name)\n"
+           "Sets the name of the proxy.\n"
+           "Arguments:\n"
+           "name -- The name for this proxy as a string object."
+      )
+      .def("stupefy", &gadget::Proxy::stupefy,
+           "stupefy(newState = True)\n"
+           "Sets the stupefication state of this proxy.\n"
+           "Keyword arguments:\n"
+           "newState -- The new state of stupefication."
+      )
+      .def("stupify", &gadget::Proxy::stupefy,
+           "stupify(newState = True)\n"
+           "Sets the stupefication state of this proxy.\n"
+           "Keyword arguments:\n"
+           "newState -- The new state of stupefication.\n\n"
+           "NOTE: The name of this method is spelled incorrectly, and it\n"
+           "      will be removed in PyJuggler 1.2.  Use stupefy() instead."
+      )
+      .staticmethod("getElementType")
+   ;
 }

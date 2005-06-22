@@ -19,17 +19,18 @@ using namespace boost::python;
 // Module ======================================================================
 void _Export_AnalogData()
 {
-    class_< gadget::AnalogData >("AnalogData",
-         "gadget.InputData subclass for analog data.",
-         init<  >()
-        )
-        .def(init< const gadget::AnalogData& >())
-        .def(init< float >())
-        .def("getAnalog", &gadget::AnalogData::getAnalog)
-        .def("setAnalog", &gadget::AnalogData::setAnalog)
-        .def("setTime", (void (gadget::InputData::*)() )&gadget::InputData::setTime)
-        .def("setTime", (void (gadget::InputData::*)(const vpr::Interval&) )&gadget::InputData::setTime)
-        .def("getTime", &gadget::InputData::getTime)
-    ;
-
+   class_<gadget::AnalogData>("AnalogData",
+       "gadget.InputData subclass for analog data.",
+       init<>()
+      )
+      .def(init<const gadget::AnalogData&>())
+      .def(init<float>())
+      .def("getAnalog", &gadget::AnalogData::getAnalog)
+      .def("setAnalog", &gadget::AnalogData::setAnalog)
+      .def("setTime",
+           (void (gadget::InputData::*)()) &gadget::InputData::setTime)
+      .def("setTime",
+           (void (gadget::InputData::*)(const vpr::Interval&)) &gadget::InputData::setTime)
+      .def("getTime", &gadget::InputData::getTime)
+   ;
 }

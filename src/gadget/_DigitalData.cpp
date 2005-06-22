@@ -19,17 +19,18 @@ using namespace boost::python;
 // Module ======================================================================
 void _Export_DigitalData()
 {
-    class_< gadget::DigitalData >("DigitalData",
-         "gadget.InputData subclass for digital data.",
-         init<  >()
-        )
-        .def(init< const gadget::DigitalData& >())
-        .def(init< const int >())
-        .def("getDigital", &gadget::DigitalData::getDigital)
-        .def("setDigital", &gadget::DigitalData::setDigital)
-        .def("setTime", (void (gadget::InputData::*)() )&gadget::InputData::setTime)
-        .def("setTime", (void (gadget::InputData::*)(const vpr::Interval&) )&gadget::InputData::setTime)
-        .def("getTime", &gadget::InputData::getTime)
-    ;
-
+   class_<gadget::DigitalData>("DigitalData",
+      "gadget.InputData subclass for digital data.",
+      init<>()
+     )
+     .def(init<const gadget::DigitalData&>())
+     .def(init<const int>())
+     .def("getDigital", &gadget::DigitalData::getDigital)
+     .def("setDigital", &gadget::DigitalData::setDigital)
+     .def("setTime",
+          (void (gadget::InputData::*)()) &gadget::InputData::setTime)
+     .def("setTime",
+          (void (gadget::InputData::*)(const vpr::Interval&)) &gadget::InputData::setTime)
+     .def("getTime", &gadget::InputData::getTime)
+   ;
 }
