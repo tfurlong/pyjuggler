@@ -1,12 +1,15 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Jun-22-2005 patrickh    Fixed signature mismatch problems with the Python
+                        bindings for the method gadget::TypedProxy<T>::set().
+                        NEW VERSION: 0.92.2
 Jun-17-2005 patrickh    Exposed isStupefied() and stupefy() in the classes
                         gadget.AnalogProxy, gadget.CommandProxy,
                         gadget.DigitalProxy, gadget.KeyboardMouseProxy,
                         gadget.PositionProxy, and gadget.StringProxy.
                         Merged exception handling improvements and other bug
                         fixes from HEAD.
-                        NEW VERSIO: 0.92.1
+                        NEW VERSION: 0.92.1
 
 [1.0 Beta 2 released - 6.7.2005]===============================================
 Jun-07-2005 patrickh    NEW VERSION: 0.92.0

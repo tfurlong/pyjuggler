@@ -96,7 +96,7 @@ struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
       return gadget::CommandProxy::config(p0);
    }
 
-   void set(std::string p0, gadget::Command* p1)
+   void set(const std::string& p0, gadget::Command* p1)
    {
       try
       {
@@ -108,7 +108,7 @@ struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
       }
    }
 
-   void default_set(std::string p0, gadget::Command* p1)
+   void default_set(const std::string& p0, gadget::Command* p1)
    {
       gadget::CommandProxy::set(p0, p1);
    }
@@ -231,8 +231,8 @@ void _Export_CommandProxy()
            "instance."
       )
       .def("set",
-           (void (gadget::TypedProxy<gadget::Command>::*)(std::string,gadget::Command*)) &gadget::TypedProxy<gadget::Command>::set,
-           (void (pyj::gadget_CommandProxy_Wrapper::*)(std::string, gadget::Command*)) &pyj::gadget_CommandProxy_Wrapper::default_set,
+           (void (gadget::TypedProxy<gadget::Command>::*)(const std::string&, gadget::Command*)) &gadget::TypedProxy<gadget::Command>::set,
+           (void (pyj::gadget_CommandProxy_Wrapper::*)(const std::string&, gadget::Command*)) &pyj::gadget_CommandProxy_Wrapper::default_set,
            "set(devName, devPtr)\n"
            "Sets the proxy to point to the given type-specific device.\n"
            "Pre-condition:\n"

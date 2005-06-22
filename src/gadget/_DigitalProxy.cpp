@@ -96,7 +96,7 @@ struct gadget_DigitalProxy_Wrapper : gadget::DigitalProxy
       return gadget::DigitalProxy::config(p0);
    }
 
-   void set(std::string p0, gadget::Digital* p1)
+   void set(const std::string& p0, gadget::Digital* p1)
    {
       try
       {
@@ -108,7 +108,7 @@ struct gadget_DigitalProxy_Wrapper : gadget::DigitalProxy
       }
    }
 
-   void default_set(std::string p0, gadget::Digital* p1)
+   void default_set(const std::string& p0, gadget::Digital* p1)
    {
       gadget::DigitalProxy::set(p0, p1);
    }
@@ -229,8 +229,8 @@ void _Export_DigitalProxy()
            "instance."
       )
       .def("set",
-           (void (gadget::TypedProxy<gadget::Digital>::*)(std::string,gadget::Digital*)) &gadget::TypedProxy<gadget::Digital>::set,
-           (void (pyj::gadget_DigitalProxy_Wrapper::*)(std::string, gadget::Digital*)) &pyj::gadget_DigitalProxy_Wrapper::default_set,
+           (void (gadget::TypedProxy<gadget::Digital>::*)(const std::string&, gadget::Digital*)) &gadget::TypedProxy<gadget::Digital>::set,
+           (void (pyj::gadget_DigitalProxy_Wrapper::*)(const std::string&, gadget::Digital*)) &pyj::gadget_DigitalProxy_Wrapper::default_set,
            "set(devName, devPtr)\n"
            "Sets the proxy to point to the given type-specific device.\n"
            "Pre-condition:\n"
