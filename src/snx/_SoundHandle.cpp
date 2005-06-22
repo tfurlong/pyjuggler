@@ -400,9 +400,9 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
       try
       {
          call_method<void>(self, "configure", p0);
-       }
-       catch (error_already_set)
-       {
+      }
+      catch (error_already_set)
+      {
          PyErr_Print();
       }
    }
@@ -447,7 +447,7 @@ void _Export_SoundHandle()
        "You may have to call snx.sonix.instance().changeAPI() to switch to\n"
        "the sound API you want to use (such as OpenAL or AudioWorks)."
        ,
-       init<  >(
+       init<>(
           "__init__()\n"
           "Default constructor.  Call init() after constructing to name\n"
           "this handle.\n\n"
