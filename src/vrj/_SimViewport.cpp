@@ -79,9 +79,8 @@ void _Export_SimViewport()
    class_<vrj::SimViewport, bases<vrj::Viewport>, pyj::vrj_SimViewport_Wrapper>
       ("SimViewport", init<>())
       .def(init<const vrj::SimViewport&>())
-      .def("updateProjections",
-           (void (vrj::SimViewport::*)(const float)) &vrj::SimViewport::updateProjections,
-           (void (pyj::vrj_SimViewport_Wrapper::*)(const float)) &pyj::vrj_SimViewport_Wrapper::default_updateProjections,
+      .def("updateProjections", &vrj::SimViewport::updateProjections,
+           &pyj::vrj_SimViewport_Wrapper::default_updateProjections,
            "updateProjections(positionScale)\n"
            "Updates the projections.\n\n"
            "Arguments:\n"

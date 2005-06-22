@@ -76,9 +76,8 @@ void _Export_CameraProjection()
       )
       .def(init<const vrj::CameraProjection&>())
       .def_readwrite("mVertFOV", &vrj::CameraProjection::mVertFOV)
-      .def("calcViewMatrix",
-           (void (vrj::CameraProjection::*)(gmtl::Matrix44f&, const float)) &vrj::CameraProjection::calcViewMatrix,
-           (void (pyj::vrj_CameraProjection_Wrapper::*)(gmtl::Matrix44f&, const float)) &pyj::vrj_CameraProjection_Wrapper::default_calcViewMatrix,
+      .def("calcViewMatrix", &vrj::CameraProjection::calcViewMatrix,
+           &pyj::vrj_CameraProjection_Wrapper::default_calcViewMatrix,
            "calcViewMatrix(cameraPos, scaleFactor)\n"
            "Calculates the view matrix and frustum for the camera.\n"
            "Calculates a perspective transform for the given settings.\n"

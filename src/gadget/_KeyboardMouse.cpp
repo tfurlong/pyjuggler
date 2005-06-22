@@ -148,16 +148,14 @@ void _Export_KeyboardMouse()
       .def(init<const gadget::KeyboardMouse&>())
       .def("getInputTypeName", &gadget::KeyboardMouse::getInputTypeName,
            &pyj::gadget_KeyboardMouse_Wrapper::default_getInputTypeName)
-      .def("writeObject",
-           (vpr::ReturnStatus (gadget::KeyboardMouse::*)(vpr::ObjectWriter*)) &gadget::KeyboardMouse::writeObject,
-           (vpr::ReturnStatus (pyj::gadget_KeyboardMouse_Wrapper::*)(vpr::ObjectWriter*)) &pyj::gadget_KeyboardMouse_Wrapper::default_writeObject,
+      .def("writeObject", &gadget::KeyboardMouse::writeObject,
+           &pyj::gadget_KeyboardMouse_Wrapper::default_writeObject,
            "writeObject(writer) -> vpr.ReturnStatus object\n"
            "Writes both mCurKeys and mCurEventQueueLock to a stream using\n"
            "the given object writer."
       )
-      .def("readObject",
-           (vpr::ReturnStatus (gadget::KeyboardMouse::*)(vpr::ObjectReader*)) &gadget::KeyboardMouse::readObject,
-           (vpr::ReturnStatus (pyj::gadget_KeyboardMouse_Wrapper::*)(vpr::ObjectReader*)) &pyj::gadget_KeyboardMouse_Wrapper::default_readObject,
+      .def("readObject", &gadget::KeyboardMouse::readObject,
+           &pyj::gadget_KeyboardMouse_Wrapper::default_readObject,
            "readObject(reader) -> vpr.ReturnStatus object\n"
            "Reads mCurKeys and mCurEventQueueLock from a stream using the\n"
            "given object reader."

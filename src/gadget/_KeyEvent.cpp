@@ -139,15 +139,13 @@ void _Export_KeyEvent()
       .def(init<const gadget::KeyEvent&>())
       .def(init<const gadget::EventType&, const gadget::Keys&, const int&,
                 const long unsigned int&, optional<char> >())
-      .def("writeObject",
-           (vpr::ReturnStatus (gadget::KeyEvent::*)(vpr::ObjectWriter*)) &gadget::KeyEvent::writeObject,
-           (vpr::ReturnStatus (pyj::gadget_KeyEvent_Wrapper::*)(vpr::ObjectWriter*)) &pyj::gadget_KeyEvent_Wrapper::default_writeObject,
+      .def("writeObject", &gadget::KeyEvent::writeObject,
+           &pyj::gadget_KeyEvent_Wrapper::default_writeObject,
            "writeObject(writer) -> vpr.ReturnStatus object\n"
            "Serializes this event using the given vpr.ObjectWriter."
       )
-      .def("readObject",
-           (vpr::ReturnStatus (gadget::KeyEvent::*)(vpr::ObjectReader*)) &gadget::KeyEvent::readObject,
-           (vpr::ReturnStatus (pyj::gadget_KeyEvent_Wrapper::*)(vpr::ObjectReader*)) &pyj::gadget_KeyEvent_Wrapper::default_readObject,
+      .def("readObject", &gadget::KeyEvent::readObject,
+           &pyj::gadget_KeyEvent_Wrapper::default_readObject,
            "De-serializes this event using the given vpr.ObjectReader."
       )
       .def("getKey", &gadget::KeyEvent::getKey,

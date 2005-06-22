@@ -148,14 +148,13 @@ void _Export_Command()
       .def("getInputTypeName", &gadget::Command::getInputTypeName,
            &pyj::gadget_Command_Wrapper::default_getInputTypeName
       )
-      .def("writeObject",
-           (vpr::ReturnStatus (gadget::Command::*)(vpr::ObjectWriter*)) &gadget::Command::writeObject,
-           (vpr::ReturnStatus (pyj::gadget_Command_Wrapper::*)(vpr::ObjectWriter*)) &pyj::gadget_Command_Wrapper::default_writeObject,
+      .def("writeObject", &gadget::Command::writeObject,
+           &pyj::gadget_Command_Wrapper::default_writeObject,
            "writeObject(writer) -> vpr.ReturnStatus object\n"
            "Serializes this object."
       )
-      .def("readObject",
-           (vpr::ReturnStatus (gadget::Command::*)(vpr::ObjectReader*) )&gadget::Command::readObject, (vpr::ReturnStatus (pyj::gadget_Command_Wrapper::*)(vpr::ObjectReader*)) &pyj::gadget_Command_Wrapper::default_readObject,
+      .def("readObject", &gadget::Command::readObject,
+           &pyj::gadget_Command_Wrapper::default_readObject,
            "readObject(reader) -> vpr.ReturnStatus object\n"
            "De-serializes this object."
       )
@@ -178,8 +177,7 @@ void _Export_Command()
            "sampleList -- The list of newly collected samples as a\n"
            "              gadget.DigitalDataVec object."
       )
-      .def("swapCommandBuffers",
-           &gadget::Command::swapCommandBuffers,
+      .def("swapCommandBuffers", &gadget::Command::swapCommandBuffers,
            "swapCommandBuffers()\n"
            "Swaps the command data buffers.\n"
            "Post-condition:\n"
@@ -187,8 +185,7 @@ void _Export_Command()
            "from the ready queue to the stable queue.  If not, the stable\n"
            "queue is not changed."
       )
-      .def("getCommandDataBuffer",
-           &gadget::Command::getCommandDataBuffer,
+      .def("getCommandDataBuffer", &gadget::Command::getCommandDataBuffer,
            return_value_policy<copy_const_reference>(),
            "getCommandDataBuffer() -> list of lists of CommandData objects\n"
            "Returns the current stable sample buffers for this device."

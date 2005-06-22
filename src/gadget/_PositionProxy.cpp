@@ -210,29 +210,25 @@ void _Export_PositionProxy()
        init<>()
       )
       .def(init<const gadget::PositionProxy&>())
-      .def("updateData",
-           (void (gadget::PositionProxy::*)()) &gadget::PositionProxy::updateData,
-           (void (pyj::gadget_PositionProxy_Wrapper::*)()) &pyj::gadget_PositionProxy_Wrapper::default_updateData,
+      .def("updateData", &gadget::PositionProxy::updateData,
+           &pyj::gadget_PositionProxy_Wrapper::default_updateData,
            "updateData()\n"
            "Updates the cached data copy from the device.  Copies the\n"
            "device data to local storage and transforms it if necessary."
       )
-      .def("getTimeStamp",
-           (vpr::Interval (gadget::PositionProxy::*)() const) &gadget::PositionProxy::getTimeStamp,
-           (vpr::Interval (pyj::gadget_PositionProxy_Wrapper::*)() const) &pyj::gadget_PositionProxy_Wrapper::default_getTimeStamp,
+      .def("getTimeStamp", &gadget::PositionProxy::getTimeStamp,
+           &pyj::gadget_PositionProxy_Wrapper::default_getTimeStamp,
            "getTimeStamp() -> vpr.Interval object\n"
            "Returns the time of the last update."
       )
-      .def("config",
-           (bool (gadget::PositionProxy::*)(jccl::ConfigElementPtr)) &gadget::PositionProxy::config,
-           (bool (pyj::gadget_PositionProxy_Wrapper::*)(jccl::ConfigElementPtr)) &pyj::gadget_PositionProxy_Wrapper::default_config,
+      .def("config", &gadget::PositionProxy::config,
+           &pyj::gadget_PositionProxy_Wrapper::default_config,
            "config(element) -> Boolean\n"
            "Configures this proxy using the given jccl.ConfigElement\n"
            "instance."
       )
-      .def("set",
-           (void (gadget::TypedProxy<gadget::Position>::*)(const std::string&, gadget::Position*)) &gadget::TypedProxy<gadget::Position>::set,
-           (void (pyj::gadget_PositionProxy_Wrapper::*)(const std::string&, gadget::Position*)) &pyj::gadget_PositionProxy_Wrapper::default_set,
+      .def("set", &gadget::PositionProxy::set,
+           &pyj::gadget_PositionProxy_Wrapper::default_set,
            "set(devName, devPtr)\n"
            "Sets the proxy to point to the given type-specific device.\n"
            "Pre-condition:\n"
@@ -245,32 +241,28 @@ void _Export_PositionProxy()
            "devPtr  -- Pointer to the device.  For gadget.Digital,\n"
            "           this points to an instance of gadget.Digital."
       )
-      .def("refresh",
-           (bool (gadget::TypedProxy<gadget::Position>::*)()) &gadget::TypedProxy<gadget::Position>::refresh,
-           (bool (pyj::gadget_PositionProxy_Wrapper::*)()) &pyj::gadget_PositionProxy_Wrapper::default_refresh,
+      .def("refresh", &gadget::PositionProxy::refresh,
+           &pyj::gadget_PositionProxy_Wrapper::default_refresh,
            "refresh() -> Boolean\n"
            "Refreshes the proxy.  This attempts to lookup the device that\n"
            "we are proxying.  If the lookup fails, then we become\n"
            "stupefied.  If not, then the proxy is pointed at this\n"
            "potentially new device."
       )
-      .def("getDeviceName",
-           (std::string (gadget::TypedProxy<gadget::Position>::*)() const) &gadget::TypedProxy<gadget::Position>::getDeviceName,
-           (std::string (pyj::gadget_PositionProxy_Wrapper::*)() const) &pyj::gadget_PositionProxy_Wrapper::default_getDeviceName,
+      .def("getDeviceName", &gadget::PositionProxy::getDeviceName,
+           &pyj::gadget_PositionProxy_Wrapper::default_getDeviceName,
            "getDeviceName() -> string object\n"
            "Gets the name of the device that we are proxying."
       )
-      .def("isStupefied",
-           (bool (gadget::Proxy::*)() const) &gadget::Proxy::isStupefied,
-           (bool (pyj::gadget_PositionProxy_Wrapper::*)() const) &pyj::gadget_PositionProxy_Wrapper::default_isStupefied,
+      .def("isStupefied", &gadget::Proxy::isStupefied,
+           &pyj::gadget_PositionProxy_Wrapper::default_isStupefied,
            "isStupefied() -> Boolean\n"
            "Is the proxy currently stupefied?\n"
            "If the device we are proxying does not exist, then this will\n"
            "return True."
       )
-      .def("isStupified",
-           (bool (gadget::Proxy::*)() const)&gadget::Proxy::isStupified,
-           (bool (pyj::gadget_PositionProxy_Wrapper::*)() const)&pyj::gadget_PositionProxy_Wrapper::default_isStupified,
+      .def("isStupified", &gadget::Proxy::isStupified,
+           &pyj::gadget_PositionProxy_Wrapper::default_isStupified,
            "isStupified() -> Boolean\n"
            "Is the proxy currently stupefied?\n"
            "If the device we are proxying does not exist, then this will\n"

@@ -211,22 +211,19 @@ void _Export_KeyboardMouseProxy()
        init<>()
       )
       .def(init<const gadget::KeyboardMouseProxy&>())
-      .def("getTimeStamp",
-           (vpr::Interval (gadget::KeyboardMouseProxy::*)() const) &gadget::KeyboardMouseProxy::getTimeStamp,
-           (vpr::Interval (pyj::gadget_KeyboardMouseProxy_Wrapper::*)() const) &pyj::gadget_KeyboardMouseProxy_Wrapper::default_getTimeStamp,
+      .def("getTimeStamp", &gadget::KeyboardMouseProxy::getTimeStamp,
+           &pyj::gadget_KeyboardMouseProxy_Wrapper::default_getTimeStamp,
            "getTimeStamp() -> vpr.Interval object\n"
            "Returns the time of the last update."
       )
-      .def("config",
-           (bool (gadget::KeyboardMouseProxy::*)(jccl::ConfigElementPtr)) &gadget::KeyboardMouseProxy::config,
-           (bool (pyj::gadget_KeyboardMouseProxy_Wrapper::*)(jccl::ConfigElementPtr)) &pyj::gadget_KeyboardMouseProxy_Wrapper::default_config,
+      .def("config", &gadget::KeyboardMouseProxy::config,
+           &pyj::gadget_KeyboardMouseProxy_Wrapper::default_config,
            "config(element) -> Boolean\n"
            "Configures this proxy using the given jccl.ConfigElement\n"
            "instance."
       )
-      .def("set",
-           (void (gadget::TypedProxy<gadget::KeyboardMouse>::*)(const std::string&, gadget::KeyboardMouse*))  &gadget::TypedProxy<gadget::KeyboardMouse>::set,
-           (void (pyj::gadget_KeyboardMouseProxy_Wrapper::*)(const std::string&, gadget::KeyboardMouse*)) &pyj::gadget_KeyboardMouseProxy_Wrapper::default_set,
+      .def("set", &gadget::KeyboardMouseProxy::set,
+           &pyj::gadget_KeyboardMouseProxy_Wrapper::default_set,
            "set(devName, devPtr)\n"
            "Sets the proxy to point to the given type-specific device.\n"
            "Pre-condition:\n"
@@ -239,39 +236,34 @@ void _Export_KeyboardMouseProxy()
            "devPtr  -- Pointer to the device.  For gadget.Digital,\n"
            "           this points to an instance of gadget.Digital."
       )
-      .def("refresh",
-           (bool (gadget::TypedProxy<gadget::KeyboardMouse>::*)()) &gadget::TypedProxy<gadget::KeyboardMouse>::refresh,
-           (bool (pyj::gadget_KeyboardMouseProxy_Wrapper::*)()) &pyj::gadget_KeyboardMouseProxy_Wrapper::default_refresh,
+      .def("refresh", &gadget::KeyboardMouseProxy::refresh,
+           &pyj::gadget_KeyboardMouseProxy_Wrapper::default_refresh,
            "refresh() -> Boolean\n"
            "Refreshes the proxy.  This attempts to lookup the device that\n"
            "we are proxying.  If the lookup fails, then we become\n"
            "stupefied.  If not, then the proxy is pointed at this\n"
            "potentially new device."
       )
-      .def("getDeviceName",
-           (std::string (gadget::TypedProxy<gadget::KeyboardMouse>::*)() const) &gadget::TypedProxy<gadget::KeyboardMouse>::getDeviceName,
-           (std::string (pyj::gadget_KeyboardMouseProxy_Wrapper::*)() const) &pyj::gadget_KeyboardMouseProxy_Wrapper::default_getDeviceName,
+      .def("getDeviceName", &gadget::KeyboardMouseProxy::getDeviceName,
+           &pyj::gadget_KeyboardMouseProxy_Wrapper::default_getDeviceName,
            "getDeviceName() -> string object\n"
            "Gets the name of the device that we are proxying."
       )
-      .def("updateData",
-           (void (gadget::Proxy::*)()) &gadget::Proxy::updateData,
-           (void (pyj::gadget_KeyboardMouseProxy_Wrapper::*)()) &pyj::gadget_KeyboardMouseProxy_Wrapper::default_updateData,
+      .def("updateData", &gadget::Proxy::updateData,
+           &pyj::gadget_KeyboardMouseProxy_Wrapper::default_updateData,
            "updateData()\n"
            "Updates the cached data copy from the device.  Copies the\n"
            "device data to local storage and transforms it if necessary."
       )
-      .def("isStupefied",
-           (bool (gadget::Proxy::*)() const) &gadget::Proxy::isStupefied,
-           (bool (pyj::gadget_KeyboardMouseProxy_Wrapper::*)() const) &pyj::gadget_KeyboardMouseProxy_Wrapper::default_isStupefied,
+      .def("isStupefied", &gadget::Proxy::isStupefied,
+           &pyj::gadget_KeyboardMouseProxy_Wrapper::default_isStupefied,
            "isStupefied() -> Boolean\n"
            "Is the proxy currently stupefied?\n"
            "If the device we are proxying does not exist, then this will\n"
            "return True."
       )
-      .def("isStupified",
-           (bool (gadget::Proxy::*)() const)&gadget::Proxy::isStupified,
-           (bool (pyj::gadget_KeyboardMouseProxy_Wrapper::*)() const)&pyj::gadget_KeyboardMouseProxy_Wrapper::default_isStupified,
+      .def("isStupified", &gadget::Proxy::isStupified,
+           &pyj::gadget_KeyboardMouseProxy_Wrapper::default_isStupified,
            "isStupified() -> Boolean\n"
            "Is the proxy currently stupefied?\n"
            "If the device we are proxying does not exist, then this will\n"
