@@ -20,18 +20,18 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
+struct gadget_CommandProxy_Wrapper
+   : gadget::CommandProxy
+   , wrapper<gadget::CommandProxy>
 {
-   gadget_CommandProxy_Wrapper(PyObject* self_, const gadget::CommandProxy& p0)
+   gadget_CommandProxy_Wrapper(const gadget::CommandProxy& p0)
       : gadget::CommandProxy(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_CommandProxy_Wrapper(PyObject* self_)
+   gadget_CommandProxy_Wrapper()
       : gadget::CommandProxy()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -45,7 +45,14 @@ struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
    {
       try
       {
-         call_method<void>(self, "updateData");
+         if ( override updateData = this->get_override("updateData") )
+         {
+            updateData();
+         }
+         else
+         {
+            gadget::CommandProxy::updateData();
+         }
       }
       catch (error_already_set)
       {
@@ -62,7 +69,11 @@ struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
    {
       try
       {
-        return call_method<vpr::Interval>(self, "getTimeStamp");
+         if ( override getTimeStamp = this->get_override("getTimeStamp") )
+         {
+            return getTimeStamp();
+         }
+         return gadget::CommandProxy::getTimeStamp();
       }
       catch (error_already_set)
       {
@@ -81,7 +92,11 @@ struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
    {
       try
       {
-         return call_method<bool>(self, "config", p0);
+         if ( override config = this->get_override("config") )
+         {
+            return config(p0);
+         }
+         return gadget::CommandProxy::config(p0);
       }
       catch (error_already_set)
       {
@@ -100,7 +115,14 @@ struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
    {
       try
       {
-         call_method<void>(self, "set", p0, p1);
+         if ( override set = this->get_override("set") )
+         {
+            set(p0, p1);
+         }
+         else
+         {
+            gadget::CommandProxy::set(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -117,7 +139,11 @@ struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
    {
       try
       {
-         return call_method<bool>(self, "refresh");
+         if ( override refresh = this->get_override("refresh") )
+         {
+            return refresh();
+         }
+         return gadget::CommandProxy::refresh();
       }
       catch (error_already_set)
       {
@@ -136,7 +162,11 @@ struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
    {
       try
       {
-         return call_method<std::string>(self, "getDeviceName");
+         if ( override getDeviceName = this->get_override("getDeviceName") )
+         {
+            return getDeviceName();
+         }
+         return gadget::CommandProxy::getDeviceName();
       }
       catch (error_already_set)
       {
@@ -155,7 +185,11 @@ struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
    {
       try
       {
-         return call_method<bool>(self, "isStupefied");
+         if ( override isStupefied = this->get_override("isStupefied") )
+         {
+            return isStupefied();
+         }
+         return gadget::CommandProxy::isStupefied();
       }
       catch (error_already_set)
       {
@@ -169,8 +203,6 @@ struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
    {
       return gadget::CommandProxy::isStupefied();
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -179,8 +211,7 @@ struct gadget_CommandProxy_Wrapper : gadget::CommandProxy
 // Module ======================================================================
 void _Export_CommandProxy()
 {
-   class_<gadget::CommandProxy, pyj::gadget_CommandProxy_Wrapper>(
-       "CommandProxy",
+   class_<pyj::gadget_CommandProxy_Wrapper>("CommandProxy",
        "A proxy class to command-oriented devices used by the Input\n"
        "Manager.\n\n"
        "A command proxy always points to a command-oriented device and a\n"

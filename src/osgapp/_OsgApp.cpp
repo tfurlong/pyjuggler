@@ -23,11 +23,10 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vrj_OsgApp_Wrapper : vrj::OsgApp
+struct vrj_OsgApp_Wrapper : vrj::OsgApp, wrapper<vrj::OsgApp>
 {
-   vrj_OsgApp_Wrapper(PyObject* self_, vrj::Kernel* p0 = NULL)
+   vrj_OsgApp_Wrapper(vrj::Kernel* p0 = NULL)
       : vrj::OsgApp(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -46,7 +45,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "initScene");
+         this->get_override("initScene")();
       }
       catch (error_already_set)
       {
@@ -63,7 +62,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         return call_method<osg::Group*>(self, "getScene");
+         return this->get_override("getScene")();
       }
       catch (error_already_set)
       {
@@ -82,7 +81,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "configSceneView", p0);
+         if ( override configSceneView = this->get_override("configSceneView") )
+         {
+            configSceneView(p0);
+         }
+         else
+         {
+            vrj::OsgApp::configSceneView(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -104,7 +110,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "draw");
+         if ( override draw = this->get_override("draw") )
+         {
+            draw();
+         }
+         else
+         {
+            vrj::OsgApp::draw();
+         }
       }
       catch (error_already_set)
       {
@@ -126,7 +139,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "init");
+         if ( override init = this->get_override("init") )
+         {
+            init();
+         }
+         else
+         {
+            vrj::OsgApp::init();
+         }
       }
       catch (error_already_set)
       {
@@ -148,7 +168,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "contextInit");
+         if ( override contextInit = this->get_override("contextInit") )
+         {
+            contextInit();
+         }
+         else
+         {
+            vrj::OsgApp::contextInit();
+         }
       }
       catch (error_already_set)
       {
@@ -170,7 +197,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "contextClose");
+         if ( override contextClose = this->get_override("contextClose") )
+         {
+            contextClose();
+         }
+         else
+         {
+            vrj::OsgApp::contextClose();
+         }
       }
       catch (error_already_set)
       {
@@ -192,7 +226,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "contextPreDraw");
+         if ( override contextPreDraw = this->get_override("contextPreDraw") )
+         {
+            contextPreDraw();
+         }
+         else
+         {
+            vrj::OsgApp::contextPreDraw();
+         }
       }
       catch (error_already_set)
       {
@@ -214,7 +255,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "bufferPreDraw");
+         if ( override bufferPreDraw = this->get_override("bufferPreDraw") )
+         {
+            bufferPreDraw();
+         }
+         else
+         {
+            vrj::OsgApp::bufferPreDraw();
+         }
       }
       catch (error_already_set)
       {
@@ -236,7 +284,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "pipePreDraw");
+         if ( override pipePreDraw = this->get_override("pipePreDraw") )
+         {
+            pipePreDraw();
+         }
+         else
+         {
+            vrj::OsgApp::pipePreDraw();
+         }
       }
       catch (error_already_set)
       {
@@ -258,7 +313,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "contextPostDraw");
+         if ( override contextPostDraw = this->get_override("contextPostDraw") )
+         {
+            contextPostDraw();
+         }
+         else
+         {
+            vrj::GlApp::contextPostDraw();
+         }
       }
       catch (error_already_set)
       {
@@ -280,7 +342,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "apiInit");
+         if ( override apiInit = this->get_override("apiInit") )
+         {
+            apiInit();
+         }
+         else
+         {
+            vrj::App::apiInit();
+         }
       }
       catch (error_already_set)
       {
@@ -302,7 +371,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "exit");
+         if ( override exit = this->get_override("exit") )
+         {
+            exit();
+         }
+         else
+         {
+            vrj::App::exit();
+         }
       }
       catch (error_already_set)
       {
@@ -324,7 +400,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "preFrame");
+         if ( override preFrame = this->get_override("preFrame") )
+         {
+            preFrame();
+         }
+         else
+         {
+            vrj::App::preFrame();
+         }
       }
       catch (error_already_set)
       {
@@ -346,7 +429,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "latePreFrame");
+         if ( override latePreFrame = this->get_override("latePreFrame") )
+         {
+            latePreFrame();
+         }
+         else
+         {
+            vrj::App::latePreFrame();
+         }
       }
       catch (error_already_set)
       {
@@ -368,7 +458,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "intraFrame");
+         if ( override intraFrame = this->get_override("intraFrame") )
+         {
+            intraFrame();
+         }
+         else
+         {
+            vrj::App::intraFrame();
+         }
       }
       catch (error_already_set)
       {
@@ -390,7 +487,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "postFrame");
+         if ( override postFrame = this->get_override("postFrame") )
+         {
+            postFrame();
+         }
+         else
+         {
+            vrj::App::postFrame();
+         }
       }
       catch (error_already_set)
       {
@@ -412,7 +516,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "reset");
+         if ( override reset = this->get_override("reset") )
+         {
+            reset();
+         }
+         else
+         {
+            vrj::App::reset();
+         }
       }
       catch (error_already_set)
       {
@@ -434,7 +545,14 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         call_method<void>(self, "focusChanged");
+         if ( override focusChanged = this->get_override("focusChanged") )
+         {
+            focusChanged();
+         }
+         else
+         {
+            vrj::App::focusChanged();
+         }
       }
       catch (error_already_set)
       {
@@ -456,7 +574,12 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         return call_method<float>(self, "getDrawScaleFactor");
+         if ( override getDrawScaleFactor =
+                 this->get_override("getDrawScaleFactor") )
+         {
+            return getDrawScaleFactor();
+         }
+         return vrj::App::getDrawScaleFactor();
       }
       catch (error_already_set)
       {
@@ -480,7 +603,11 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         return call_method<bool>(self, "configCanHandle", p0);
+         if ( override configCanHandle = this->get_override("configCanHandle") )
+         {
+            return configCanHandle(p0);
+         }
+         return vrj::App::configCanHandle(p0);
       }
       catch (error_already_set)
       {
@@ -504,7 +631,11 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         return call_method<bool>(self, "depSatisfied");
+         if ( override depSatisfied = this->get_override("depSatisfied") )
+         {
+            return depSatisfied();
+         }
+         return vrj::App::depSatisfied();
       }
       catch (error_already_set)
       {
@@ -528,7 +659,11 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         return call_method<bool>(self, "configAdd", p0);
+         if ( override configAdd = this->get_override("configAdd") )
+         {
+            return configAdd(p0);
+         }
+         return vrj::App::configAdd(p0);
       }
       catch (error_already_set)
       {
@@ -552,7 +687,11 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         return call_method<bool>(self, "configRemove", p0);
+         if ( override configRemove = this->get_override("configRemove") )
+         {
+            return configRemove(p0);
+         }
+         return vrj::App::configRemove(p0);
       }
       catch (error_already_set)
       {
@@ -576,7 +715,12 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
       try
       {
-         return call_method<int>(self, "configProcessPending");
+         if ( override configProcessPending =
+                 this->get_override("configProcessPending") )
+         {
+            return configProcessPending();
+         }
+         return vrj::App::configProcessPending();
       }
       catch (error_already_set)
       {
@@ -590,8 +734,6 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
    {
       return vrj::App::configProcessPending();
    }
-
-   PyObject* self;
 };
 
 
@@ -601,8 +743,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 // Module ======================================================================
 void _Export_OsgApp()
 {
-   class_<vrj::OsgApp, bases<vrj::GlApp>, boost::noncopyable,
-          pyj::vrj_OsgApp_Wrapper>
+   class_<pyj::vrj_OsgApp_Wrapper, bases<vrj::GlApp>, boost::noncopyable>
       ("OsgApp",
        "vrj.OsgApp encapsulates an Open Scene Graph (OSG) application.\n"
        "This defines the base class from which OSG-based application\n"

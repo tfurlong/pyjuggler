@@ -22,7 +22,7 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
+struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 {
    virtual ~vpr_ObjectWriter_Wrapper()
    {
@@ -38,7 +38,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "beginTag", p0);
+         return this->get_override("beginTag")(p0);
       }
       catch (error_already_set)
       {
@@ -55,7 +55,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "endTag");
+         return this->get_override("endTag")();
       }
       catch (error_already_set)
       {
@@ -72,7 +72,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "beginAttribute", p0);
+         return this->get_override("beginAttribute")(p0);
       }
       catch (error_already_set)
       {
@@ -89,7 +89,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "endAttribute");
+         return this->get_override("endAttribute")();
       }
       catch (error_already_set)
       {
@@ -106,7 +106,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeUint8", p0);
+         return this->get_override("writeUint8")(p0);
       }
       catch (error_already_set)
       {
@@ -123,7 +123,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeUint16", p0);
+         return this->get_override("writeUint16")(p0);
       }
       catch (error_already_set)
       {
@@ -140,7 +140,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeUint32", p0);
+         return this->get_override("writeUint32")(p0);
       }
       catch (error_already_set)
       {
@@ -157,7 +157,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeUint64", p0);
+         return this->get_override("writeUint64")(p0);
       }
       catch (error_already_set)
       {
@@ -174,7 +174,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeFloat", p0);
+         return this->get_override("writeFloat")(p0);
       }
       catch (error_already_set)
       {
@@ -191,7 +191,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeDouble", p0);
+         return this->get_override("writeDouble")(p0);
       }
       catch (error_already_set)
       {
@@ -208,7 +208,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeString", p0);
+         return this->get_override("writeString")(p0);
       }
       catch (error_already_set)
       {
@@ -225,15 +225,13 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeBool", p0);
+         return this->get_override("writeBool")(p0);
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
    }
-
-   PyObject* self;
 };
 
 
@@ -243,8 +241,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
 // Module ======================================================================
 void _Export_ObjectWriter()
 {
-   class_<vpr::ObjectWriter, boost::noncopyable, pyj::vpr_ObjectWriter_Wrapper>
-      ("ObjectWriter",
+   class_<pyj::vpr_ObjectWriter_Wrapper, boost::noncopyable>("ObjectWriter",
        "Interface used to write object data to a stream.\n\n"
        "ObjectReader and ObjectWriter support an interface that allows for\n"
        "using tags and attributes in the written output data.  This allows\n"

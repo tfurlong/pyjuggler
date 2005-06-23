@@ -20,18 +20,18 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_AnalogProxy_Wrapper : gadget::AnalogProxy
+struct gadget_AnalogProxy_Wrapper
+   : gadget::AnalogProxy
+   , wrapper<gadget::AnalogProxy>
 {
-   gadget_AnalogProxy_Wrapper(PyObject* self_, const gadget::AnalogProxy& p0)
+   gadget_AnalogProxy_Wrapper(const gadget::AnalogProxy& p0)
       : gadget::AnalogProxy(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_AnalogProxy_Wrapper(PyObject* self_)
+   gadget_AnalogProxy_Wrapper()
       : gadget::AnalogProxy()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -45,7 +45,14 @@ struct gadget_AnalogProxy_Wrapper : gadget::AnalogProxy
    {
       try
       {
-         call_method<void>(self, "updateData");
+         if ( override updateData = this->get_override("updateData") )
+         {
+            updateData();
+         }
+         else
+         {
+            gadget::AnalogProxy::updateData();
+         }
       }
       catch (error_already_set)
       {
@@ -62,7 +69,11 @@ struct gadget_AnalogProxy_Wrapper : gadget::AnalogProxy
    {
       try
       {
-        return call_method<vpr::Interval>(self, "getTimeStamp");
+        if ( override getTimeStamp = this->get_override("getTimeStamp") )
+        {
+           return getTimeStamp();
+        }
+        return gadget::AnalogProxy::getTimeStamp();
       }
       catch (error_already_set)
       {
@@ -81,7 +92,11 @@ struct gadget_AnalogProxy_Wrapper : gadget::AnalogProxy
    {
       try
       {
-         return call_method<bool>(self, "config", p0);
+         if ( override config = this->get_override("config") )
+         {
+            return config(p0);
+         }
+         return gadget::AnalogProxy::config(p0);
       }
       catch (error_already_set)
       {
@@ -100,7 +115,14 @@ struct gadget_AnalogProxy_Wrapper : gadget::AnalogProxy
    {
       try
       {
-         call_method<void>(self, "set", p0, p1);
+         if ( override set = this->get_override("set") )
+         {
+            set(p0, p1);
+         }
+         else
+         {
+            gadget::AnalogProxy::set(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -117,7 +139,11 @@ struct gadget_AnalogProxy_Wrapper : gadget::AnalogProxy
    {
       try
       {
-         return call_method<bool>(self, "refresh");
+         if ( override refresh = this->get_override("refresh") )
+         {
+            return refresh();
+         }
+         return gadget::AnalogProxy::refresh();
       }
       catch (error_already_set)
       {
@@ -136,7 +162,11 @@ struct gadget_AnalogProxy_Wrapper : gadget::AnalogProxy
    {
       try
       {
-         return call_method<std::string>(self, "getDeviceName");
+         if ( override getDeviceName = this->get_override("getDeviceName") )
+         {
+            return getDeviceName();
+         }
+         return gadget::AnalogProxy::getDeviceName();
       }
       catch (error_already_set)
       {
@@ -155,7 +185,11 @@ struct gadget_AnalogProxy_Wrapper : gadget::AnalogProxy
    {
       try
       {
-         return call_method<bool>(self, "isStupefied");
+         if ( override isStupefied = this->get_override("isStupefied") )
+         {
+            return isStupefied();
+         }
+         return gadget::AnalogProxy::isStupefied();
       }
       catch (error_already_set)
       {
@@ -169,8 +203,6 @@ struct gadget_AnalogProxy_Wrapper : gadget::AnalogProxy
    {
       return gadget::AnalogProxy::isStupefied();
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -179,7 +211,7 @@ struct gadget_AnalogProxy_Wrapper : gadget::AnalogProxy
 // Module ======================================================================
 void _Export_AnalogProxy()
 {
-   class_<gadget::AnalogProxy, pyj::gadget_AnalogProxy_Wrapper>("AnalogProxy",
+   class_<pyj::gadget_AnalogProxy_Wrapper>("AnalogProxy",
        "A proxy class to analog devices used by the Input Manager.\n\n"
        "An analog proxy always points to an analog device and a unit\n"
        "number within that device.  The Input Manager can therefore keep\n"

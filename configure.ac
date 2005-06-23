@@ -48,8 +48,8 @@ AC_ARG_WITH([boost-python-lib],
 AC_ARG_WITH([boost-version],
             [  --with-boost-version=<VER>
                           Boost version number (for
-                          example, 1.31)                  [default=1.31]],
-            [BOOST_VERSION="$withval"], [BOOST_VERSION='1.31'])
+                          example, 1.32)                  [default=1.32]],
+            [BOOST_VERSION="$withval"], [BOOST_VERSION='1.32'])
 
 AC_ARG_WITH([pyste],
             [  --with-pyste=<PATH>     Full path to pyste.py script    [No default]],
@@ -256,6 +256,23 @@ BOOST_PYTHON_INCLUDE_OPTS="-I$BOOST_PYTHON_HEADER_DIR"
 CPPFLAGS="${_pyj_save_CPPFLAGS}"
 
 DPP_LANG_RESTORE
+
+boost_version_hpp="$BOOST_PYTHON_HEADER_DIR/boost/version.hpp"
+
+# Determine the version number of the Boost installation we found and ensure
+# that it is recent enough.
+changequote(<<, >>)
+BOOST_VERSION=`grep 'define BOOST_VERSION ' "$boost_version_hpp" | sed -e 's/^[^0-9]*\([0-9][0-9]*\)[^0-9]*$/\1/'`
+changequote([, ])
+pyj_boost_patch=`expr $BOOST_VERSION % 100`
+pyj_boost_minor=`expr $BOOST_VERSION / 100 % 1000`
+pyj_boost_major=`expr $BOOST_VERSION / 100000`
+pyj_boost_version="$pyj_boost_major.$pyj_boost_minor.$pyj_boost_patch"
+
+req_boost_version='1.32.0'
+DPP_VERSION_CHECK_MSG_NO_CACHE([Boost], [$pyj_boost_version],
+                               [$req_boost_version], ,
+                               [AC_MSG_ERROR([*** Boost $req_boost_version is required for PyJuggler ***])])
 
 if test "x$bp_libname" = "x" ; then
    if test $boost_minor_ver -ge 31; then

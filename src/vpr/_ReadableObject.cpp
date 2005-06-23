@@ -23,7 +23,9 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vpr_ReadableObject_Wrapper : vpr::ReadableObject
+struct vpr_ReadableObject_Wrapper
+   : vpr::ReadableObject
+   , wrapper<vpr::ReadableObject>
 {
    virtual ~vpr_ReadableObject_Wrapper()
    {
@@ -39,15 +41,13 @@ struct vpr_ReadableObject_Wrapper : vpr::ReadableObject
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "readObject", p0);
+         return this->get_override("readObject")(p0);
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
    }
-
-   PyObject* self;
 };
 
 
@@ -57,8 +57,7 @@ struct vpr_ReadableObject_Wrapper : vpr::ReadableObject
 // Module ======================================================================
 void _Export_ReadableObject()
 {
-   class_<vpr::ReadableObject, boost::noncopyable,
-          pyj::vpr_ReadableObject_Wrapper>
+   class_<pyj::vpr_ReadableObject_Wrapper, boost::noncopyable>
       ("ReadableObject", no_init)
       .def("readObject", pure_virtual(&vpr::ReadableObject::readObject),
            "readObject(reader) -> PyJuggler.vpr.ReturnStatus object\n"

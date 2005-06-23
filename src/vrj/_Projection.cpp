@@ -20,18 +20,16 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vrj_Projection_Wrapper : vrj::Projection
+struct vrj_Projection_Wrapper : vrj::Projection, wrapper<vrj::Projection>
 {
-   vrj_Projection_Wrapper(PyObject* self_)
+   vrj_Projection_Wrapper()
       : vrj::Projection()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   vrj_Projection_Wrapper(PyObject* self_, const vrj::Projection& p0)
+   vrj_Projection_Wrapper(const vrj::Projection& p0)
       : vrj::Projection(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -45,15 +43,13 @@ struct vrj_Projection_Wrapper : vrj::Projection
    {
       try
       {
-         call_method<void>(self, "calcViewMatrix", p0, p1);
+         this->get_override("calcViewMatrix")(p0, p1);
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -63,7 +59,7 @@ struct vrj_Projection_Wrapper : vrj::Projection
 void _Export_Projection()
 {
    scope* vrj_Projection_scope = new scope(
-   class_<vrj::Projection, boost::noncopyable, pyj::vrj_Projection_Wrapper>
+   class_<pyj::vrj_Projection_Wrapper, boost::noncopyable>
       ("Projection",
        "Abstract base class for viewport definitions.  This class is\n"
        "responsible for storing and computing projection information\n"

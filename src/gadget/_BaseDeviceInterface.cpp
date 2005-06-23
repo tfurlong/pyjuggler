@@ -20,19 +20,18 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_BaseDeviceInterface_Wrapper : gadget::BaseDeviceInterface
+struct gadget_BaseDeviceInterface_Wrapper
+   : gadget::BaseDeviceInterface
+   , wrapper<gadget::BaseDeviceInterface>
 {
-   gadget_BaseDeviceInterface_Wrapper(PyObject* self_,
-                                      const gadget::BaseDeviceInterface& p0)
+   gadget_BaseDeviceInterface_Wrapper(const gadget::BaseDeviceInterface& p0)
       : gadget::BaseDeviceInterface(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_BaseDeviceInterface_Wrapper(PyObject* self_)
+   gadget_BaseDeviceInterface_Wrapper()
       : gadget::BaseDeviceInterface()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -46,7 +45,14 @@ struct gadget_BaseDeviceInterface_Wrapper : gadget::BaseDeviceInterface
    {
       try
       {
-         call_method<void>(self, "refresh");
+         if ( override refresh = this->get_override("refresh") )
+         {
+            refresh();
+         }
+         else
+         {
+            gadget::BaseDeviceInterface::refresh();
+         }
       }
       catch (error_already_set)
       {
@@ -58,8 +64,6 @@ struct gadget_BaseDeviceInterface_Wrapper : gadget::BaseDeviceInterface
    {
       gadget::BaseDeviceInterface::refresh();
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -68,8 +72,9 @@ struct gadget_BaseDeviceInterface_Wrapper : gadget::BaseDeviceInterface
 // Module ======================================================================
 void _Export_BaseDeviceInterface()
 {
-   class_<gadget::BaseDeviceInterface, pyj::gadget_BaseDeviceInterface_Wrapper>(
-       "BaseDeviceInterface", "",
+   class_<pyj::gadget_BaseDeviceInterface_Wrapper>("BaseDeviceInterface",
+       ""
+       ,
        init<>()
       )
       .def(init<const gadget::BaseDeviceInterface&>())

@@ -21,18 +21,16 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vrj_Display_Wrapper : vrj::Display
+struct vrj_Display_Wrapper : vrj::Display, wrapper<vrj::Display>
 {
-   vrj_Display_Wrapper(PyObject* self_, const vrj::Display& p0)
+   vrj_Display_Wrapper(const vrj::Display& p0)
       : vrj::Display(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   vrj_Display_Wrapper(PyObject* self_)
+   vrj_Display_Wrapper()
       : vrj::Display()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -41,8 +39,6 @@ struct vrj_Display_Wrapper : vrj::Display
    {
       /* Do nothing. */ ;
    }
-
-   PyObject* self;
 };
 
 static tuple vrj_Display_getOriginAndSize_wrapper(vrj::Display* disp)
@@ -58,7 +54,7 @@ static tuple vrj_Display_getOriginAndSize_wrapper(vrj::Display* disp)
 // Module ======================================================================
 void _Export_Display()
 {
-   class_<vrj::Display, pyj::vrj_Display_Wrapper>("Display",
+   class_<pyj::vrj_Display_Wrapper>("Display",
        "Container class for viewports and window information.  This stores\n"
        "the size and location of the window and the viewports contained\n"
        "within."

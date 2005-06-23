@@ -23,7 +23,9 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vpr_WriteableObject_Wrapper : vpr::WriteableObject
+struct vpr_WriteableObject_Wrapper
+   : vpr::WriteableObject
+   , wrapper<vpr::WriteableObject>
 {
    virtual ~vpr_WriteableObject_Wrapper()
    {
@@ -39,15 +41,13 @@ struct vpr_WriteableObject_Wrapper : vpr::WriteableObject
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeObject", p0);
+         return this->get_override("writeObject")(p0);
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
    }
-
-   PyObject* self;
 };
 
 
@@ -57,8 +57,7 @@ struct vpr_WriteableObject_Wrapper : vpr::WriteableObject
 // Module ======================================================================
 void _Export_WriteableObject()
 {
-   class_<vpr::WriteableObject, boost::noncopyable,
-          pyj::vpr_WriteableObject_Wrapper>
+   class_<pyj::vpr_WriteableObject_Wrapper, boost::noncopyable>
       ("WriteableObject", no_init)
       .def("writeObject", pure_virtual(&vpr::WriteableObject::writeObject),
            "writeObject(writer) -> PyJuggler.vpr.ReturnStatus object\n"

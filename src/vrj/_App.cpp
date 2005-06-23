@@ -24,18 +24,10 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vrj_App_Wrapper : vrj::App
+struct vrj_App_Wrapper : vrj::App, wrapper<vrj::App>
 {
-   vrj_App_Wrapper(PyObject* self_, const vrj::App& p0)
-      : vrj::App(p0)
-      , self(self_)
-   {
-      /* Do nothing. */ ;
-   }
-
-   vrj_App_Wrapper(PyObject* self_, vrj::Kernel* p0 = NULL)
-      : vrj::App(p0)
-      , self(self_)
+   vrj_App_Wrapper(vrj::Kernel* const& kernel = NULL)
+      : vrj::App(kernel)
    {
       /* Do nothing. */ ;
    }
@@ -54,7 +46,14 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         call_method<void>(self, "init");
+         if ( override init = this->get_override("init") )
+         {
+            init();
+         }
+         else
+         {
+            vrj::App::init();
+         }
       }
       catch (error_already_set)
       {
@@ -76,7 +75,14 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         call_method<void>(self, "apiInit");
+         if ( override apiInit = this->get_override("apiInit") )
+         {
+            apiInit();
+         }
+         else
+         {
+            vrj::App::apiInit();
+         }
       }
       catch (error_already_set)
       {
@@ -98,7 +104,14 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         call_method<void>(self, "exit");
+         if ( override exit = this->get_override("exit") )
+         {
+            exit();
+         }
+         else
+         {
+            vrj::App::exit();
+         }
       }
       catch (error_already_set)
       {
@@ -120,7 +133,14 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         call_method<void>(self, "preFrame");
+         if ( override preFrame = this->get_override("preFrame") )
+         {
+            preFrame();
+         }
+         else
+         {
+            vrj::App::preFrame();
+         }
       }
       catch (error_already_set)
       {
@@ -142,7 +162,14 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         call_method<void>(self, "latePreFrame");
+         if ( override latePreFrame = this->get_override("latePreFrame") )
+         {
+            latePreFrame();
+         }
+         else
+         {
+            vrj::App::latePreFrame();
+         }
       }
       catch (error_already_set)
       {
@@ -164,7 +191,14 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         call_method<void>(self, "intraFrame");
+         if ( override intraFrame = this->get_override("intraFrame") )
+         {
+            intraFrame();
+         }
+         else
+         {
+            vrj::App::intraFrame();
+         }
       }
       catch (error_already_set)
       {
@@ -186,7 +220,14 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         call_method<void>(self, "postFrame");
+         if ( override postFrame = this->get_override("postFrame") )
+         {
+            postFrame();
+         }
+         else
+         {
+            vrj::App::postFrame();
+         }
       }
       catch (error_already_set)
       {
@@ -208,7 +249,14 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         call_method<void>(self, "reset");
+         if ( override reset = this->get_override("reset") )
+         {
+            reset();
+         }
+         else
+         {
+            vrj::App::reset();
+         }
       }
       catch (error_already_set)
       {
@@ -230,7 +278,14 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         call_method<void>(self, "focusChanged");
+         if ( override focusChanged = this->get_override("focusChanged") )
+         {
+            focusChanged();
+         }
+         else
+         {
+            vrj::App::focusChanged();
+         }
       }
       catch (error_already_set)
       {
@@ -252,7 +307,12 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         return call_method<float>(self, "getDrawScaleFactor");
+         if ( override getDrawScaleFactor =
+                 this->get_override("getDrawScaleFactor") )
+         {
+            return getDrawScaleFactor();
+         }
+         return vrj::App::getDrawScaleFactor();
       }
       catch (error_already_set)
       {
@@ -276,7 +336,11 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         return call_method<bool>(self, "configCanHandle", p0);
+         if ( override configCanHandle = this->get_override("configCanHandle") )
+         {
+            return configCanHandle(p0);
+         }
+         return vrj::App::configCanHandle(p0);
       }
       catch (error_already_set)
       {
@@ -300,7 +364,11 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         return call_method<bool>(self, "depSatisfied");
+         if ( override depSatisfied = this->get_override("depSatisfied") )
+         {
+            return depSatisfied();
+         }
+         return vrj::App::depSatisfied();
       }
       catch (error_already_set)
       {
@@ -324,12 +392,16 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         return call_method<bool>(self, "configAdd", p0);
+         if ( override configAdd = this->get_override("configAdd") )
+         {
+            return configAdd(p0);
+         }
+         return vrj::App::configAdd(p0);
       }
       catch (error_already_set)
       {
          PyErr_Print();
-     }
+      }
 
       return false;
    }
@@ -348,7 +420,11 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         return call_method<bool>(self, "configRemove", p0);
+         if ( override configRemove = this->get_override("configRemove") )
+         {
+            return configRemove(p0);
+         }
+         return vrj::App::configRemove(p0);
       }
       catch (error_already_set)
       {
@@ -372,7 +448,7 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         return call_method<vrj::DrawManager*>(self, "getDrawManager");
+         return this->get_override("getDrawManager")();
       }
       catch (error_already_set)
       {
@@ -391,7 +467,12 @@ struct vrj_App_Wrapper : vrj::App
 
       try
       {
-         return call_method<int>(self, "configProcessPending");
+         if ( override configProcessPending =
+                 this->get_override("configProcessPending") )
+         {
+            return configProcessPending();
+         }
+         return jccl::ConfigElementHandler::configProcessPending();
       }
       catch (error_already_set)
       {
@@ -405,8 +486,6 @@ struct vrj_App_Wrapper : vrj::App
    {
       return jccl::ConfigElementHandler::configProcessPending();
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -415,7 +494,7 @@ struct vrj_App_Wrapper : vrj::App
 // Module ======================================================================
 void _Export_App()
 {
-   class_<vrj::App, boost::noncopyable, pyj::vrj_App_Wrapper>("App",
+   class_<pyj::vrj_App_Wrapper, boost::noncopyable>("App",
        "Encapsulates the actual application.\n\n"
        "This defines the base class for all API-specific application\n"
        "object types.  The interface given is what the VR Juggler kernel\n"

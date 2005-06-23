@@ -81,9 +81,10 @@
           <para><ulink
           url="http://www.boost.org/libs/python/doc/">Boost.Python</ulink>:
           The high-level glue between C++ and Python code. PyJuggler requires
-          Boost.Python v2 or newer. The version of Boost.Python used should
-          come from the Boost same version against which VR Juggler was
-          compiled. As of this writing, that is Boost 1.31.0.</para>
+          Boost.Python v2 from Boost 1.32.0 or newer. The version of
+          Boost.Python used must come from the Boost same version against
+          which VR Juggler was compiled to avoid load- or run-time shared
+          library conflicts.</para>
         </listitem>
 
         <listitem>

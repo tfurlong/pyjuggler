@@ -23,11 +23,10 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_Position_Wrapper : gadget::Position
+struct gadget_Position_Wrapper : gadget::Position, wrapper<gadget::Position>
 {
-   gadget_Position_Wrapper(PyObject* self_)
+   gadget_Position_Wrapper()
       : gadget::Position()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -41,7 +40,11 @@ struct gadget_Position_Wrapper : gadget::Position
    {
       try
       {
-         return call_method<bool>(self, "config", p0);
+         if ( override config = this->get_override("config") )
+         {
+            return config(p0);
+         }
+         return gadget::Position::config(p0);
       }
       catch (error_already_set)
       {
@@ -60,7 +63,11 @@ struct gadget_Position_Wrapper : gadget::Position
    {
       try
       {
-         return call_method<std::string>(self, "getInputTypeName");
+         if ( override getInputTypeName = this->get_override("getInputTypeName") )
+         {
+            return getInputTypeName();
+         }
+         return gadget::Position::getInputTypeName();
       }
       catch (error_already_set)
       {
@@ -79,7 +86,11 @@ struct gadget_Position_Wrapper : gadget::Position
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeObject", p0);
+         if ( override writeObject = this->get_override("writeObject") )
+         {
+            return writeObject(p0);
+         }
+         return gadget::Position::writeObject(p0);
       }
       catch (error_already_set)
       {
@@ -98,7 +109,11 @@ struct gadget_Position_Wrapper : gadget::Position
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "readObject", p0);
+         if ( override readObject = this->get_override("readObject") )
+         {
+            return readObject(p0);
+         }
+         return gadget::Position::readObject(p0);
       }
       catch (error_already_set)
       {
@@ -112,8 +127,6 @@ struct gadget_Position_Wrapper : gadget::Position
    {
       return gadget::Position::readObject(p0);
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -122,8 +135,7 @@ struct gadget_Position_Wrapper : gadget::Position
 // Module ======================================================================
 void _Export_Position()
 {
-   class_<gadget::Position, boost::noncopyable, pyj::gadget_Position_Wrapper>(
-       "Position",
+   class_<pyj::gadget_Position_Wrapper, boost::noncopyable>("Position",
        "gadget.Position is the abstract base class from which devices\n"
        "returning positional (translation and/or rotation) data must\n"
        "derive.  This is in addition to gadget.Input.  gadget.Input\n"

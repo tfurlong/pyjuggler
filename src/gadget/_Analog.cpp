@@ -23,11 +23,10 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_Analog_Wrapper: gadget::Analog
+struct gadget_Analog_Wrapper : gadget::Analog, wrapper<gadget::Analog>
 {
-   gadget_Analog_Wrapper(PyObject* self_)
+   gadget_Analog_Wrapper()
       : gadget::Analog()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -41,7 +40,11 @@ struct gadget_Analog_Wrapper: gadget::Analog
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeObject", p0);
+         if ( override writeObject = this->get_override("writeObject") )
+         {
+            return writeObject(p0);
+         }
+         return gadget::Analog::writeObject(p0);
       }
       catch (error_already_set)
       {
@@ -60,7 +63,11 @@ struct gadget_Analog_Wrapper: gadget::Analog
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "readObject", p0);
+         if ( override readObject = this->get_override("readObject") )
+         {
+            return readObject(p0);
+         }
+         return gadget::Analog::readObject(p0);
       }
       catch (error_already_set)
       {
@@ -79,7 +86,11 @@ struct gadget_Analog_Wrapper: gadget::Analog
    {
       try
       {
-         return call_method<bool>(self, "config", p0);
+         if ( override config = this->get_override("config") )
+         {
+            return config(p0);
+         }
+         return gadget::Analog::config(p0);
       }
       catch (error_already_set)
       {
@@ -98,7 +109,12 @@ struct gadget_Analog_Wrapper: gadget::Analog
    {
       try
       {
-         return call_method<std::string>(self, "getInputTypeName");
+         if ( override getInputTypeName =
+                 this->get_override("getInputTypeName") )
+         {
+            return getInputTypeName();
+         }
+         return gadget::Analog::getInputTypeName();
       }
       catch (error_already_set)
       {
@@ -112,8 +128,6 @@ struct gadget_Analog_Wrapper: gadget::Analog
    {
       return gadget::Analog::getInputTypeName();
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -122,8 +136,7 @@ struct gadget_Analog_Wrapper: gadget::Analog
 // Module ======================================================================
 void _Export_Analog()
 {
-   class_<gadget::Analog, boost::noncopyable, pyj::gadget_Analog_Wrapper>(
-       "Analog",
+   class_<pyj::gadget_Analog_Wrapper, boost::noncopyable>("Analog",
        "gadget.Analog is the abstract base class from which devices\n"
        "returning analog data must derive.  This is in addition to\n"
        "gadget.Input.  gadget.Input provides pure virtual function\n"

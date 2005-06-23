@@ -11,6 +11,7 @@
 #include <boost/cstdint.hpp>
 
 // Includes ====================================================================
+#include <vrj/Draw/OGL/GlDrawManager.h>
 #include <vrj/Draw/OGL/GlApp.h>
 #include <vrj/Kernel/Kernel.h>
 #include <pyjutil/InterpreterGuard.h>
@@ -23,18 +24,10 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vrj_GlApp_Wrapper : vrj::GlApp
+struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 {
-  vrj_GlApp_Wrapper(PyObject* self_, const vrj::GlApp& p0)
-     : vrj::GlApp(p0)
-     , self(self_)
-   {
-      /* Do nothing. */ ;
-   }
-
-   vrj_GlApp_Wrapper(PyObject* self_, vrj::Kernel* p0 = NULL)
-     : vrj::GlApp(p0)
-     , self(self_)
+   vrj_GlApp_Wrapper(vrj::Kernel* const& kernel = NULL)
+      : vrj::GlApp(kernel)
    {
       /* Do nothing. */ ;
    }
@@ -53,7 +46,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "draw");
+         this->get_override("draw")();
       }
       catch (error_already_set)
       {
@@ -70,7 +63,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "contextInit");
+         if ( override contextInit = this->get_override("contextInit") )
+         {
+            contextInit();
+         }
+         else
+         {
+            vrj::GlApp::contextInit();
+         }
       }
       catch (error_already_set)
       {
@@ -92,7 +92,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "contextClose");
+         if ( override contextClose = this->get_override("contextClose") )
+         {
+            contextClose();
+         }
+         else
+         {
+            vrj::GlApp::contextClose();
+         }
       }
       catch (error_already_set)
       {
@@ -114,7 +121,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "contextPreDraw");
+         if ( override contextPreDraw = this->get_override("contextPreDraw") )
+         {
+            contextPreDraw();
+         }
+         else
+         {
+            vrj::GlApp::contextPreDraw();
+         }
       }
       catch (error_already_set)
       {
@@ -136,7 +150,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "contextPostDraw");
+         if ( override contextPostDraw = this->get_override("contextPostDraw") )
+         {
+            contextPostDraw();
+         }
+         else
+         {
+            vrj::GlApp::contextPostDraw();
+         }
       }
       catch (error_already_set)
       {
@@ -158,7 +179,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "bufferPreDraw");
+         if ( override bufferPreDraw = this->get_override("bufferPreDraw") )
+         {
+            bufferPreDraw();
+         }
+         else
+         {
+            vrj::GlApp::bufferPreDraw();
+         }
       }
       catch (error_already_set)
       {
@@ -180,7 +208,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "pipePreDraw");
+         if ( override pipePreDraw = this->get_override("pipePreDraw") )
+         {
+            pipePreDraw();
+         }
+         else
+         {
+            vrj::GlApp::pipePreDraw();
+         }
       }
       catch (error_already_set)
       {
@@ -202,7 +237,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "init");
+         if ( override init = this->get_override("init") )
+         {
+            init();
+         }
+         else
+         {
+            vrj::App::init();
+         }
       }
       catch (error_already_set)
       {
@@ -224,7 +266,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "apiInit");
+         if ( override apiInit = this->get_override("apiInit") )
+         {
+            apiInit();
+         }
+         else
+         {
+            vrj::App::apiInit();
+         }
       }
       catch (error_already_set)
       {
@@ -246,7 +295,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "exit");
+         if ( override exit = this->get_override("exit") )
+         {
+            exit();
+         }
+         else
+         {
+            vrj::App::exit();
+         }
       }
       catch (error_already_set)
       {
@@ -268,7 +324,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "preFrame");
+         if ( override preFrame = this->get_override("preFrame") )
+         {
+            preFrame();
+         }
+         else
+         {
+            vrj::App::preFrame();
+         }
       }
       catch (error_already_set)
       {
@@ -290,7 +353,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "latePreFrame");
+         if ( override latePreFrame = this->get_override("latePreFrame") )
+         {
+            latePreFrame();
+         }
+         else
+         {
+            vrj::App::latePreFrame();
+         }
       }
       catch (error_already_set)
       {
@@ -312,7 +382,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "intraFrame");
+         if ( override intraFrame = this->get_override("intraFrame") )
+         {
+            intraFrame();
+         }
+         else
+         {
+            vrj::App::intraFrame();
+         }
       }
       catch (error_already_set)
       {
@@ -334,7 +411,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "postFrame");
+         if ( override postFrame = this->get_override("postFrame") )
+         {
+            postFrame();
+         }
+         else
+         {
+            vrj::App::postFrame();
+         }
       }
       catch (error_already_set)
       {
@@ -356,7 +440,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "reset");
+         if ( override reset = this->get_override("reset") )
+         {
+            reset();
+         }
+         else
+         {
+            vrj::App::reset();
+         }
       }
       catch (error_already_set)
       {
@@ -378,7 +469,14 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         call_method<void>(self, "focusChanged");
+         if ( override focusChanged = this->get_override("focusChanged") )
+         {
+            focusChanged();
+         }
+         else
+         {
+            vrj::App::focusChanged();
+         }
       }
       catch (error_already_set)
       {
@@ -400,7 +498,12 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         return call_method<float>(self, "getDrawScaleFactor");
+         if ( override getDrawScaleFactor =
+                 this->get_override("getDrawScaleFactor") )
+         {
+            return getDrawScaleFactor();
+         }
+         return vrj::App::getDrawScaleFactor();
       }
       catch (error_already_set)
       {
@@ -424,7 +527,11 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         return call_method<bool>(self, "configCanHandle", p0);
+         if ( override configCanHandle = this->get_override("configCanHandle") )
+         {
+            return configCanHandle(p0);
+         }
+         return vrj::App::configCanHandle(p0);
       }
       catch (error_already_set)
       {
@@ -448,7 +555,11 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         return call_method<bool>(self, "depSatisfied");
+         if ( override depSatisfied = this->get_override("depSatisfied") )
+         {
+            return depSatisfied();
+         }
+         return vrj::App::depSatisfied();
       }
       catch (error_already_set)
       {
@@ -472,7 +583,11 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         return call_method<bool>(self, "configAdd", p0);
+         if ( override configAdd = this->get_override("configAdd") )
+         {
+            return configAdd(p0);
+         }
+         return vrj::App::configAdd(p0);
       }
       catch (error_already_set)
       {
@@ -496,7 +611,11 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         return call_method<bool>(self, "configRemove", p0);
+         if ( override configRemove = this->get_override("configRemove") )
+         {
+            return configRemove(p0);
+         }
+         return vrj::App::configRemove(p0);
       }
       catch (error_already_set)
       {
@@ -511,6 +630,34 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
       return vrj::App::configRemove(p0);
    }
 
+   vrj::DrawManager* getDrawManager()
+   {
+      vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
+                               "vrj_GlApp_Wrapper::getDrawManager()\n",
+                               "vrj_GlApp_Wrapper::getDrawManager() done.\n");
+      PyJuggler::InterpreterGuard guard;
+
+      try
+      {
+         if ( override getDrawManager = this->get_override("getDrawManager") )
+         {
+           return getDrawManager();
+         }
+         return vrj::GlApp::getDrawManager();
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+
+      return NULL;
+   }
+
+   void default_getDrawManager()
+   {
+      vrj::GlApp::getDrawManager();
+   }
+
    int configProcessPending()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
@@ -520,7 +667,12 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 
       try
       {
-         return call_method<int>(self, "configProcessPending");
+         if ( override configProcessPending =
+                 this->get_override("configProcessPending") )
+         {
+            return configProcessPending();
+         }
+         return jccl::ConfigElementHandler::configProcessPending();
       }
       catch (error_already_set)
       {
@@ -534,8 +686,6 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
    {
       return jccl::ConfigElementHandler::configProcessPending();
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -544,8 +694,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
 // Module ======================================================================
 void _Export_GlApp()
 {
-   class_<vrj::GlApp, bases<vrj::App>, boost::noncopyable,
-          pyj::vrj_GlApp_Wrapper>
+   class_<pyj::vrj_GlApp_Wrapper, bases<vrj::App>, boost::noncopyable>
       ("GlApp",
        "vrj.GlApp encapsulates an actual OpenGL application object.\n"
        "This defines the base class from which OpenGL-based application\n"
@@ -748,6 +897,10 @@ void _Export_GlApp()
            "the return value is True, this application will be allowed to\n"
            "enter the system."
       )
+//      .def("getDrawManager", &vrj::GlApp::getDrawManager,
+//           &pyj::vrj_GlApp_Wrapper::default_getDrawManager,
+//           return_internal_reference<1>()
+//      )
       .def("configProcessPending",
            &jccl::ConfigElementHandler::configProcessPending,
            &pyj::vrj_GlApp_Wrapper::default_configProcessPending,

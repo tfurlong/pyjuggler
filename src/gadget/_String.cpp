@@ -23,11 +23,10 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_String_Wrapper : gadget::String
+struct gadget_String_Wrapper : gadget::String, wrapper<gadget::String>
 {
-   gadget_String_Wrapper(PyObject* self_)
+   gadget_String_Wrapper()
       : gadget::String()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -41,7 +40,11 @@ struct gadget_String_Wrapper : gadget::String
    {
       try
       {
-         return call_method<bool>(self, "config", p0);
+         if ( override config = this->get_override("config") )
+         {
+            return config(p0);
+         }
+         return gadget::String::config(p0);
       }
       catch (error_already_set)
       {
@@ -60,7 +63,12 @@ struct gadget_String_Wrapper : gadget::String
    {
       try
       {
-         return call_method<std::string>(self, "getInputTypeName");
+         if ( override getInputTypeName =
+                 this->get_override("getInputTypeName") )
+         {
+            return getInputTypeName();
+         }
+         return gadget::String::getInputTypeName();
       }
       catch (error_already_set)
       {
@@ -79,7 +87,11 @@ struct gadget_String_Wrapper : gadget::String
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeObject", p0);
+         if ( override writeObject = this->get_override("writeObject") )
+         {
+            return writeObject(p0);
+         }
+         return gadget::String::writeObject(p0);
       }
       catch (error_already_set)
       {
@@ -98,7 +110,11 @@ struct gadget_String_Wrapper : gadget::String
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "readObject", p0);
+         if ( override readObject = this->get_override("readObject") )
+         {
+            return readObject(p0);
+         }
+         return gadget::String::readObject(p0);
       }
       catch (error_already_set)
       {
@@ -112,8 +128,6 @@ struct gadget_String_Wrapper : gadget::String
    {
       return gadget::String::readObject(p0);
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -122,8 +136,7 @@ struct gadget_String_Wrapper : gadget::String
 // Module ======================================================================
 void _Export_String()
 {
-   class_<gadget::String, boost::noncopyable, pyj::gadget_String_Wrapper>(
-       "String",
+   class_<pyj::gadget_String_Wrapper, boost::noncopyable>("String",
        "gadget.String is the abstract base class for devices that return\n"
        "strinsg.  Drivers for all such devices must derive from this class.\n"
        "This is in addition to gadget.Input.  gadget.Input provides pure\n"

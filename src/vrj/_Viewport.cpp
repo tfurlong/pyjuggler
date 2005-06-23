@@ -23,18 +23,16 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vrj_Viewport_Wrapper: vrj::Viewport
+struct vrj_Viewport_Wrapper : vrj::Viewport, wrapper<vrj::Viewport>
 {
-   vrj_Viewport_Wrapper(PyObject* self_)
+   vrj_Viewport_Wrapper()
       : vrj::Viewport()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   vrj_Viewport_Wrapper(PyObject* self_, const vrj::Viewport& p0)
+   vrj_Viewport_Wrapper(const vrj::Viewport& p0)
       : vrj::Viewport(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -48,15 +46,13 @@ struct vrj_Viewport_Wrapper: vrj::Viewport
    {
       try
       {
-         call_method<void>(self, "updateProjections", p0);
+         this->get_override("updateProjections")(p0);
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
    }
-
-   PyObject* self;
 };
 
 inline tuple vrj_Viewport_getOriginAndSize_wrapper(vrj::Viewport* vp)
@@ -73,7 +69,7 @@ inline tuple vrj_Viewport_getOriginAndSize_wrapper(vrj::Viewport* vp)
 void _Export_Viewport()
 {
    scope* vrj_Viewport_scope = new scope(
-   class_<vrj::Viewport, boost::noncopyable, pyj::vrj_Viewport_Wrapper>
+   class_<pyj::vrj_Viewport_Wrapper, boost::noncopyable>
       ("Viewport",
        "Base class for window viewports and all viewport data.  This\n"
        "stores projection data, viewport info, and relevant user."

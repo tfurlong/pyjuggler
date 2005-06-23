@@ -22,7 +22,7 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
+struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
 {
    virtual ~vpr_ObjectReader_Wrapper()
    {
@@ -38,7 +38,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "beginTag", p0);
+         return this->get_override("beginTag")(p0);
       }
       catch (error_already_set)
       {
@@ -55,7 +55,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "endTag");
+         return this->get_override("endTag")();
       }
       catch (error_already_set)
       {
@@ -72,7 +72,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "beginAttribute", p0);
+         return this->get_override("beginAttribute")(p0);
       }
       catch (error_already_set)
       {
@@ -89,7 +89,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "endAttribute");
+         return this->get_override("endAttribute")();
       }
       catch (error_already_set)
       {
@@ -106,7 +106,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         call_method<void>(self, "resetReading");
+         this->get_override("resetReading")();
       }
       catch (error_already_set)
       {
@@ -123,7 +123,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         call_method<void>(self, "pushState");
+         this->get_override("pushState")();
       }
       catch (error_already_set)
       {
@@ -140,7 +140,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         call_method<void>(self, "popState");
+         this->get_override("popState")();
       }
       catch (error_already_set)
       {
@@ -157,7 +157,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         return call_method<vpr::Uint8>(self, "readUint8");
+         return this->get_override("readUint8")();
       }
       catch (error_already_set)
       {
@@ -174,7 +174,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         return call_method<vpr::Uint16>(self, "readUint16");
+         return this->get_override("readUint16")();
       }
       catch (error_already_set)
       {
@@ -191,7 +191,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         return call_method<vpr::Uint32>(self, "readUint32");
+         return this->get_override("readUint32")();
       }
       catch (error_already_set)
       {
@@ -208,7 +208,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         return call_method<vpr::Uint64>(self, "readUint64");
+         return this->get_override("readUint64")();
       }
       catch (error_already_set)
       {
@@ -225,7 +225,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         return call_method<float>(self, "readFloat");
+         return this->get_override("readFloat")();
       }
       catch (error_already_set)
       {
@@ -242,7 +242,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         return call_method<double>(self, "readDouble");
+         return this->get_override("readDouble")();
       }
       catch (error_already_set)
       {
@@ -259,7 +259,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         return call_method<std::string>(self, "readString");
+         return this->get_override("readString")();
       }
       catch (error_already_set)
       {
@@ -276,15 +276,13 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 
       try
       {
-         return call_method<bool>(self, "readBool");
+         return this->get_override("readBool")();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
    }
-
-   PyObject* self;
 };
 
 
@@ -294,9 +292,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader
 // Module ======================================================================
 void _Export_ObjectReader()
 {
-    class_<vpr::ObjectReader, boost::noncopyable,
-           pyj::vpr_ObjectReader_Wrapper>
-      ("ObjectReader",
+   class_<pyj::vpr_ObjectReader_Wrapper, boost::noncopyable>("ObjectReader",
        "Interface used to read object data from a stream.\n\n"
        "ObjectReader and ObjectWriter support an interface that allows for\n"
        "using tags and attributes in the written output data.  This allows\n"

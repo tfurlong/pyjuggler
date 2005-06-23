@@ -20,18 +20,18 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_DigitalProxy_Wrapper : gadget::DigitalProxy
+struct gadget_DigitalProxy_Wrapper
+   : gadget::DigitalProxy
+   , wrapper<gadget::DigitalProxy>
 {
-   gadget_DigitalProxy_Wrapper(PyObject* self_, const gadget::DigitalProxy& p0)
+   gadget_DigitalProxy_Wrapper(const gadget::DigitalProxy& p0)
       : gadget::DigitalProxy(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_DigitalProxy_Wrapper(PyObject* self_)
+   gadget_DigitalProxy_Wrapper()
       : gadget::DigitalProxy()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -45,7 +45,14 @@ struct gadget_DigitalProxy_Wrapper : gadget::DigitalProxy
    {
       try
       {
-         call_method<void>(self, "updateData");
+         if ( override updateData = this->get_override("updateData") )
+         {
+            updateData();
+         }
+         else
+         {
+            gadget::DigitalProxy::updateData();
+         }
       }
       catch (error_already_set)
       {
@@ -62,7 +69,14 @@ struct gadget_DigitalProxy_Wrapper : gadget::DigitalProxy
    {
       try
       {
-        return call_method<vpr::Interval>(self, "getTimeStamp");
+         if ( override getTimeStamp = this->get_override("getTimeStamp") )
+         {
+            return getTimeStamp();
+         }
+         else
+         {
+            return gadget::DigitalProxy::getTimeStamp();
+         }
       }
       catch (error_already_set)
       {
@@ -81,7 +95,14 @@ struct gadget_DigitalProxy_Wrapper : gadget::DigitalProxy
    {
       try
       {
-         return call_method<bool>(self, "config", p0);
+         if ( override config = this->get_override("config") )
+         {
+            return config(p0);
+         }
+         else
+         {
+            return gadget::DigitalProxy::config(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -100,7 +121,14 @@ struct gadget_DigitalProxy_Wrapper : gadget::DigitalProxy
    {
       try
       {
-         call_method<void>(self, "set", p0, p1);
+         if ( override set = this->get_override("set") )
+         {
+            set(p0, p1);
+         }
+         else
+         {
+            gadget::DigitalProxy::set(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -117,7 +145,14 @@ struct gadget_DigitalProxy_Wrapper : gadget::DigitalProxy
    {
       try
       {
-         return call_method<bool>(self, "refresh");
+         if ( override refresh = this->get_override("refresh") )
+         {
+            return refresh();
+         }
+         else
+         {
+            return gadget::DigitalProxy::refresh();
+         }
       }
       catch (error_already_set)
       {
@@ -136,7 +171,14 @@ struct gadget_DigitalProxy_Wrapper : gadget::DigitalProxy
    {
       try
       {
-         return call_method<std::string>(self, "getDeviceName");
+         if ( override getDeviceName = this->get_override("getDeviceName") )
+         {
+            return getDeviceName();
+         }
+         else
+         {
+            return gadget::DigitalProxy::getDeviceName();
+         }
       }
       catch (error_already_set)
       {
@@ -155,7 +197,11 @@ struct gadget_DigitalProxy_Wrapper : gadget::DigitalProxy
    {
       try
       {
-         return call_method<bool>(self, "isStupefied");
+         if ( override isStupefied = this->get_override("isStupefied") )
+         {
+            return isStupefied();
+         }
+         return gadget::DigitalProxy::isStupefied();
       }
       catch (error_already_set)
       {
@@ -169,8 +215,6 @@ struct gadget_DigitalProxy_Wrapper : gadget::DigitalProxy
    {
       return gadget::DigitalProxy::isStupefied();
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -179,8 +223,7 @@ struct gadget_DigitalProxy_Wrapper : gadget::DigitalProxy
 // Module ======================================================================
 void _Export_DigitalProxy()
 {
-   class_<gadget::DigitalProxy, pyj::gadget_DigitalProxy_Wrapper>(
-       "DigitalProxy",
+   class_<pyj::gadget_DigitalProxy_Wrapper>("DigitalProxy",
        "A proxy class to digital devices used by the Input Manager.\n\n"
        "A digital proxy always points to a digital device and a unit\n"
        "number within that device.  The Input Manager can therefore keep\n"

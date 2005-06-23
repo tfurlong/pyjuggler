@@ -22,28 +22,27 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_MouseEvent_Wrapper : gadget::MouseEvent
+struct gadget_MouseEvent_Wrapper
+   : gadget::MouseEvent
+   , wrapper<gadget::MouseEvent>
 {
-   gadget_MouseEvent_Wrapper(PyObject* self_, const gadget::MouseEvent& p0)
+   gadget_MouseEvent_Wrapper(const gadget::MouseEvent& p0)
       : gadget::MouseEvent(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_MouseEvent_Wrapper(PyObject* self_, const gadget::EventType& p0,
+   gadget_MouseEvent_Wrapper(const gadget::EventType& p0,
                              const gadget::Keys& p1, const int& p2,
                              const int& p3, const int& p4, const int& p5,
                              const int& p6, const long unsigned int& p7)
       : gadget::MouseEvent(p0, p1, p2, p3, p4, p5, p6, p7)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-    gadget_MouseEvent_Wrapper(PyObject* self_)
+   gadget_MouseEvent_Wrapper()
       : gadget::MouseEvent()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -57,7 +56,11 @@ struct gadget_MouseEvent_Wrapper : gadget::MouseEvent
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeObject", p0);
+         if ( override writeObject = this->get_override("writeObject") )
+         {
+            return writeObject(p0);
+         }
+         return gadget::MouseEvent::writeObject(p0);
       }
       catch (error_already_set)
       {
@@ -76,7 +79,11 @@ struct gadget_MouseEvent_Wrapper : gadget::MouseEvent
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "readObject", p0);
+         if ( override readObject = this->get_override("readObject") )
+         {
+            return readObject(p0);
+         }
+         return gadget::MouseEvent::readObject(p0);
       }
       catch (error_already_set)
       {
@@ -90,8 +97,6 @@ struct gadget_MouseEvent_Wrapper : gadget::MouseEvent
    {
       return gadget::MouseEvent::readObject(p0);
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -101,8 +106,7 @@ struct gadget_MouseEvent_Wrapper : gadget::MouseEvent
 void _Export_MouseEvent()
 {
    scope* gadget_MouseEvent_scope = new scope(
-   class_<gadget::MouseEvent, bases<gadget::Event>,
-          pyj::gadget_MouseEvent_Wrapper>
+   class_<pyj::gadget_MouseEvent_Wrapper, bases<gadget::Event> >
       ("MouseEvent",
        "Mouse event class.  This captures the state of the mouse when any\n"
        "mouse event occurs.  This includes button presses, button\n"

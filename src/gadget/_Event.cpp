@@ -22,11 +22,10 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_Event_Wrapper: gadget::Event
+struct gadget_Event_Wrapper : gadget::Event, wrapper<gadget::Event>
 {
-   gadget_Event_Wrapper(PyObject* self_, const gadget::Event& p0)
+   gadget_Event_Wrapper(const gadget::Event& p0)
       : gadget::Event(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -40,7 +39,14 @@ struct gadget_Event_Wrapper: gadget::Event
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeObject", p0);
+         if ( override writeObject = this->get_override("writeObject") )
+         {
+            return writeObject(p0);
+         }
+         else
+         {
+            return gadget::Event::writeObject(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -59,7 +65,14 @@ struct gadget_Event_Wrapper: gadget::Event
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "readObject", p0);
+         if ( override readObject = this->get_override("readObject") )
+         {
+            return readObject(p0);
+         }
+         else
+         {
+            return gadget::Event::readObject(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -73,8 +86,6 @@ struct gadget_Event_Wrapper: gadget::Event
    {
       return gadget::Event::readObject(p0);
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -84,7 +95,7 @@ struct gadget_Event_Wrapper: gadget::Event
 void _Export_Event()
 {
    scope* gadget_Event_scope = new scope(
-   class_<gadget::Event, pyj::gadget_Event_Wrapper>("Event",
+   class_<pyj::gadget_Event_Wrapper>("Event",
        "Base event type that an event source may generate.  This class\n"
        "cannot be used directly.  Subclasses must be used instead."
        ,

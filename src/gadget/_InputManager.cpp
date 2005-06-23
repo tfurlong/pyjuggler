@@ -21,7 +21,9 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_InputManager_Wrapper : gadget::InputManager
+struct gadget_InputManager_Wrapper
+   : gadget::InputManager
+   , wrapper<gadget::InputManager>
 {
    virtual ~gadget_InputManager_Wrapper()
    {
@@ -32,7 +34,11 @@ struct gadget_InputManager_Wrapper : gadget::InputManager
    {
       try
       {
-         return call_method<bool>(self, "configAdd", p0);
+         if ( override configAdd = this->get_override("configAdd") )
+         {
+            return configAdd(p0);
+         }
+         return gadget::InputManager::configAdd(p0);
       }
       catch (error_already_set)
       {
@@ -51,7 +57,11 @@ struct gadget_InputManager_Wrapper : gadget::InputManager
    {
       try
       {
-         return call_method<bool>(self, "configRemove", p0);
+         if ( override configRemove = this->get_override("configRemove") )
+         {
+            return configRemove(p0);
+         }
+         return gadget::InputManager::configRemove(p0);
       }
       catch (error_already_set)
       {
@@ -70,7 +80,11 @@ struct gadget_InputManager_Wrapper : gadget::InputManager
    {
       try
       {
-         return call_method<bool>(self, "configCanHandle", p0);
+         if ( override configCanHandle = this->get_override("configCanHandle") )
+         {
+            return configCanHandle(p0);
+         }
+         return gadget::InputManager::configCanHandle(p0);
       }
       catch (error_already_set)
       {
@@ -89,7 +103,12 @@ struct gadget_InputManager_Wrapper : gadget::InputManager
    {
       try
       {
-         return call_method<int>(self, "configProcessPending");
+         if ( override configProcessPending =
+                 this->get_override("configProcessPending") )
+         {
+            return configProcessPending();
+         }
+         return jccl::ConfigElementHandler::configProcessPending();
       }
       catch (error_already_set)
       {
@@ -103,8 +122,6 @@ struct gadget_InputManager_Wrapper : gadget::InputManager
    {
       return jccl::ConfigElementHandler::configProcessPending();
    }
-
-   PyObject* self;
 };
 
 
@@ -114,8 +131,7 @@ struct gadget_InputManager_Wrapper : gadget::InputManager
 // Module ======================================================================
 void _Export_InputManager()
 {
-   class_<gadget::InputManager, boost::noncopyable,
-          pyj::gadget_InputManager_Wrapper>
+   class_<pyj::gadget_InputManager_Wrapper, boost::noncopyable>
       ("InputManager",
        "The Input Manager holds and managed all Gadgeteer input devices.\n\n"
        "The Input Manager handles all the details behind organizing the\n"

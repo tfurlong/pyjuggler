@@ -23,11 +23,10 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_Command_Wrapper : gadget::Command
+struct gadget_Command_Wrapper : gadget::Command, wrapper<gadget::Command>
 {
-   gadget_Command_Wrapper(PyObject* self_)
+   gadget_Command_Wrapper()
       : gadget::Command()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -41,7 +40,11 @@ struct gadget_Command_Wrapper : gadget::Command
    {
       try
       {
-         return call_method<bool>(self, "config", p0);
+         if ( override config = this->get_override("config") )
+         {
+            return config(p0);
+         }
+         return gadget::Command::config(p0);
       }
       catch (error_already_set)
       {
@@ -60,7 +63,12 @@ struct gadget_Command_Wrapper : gadget::Command
    {
       try
       {
-         return call_method<std::string>(self, "getInputTypeName");
+         if ( override getInputTypeName =
+                 this->get_override("getInputTypeName") )
+         {
+             return getInputTypeName();
+         }
+         return gadget::Command::getInputTypeName();
       }
       catch (error_already_set)
       {
@@ -79,7 +87,11 @@ struct gadget_Command_Wrapper : gadget::Command
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeObject", p0);
+         if ( override writeObject = this->get_override("writeObject") )
+         {
+            return writeObject(p0);
+         }
+         return gadget::Command::writeObject(p0);
       }
       catch (error_already_set)
       {
@@ -98,7 +110,11 @@ struct gadget_Command_Wrapper : gadget::Command
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "readObject", p0);
+         if ( override readObject = this->get_override("readObject") )
+         {
+            return readObject(p0);
+         }
+         return gadget::Command::readObject(p0);
       }
       catch (error_already_set)
       {
@@ -112,8 +128,6 @@ struct gadget_Command_Wrapper : gadget::Command
    {
       return gadget::Command::readObject(p0);
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -122,8 +136,7 @@ struct gadget_Command_Wrapper : gadget::Command
 // Module ======================================================================
 void _Export_Command()
 {
-   class_<gadget::Command, boost::noncopyable, pyj::gadget_Command_Wrapper>(
-       "Command",
+   class_<pyj::gadget_Command_Wrapper, boost::noncopyable>("Command",
        "gadget.Command is the abstract base class for devices that\n"
        "translate spoken commands into integer-identified commands.\n"
        "Drivers for all such devices must derive from this class.  This is\n"

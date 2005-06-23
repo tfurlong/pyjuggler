@@ -23,11 +23,10 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_Digital_Wrapper : gadget::Digital
+struct gadget_Digital_Wrapper : gadget::Digital, wrapper<gadget::Digital>
 {
-   gadget_Digital_Wrapper(PyObject* self_)
+   gadget_Digital_Wrapper()
       : gadget::Digital()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -41,7 +40,11 @@ struct gadget_Digital_Wrapper : gadget::Digital
    {
       try
       {
-         return call_method<bool>(self, "config", p0);
+         if ( override config = this->get_override("config") )
+         {
+            return config(p0);
+         }
+         return gadget::Digital::config(p0);
       }
       catch (error_already_set)
       {
@@ -60,7 +63,12 @@ struct gadget_Digital_Wrapper : gadget::Digital
    {
       try
       {
-         return call_method<std::string>(self, "getInputTypeName");
+         if ( override getInputTypeName =
+                 this->get_override("getInputTypeName") )
+         {
+            return getInputTypeName();
+         }
+         return gadget::Digital::getInputTypeName();
       }
       catch (error_already_set)
       {
@@ -79,7 +87,11 @@ struct gadget_Digital_Wrapper : gadget::Digital
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeObject", p0);
+         if ( override writeObject = this->get_override("writeObject") )
+         {
+            return writeObject(p0);
+         }
+         return gadget::Digital::writeObject(p0);
       }
       catch (error_already_set)
       {
@@ -98,7 +110,11 @@ struct gadget_Digital_Wrapper : gadget::Digital
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "readObject", p0);
+         if ( override readObject = this->get_override("readObject") )
+         {
+            return readObject(p0);
+         }
+         return gadget::Digital::readObject(p0);
       }
       catch (error_already_set)
       {
@@ -112,8 +128,6 @@ struct gadget_Digital_Wrapper : gadget::Digital
    {
       return gadget::Digital::readObject(p0);
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -123,8 +137,7 @@ struct gadget_Digital_Wrapper : gadget::Digital
 void _Export_Digital()
 {
    scope* gadget_Digital_scope = new scope(
-   class_<gadget::Digital, boost::noncopyable, pyj::gadget_Digital_Wrapper>(
-       "Digital",
+   class_<pyj::gadget_Digital_Wrapper, boost::noncopyable>("Digital",
        "gadget.Digital is the abstract base class from which devices\n"
        "returning digital data must derive.  This is in addition to\n"
        "gadget.Input.  gadget.Input provides pure virtual function\n"

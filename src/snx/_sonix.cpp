@@ -41,11 +41,10 @@ struct snx_sonix_Adapter : snx::sonix
    }
 };
 
-struct snx_sonix_Wrapper : snx_sonix_Adapter
+struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
 {
-   snx_sonix_Wrapper(PyObject* self_, const snx::sonix& p0)
+   snx_sonix_Wrapper(const snx::sonix& p0)
       : snx_sonix_Adapter(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -59,7 +58,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "trigger", p0, p1);
+         if ( override trigger = this->get_override("trigger") )
+         {
+            trigger(p0, p1);
+         }
+         else
+         {
+            snx::sonix::trigger(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -81,7 +87,11 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         return call_method<bool>(self, "isPlaying", p0);
+         if ( override isPlaying = this->get_override("isPlaying") )
+         {
+            return isPlaying(p0);
+         }
+         return snx::sonix::isPlaying(p0);
       }
       catch (error_already_set)
       {
@@ -98,7 +108,15 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "setRetriggerable", p0, p1);
+         if ( override setRetriggerable =
+                 this->get_override("setRetriggerable") )
+         {
+            setRetriggerable(p0, p1);
+         }
+         else
+         {
+            snx::sonix::setRetriggerable(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -115,7 +133,12 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         return call_method<bool>(self, "isRetriggerable", p0);
+         if ( override isRetriggerable =
+                 this->get_override("isRetriggerable") )
+         {
+            return isRetriggerable(p0);
+         }
+         return snx::sonix::isRetriggerable(p0);
       }
       catch (error_already_set)
       {
@@ -132,7 +155,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "stop", p0);
+         if ( override stop = this->get_override("stop") )
+         {
+            stop(p0);
+         }
+         else
+         {
+            snx::sonix::stop(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -149,7 +179,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "pause", p0);
+         if ( override pause = this->get_override("pause") )
+         {
+            pause(p0);
+         }
+         else
+         {
+            snx::sonix::pause(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -166,7 +203,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "unpause", p0);
+         if ( override unpause = this->get_override("unpause") )
+         {
+            unpause(p0);
+         }
+         else
+         {
+            snx::sonix::unpause(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -183,7 +227,11 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         return call_method<bool>(self, "isPaused", p0);
+         if ( override isPaused = this->get_override("isPaused") )
+         {
+            return isPaused(p0);
+         }
+         return snx::sonix::isPaused(p0);
       }
       catch (error_already_set)
       {
@@ -200,7 +248,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "setAmbient", p0, p1);
+         if ( override setAmbient = this->get_override("setAmbient") )
+         {
+            setAmbient(p0, p1);
+         }
+         else
+         {
+            snx::sonix::setAmbient(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -222,7 +277,11 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         return call_method<bool>(self, "isAmbient", p0);
+         if ( override isAmbient = this->get_override("isAmbient") )
+         {
+            return isAmbient(p0);
+         }
+         return snx::sonix::isAmbient(p0);
       }
       catch (error_already_set)
       {
@@ -241,7 +300,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "setPitchBend", p0, p1);
+         if ( override setPitchBend = this->get_override("setPitchBend") )
+         {
+            setPitchBend(p0, p1);
+         }
+         else
+         {
+            snx::sonix::setPitchBend(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -258,7 +324,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "setVolume", p0, p1);
+         if ( override setVolume = this->get_override("setVolume") )
+         {
+            setVolume(p0, p1);
+         }
+         else
+         {
+            snx::sonix::setVolume(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -275,7 +348,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "setCutoff", p0, p1);
+         if ( override setCutoff = this->get_override("setCutoff") )
+         {
+            setCutoff(p0, p1);
+         }
+         else
+         {
+            snx::sonix::setCutoff(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -293,7 +373,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "setPosition", p0, p1, p2, p3);
+         if ( override setPosition = this->get_override("setPosition") )
+         {
+            setPosition(p0, p1, p2, p3);
+         }
+         else
+         {
+            snx::sonix::setPosition(p0, p1, p2, p3);
+         }
       }
       catch (error_already_set)
       {
@@ -319,7 +406,11 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         return call_method<tuple>(self, "getPosition", p0);
+         if ( override getPosition = this->get_override("getPosition") )
+         {
+            return getPosition(p0);
+         }
+         return snx_sonix_Adapter::getPositionWrapper(p0);
       }
       catch (error_already_set)
       {
@@ -338,7 +429,15 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "setListenerPosition", p0);
+         if ( override setListenerPosition =
+                 this->get_override("setListenerPosition") )
+         {
+            setListenerPosition(p0);
+         }
+         else
+         {
+            snx::sonix::setListenerPosition(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -355,7 +454,15 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "getListenerPosition", p0);
+         if ( override getListenerPosition =
+                 this->get_override("getListenerPosition") )
+         {
+            getListenerPosition(p0);
+         }
+         else
+         {
+            snx::sonix::getListenerPosition(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -372,7 +479,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "changeAPI", p0);
+         if ( override changeAPI = this->get_override("changeAPI") )
+         {
+            changeAPI(p0);
+         }
+         else
+         {
+            snx::sonix::changeAPI(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -389,7 +503,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "configure", p0);
+         if ( override configure = this->get_override("configure") )
+         {
+            configure(p0);
+         }
+         else
+         {
+            snx::sonix::configure(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -406,7 +527,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "configure", p0, p1);
+         if ( override configure = this->get_override("configure") )
+         {
+            configure(p0, p1);
+         }
+         else
+         {
+            snx::sonix::configure(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -423,7 +551,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "remove", p0);
+         if ( override remove = this->get_override("remove") )
+         {
+            remove(p0);
+         }
+         else
+         {
+            snx::sonix::remove(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -440,7 +575,14 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
    {
       try
       {
-         call_method<void>(self, "step", p0);
+         if ( override step = this->get_override("step") )
+         {
+            step(p0);
+         }
+         else
+         {
+            snx::sonix::step(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -463,8 +605,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter
 // Module ======================================================================
 void _Export_sonix()
 {
-   class_<snx::sonix, pyj::snx_sonix_Wrapper, boost::noncopyable>("sonix",
-                                                                  no_init)
+   class_<pyj::snx_sonix_Wrapper, boost::noncopyable>("sonix", no_init)
       .def("trigger", &snx::sonix::trigger,
            &pyj::snx_sonix_Wrapper::default_trigger_2,
            "trigger(alias, repeat)\n"

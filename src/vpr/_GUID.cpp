@@ -20,40 +20,34 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vpr_GUID_Wrapper : vpr::GUID
+struct vpr_GUID_Wrapper : vpr::GUID, wrapper<vpr::GUID>
 {
-   vpr_GUID_Wrapper(PyObject* self_, const vpr::GUID::GenerateTag& p0)
+   vpr_GUID_Wrapper(const vpr::GUID::GenerateTag& p0)
       : vpr::GUID(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   vpr_GUID_Wrapper(PyObject* self_)
+   vpr_GUID_Wrapper()
       : vpr::GUID()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   vpr_GUID_Wrapper(PyObject* self_, const std::string& p0)
+   vpr_GUID_Wrapper(const std::string& p0)
       : vpr::GUID(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   vpr_GUID_Wrapper(PyObject* self_, const vpr::GUID& p0,
-                    const std::string& p1)
+   vpr_GUID_Wrapper(const vpr::GUID& p0, const std::string& p1)
       : vpr::GUID(p0, p1)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   vpr_GUID_Wrapper(PyObject* self_, const vpr::GUID& p0)
+   vpr_GUID_Wrapper(const vpr::GUID& p0)
       : vpr::GUID(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -62,8 +56,6 @@ struct vpr_GUID_Wrapper : vpr::GUID
    {
       /* Do nothing. */ ;
    }
-
-   PyObject* self;
 };
 
 struct GuidPickle : pickle_suite
@@ -90,8 +82,7 @@ struct GuidPickle : pickle_suite
 void _Export_GUID()
 {
    scope* vpr_GUID_scope = new scope(
-   class_<vpr::GUID, bases<vpr::SerializableObject>, pyj::vpr_GUID_Wrapper>
-      ("GUID",
+   class_<pyj::vpr_GUID_Wrapper, bases<vpr::SerializableObject> >("GUID",
        init<>(
           "__init__()\n"
           "Creates an empty GUID equal to PyJuggler.vpr.GUID.NullGUID.\n\n"

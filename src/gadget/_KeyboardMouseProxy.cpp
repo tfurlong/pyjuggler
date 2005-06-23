@@ -20,19 +20,18 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_KeyboardMouseProxy_Wrapper : gadget::KeyboardMouseProxy
+struct gadget_KeyboardMouseProxy_Wrapper
+   : gadget::KeyboardMouseProxy
+   , wrapper<gadget::KeyboardMouseProxy>
 {
-   gadget_KeyboardMouseProxy_Wrapper(PyObject* self_,
-                                     const gadget::KeyboardMouseProxy& p0)
+   gadget_KeyboardMouseProxy_Wrapper(const gadget::KeyboardMouseProxy& p0)
       : gadget::KeyboardMouseProxy(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_KeyboardMouseProxy_Wrapper(PyObject* self_)
+   gadget_KeyboardMouseProxy_Wrapper()
       : gadget::KeyboardMouseProxy()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -46,7 +45,11 @@ struct gadget_KeyboardMouseProxy_Wrapper : gadget::KeyboardMouseProxy
    {
       try
       {
-         return call_method<vpr::Interval>(self, "getTimeStamp");
+         if ( override getTimeStamp = this->get_override("getTimeStamp") )
+         {
+            return getTimeStamp();
+         }
+         return gadget::KeyboardMouseProxy::getTimeStamp();
       }
       catch (error_already_set)
       {
@@ -65,7 +68,11 @@ struct gadget_KeyboardMouseProxy_Wrapper : gadget::KeyboardMouseProxy
    {
       try
       {
-         return call_method<bool>(self, "config", p0);
+         if ( override config = this->get_override("config") )
+         {
+            return config(p0);
+         }
+         return gadget::KeyboardMouseProxy::config(p0);
       }
       catch (error_already_set)
       {
@@ -84,7 +91,14 @@ struct gadget_KeyboardMouseProxy_Wrapper : gadget::KeyboardMouseProxy
    {
       try
       {
-         call_method<void>(self, "set", p0, p1);
+         if ( override set = this->get_override("set") )
+         {
+            set(p0, p1);
+         }
+         else
+         {
+            gadget::KeyboardMouseProxy::set(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -101,7 +115,11 @@ struct gadget_KeyboardMouseProxy_Wrapper : gadget::KeyboardMouseProxy
    {
       try
       {
-         return call_method<bool>(self, "refresh");
+         if ( override refresh = this->get_override("refresh") )
+         {
+            return refresh();
+         }
+         return gadget::KeyboardMouseProxy::refresh();
       }
       catch (error_already_set)
       {
@@ -120,7 +138,11 @@ struct gadget_KeyboardMouseProxy_Wrapper : gadget::KeyboardMouseProxy
    {
       try
       {
-         return call_method<std::string>(self, "getDeviceName");
+         if ( override getDeviceName = this->get_override("getDeviceName") )
+         {
+            return getDeviceName();
+         }
+         return gadget::KeyboardMouseProxy::getDeviceName();
       }
       catch (error_already_set)
       {
@@ -139,7 +161,14 @@ struct gadget_KeyboardMouseProxy_Wrapper : gadget::KeyboardMouseProxy
    {
       try
       {
-         call_method<void>(self, "updateData");
+         if ( override updateData = this->get_override("updateData") )
+         {
+            updateData();
+         }
+         else
+         {
+            gadget::Proxy::updateData();
+         }
       }
       catch (error_already_set)
       {
@@ -156,7 +185,11 @@ struct gadget_KeyboardMouseProxy_Wrapper : gadget::KeyboardMouseProxy
    {
       try
       {
-         return call_method<bool>(self, "isStupefied");
+         if ( override isStupefied = this->get_override("isStupefied") )
+         {
+            return isStupefied();
+         }
+         return gadget::Proxy::isStupefied();
       }
       catch (error_already_set)
       {
@@ -170,8 +203,6 @@ struct gadget_KeyboardMouseProxy_Wrapper : gadget::KeyboardMouseProxy
    {
       return gadget::Proxy::isStupefied();
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -180,8 +211,7 @@ struct gadget_KeyboardMouseProxy_Wrapper : gadget::KeyboardMouseProxy
 // Module ======================================================================
 void _Export_KeyboardMouseProxy()
 {
-   class_<gadget::KeyboardMouseProxy, pyj::gadget_KeyboardMouseProxy_Wrapper>(
-       "KeyboardMouseProxy",
+   class_<pyj::gadget_KeyboardMouseProxy_Wrapper>("KeyboardMouseProxy",
        "A proxy class to keyboard/mouse devices used by the Input Manager.\n\n"
        "A keyboard/mouse proxy always points to a keyboard/mouse device\n"
        "and a unit number within that device.  The Input Manager can\n"

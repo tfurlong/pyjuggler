@@ -22,36 +22,30 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_KeyEvent_Wrapper : gadget::KeyEvent
+struct gadget_KeyEvent_Wrapper : gadget::KeyEvent, wrapper<gadget::KeyEvent>
 {
-   gadget_KeyEvent_Wrapper(PyObject* self_, const gadget::KeyEvent& p0)
+   gadget_KeyEvent_Wrapper(const gadget::KeyEvent& p0)
       : gadget::KeyEvent(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_KeyEvent_Wrapper(PyObject* self_, const gadget::EventType& p0,
-                           const gadget::Keys& p1, const int& p2,
-                           const long unsigned int& p3)
+   gadget_KeyEvent_Wrapper(const gadget::EventType& p0, const gadget::Keys& p1,
+                           const int& p2, const long unsigned int& p3)
       : gadget::KeyEvent(p0, p1, p2, p3)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_KeyEvent_Wrapper(PyObject* self_, const gadget::EventType& p0,
-                           const gadget::Keys& p1, const int& p2,
-                           const long unsigned int& p3, char p4)
+   gadget_KeyEvent_Wrapper(const gadget::EventType& p0, const gadget::Keys& p1,
+                           const int& p2, const long unsigned int& p3, char p4)
       : gadget::KeyEvent(p0, p1, p2, p3, p4)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_KeyEvent_Wrapper(PyObject* self_)
-      : gadget::KeyEvent()
-      , self(self_)
+   gadget_KeyEvent_Wrapper()
+       : gadget::KeyEvent()
    {
       /* Do nothing. */ ;
    }
@@ -65,7 +59,14 @@ struct gadget_KeyEvent_Wrapper : gadget::KeyEvent
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeObject", p0);
+         if ( override writeObject = this->get_override("writeObject") )
+         {
+            return writeObject(p0);
+         }
+         else
+         {
+            return gadget::KeyEvent::writeObject(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -84,7 +85,14 @@ struct gadget_KeyEvent_Wrapper : gadget::KeyEvent
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "readObject", p0);
+         if ( override readObject = this->get_override("readObject") )
+         {
+            return readObject(p0);
+         }
+         else
+         {
+            return gadget::KeyEvent::readObject(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -98,8 +106,6 @@ struct gadget_KeyEvent_Wrapper : gadget::KeyEvent
    {
       return gadget::KeyEvent::readObject(p0);
    }
-
-  PyObject* self;
 };
 
 }// namespace 
@@ -109,7 +115,7 @@ struct gadget_KeyEvent_Wrapper : gadget::KeyEvent
 void _Export_KeyEvent()
 {
    scope* gadget_KeyEvent_scope = new scope(
-   class_<gadget::KeyEvent, bases<gadget::Event>, pyj::gadget_KeyEvent_Wrapper>
+   class_<pyj::gadget_KeyEvent_Wrapper, bases<gadget::Event> >
       ("KeyEvent",
        "Key press or release event class.",
        init<>(

@@ -23,7 +23,7 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vrj_Kernel_Wrapper : vrj::Kernel
+struct vrj_Kernel_Wrapper : vrj::Kernel, wrapper<vrj::Kernel>
 {
    virtual ~vrj_Kernel_Wrapper()
    {
@@ -34,7 +34,11 @@ struct vrj_Kernel_Wrapper : vrj::Kernel
    {
       try
       {
-         return call_method<bool>(self, "configCanHandle", p0);
+         if ( override configCanHandle = this->get_override("configCanHandle") )
+         {
+            return configCanHandle(p0);
+         }
+         return vrj::Kernel::configCanHandle(p0);
       }
       catch (error_already_set)
       {
@@ -53,7 +57,11 @@ struct vrj_Kernel_Wrapper : vrj::Kernel
    {
       try
       {
-         return call_method<bool>(self, "configAdd", p0);
+         if ( override configAdd = this->get_override("configAdd") )
+         {
+            return configAdd(p0);
+         }
+         return vrj::Kernel::configAdd(p0);
       }
       catch (error_already_set)
       {
@@ -72,7 +80,11 @@ struct vrj_Kernel_Wrapper : vrj::Kernel
    {
       try
       {
-         return call_method<bool>(self, "configRemove", p0);
+         if ( override configRemove = this->get_override("configRemove") )
+         {
+            return configRemove(p0);
+         }
+         return vrj::Kernel::configRemove(p0);
       }
       catch (error_already_set)
       {
@@ -91,7 +103,12 @@ struct vrj_Kernel_Wrapper : vrj::Kernel
    {
       try
       {
-         return call_method<int>(self, "configProcessPending");
+         if ( override configProcessPending =
+                 this->get_override("configProcessPending") )
+         {
+            return configProcessPending();
+         }
+         return jccl::ConfigElementHandler::configProcessPending();
       }
       catch (error_already_set)
       {
@@ -105,8 +122,6 @@ struct vrj_Kernel_Wrapper : vrj::Kernel
    {
       return jccl::ConfigElementHandler::configProcessPending();
    }
-
-   PyObject* self;
 };
 
 void vrj_Kernel_waitForKernelStop(vrj::Kernel* kernel)
@@ -127,7 +142,7 @@ void vrj_Kernel_waitForKernelStop(vrj::Kernel* kernel)
 // Module ======================================================================
 void _Export_Kernel()
 {
-   class_<vrj::Kernel, boost::noncopyable, pyj::vrj_Kernel_Wrapper>("Kernel",
+   class_<pyj::vrj_Kernel_Wrapper, boost::noncopyable>("Kernel",
        "Main control class for all VR Juggler applications.\n\n"
        "The kernel takes care of all initialization and object creation.\n"
        "This class is the only class that MUST be instantiated for all\n"

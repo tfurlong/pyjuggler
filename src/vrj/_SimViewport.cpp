@@ -22,18 +22,16 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vrj_SimViewport_Wrapper : vrj::SimViewport
+struct vrj_SimViewport_Wrapper : vrj::SimViewport, wrapper<vrj::SimViewport>
 {
-   vrj_SimViewport_Wrapper(PyObject* self_)
+   vrj_SimViewport_Wrapper()
       : vrj::SimViewport()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   vrj_SimViewport_Wrapper(PyObject* self_, const vrj::SimViewport& p0)
+   vrj_SimViewport_Wrapper(const vrj::SimViewport& p0)
       : vrj::SimViewport(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -47,7 +45,15 @@ struct vrj_SimViewport_Wrapper : vrj::SimViewport
    {
       try
       {
-         call_method<void>(self, "updateProjections", p0);
+         if ( override updateProjections =
+                 this->get_override("updateProjections") )
+         {
+            updateProjections(p0);
+         }
+         else
+         {
+            vrj::SimViewport::updateProjections(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -59,8 +65,6 @@ struct vrj_SimViewport_Wrapper : vrj::SimViewport
    {
       vrj::SimViewport::updateProjections(p0);
    }
-
-   PyObject* self;
 };
 
 inline tuple vrj_SimViewport_getOriginAndSize_wrapper(vrj::SimViewport* vp)
@@ -76,7 +80,7 @@ inline tuple vrj_SimViewport_getOriginAndSize_wrapper(vrj::SimViewport* vp)
 // Module ======================================================================
 void _Export_SimViewport()
 {
-   class_<vrj::SimViewport, bases<vrj::Viewport>, pyj::vrj_SimViewport_Wrapper>
+   class_<pyj::vrj_SimViewport_Wrapper, bases<vrj::Viewport> >
       ("SimViewport", init<>())
       .def(init<const vrj::SimViewport&>())
       .def("updateProjections", &vrj::SimViewport::updateProjections,

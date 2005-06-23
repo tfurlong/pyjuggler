@@ -85,7 +85,7 @@ Once you have bjam, follow these simple steps:
 
    1) Move the *entire* PyJuggler source tree into the directory
       <BOOST DIR>/libs/python, where <BOOST DIR> is the base directory
-      of the Boost source tree for Boost 1.31 or newer.
+      of the Boost source tree for Boost 1.32 or newer.
    2) Rename the root of the PyJuggler source tree to 'pyjuggler' (case
       matters on UNIX-based platforms).  At this point, there should be
       a directory <BOOST DIR>/libs/python/pyjuggler that contains the
@@ -164,8 +164,8 @@ The short version of the build instructions for UNIX-based platforms
    % ../configure --with-boost-python=<Boost installation dir>
    % make
 
-This assumes that you have Boost 1.31.x installed.  If you have a version
-newer than 1.31 (i.e., 1.32, 1.33, etc.), you must add the option
+This assumes that you have Boost 1.32.x installed.  If you have a version
+newer than 1.32 (i.e., 1.33, 1.34, etc.), you must add the option
 --with-boost-version as follows:
 
    % ../configure --with-boost-python=<Boost installation dir> \
@@ -176,7 +176,7 @@ THE PATCH VERSION!!  This extra option is needed because the Boost
 installation procedure incldues the Boost version number in the names of
 installed files and directories.
 
-If, for some reason, your Boost 1.31 (or newer) installation does not
+If, for some reason, your Boost 1.32 (or newer) installation does not
 use the new naming conventions (the Boost.Python library is named
 libboost_python.so rather than libboost_python-gcc-mt.so), then add
 the option --with-boost-python-lib=boost_python.  This option can be

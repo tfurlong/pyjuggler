@@ -20,18 +20,18 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_StringProxy_Wrapper : gadget::StringProxy
+struct gadget_StringProxy_Wrapper
+   : gadget::StringProxy
+   , wrapper<gadget::StringProxy>
 {
-   gadget_StringProxy_Wrapper(PyObject* self_, const gadget::StringProxy& p0)
+   gadget_StringProxy_Wrapper(const gadget::StringProxy& p0)
       : gadget::StringProxy(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_StringProxy_Wrapper(PyObject* self_)
+   gadget_StringProxy_Wrapper()
       : gadget::StringProxy()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -45,7 +45,14 @@ struct gadget_StringProxy_Wrapper : gadget::StringProxy
    {
       try
       {
-         call_method<void>(self, "updateData");
+         if ( override updateData = this->get_override("updateData") )
+         {
+            updateData();
+         }
+         else
+         {
+            gadget::StringProxy::updateData();
+         }
       }
       catch (error_already_set)
       {
@@ -62,7 +69,11 @@ struct gadget_StringProxy_Wrapper : gadget::StringProxy
    {
       try
       {
-        return call_method<vpr::Interval>(self, "getTimeStamp");
+         if ( override getTimeStamp = this->get_override("getTimeStamp") )
+         {
+            return getTimeStamp();
+         }
+         return gadget::StringProxy::getTimeStamp();
       }
       catch (error_already_set)
       {
@@ -81,7 +92,11 @@ struct gadget_StringProxy_Wrapper : gadget::StringProxy
    {
       try
       {
-         return call_method<bool>(self, "config", p0);
+         if ( override config = this->get_override("config") )
+         {
+            return config(p0);
+         }
+         return gadget::StringProxy::config(p0);
       }
       catch (error_already_set)
       {
@@ -100,7 +115,14 @@ struct gadget_StringProxy_Wrapper : gadget::StringProxy
    {
       try
       {
-         call_method<void>(self, "set", p0, p1);
+         if ( override set = this->get_override("set") )
+         {
+            set(p0, p1);
+         }
+         else
+         {
+            gadget::StringProxy::set(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -117,7 +139,11 @@ struct gadget_StringProxy_Wrapper : gadget::StringProxy
    {
       try
       {
-         return call_method<bool>(self, "refresh");
+         if ( override refresh = this->get_override("refresh") )
+         {
+            return refresh();
+         }
+         return gadget::StringProxy::refresh();
       }
       catch (error_already_set)
       {
@@ -136,7 +162,11 @@ struct gadget_StringProxy_Wrapper : gadget::StringProxy
    {
       try
       {
-         return call_method<std::string>(self, "getDeviceName");
+         if ( override getDeviceName = this->get_override("getDeviceName") )
+         {
+            return getDeviceName();
+         }
+         return gadget::StringProxy::getDeviceName();
       }
       catch (error_already_set)
       {
@@ -155,7 +185,11 @@ struct gadget_StringProxy_Wrapper : gadget::StringProxy
    {
       try
       {
-         return call_method<bool>(self, "isStupefied");
+         if ( override isStupefied = this->get_override("isStupefied") )
+         {
+            return isStupefied();
+         }
+         return gadget::StringProxy::isStupefied();
       }
       catch (error_already_set)
       {
@@ -169,8 +203,6 @@ struct gadget_StringProxy_Wrapper : gadget::StringProxy
    {
       return gadget::StringProxy::isStupefied();
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -179,7 +211,7 @@ struct gadget_StringProxy_Wrapper : gadget::StringProxy
 // Module ======================================================================
 void _Export_StringProxy()
 {
-   class_<gadget::StringProxy, pyj::gadget_StringProxy_Wrapper>("StringProxy",
+   class_<pyj::gadget_StringProxy_Wrapper>("StringProxy",
        "A proxy class to string devices used by the Input Manager.\n\n"
        "A string proxy always points to a string device and a unit number\n"
        "within that device.  The Input Manager can therefore keep an array\n"

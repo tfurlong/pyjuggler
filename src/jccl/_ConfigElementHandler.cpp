@@ -20,19 +20,18 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct jccl_ConfigElementHandler_Wrapper : jccl::ConfigElementHandler
+struct jccl_ConfigElementHandler_Wrapper
+   : jccl::ConfigElementHandler
+   , wrapper<jccl::ConfigElementHandler>
 {
-   jccl_ConfigElementHandler_Wrapper(PyObject* self_,
-                                     const jccl::ConfigElementHandler& p0)
+   jccl_ConfigElementHandler_Wrapper(const jccl::ConfigElementHandler& p0)
       : jccl::ConfigElementHandler(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   jccl_ConfigElementHandler_Wrapper(PyObject* self_)
+   jccl_ConfigElementHandler_Wrapper()
       : jccl::ConfigElementHandler()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -46,7 +45,7 @@ struct jccl_ConfigElementHandler_Wrapper : jccl::ConfigElementHandler
    {
       try
       {
-         return call_method<bool>(self, "configCanHandle", p0);
+         return this->get_override("configCanHandle")(p0);
       }
       catch (error_already_set)
       {
@@ -60,7 +59,12 @@ struct jccl_ConfigElementHandler_Wrapper : jccl::ConfigElementHandler
    {
       try
       {
-         return call_method<int>(self, "configProcessPending");
+         if ( override configProcessPending =
+                 this->get_override("configProcessPending") )
+         {
+            return configProcessPending();
+         }
+         return jccl::ConfigElementHandler::configProcessPending();
       }
       catch (error_already_set)
       {
@@ -79,7 +83,7 @@ struct jccl_ConfigElementHandler_Wrapper : jccl::ConfigElementHandler
    {
       try
       {
-         return call_method<bool>(self, "configAdd", p0);
+         return this->get_override("configAdd")(p0);
       }
       catch (error_already_set)
       {
@@ -93,7 +97,7 @@ struct jccl_ConfigElementHandler_Wrapper : jccl::ConfigElementHandler
    {
       try
       {
-         return call_method<bool>(self, "configRemove", p0);
+         return this->get_override("configRemove")(p0);
       }
       catch (error_already_set)
       {
@@ -102,8 +106,6 @@ struct jccl_ConfigElementHandler_Wrapper : jccl::ConfigElementHandler
 
       return false;
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -112,8 +114,7 @@ struct jccl_ConfigElementHandler_Wrapper : jccl::ConfigElementHandler
 // Module ======================================================================
 void _Export_ConfigElementHandler()
 {
-   class_<jccl::ConfigElementHandler, boost::noncopyable,
-          pyj::jccl_ConfigElementHandler_Wrapper>
+   class_<pyj::jccl_ConfigElementHandler_Wrapper, boost::noncopyable>
       ("ConfigElementHandler",
        "Abstract base class for all classes that can handle ConfigElement\n"
        "objects.  Any class supporting this interface can be dynamically\n"

@@ -20,19 +20,18 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_PositionProxy_Wrapper : gadget::PositionProxy
+struct gadget_PositionProxy_Wrapper
+   : gadget::PositionProxy
+   , wrapper<gadget::PositionProxy>
 {
-   gadget_PositionProxy_Wrapper(PyObject* self_,
-                                const gadget::PositionProxy& p0)
+   gadget_PositionProxy_Wrapper(const gadget::PositionProxy& p0)
       : gadget::PositionProxy(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_PositionProxy_Wrapper(PyObject* self_)
+   gadget_PositionProxy_Wrapper()
       : gadget::PositionProxy()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -46,7 +45,14 @@ struct gadget_PositionProxy_Wrapper : gadget::PositionProxy
    {
       try
       {
-         call_method<void>(self, "updateData");
+         if ( override updateData = this->get_override("updateData") )
+         {
+            updateData();
+         }
+         else
+         {
+            gadget::PositionProxy::updateData();
+         }
       }
       catch (error_already_set)
       {
@@ -63,7 +69,11 @@ struct gadget_PositionProxy_Wrapper : gadget::PositionProxy
    {
       try
       {
-         return call_method<vpr::Interval>(self, "getTimeStamp");
+         if ( override getTimeStamp = this->get_override("getTimeStamp") )
+         {
+            return getTimeStamp();
+         }
+         return gadget::PositionProxy::getTimeStamp();
       }
       catch (error_already_set)
       {
@@ -75,14 +85,18 @@ struct gadget_PositionProxy_Wrapper : gadget::PositionProxy
 
    vpr::Interval default_getTimeStamp() const
    {
-       return gadget::PositionProxy::getTimeStamp();
+      return gadget::PositionProxy::getTimeStamp();
    }
 
    bool config(jccl::ConfigElementPtr p0)
    {
       try
       {
-         return call_method<bool>(self, "config", p0);
+         if ( override config = this->get_override("config") )
+         {
+            return config(p0);
+         }
+         return gadget::PositionProxy::config(p0);
       }
       catch (error_already_set)
       {
@@ -101,7 +115,14 @@ struct gadget_PositionProxy_Wrapper : gadget::PositionProxy
    {
       try
       {
-         call_method<void>(self, "set", p0, p1);
+         if ( override set = this->get_override("set") )
+         {
+            set(p0, p1);
+         }
+         else
+         {
+            gadget::PositionProxy::set(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -118,7 +139,11 @@ struct gadget_PositionProxy_Wrapper : gadget::PositionProxy
    {
       try
       {
-         return call_method<bool>(self, "refresh");
+         if ( override refresh = this->get_override("refresh") )
+         {
+            return refresh();
+         }
+         return gadget::PositionProxy::refresh();
       }
       catch (error_already_set)
       {
@@ -137,7 +162,11 @@ struct gadget_PositionProxy_Wrapper : gadget::PositionProxy
    {
       try
       {
-         return call_method<std::string>(self, "getDeviceName");
+         if ( override getDeviceName = this->get_override("getDeviceName") )
+         {
+            return getDeviceName();
+         }
+         return gadget::PositionProxy::getDeviceName();
       }
       catch (error_already_set)
       {
@@ -156,7 +185,11 @@ struct gadget_PositionProxy_Wrapper : gadget::PositionProxy
    {
       try
       {
-         return call_method<bool>(self, "isStupefied");
+         if ( override isStupefied = this->get_override("isStupefied") )
+         {
+            return isStupefied();
+         }
+         return gadget::PositionProxy::isStupefied();
       }
       catch (error_already_set)
       {
@@ -170,8 +203,6 @@ struct gadget_PositionProxy_Wrapper : gadget::PositionProxy
    {
       return gadget::PositionProxy::isStupefied();
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -180,8 +211,7 @@ struct gadget_PositionProxy_Wrapper : gadget::PositionProxy
 // Module ======================================================================
 void _Export_PositionProxy()
 {
-   class_<gadget::PositionProxy, pyj::gadget_PositionProxy_Wrapper>(
-       "PositionProxy",
+   class_<pyj::gadget_PositionProxy_Wrapper>("PositionProxy",
        "A proxy class to positional devices used by the Input Manager.\n\n"
        "A position proxy always points to a positional device and a unit\n"
        "number within that device.  The Input Manager can therefore keep\n"
@@ -283,10 +313,10 @@ void _Export_PositionProxy()
            "name -- The name for this proxy as a string object."
       )
       .def("stupefy", &gadget::Proxy::stupefy,
-          "stupefy(newState = True)\n"
-          "Sets the stupefication state of this proxy.\n"
-          "Keyword arguments:\n"
-          "newState -- The new state of stupefication."
+           "stupefy(newState = True)\n"
+           "Sets the stupefication state of this proxy.\n"
+           "Keyword arguments:\n"
+           "newState -- The new state of stupefication."
       )
       .staticmethod("getElementType")
    ;

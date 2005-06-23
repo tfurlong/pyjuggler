@@ -20,19 +20,18 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vrj_CameraProjection_Wrapper : vrj::CameraProjection
+struct vrj_CameraProjection_Wrapper
+   : vrj::CameraProjection
+   , wrapper<vrj::CameraProjection>
 {
-   vrj_CameraProjection_Wrapper(PyObject* self_,
-                                const vrj::CameraProjection& p0)
+   vrj_CameraProjection_Wrapper(const vrj::CameraProjection& p0)
       : vrj::CameraProjection(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   vrj_CameraProjection_Wrapper(PyObject* self_)
+   vrj_CameraProjection_Wrapper()
       : vrj::CameraProjection()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -46,7 +45,14 @@ struct vrj_CameraProjection_Wrapper : vrj::CameraProjection
    {
       try
       {
-         call_method<void>(self, "calcViewMatrix", p0, p1);
+         if ( override calcViewMatrix = this->get_override("calcViewMatrix") )
+         {
+            calcViewMatrix(p0, p1);
+         }
+         else
+         {
+            vrj::CameraProjection::calcViewMatrix(p0, p1);
+         }
       }
       catch (error_already_set)
       {
@@ -58,8 +64,6 @@ struct vrj_CameraProjection_Wrapper : vrj::CameraProjection
    {
       vrj::CameraProjection::calcViewMatrix(p0, p1);
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -68,8 +72,7 @@ struct vrj_CameraProjection_Wrapper : vrj::CameraProjection
 // Module ======================================================================
 void _Export_CameraProjection()
 {
-    class_<vrj::CameraProjection, bases<vrj::Projection>,
-           pyj::vrj_CameraProjection_Wrapper>
+   class_<pyj::vrj_CameraProjection_Wrapper, bases<vrj::Projection> >
       ("CameraProjection",
        "Projection class that simply takes a matrix for the camera position.",
        init<>()

@@ -1,5 +1,9 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Jun-23-2005 patrich     Use the "new-style" Boost.Python polymorphism
+                        introduced in Boost 1.32.0.  Boost 1.32.0 is now
+                        required for Pyjuggler.
+                        NEW VERSION: 1.1.2
 Jun-17-2005 patrickh    Renamed stupified() to stupefied() and isStupified() to
                         isStupefied() in the classes gadget.AnalogProxy,
                         gadget.CommandProxy, gadget.DigitalProxy,

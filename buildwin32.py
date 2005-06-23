@@ -45,7 +45,7 @@ def setVars():
       # Default values for required settings.
       'VJ_BASE_DIR'    : os.getenv('VJ_BASE_DIR', ''),
       'VJ_DEPS_DIR'    : os.getenv('VJ_DEPS_DIR', ''),
-      'BOOST_VERSION'  : os.getenv('BOOST_VERSION', '1_31'),
+      'BOOST_VERSION'  : os.getenv('BOOST_VERSION', '1_32'),
       'BOOST_TOOL'     : os.getenv('BOOST_TOOL', 'vc71'),
       'PYTHON_ROOT'    : os.getenv('PYTHON_ROOT', ''),
       'PYTHON_VERSION' : os.getenv('PYTHON_VERSION', sys.version[:3]),

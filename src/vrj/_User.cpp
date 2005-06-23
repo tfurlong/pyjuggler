@@ -20,11 +20,10 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct vrj_User_Wrapper : vrj::User
+struct vrj_User_Wrapper : vrj::User, wrapper<vrj::User>
 {
-   vrj_User_Wrapper(PyObject* self_)
+   vrj_User_Wrapper()
       : vrj::User()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -33,8 +32,6 @@ struct vrj_User_Wrapper : vrj::User
    {
       /* Do nothing. */ ;
    }
-
-   PyObject* self;
 };
 
 }// namespace 
@@ -43,7 +40,7 @@ struct vrj_User_Wrapper : vrj::User
 // Module ======================================================================
 void _Export_User()
 {
-   class_<vrj::User, boost::noncopyable, pyj::vrj_User_Wrapper>("User",
+   class_<pyj::vrj_User_Wrapper, boost::noncopyable>("User",
        "Representation for Juggler user in multi-user environments.\n\n"
        "Each user has a system-assigned ID as well as a string name from\n"
        "the 'user' config element that created the user.  These IDs can be\n"

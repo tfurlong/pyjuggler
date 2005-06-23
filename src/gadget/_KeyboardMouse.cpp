@@ -23,19 +23,18 @@ using namespace boost::python;
 namespace pyj
 {
 
-struct gadget_KeyboardMouse_Wrapper : gadget::KeyboardMouse
+struct gadget_KeyboardMouse_Wrapper
+   : gadget::KeyboardMouse
+   , wrapper<gadget::KeyboardMouse>
 {
-   gadget_KeyboardMouse_Wrapper(PyObject* self_,
-                                const gadget::KeyboardMouse& p0)
+   gadget_KeyboardMouse_Wrapper(const gadget::KeyboardMouse& p0)
       : gadget::KeyboardMouse(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_KeyboardMouse_Wrapper(PyObject* self_)
+   gadget_KeyboardMouse_Wrapper()
       : gadget::KeyboardMouse()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -49,7 +48,12 @@ struct gadget_KeyboardMouse_Wrapper : gadget::KeyboardMouse
    {
       try
       {
-         return call_method<std::string>(self, "getInputTypeName");
+         if ( override getInputTypeName =
+                 this->get_override("getInputTypeName") )
+         {
+            return getInputTypeName();
+         }
+         return gadget::KeyboardMouse::getInputTypeName();
       }
       catch (error_already_set)
       {
@@ -68,7 +72,11 @@ struct gadget_KeyboardMouse_Wrapper : gadget::KeyboardMouse
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "writeObject", p0);
+         if ( override writeObject = this->get_override("writeObject") )
+         {
+            return writeObject(p0);
+         }
+         return gadget::KeyboardMouse::writeObject(p0);
       }
       catch (error_already_set)
       {
@@ -87,7 +95,11 @@ struct gadget_KeyboardMouse_Wrapper : gadget::KeyboardMouse
    {
       try
       {
-         return call_method<vpr::ReturnStatus>(self, "readObject", p0);
+         if ( override readObject = this->get_override("readObject") )
+         {
+            return readObject(p0);
+         }
+         return gadget::KeyboardMouse::readObject(p0);
       }
       catch (error_already_set)
       {
@@ -106,7 +118,11 @@ struct gadget_KeyboardMouse_Wrapper : gadget::KeyboardMouse
    {
       try
       {
-         return call_method<bool>(self, "config", p0);
+         if ( override config = this->get_override("config") )
+         {
+            return config(p0);
+         }
+         return gadget::KeyboardMouse::config(p0);
       }
       catch (error_already_set)
       {
@@ -120,8 +136,6 @@ struct gadget_KeyboardMouse_Wrapper : gadget::KeyboardMouse
    {
       return gadget::KeyboardMouse::config(p0);
    }
-
-   PyObject* self;
 };
 
 
@@ -131,8 +145,7 @@ struct gadget_KeyboardMouse_Wrapper : gadget::KeyboardMouse
 // Module ======================================================================
 void _Export_KeyboardMouse()
 {
-   class_<gadget::KeyboardMouse, boost::noncopyable,
-          pyj::gadget_KeyboardMouse_Wrapper>
+   class_<pyj::gadget_KeyboardMouse_Wrapper, boost::noncopyable>
       ("KeyboardMouse",
        "gadget.KeyboardMouse is an abstract class for interfacing with\n"
        "keyboard and mouse devices.  Informally, a keyboard/mouse device\n"

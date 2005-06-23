@@ -53,25 +53,24 @@ struct snx_SoundHandle_Adapter : snx::SoundHandle
    }
 };
 
-struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
+struct snx_SoundHandle_Wrapper
+   : snx_SoundHandle_Adapter
+   , wrapper<snx::SoundHandle>
 {
-   snx_SoundHandle_Wrapper(PyObject* self_, const snx::SoundHandle& p0)
+   snx_SoundHandle_Wrapper(const snx::SoundHandle& p0)
       : snx_SoundHandle_Adapter(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   snx_SoundHandle_Wrapper(PyObject* self_)
+   snx_SoundHandle_Wrapper()
       : snx_SoundHandle_Adapter()
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
 
-   snx_SoundHandle_Wrapper(PyObject* self_, const std::string& p0)
+   snx_SoundHandle_Wrapper(const std::string& p0)
       : snx_SoundHandle_Adapter(p0)
-      , self(self_)
    {
       /* Do nothing. */ ;
    }
@@ -85,7 +84,14 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "trigger", p0);
+         if ( override trigger = this->get_override("trigger") )
+         {
+            trigger(p0);
+         }
+         else
+         {
+            snx::SoundHandle::trigger(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -107,7 +113,11 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         return call_method<bool>(self, "isPlaying");
+         if ( override isPlaying = this->get_override("isPlaying") )
+         {
+            return isPlaying();
+         }
+         return snx::SoundHandle::isPlaying();
       }
       catch (error_already_set)
       {
@@ -126,7 +136,15 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "setRetriggerable", p0);
+         if ( override setRetriggerable =
+                 this->get_override("setRetriggerable") )
+         {
+            setRetriggerable(p0);
+         }
+         else
+         {
+            snx::SoundHandle::setRetriggerable(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -143,7 +161,12 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         return call_method<bool>(self, "isRetriggerable");
+         if ( override isRetriggerable =
+                 this->get_override("isRetriggerable") )
+         {
+            return isRetriggerable();
+         }
+         return snx::SoundHandle::isRetriggerable();
       }
       catch (error_already_set)
       {
@@ -162,7 +185,14 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "stop");
+         if ( override stop = this->get_override("stop") )
+         {
+            stop();
+         }
+         else
+         {
+            snx::SoundHandle::stop();
+         }
       }
       catch (error_already_set)
       {
@@ -179,7 +209,14 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "pause");
+         if ( override pause = this->get_override("pause") )
+         {
+            pause();
+         }
+         else
+         {
+            snx::SoundHandle::pause();
+         }
       }
       catch (error_already_set)
       {
@@ -196,7 +233,14 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "unpause");
+         if ( override unpause = this->get_override("unpause") )
+         {
+            unpause();
+         }
+         else
+         {
+            snx::SoundHandle::unpause();
+         }
       }
       catch (error_already_set)
       {
@@ -213,7 +257,11 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         return call_method<bool>(self, "isPaused");
+         if ( override isPaused = this->get_override("isPaused") )
+         {
+            return isPaused();
+         }
+         return snx::SoundHandle::isPaused();
       }
       catch (error_already_set)
       {
@@ -232,7 +280,14 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "setAmbient", p0);
+         if ( override setAmbient = this->get_override("setAmbient") )
+         {
+            setAmbient(p0);
+         }
+         else
+         {
+            snx::SoundHandle::setAmbient(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -254,7 +309,11 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         return call_method<bool>(self, "isAmbient");
+         if ( override isAmbient = this->get_override("isAmbient") )
+         {
+            return isAmbient();
+         }
+         return snx::SoundHandle::isAmbient();
       }
       catch (error_already_set)
       {
@@ -273,7 +332,14 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "setPitchBend", p0);
+         if ( override setPitchBend = this->get_override("setPitchBend") )
+         {
+            setPitchBend(p0);
+         }
+         else
+         {
+            snx::SoundHandle::setPitchBend(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -290,7 +356,14 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "setVolume", p0);
+         if ( override setVolume = this->get_override("setVolume") )
+         {
+            setVolume(p0);
+         }
+         else
+         {
+            snx::SoundHandle::setVolume(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -307,7 +380,14 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "setCutoff", p0);
+         if ( override setCutoff = this->get_override("setCutoff") )
+         {
+            setCutoff(p0);
+         }
+         else
+         {
+            snx::SoundHandle::setCutoff(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -324,7 +404,14 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "setPosition", p0, p1, p2);
+         if ( override setPosition = this->get_override("setPosition") )
+         {
+            setPosition(p0, p1, p2);
+         }
+         else
+         {
+            snx::SoundHandle::setPosition(p0, p1, p2);
+         }
       }
       catch (error_already_set)
       {
@@ -349,7 +436,11 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         return call_method<tuple>(self, "getPosition");
+         if ( override getPosition = this->get_override("getPosition") )
+         {
+            return getPosition();
+         }
+         return snx_SoundHandle_Adapter::getPositionWrapper();
       }
       catch (error_already_set)
       {
@@ -368,7 +459,15 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "setListenerPosition", p0);
+         if ( override setListenerPosition =
+                this->get_override("setListenerPosition") )
+         {
+            setListenerPosition(p0);
+         }
+         else
+         {
+            snx::SoundHandle::setListenerPosition(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -385,7 +484,15 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "getListenerPosition", p0);
+         if ( override getListenerPosition =
+                 this->get_override("getListenerPosition") )
+         {
+            getListenerPosition(p0);
+         }
+         else
+         {
+            snx::SoundHandle::getListenerPosition(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -402,7 +509,14 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "configure", p0);
+         if ( override configure = this->get_override("configure") )
+         {
+            configure(p0);
+         }
+         else
+         {
+            snx::SoundHandle::configure(p0);
+         }
       }
       catch (error_already_set)
       {
@@ -419,7 +533,14 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
    {
       try
       {
-         call_method<void>(self, "remove");
+         if ( override remove = this->get_override("remove") )
+         {
+            remove();
+         }
+         else
+         {
+            snx::SoundHandle::remove();
+         }
       }
       catch (error_already_set)
       {
@@ -442,7 +563,7 @@ struct snx_SoundHandle_Wrapper : snx_SoundHandle_Adapter
 // Module ======================================================================
 void _Export_SoundHandle()
 {
-   class_<snx::SoundHandle, pyj::snx_SoundHandle_Wrapper>("SoundHandle",
+   class_<pyj::snx_SoundHandle_Wrapper>("SoundHandle",
        "A handle to a Sonix sound.  This is a convenient handle to a\n"
        "sound, and it is the interface to using individual sounds in\n"
        "Sonix.  Use configure() and remove() to manage the memory of a\n"
