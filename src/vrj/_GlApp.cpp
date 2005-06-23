@@ -407,7 +407,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp
          PyErr_Print();
       }
 
-      return 1.0f;
+      return vrj::App::getDrawScaleFactor();
    }
 
    float default_getDrawScaleFactor()
