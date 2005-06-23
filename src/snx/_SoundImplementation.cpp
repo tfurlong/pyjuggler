@@ -739,7 +739,11 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override lookup = this->get_override("lookup") )
          {
+#if defined(_MSC_VER)
+            return call<snx::SoundInfo&>(lookup.ptr());
+#else
             return lookup(p0);
+#endif
          }
          return snx::SoundImplementation::lookup(p0);
       }
@@ -787,7 +791,11 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override name = this->get_override("name") )
          {
+#if defined(_MSC_VER)
+            return call<std::string&>(name.ptr());
+#else
             return name();
+#endif
          }
          return snx::SoundImplementation::name();
       }
