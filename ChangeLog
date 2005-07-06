@@ -1,5 +1,6 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+[1.0.0 released - 7.6.2005]====================================================
 Jun-22-2005 patrickh    Fixed several problems with the getPosition() method in
                         snx.SoundHandle, snx.SoundImplementation, and
                         snx.sonix.
