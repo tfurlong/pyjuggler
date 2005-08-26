@@ -325,7 +325,7 @@ void _Export_ObjectReader()
 #if ! defined(_MSC_VER)
       .def("resetReading", pure_virtual(&vpr::ObjectReader::resetReading),
            "resetReading()\n"
-           "Resets teh reading to the initial reading state.\n"
+           "Resets the reading to the initial reading state.\n"
            "<b>Post condition:</b> The reaer can be reused and will\n"
            "function as if it were just initialized."
       )
