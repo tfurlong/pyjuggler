@@ -52,7 +52,7 @@ struct vpr_GUID_Wrapper : vpr::GUID, wrapper<vpr::GUID>
       /* Do nothing. */ ;
    }
 
-   virtual ~vpr_GUID_Wrapper()
+   virtual ~vpr_GUID_Wrapper() throw ()
    {
       /* Do nothing. */ ;
    }

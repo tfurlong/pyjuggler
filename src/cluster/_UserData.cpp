@@ -58,20 +58,23 @@ public:
       }
    }
 
+   virtual ~PickleObject() throw ()
+   {
+      /* Do nothing. */ ;
+   }
+
    void setPythonObject(object obj)
    {
       self     = obj;
       __dict__ = extract<dict>(obj.attr("__dict__"));
    }
 
-   vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0)
+   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "pyj::PIckleObject::writeObject()\n",
                                "pyj::PIckleObject::writeObject() done.\n");
       PyJuggler::InterpreterGuard guard;
-
-      vpr::ReturnStatus status;
 
       // There is nothing to be done until self has been assigned a value.
       if ( self.ptr() != NULL && mModuleLoaded )
@@ -87,28 +90,27 @@ public:
 
             p0->writeString(std::string(PyString_AsString(pickled_obj.ptr())));
          }
-         catch(error_already_set)
+         catch (error_already_set)
          {
             vprDEBUG(pyjDBG_CXX, vprDBG_WARNING_LVL)
                << clrOutBOLD(clrYELLOW, "WARNING")
                << ": Caught a Python exception in pyj::PythonObject::writeObject()"
                << std::endl << vprDEBUG_FLUSH;
             PyErr_Print();
-            status.setCode(vpr::ReturnStatus::Fail);
+            throw vpr::IOException(
+               "Python exception caught by pyj::PythonObject::writeObject()",
+               VPR_LOCATION
+            );
          }
       }
-
-      return status;
    }
 
-   vpr::ReturnStatus readObject(vpr::ObjectReader* p0)
+   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "pyj::PIckleObject::readObject()\n",
                                "pyj::PIckleObject::readObject() done.\n");
       PyJuggler::InterpreterGuard guard;
-
-      vpr::ReturnStatus status;
 
       // There is nothing to be done until self has been assigned a value.
       if ( self.ptr() != NULL && mModuleLoaded )
@@ -142,18 +144,19 @@ public:
                __dict__[name] = obj_dict[name];
             }
          }
-         catch(error_already_set)
+         catch (error_already_set)
          {
             vprDEBUG(pyjDBG_CXX, vprDBG_WARNING_LVL)
                << clrOutBOLD(clrYELLOW, "WARNING")
                << ": Caught a Python exception in pyj::PythonObject::readObject()"
                << std::endl << vprDEBUG_FLUSH;
             PyErr_Print();
-            status.setCode(vpr::ReturnStatus::Fail);
+            throw vpr::IOException(
+               "Python exception caught by pyj::PythonObject::readObject()",
+               VPR_LOCATION
+            );
          }
       }
-
-      return status;
    }
 
 private:

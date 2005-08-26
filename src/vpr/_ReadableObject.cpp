@@ -27,12 +27,12 @@ struct vpr_ReadableObject_Wrapper
    : vpr::ReadableObject
    , wrapper<vpr::ReadableObject>
 {
-   virtual ~vpr_ReadableObject_Wrapper()
+   virtual ~vpr_ReadableObject_Wrapper() throw ()
    {
       /* Do nothing. */ ;
    }
 
-   vpr::ReturnStatus readObject(vpr::ObjectReader* p0)
+   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ReadableObject_Wrapper::readObject()\n",
@@ -41,7 +41,7 @@ struct vpr_ReadableObject_Wrapper
 
       try
       {
-         return this->get_override("readObject")(p0);
+         this->get_override("readObject")(p0);
       }
       catch (error_already_set)
       {

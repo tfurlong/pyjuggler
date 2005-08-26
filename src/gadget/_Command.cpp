@@ -31,7 +31,7 @@ struct gadget_Command_Wrapper : gadget::Command, wrapper<gadget::Command>
       /* Do nothing. */ ;
    }
 
-   virtual ~gadget_Command_Wrapper()
+   virtual ~gadget_Command_Wrapper() throw ()
    {
       /* Do nothing. */ ;
    }
@@ -83,50 +83,60 @@ struct gadget_Command_Wrapper : gadget::Command, wrapper<gadget::Command>
       return gadget::Command::getInputTypeName();
    }
 
-   vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0)
+   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
    {
       try
       {
          if ( override writeObject = this->get_override("writeObject") )
          {
-            return writeObject(p0);
+            writeObject(p0);
          }
-         return gadget::Command::writeObject(p0);
+         else
+         {
+            gadget::Command::writeObject(p0);
+         }
       }
       catch (error_already_set)
       {
          PyErr_Print();
+         throw vpr::IOException(
+            "Python exception caught by pyj::gadget_Command_Wrapper::writeObject()",
+            VPR_LOCATION
+         );
       }
-
-      return vpr::ReturnStatus::Fail;
    }
 
-   vpr::ReturnStatus default_writeObject(vpr::ObjectWriter* p0)
+   void default_writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
    {
-      return gadget::Command::writeObject(p0);
+      gadget::Command::writeObject(p0);
    }
 
-   vpr::ReturnStatus readObject(vpr::ObjectReader* p0)
+   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
    {
       try
       {
          if ( override readObject = this->get_override("readObject") )
          {
-            return readObject(p0);
+            readObject(p0);
          }
-         return gadget::Command::readObject(p0);
+         else
+         {
+            gadget::Command::readObject(p0);
+         }
       }
       catch (error_already_set)
       {
          PyErr_Print();
+         throw vpr::IOException(
+            "Python exception caught by pyj::gadget_Command_Wrapper::readObject()",
+            VPR_LOCATION
+         );
       }
-
-      return vpr::ReturnStatus::Fail;
    }
 
-   vpr::ReturnStatus default_readObject(vpr::ObjectReader* p0)
+   void default_readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
    {
-      return gadget::Command::readObject(p0);
+      gadget::Command::readObject(p0);
    }
 };
 
@@ -163,12 +173,12 @@ void _Export_Command()
       )
       .def("writeObject", &gadget::Command::writeObject,
            &pyj::gadget_Command_Wrapper::default_writeObject,
-           "writeObject(writer) -> vpr.ReturnStatus object\n"
+           "writeObject(writer)\n"
            "Serializes this object."
       )
       .def("readObject", &gadget::Command::readObject,
            &pyj::gadget_Command_Wrapper::default_readObject,
-           "readObject(reader) -> vpr.ReturnStatus object\n"
+           "readObject(reader)\n"
            "De-serializes this object."
       )
       .def("getCommandData", &gadget::Command::getCommandData,

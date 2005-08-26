@@ -27,12 +27,12 @@ struct vpr_WriteableObject_Wrapper
    : vpr::WriteableObject
    , wrapper<vpr::WriteableObject>
 {
-   virtual ~vpr_WriteableObject_Wrapper()
+   virtual ~vpr_WriteableObject_Wrapper() throw ()
    {
       /* Do nothing. */ ;
    }
 
-   vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0)
+   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_WriteableObject_Wrapper::writeObject()\n",
@@ -41,7 +41,7 @@ struct vpr_WriteableObject_Wrapper
 
       try
       {
-         return this->get_override("writeObject")(p0);
+         this->get_override("writeObject")(p0);
       }
       catch (error_already_set)
       {

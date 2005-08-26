@@ -39,7 +39,7 @@ struct gadget_KeyboardMouse_Wrapper
       /* Do nothing. */ ;
    }
 
-   virtual ~gadget_KeyboardMouse_Wrapper()
+   virtual ~gadget_KeyboardMouse_Wrapper() throw ()
    {
       /* Do nothing. */ ;
    }
@@ -68,50 +68,60 @@ struct gadget_KeyboardMouse_Wrapper
       return gadget::KeyboardMouse::getInputTypeName();
    }
 
-   vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0)
+   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
    {
       try
       {
          if ( override writeObject = this->get_override("writeObject") )
          {
-            return writeObject(p0);
+            writeObject(p0);
          }
-         return gadget::KeyboardMouse::writeObject(p0);
+         else
+         {
+            gadget::KeyboardMouse::writeObject(p0);
+         }
       }
       catch (error_already_set)
       {
          PyErr_Print();
+         throw vpr::IOException(
+            "Python exception caught by pyj::gadget_KeyboardMouse_Wrapper::writeObject()",
+            VPR_LOCATION
+         );
       }
-
-      return vpr::ReturnStatus::Fail;
    }
 
-   vpr::ReturnStatus default_writeObject(vpr::ObjectWriter* p0)
+   void default_writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
    {
-      return gadget::KeyboardMouse::writeObject(p0);
+      gadget::KeyboardMouse::writeObject(p0);
    }
 
-   vpr::ReturnStatus readObject(vpr::ObjectReader* p0)
+   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
    {
       try
       {
          if ( override readObject = this->get_override("readObject") )
          {
-            return readObject(p0);
+            readObject(p0);
          }
-         return gadget::KeyboardMouse::readObject(p0);
+         else
+         {
+            gadget::KeyboardMouse::readObject(p0);
+         }
       }
       catch (error_already_set)
       {
          PyErr_Print();
+         throw vpr::IOException(
+            "Python exception caught by pyj::gadget_KeyboardMouse_Wrapper::readObject()",
+            VPR_LOCATION
+         );
       }
-
-      return vpr::ReturnStatus::Fail;
    }
 
-   vpr::ReturnStatus default_readObject(vpr::ObjectReader* p0)
+   void default_readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
    {
-      return gadget::KeyboardMouse::readObject(p0);
+      gadget::KeyboardMouse::readObject(p0);
    }
 
    bool config(jccl::ConfigElementPtr p0)
@@ -163,13 +173,13 @@ void _Export_KeyboardMouse()
            &pyj::gadget_KeyboardMouse_Wrapper::default_getInputTypeName)
       .def("writeObject", &gadget::KeyboardMouse::writeObject,
            &pyj::gadget_KeyboardMouse_Wrapper::default_writeObject,
-           "writeObject(writer) -> vpr.ReturnStatus object\n"
+           "writeObject(writer)\n"
            "Writes both mCurKeys and mCurEventQueueLock to a stream using\n"
            "the given object writer."
       )
       .def("readObject", &gadget::KeyboardMouse::readObject,
            &pyj::gadget_KeyboardMouse_Wrapper::default_readObject,
-           "readObject(reader) -> vpr.ReturnStatus object\n"
+           "readObject(reader)\n"
            "Reads mCurKeys and mCurEventQueueLock from a stream using the\n"
            "given object reader."
       )

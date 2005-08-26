@@ -24,12 +24,12 @@ namespace pyj
 
 struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 {
-   virtual ~vpr_ObjectWriter_Wrapper()
+   virtual ~vpr_ObjectWriter_Wrapper() throw ()
    {
       /* Do nothing. */ ;
    }
 
-   vpr::ReturnStatus beginTag(std::string p0)
+   void beginTag(std::string p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::beginTag()\n",
@@ -38,7 +38,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         return this->get_override("beginTag")(p0);
+         this->get_override("beginTag")(p0);
       }
       catch (error_already_set)
       {
@@ -46,7 +46,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   vpr::ReturnStatus endTag()
+   void endTag() throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::endTag()\n",
@@ -55,7 +55,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         return this->get_override("endTag")();
+         this->get_override("endTag")();
       }
       catch (error_already_set)
       {
@@ -63,7 +63,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   vpr::ReturnStatus beginAttribute(std::string p0)
+   void beginAttribute(std::string p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::beginAttribute()\n",
@@ -72,7 +72,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         return this->get_override("beginAttribute")(p0);
+         this->get_override("beginAttribute")(p0);
       }
       catch (error_already_set)
       {
@@ -80,7 +80,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   vpr::ReturnStatus endAttribute()
+   void endAttribute() throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::endAttribute()\n",
@@ -89,7 +89,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         return this->get_override("endAttribute")();
+         this->get_override("endAttribute")();
       }
       catch (error_already_set)
       {
@@ -97,7 +97,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   vpr::ReturnStatus writeUint8(vpr::Uint8 p0)
+   void writeUint8(vpr::Uint8 p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeUint8()\n",
@@ -106,7 +106,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         return this->get_override("writeUint8")(p0);
+         this->get_override("writeUint8")(p0);
       }
       catch (error_already_set)
       {
@@ -114,7 +114,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   vpr::ReturnStatus writeUint16(vpr::Uint16 p0)
+   void writeUint16(vpr::Uint16 p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeUint16()\n",
@@ -123,7 +123,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         return this->get_override("writeUint16")(p0);
+         this->get_override("writeUint16")(p0);
       }
       catch (error_already_set)
       {
@@ -131,7 +131,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   vpr::ReturnStatus writeUint32(vpr::Uint32 p0)
+   void writeUint32(vpr::Uint32 p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeUint32()\n",
@@ -140,7 +140,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         return this->get_override("writeUint32")(p0);
+         this->get_override("writeUint32")(p0);
       }
       catch (error_already_set)
       {
@@ -148,7 +148,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   vpr::ReturnStatus writeUint64(vpr::Uint64 p0)
+   void writeUint64(vpr::Uint64 p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeUint64()\n",
@@ -157,7 +157,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         return this->get_override("writeUint64")(p0);
+         this->get_override("writeUint64")(p0);
       }
       catch (error_already_set)
       {
@@ -165,7 +165,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   vpr::ReturnStatus writeFloat(float p0)
+   void writeFloat(float p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeFloat()\n",
@@ -174,7 +174,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         return this->get_override("writeFloat")(p0);
+         this->get_override("writeFloat")(p0);
       }
       catch (error_already_set)
       {
@@ -182,7 +182,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   vpr::ReturnStatus writeDouble(double p0)
+   void writeDouble(double p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeDouble()\n",
@@ -191,7 +191,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         return this->get_override("writeDouble")(p0);
+         this->get_override("writeDouble")(p0);
       }
       catch (error_already_set)
       {
@@ -199,7 +199,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   vpr::ReturnStatus writeString(std::string p0)
+   void writeString(std::string p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeString()\n",
@@ -208,7 +208,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         return this->get_override("writeString")(p0);
+         this->get_override("writeString")(p0);
       }
       catch (error_already_set)
       {
@@ -216,7 +216,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   vpr::ReturnStatus writeBool(bool p0)
+   void writeBool(bool p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeBool()\n",
@@ -225,7 +225,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         return this->get_override("writeBool")(p0);
+         this->get_override("writeBool")(p0);
       }
       catch (error_already_set)
       {

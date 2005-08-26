@@ -50,61 +50,65 @@ struct gadget_KeyEvent_Wrapper : gadget::KeyEvent, wrapper<gadget::KeyEvent>
       /* Do nothing. */ ;
    }
 
-   virtual ~gadget_KeyEvent_Wrapper()
+   virtual ~gadget_KeyEvent_Wrapper() throw ()
    {
       /* Do nothing. */ ;
    }
 
-   vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0)
+   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
    {
       try
       {
          if ( override writeObject = this->get_override("writeObject") )
          {
-            return writeObject(p0);
+            writeObject(p0);
          }
          else
          {
-            return gadget::KeyEvent::writeObject(p0);
+            gadget::KeyEvent::writeObject(p0);
          }
       }
       catch (error_already_set)
       {
          PyErr_Print();
+         throw vpr::IOException(
+            "Python exception caught by pyj::gadget_KeyEvent_Wrapper::writeObject()",
+            VPR_LOCATION
+         );
       }
-
-      return vpr::ReturnStatus::Fail;
    }
 
-   vpr::ReturnStatus default_writeObject(vpr::ObjectWriter* p0)
+   void default_writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
    {
-      return gadget::KeyEvent::writeObject(p0);
+      gadget::KeyEvent::writeObject(p0);
    }
 
-   vpr::ReturnStatus readObject(vpr::ObjectReader* p0)
+   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
    {
       try
       {
          if ( override readObject = this->get_override("readObject") )
          {
-            return readObject(p0);
+            readObject(p0);
          }
          else
          {
-            return gadget::KeyEvent::readObject(p0);
+            gadget::KeyEvent::readObject(p0);
          }
       }
       catch (error_already_set)
       {
          PyErr_Print();
+         throw vpr::IOException(
+            "Python exception caught by pyj::gadget_KeyEvent_Wrapper::readObject()",
+            VPR_LOCATION
+         );
       }
-
-      return vpr::ReturnStatus::Fail;
    }
 
-   vpr::ReturnStatus default_readObject(vpr::ObjectReader* p0)
+   void default_readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
    {
-      return gadget::KeyEvent::readObject(p0);
+      gadget::KeyEvent::readObject(p0);
    }
 };
 
@@ -147,11 +151,12 @@ void _Export_KeyEvent()
                 const long unsigned int&, optional<char> >())
       .def("writeObject", &gadget::KeyEvent::writeObject,
            &pyj::gadget_KeyEvent_Wrapper::default_writeObject,
-           "writeObject(writer) -> vpr.ReturnStatus object\n"
+           "writeObject(writer)\n"
            "Serializes this event using the given vpr.ObjectWriter."
       )
       .def("readObject", &gadget::KeyEvent::readObject,
            &pyj::gadget_KeyEvent_Wrapper::default_readObject,
+           "readObject(reader)\n"
            "De-serializes this event using the given vpr.ObjectReader."
       )
       .def("getKey", &gadget::KeyEvent::getKey,

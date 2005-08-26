@@ -47,55 +47,65 @@ struct gadget_MouseEvent_Wrapper
       /* Do nothing. */ ;
    }
 
-   virtual ~gadget_MouseEvent_Wrapper()
+   virtual ~gadget_MouseEvent_Wrapper() throw ()
    {
       /* Do nothing. */ ;
    }
 
-   vpr::ReturnStatus writeObject(vpr::ObjectWriter* p0)
+   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
    {
       try
       {
          if ( override writeObject = this->get_override("writeObject") )
          {
-            return writeObject(p0);
+            writeObject(p0);
          }
-         return gadget::MouseEvent::writeObject(p0);
+         else
+         {
+            gadget::MouseEvent::writeObject(p0);
+         }
       }
       catch (error_already_set)
       {
          PyErr_Print();
+         throw vpr::IOException(
+            "Python exception caught by pyj::gadget_MouseEvent_Wrapper::writeObject()",
+            VPR_LOCATION
+         );
       }
-
-      return vpr::ReturnStatus::Fail;
    }
 
-   vpr::ReturnStatus default_writeObject(vpr::ObjectWriter* p0)
+   void default_writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
    {
-      return gadget::MouseEvent::writeObject(p0);
+      gadget::MouseEvent::writeObject(p0);
    }
 
-   vpr::ReturnStatus readObject(vpr::ObjectReader* p0)
+   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
    {
       try
       {
          if ( override readObject = this->get_override("readObject") )
          {
-            return readObject(p0);
+            readObject(p0);
          }
-         return gadget::MouseEvent::readObject(p0);
+         else
+         {
+            gadget::MouseEvent::readObject(p0);
+         }
       }
       catch (error_already_set)
       {
          PyErr_Print();
+         throw vpr::IOException(
+            "Python exception caught by pyj::gadget_MouseEvent_Wrapper::readObject()",
+            VPR_LOCATION
+         );
       }
-
-      return vpr::ReturnStatus::Fail;
    }
 
-   vpr::ReturnStatus default_readObject(vpr::ObjectReader* p0)
+   void default_readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
    {
-      return gadget::MouseEvent::readObject(p0);
+      gadget::MouseEvent::readObject(p0);
    }
 };
 
@@ -145,12 +155,12 @@ void _Export_MouseEvent()
                 const long unsigned int&>())
       .def("writeObject", &gadget::MouseEvent::writeObject,
            &pyj::gadget_MouseEvent_Wrapper::default_writeObject,
-           "writeObject(writer) -> vpr.ReturnStatus object\n"
+           "writeObject(writer)\n"
            "Serializes this event using the given vpr.ObjectWriter."
       )
       .def("readObject", &gadget::MouseEvent::readObject,
            &pyj::gadget_MouseEvent_Wrapper::default_readObject,
-           "readObject(reader) -> vpr.ReturnStatus object\n"
+           "readObject(reader)\n"
            "De-serializes this event using the given vpr.ObjectReader."
       )
       .def("getButton", &gadget::MouseEvent::getButton,
