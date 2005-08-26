@@ -256,19 +256,19 @@ void _Export_ObjectWriter()
        no_init
       )
       .def("beginTag", pure_virtual(&vpr::ObjectWriter::beginTag),
-           "beginTag(tagName) -> PyJuggler.vpr.ReturnStatus object\n"
+           "beginTag(tagName)\n"
            "Starts a new section/element of name tagName."
       )
       .def("endTag", pure_virtual(&vpr::ObjectWriter::endTag),
-           "endTag() -> PyJuggler.vpr.ReturnStatus object\n"
+           "endTag()\n"
            "Ends the most recently named tag."
       )
       .def("beginAttribute", pure_virtual(&vpr::ObjectWriter::beginAttribute),
-           "beginAttribute(attributeName) -> PyJuggler.vpr.ReturnStatus object\n"
+           "beginAttribute(attributeName)\n"
            "Starts an attribute of the name attributeName."
       )
       .def("endAttribute", pure_virtual(&vpr::ObjectWriter::endAttribute),
-           "endAttribute() -> PyJuggler.vpr.ReturnStatus object\n"
+           "endAttribute()\n"
            "Ends the most recently named attribute."
       )
       .def("writeUint8", pure_virtual(&vpr::ObjectWriter::writeUint8))

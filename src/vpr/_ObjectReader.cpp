@@ -307,19 +307,19 @@ void _Export_ObjectReader()
        no_init
       )
       .def("beginTag", pure_virtual(&vpr::ObjectReader::beginTag),
-           "beginTag(tagName) -> PyJuggler.vpr.ReturnStatus object\n"
+           "beginTag(tagName)\n"
            "Starts a new section/element of name tagName."
       )
       .def("endTag", pure_virtual(&vpr::ObjectReader::endTag),
-           "endTag() -> PyJuggler.vpr.ReturnStatus object\n"
+           "endTag()\n"
            "Ends the most recently named tag."
       )
       .def("beginAttribute", pure_virtual(&vpr::ObjectReader::beginAttribute),
-           "beginAttribute(attributeName) -> PyJuggler.vpr.ReturnStatus object\n"
+           "beginAttribute(attributeName)\n"
            "Starts an attribute of the name attributeName."
       )
       .def("endAttribute", pure_virtual(&vpr::ObjectReader::endAttribute),
-           "endAttribute() -> PyJuggler.vpr.ReturnStatus object\n"
+           "endAttribute()\n"
            "Ends the most recently named attribute."
       )
       .def("resetReading", pure_virtual(&vpr::ObjectReader::resetReading),
