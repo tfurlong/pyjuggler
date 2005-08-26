@@ -322,6 +322,7 @@ void _Export_ObjectReader()
            "endAttribute()\n"
            "Ends the most recently named attribute."
       )
+#if ! defined(_MSC_VER)
       .def("resetReading", pure_virtual(&vpr::ObjectReader::resetReading),
            "resetReading()\n"
            "Resets teh reading to the initial reading state.\n"
@@ -339,6 +340,7 @@ void _Export_ObjectReader()
            "This allows users to pop the active state of reading.  This\n"
            "is used to move back to the previous reading state."
       )
+#endif
       .def("readUint8",
            pure_virtual((vpr::Uint8 (vpr::ObjectReader::*)()) &vpr::ObjectReader::readUint8))
       .def("readUint16",
