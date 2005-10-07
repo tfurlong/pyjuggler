@@ -56,6 +56,12 @@ struct vpr_GUID_Wrapper : vpr::GUID, wrapper<vpr::GUID>
    {
       /* Do nothing. */ ;
    }
+
+   static vpr::Uint16 guid_hash(vpr::GUID* g)
+   {
+      static vpr::GUID::hash hash;
+      return (vpr::Uint16)hash(*g);
+   }
 };
 
 struct GuidPickle : pickle_suite
@@ -117,6 +123,7 @@ void _Export_GUID()
       .def(self == self)
       .def(self != self)
       .def(self < self)
+      .def("__hash__", pyj::vpr_GUID_Wrapper::guid_hash)
    );
 
    class_<vpr::GUID::GenerateTag>("GenerateTag",
