@@ -8,6 +8,7 @@
 
 // Include =====================================================================
 #include <boost/python.hpp>
+#include <vrj/Util/Version.h>
 
 // Exports =====================================================================
 void _Export_GlApp();
@@ -41,6 +42,16 @@ BOOST_PYTHON_MODULE(__vrj)
       "details:\n"
       "   http://www.vrjuggler.org/vrjuggler/docs.php"
    ;
+   boost::python::def("getVersionString", vrj::getVersionString,
+                      "Returns the full VR Juggler version number as a "
+                      "string in the form\n"
+                      "'v<major>.<minor>.<patch>-<build> [...]\n"
+                      "The regular expression to extract the version number\n"
+                      "components is r'^v(\\d+)\\.(\\d+)\\.(\\d+)-(\\d+)'");
+   boost::python::def("getVersionNumber", vrj::getVersionNumber,
+                      "Returns the 9-digit VR Juggler version integer. This\n"
+                      "form provides three digits for each of the major,\n"
+                      "minor, and patch numbers with no leading zeros");
 
    _Export_App();
    _Export_GlApp();

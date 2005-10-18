@@ -8,6 +8,7 @@
 
 // Include =====================================================================
 #include <boost/python.hpp>
+#include <snx/Util/Version.h>
 
 // Exports =====================================================================
 void _Export_sonix();
@@ -29,6 +30,15 @@ BOOST_PYTHON_MODULE(snx)
       "   http://www.vrjuggler.org/sonix/docs.php\n"
       "   http://www.vrjuggler.org/vrjuggler/docs.php"
    ;
+   boost::python::def("getVersionString", snx::getVersionString,
+                      "Returns the full Sonix version number as a string in\n"
+                      "the form 'v<major>.<minor>.<patch>-<build> [...]\n"
+                      "The regular expression to extract the version number\n"
+                      "components is r'^v(\\d+)\\.(\\d+)\\.(\\d+)-(\\d+)'");
+   boost::python::def("getVersionNumber", snx::getVersionNumber,
+                      "Returns the 9-digit Sonix version integer. This form\n"
+                      "provides three digits for each of the major, minor,\n"
+                      "and patch numbers with no leading zeros");
 
    _Export_sonix();
    _Export_SoundAPIInfo();

@@ -8,6 +8,7 @@
 
 // Include =====================================================================
 #include <boost/python.hpp>
+#include <gadget/Util/Version.h>
 
 // Exports =====================================================================
 void _Export_InputManager();
@@ -56,6 +57,16 @@ BOOST_PYTHON_MODULE(gadget)
       "   http://www.vrjuggler.org/gadgeteer/docs.php\n"
       "   http://www.vrjuggler.org/vrjuggler/docs.php"
    ;
+   boost::python::def("getVersionString", gadget::getVersionString,
+                      "Returns the full Gadgeteer version number as a string\n"
+                      "in the form 'v<major>.<minor>.<patch>-<build> [...]\n"
+                      "The regular expression to extract the version number\n"
+                      "components is r'^v(\\d+)\\.(\\d+)\\.(\\d+)-(\\d+)'");
+   boost::python::def("getVersionNumber", gadget::getVersionNumber,
+                      "Returns the 9-digit Gadgeteer version integer. This\n"
+                      "form provides three digits for each of the major,\n"
+                      "minor, and patch numbers with no leading zeros");
+
    _Export_InputManager();
    _Export_AnalogData();
    _Export_DigitalData();
