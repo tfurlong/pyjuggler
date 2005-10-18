@@ -56,12 +56,6 @@ struct vpr_GUID_Wrapper : vpr::GUID, wrapper<vpr::GUID>
    {
       /* Do nothing. */ ;
    }
-
-   static vpr::Uint16 guid_hash(vpr::GUID* g)
-   {
-      static vpr::GUID::hash hash;
-      return (vpr::Uint16)hash(*g);
-   }
 };
 
 struct GuidPickle : pickle_suite
