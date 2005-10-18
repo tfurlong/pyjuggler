@@ -83,6 +83,12 @@ struct GuidPickle : pickle_suite
    }
 };
 
+vpr::Uint32 guid_hash(vpr::GUID* g)
+{
+   static vpr::GUID::hash hash;
+   return hash(*g);
+}
+
 }// namespace pyj
 
 
@@ -121,6 +127,7 @@ void _Export_GUID()
       .def("generate",
            (void (vpr::GUID::*)(const vpr::GUID &, const std::string&)) &vpr::GUID::generate
       )
+      .def("__hash__", pyj::guid_hash)
       .def_pickle(pyj::GuidPickle())
       .def(self_ns::str(self))
       .def(self == self)
