@@ -262,11 +262,11 @@ boost_version_hpp="$BOOST_PYTHON_HEADER_DIR/boost/version.hpp"
 # Determine the version number of the Boost installation we found and ensure
 # that it is recent enough.
 changequote(<<, >>)
-BOOST_VERSION=`grep 'define BOOST_VERSION ' "$boost_version_hpp" | sed -e 's/^[^0-9]*\([0-9][0-9]*\)[^0-9]*$/\1/'`
+boost_version_num=`grep 'define BOOST_VERSION ' "$boost_version_hpp" | sed -e 's/^[^0-9]*\([0-9][0-9]*\)[^0-9]*$/\1/'`
 changequote([, ])
-pyj_boost_patch=`expr $BOOST_VERSION % 100`
-pyj_boost_minor=`expr $BOOST_VERSION / 100 % 1000`
-pyj_boost_major=`expr $BOOST_VERSION / 100000`
+pyj_boost_patch=`expr $boost_version_num % 100`
+pyj_boost_minor=`expr $boost_version_num / 100 % 1000`
+pyj_boost_major=`expr $boost_version_num / 100000`
 pyj_boost_version="$pyj_boost_major.$pyj_boost_minor.$pyj_boost_patch"
 
 req_boost_version='1.32.0'
