@@ -1,5 +1,8 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Dec-04-2005 patrickh    Allow Python objects to be derived directly from
+                        PyJuggler.vpr.ReadableObject and
+                        PyJuggler.vpr.WriteableObject.
 Oct-18-2005 aronb       Added an implementation of vpr.GUID.__hash__() that
             patrickh    uses the C++ STL hasher for vpr::GUID.
 

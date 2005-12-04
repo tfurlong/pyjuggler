@@ -59,7 +59,7 @@ void _Export_WriteableObject()
 {
    class_<vpr::WriteableObject, boost::noncopyable,
           pyj::vpr_WriteableObject_Wrapper>
-      ("WriteableObject", no_init)
+      ("WriteableObject")
       .def("writeObject", pure_virtual(&vpr::WriteableObject::writeObject),
            "writeObject(writer) -> PyJuggler.vpr.ReturnStatus object\n"
            "Template method for writing this object to the given stream.\n"
