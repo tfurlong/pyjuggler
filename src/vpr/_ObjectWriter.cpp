@@ -29,7 +29,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
       /* Do nothing. */ ;
    }
 
-   vpr::ReturnStatus beginTag(std::string p0)
+   vpr::ReturnStatus beginTag(const std::string& p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::beginTag()\n",
@@ -63,7 +63,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter
       }
    }
 
-   vpr::ReturnStatus beginAttribute(std::string p0)
+   vpr::ReturnStatus beginAttribute(const std::string& p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::beginAttribute()\n",
