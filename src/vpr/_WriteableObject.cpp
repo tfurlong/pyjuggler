@@ -58,7 +58,7 @@ struct vpr_WriteableObject_Wrapper
 void _Export_WriteableObject()
 {
    class_<pyj::vpr_WriteableObject_Wrapper, boost::noncopyable>
-      ("WriteableObject", no_init)
+      ("WriteableObject")
       .def("writeObject", pure_virtual(&vpr::WriteableObject::writeObject),
            "writeObject(writer)\n"
            "Template method for writing this object to the given stream.\n"

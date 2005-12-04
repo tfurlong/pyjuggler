@@ -58,7 +58,7 @@ struct vpr_ReadableObject_Wrapper
 void _Export_ReadableObject()
 {
    class_<pyj::vpr_ReadableObject_Wrapper, boost::noncopyable>
-      ("ReadableObject", no_init)
+      ("ReadableObject")
       .def("readObject", pure_virtual(&vpr::ReadableObject::readObject),
            "readObject(reader)\n"
            "Template method for reading into this object from the given\n"
