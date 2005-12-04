@@ -29,7 +29,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       /* Do nothing. */ ;
    }
 
-   void beginTag(std::string p0) throw (vpr::IOException)
+   void beginTag(const std::string& p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::beginTag()\n",
@@ -63,7 +63,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   void beginAttribute(std::string p0) throw (vpr::IOException)
+   void beginAttribute(const std::string& p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::beginAttribute()\n",

@@ -29,7 +29,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       /* Do nothing. */ ;
    }
 
-   void beginTag(std::string p0) throw (vpr::IOException)
+   void beginTag(const std::string& p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectReader_Wrapper::beginTag()\n",
@@ -63,7 +63,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       }
    }
 
-   void beginAttribute(std::string p0) throw (vpr::IOException)
+   void beginAttribute(const std::string& p0) throw (vpr::IOException)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectReader_Wrapper::beginAttribute()\n",
