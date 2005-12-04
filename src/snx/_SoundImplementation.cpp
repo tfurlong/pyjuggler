@@ -72,7 +72,7 @@ struct snx_SoundImplementation_Wrapper
    {
       try
       {
-         this->get_override("clone")();
+         this->get_override("clone")(boost::ref(p0));
       }
       catch (error_already_set)
       {
@@ -740,7 +740,8 @@ struct snx_SoundImplementation_Wrapper
          if ( override lookup = this->get_override("lookup") )
          {
 #if defined(_MSC_VER)
-            return call<snx::SoundInfo&>(lookup.ptr());
+            return call<snx::SoundInfo&, std::string>(lookup.ptr(),
+                                                      boost::ref(p0));
 #else
             return lookup(boost::ref(p0));
 #endif
