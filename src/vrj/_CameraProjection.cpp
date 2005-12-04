@@ -47,7 +47,7 @@ struct vrj_CameraProjection_Wrapper
       {
          if ( override calcViewMatrix = this->get_override("calcViewMatrix") )
          {
-            calcViewMatrix(p0, p1);
+            calcViewMatrix(boost::ref(p0), p1);
          }
          else
          {

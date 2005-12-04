@@ -41,7 +41,7 @@ struct vpr_WriteableObject_Wrapper
 
       try
       {
-         this->get_override("writeObject")(p0);
+         this->get_override("writeObject")(ptr(p0));
       }
       catch (error_already_set)
       {

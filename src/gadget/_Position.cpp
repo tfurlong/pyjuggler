@@ -88,7 +88,7 @@ struct gadget_Position_Wrapper : gadget::Position, wrapper<gadget::Position>
       {
          if ( override writeObject = this->get_override("writeObject") )
          {
-            writeObject(p0);
+            writeObject(ptr(p0));
          }
          else
          {
@@ -116,7 +116,7 @@ struct gadget_Position_Wrapper : gadget::Position, wrapper<gadget::Position>
       {
          if ( override readObject = this->get_override("readObject") )
          {
-            readObject(p0);
+            readObject(ptr(p0));
          }
          else
          {

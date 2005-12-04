@@ -462,7 +462,7 @@ struct snx_SoundHandle_Wrapper
          if ( override setListenerPosition =
                 this->get_override("setListenerPosition") )
          {
-            setListenerPosition(p0);
+            setListenerPosition(boost::ref(p0));
          }
          else
          {
@@ -487,7 +487,7 @@ struct snx_SoundHandle_Wrapper
          if ( override getListenerPosition =
                  this->get_override("getListenerPosition") )
          {
-            getListenerPosition(p0);
+            getListenerPosition(boost::ref(p0));
          }
          else
          {
@@ -511,7 +511,7 @@ struct snx_SoundHandle_Wrapper
       {
          if ( override configure = this->get_override("configure") )
          {
-            configure(p0);
+            configure(boost::ref(p0));
          }
          else
          {

@@ -41,7 +41,7 @@ struct vpr_ReadableObject_Wrapper
 
       try
       {
-         this->get_override("readObject")(p0);
+         this->get_override("readObject")(ptr(p0));
       }
       catch (error_already_set)
       {

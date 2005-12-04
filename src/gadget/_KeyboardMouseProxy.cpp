@@ -93,7 +93,7 @@ struct gadget_KeyboardMouseProxy_Wrapper
       {
          if ( override set = this->get_override("set") )
          {
-            set(p0, p1);
+            set(boost::ref(p0), ptr(p1));
          }
          else
          {

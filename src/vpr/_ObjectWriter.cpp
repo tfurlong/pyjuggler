@@ -38,7 +38,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         this->get_override("beginTag")(p0);
+         this->get_override("beginTag")(boost::ref(p0));
       }
       catch (error_already_set)
       {
@@ -72,7 +72,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 
       try
       {
-         this->get_override("beginAttribute")(p0);
+         this->get_override("beginAttribute")(boost::ref(p0));
       }
       catch (error_already_set)
       {

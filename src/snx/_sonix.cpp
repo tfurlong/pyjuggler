@@ -60,7 +60,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override trigger = this->get_override("trigger") )
          {
-            trigger(p0, p1);
+            trigger(boost::ref(p0), p1);
          }
          else
          {
@@ -89,7 +89,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override isPlaying = this->get_override("isPlaying") )
          {
-            return isPlaying(p0);
+            return isPlaying(boost::ref(p0));
          }
          return snx::sonix::isPlaying(p0);
       }
@@ -111,7 +111,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
          if ( override setRetriggerable =
                  this->get_override("setRetriggerable") )
          {
-            setRetriggerable(p0, p1);
+            setRetriggerable(boost::ref(p0), p1);
          }
          else
          {
@@ -136,7 +136,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
          if ( override isRetriggerable =
                  this->get_override("isRetriggerable") )
          {
-            return isRetriggerable(p0);
+            return isRetriggerable(boost::ref(p0));
          }
          return snx::sonix::isRetriggerable(p0);
       }
@@ -157,7 +157,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override stop = this->get_override("stop") )
          {
-            stop(p0);
+            stop(boost::ref(p0));
          }
          else
          {
@@ -181,7 +181,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override pause = this->get_override("pause") )
          {
-            pause(p0);
+            pause(boost::ref(p0));
          }
          else
          {
@@ -205,7 +205,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override unpause = this->get_override("unpause") )
          {
-            unpause(p0);
+            unpause(boost::ref(p0));
          }
          else
          {
@@ -229,7 +229,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override isPaused = this->get_override("isPaused") )
          {
-            return isPaused(p0);
+            return isPaused(boost::ref(p0));
          }
          return snx::sonix::isPaused(p0);
       }
@@ -250,7 +250,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override setAmbient = this->get_override("setAmbient") )
          {
-            setAmbient(p0, p1);
+            setAmbient(boost::ref(p0), p1);
          }
          else
          {
@@ -279,7 +279,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override isAmbient = this->get_override("isAmbient") )
          {
-            return isAmbient(p0);
+            return isAmbient(boost::ref(p0));
          }
          return snx::sonix::isAmbient(p0);
       }
@@ -302,7 +302,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override setPitchBend = this->get_override("setPitchBend") )
          {
-            setPitchBend(p0, p1);
+            setPitchBend(boost::ref(p0), p1);
          }
          else
          {
@@ -326,7 +326,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override setVolume = this->get_override("setVolume") )
          {
-            setVolume(p0, p1);
+            setVolume(boost::ref(p0), p1);
          }
          else
          {
@@ -350,7 +350,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override setCutoff = this->get_override("setCutoff") )
          {
-            setCutoff(p0, p1);
+            setCutoff(boost::ref(p0), p1);
          }
          else
          {
@@ -375,7 +375,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override setPosition = this->get_override("setPosition") )
          {
-            setPosition(p0, p1, p2, p3);
+            setPosition(boost::ref(p0), p1, p2, p3);
          }
          else
          {
@@ -408,7 +408,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override getPosition = this->get_override("getPosition") )
          {
-            return getPosition(p0);
+            return getPosition(boost::ref(p0));
          }
          return snx_sonix_Adapter::getPositionWrapper(p0);
       }
@@ -432,7 +432,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
          if ( override setListenerPosition =
                  this->get_override("setListenerPosition") )
          {
-            setListenerPosition(p0);
+            setListenerPosition(boost::ref(p0));
          }
          else
          {
@@ -481,7 +481,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override changeAPI = this->get_override("changeAPI") )
          {
-            changeAPI(p0);
+            changeAPI(boost::ref(p0));
          }
          else
          {
@@ -505,7 +505,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override configure = this->get_override("configure") )
          {
-            configure(p0);
+            configure(boost::ref(p0));
          }
          else
          {
@@ -529,7 +529,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override configure = this->get_override("configure") )
          {
-            configure(p0, p1);
+            configure(boost::ref(p0), p1);
          }
          else
          {
@@ -553,7 +553,7 @@ struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
       {
          if ( override remove = this->get_override("remove") )
          {
-            remove(p0);
+            remove(boost::ref(p0));
          }
          else
          {

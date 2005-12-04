@@ -83,7 +83,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp, wrapper<vrj::OsgApp>
       {
          if ( override configSceneView = this->get_override("configSceneView") )
          {
-            configSceneView(p0);
+            configSceneView(ptr(p0));
          }
          else
          {

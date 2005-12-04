@@ -86,7 +86,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override trigger = this->get_override("trigger") )
          {
-           trigger(p0, p1);
+           trigger(boost::ref(p0), p1);
          }
          else
          {
@@ -115,7 +115,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override isPlaying = this->get_override("isPlaying") )
          {
-            return isPlaying(p0);
+            return isPlaying(boost::ref(p0));
          }
          return snx::SoundImplementation::isPlaying(p0);
       }
@@ -139,7 +139,7 @@ struct snx_SoundImplementation_Wrapper
          if ( override setRetriggerable =
                  this->get_override("setRetriggerable") )
          {
-            setRetriggerable(p0, p1);
+            setRetriggerable(boost::ref(p0), p1);
          }
          else
          {
@@ -163,7 +163,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override isRetriggerable = this->get_override("isRetriggerable") )
          {
-            return isRetriggerable(p0);
+            return isRetriggerable(boost::ref(p0));
          }
          return snx::SoundImplementation::isRetriggerable(p0);
       }
@@ -186,7 +186,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override stop = this->get_override("stop") )
          {
-            stop(p0);
+            stop(boost::ref(p0));
          }
          else
          {
@@ -210,7 +210,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override pause = this->get_override("pause") )
          {
-            pause(p0);
+            pause(boost::ref(p0));
          }
          else
          {
@@ -234,7 +234,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override unpause = this->get_override("unpause") )
          {
-            unpause(p0);
+            unpause(boost::ref(p0));
          }
          else
          {
@@ -258,7 +258,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override isPaused = this->get_override("isPaused") )
          {
-            return isPaused(p0);
+            return isPaused(boost::ref(p0));
          }
          return snx::SoundImplementation::isPaused(p0);
       }
@@ -281,7 +281,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override setAmbient = this->get_override("setAmbient") )
          {
-            setAmbient(p0, p1);
+            setAmbient(boost::ref(p0), p1);
          }
          else
          {
@@ -310,7 +310,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override isAmbient = this->get_override("isAmbient") )
          {
-            return isAmbient(p0);
+            return isAmbient(boost::ref(p0));
          }
          return snx::SoundImplementation::isAmbient(p0);
       }
@@ -333,7 +333,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override setPitchBend = this->get_override("setPitchBend") )
          {
-            setPitchBend(p0, p1);
+            setPitchBend(boost::ref(p0), p1);
          }
          else
          {
@@ -357,7 +357,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override setVolume = this->get_override("setVolume") )
          {
-            setVolume(p0, p1);
+            setVolume(boost::ref(p0), p1);
          }
          else
          {
@@ -381,7 +381,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override setCutoff = this->get_override("setCutoff") )
          {
-            setCutoff(p0, p1);
+            setCutoff(boost::ref(p0), p1);
          }
          else
          {
@@ -405,7 +405,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override setPosition = this->get_override("setPosition") )
          {
-            setPosition(p0, p1, p2, p3);
+            setPosition(boost::ref(p0), p1, p2, p3);
          }
          else
          {
@@ -438,7 +438,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override getPosition = this->get_override("getPosition") )
          {
-            return getPosition(p0);
+            return getPosition(boost::ref(p0));
          }
          return snx_SoundImplementation_Adapter::getPositionWrapper(p0);
       }
@@ -462,7 +462,7 @@ struct snx_SoundImplementation_Wrapper
          if ( override setListenerPosition =
                  this->get_override("setListenerPosition") )
          {
-            setListenerPosition(p0);
+            setListenerPosition(boost::ref(p0));
          }
          else
          {
@@ -554,7 +554,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override configure = this->get_override("configure") )
          {
-            configure(p0);
+            configure(boost::ref(p0));
          }
          else
          {
@@ -578,7 +578,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override configure = this->get_override("configure") )
          {
-            configure(p0, p1);
+            configure(boost::ref(p0), boost::ref(p1));
          }
          else
          {
@@ -602,7 +602,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override remove = this->get_override("remove") )
          {
-            remove(p0);
+            remove(boost::ref(p0));
          }
          else
          {
@@ -720,7 +720,7 @@ struct snx_SoundImplementation_Wrapper
    {
       try
       {
-         this->get_override("bind")(p0);
+         this->get_override("bind")(boost::ref(p0));
       }
       catch (error_already_set)
       {
@@ -730,7 +730,7 @@ struct snx_SoundImplementation_Wrapper
 
    void unbind(const std::string& p0)
    {
-      this->get_override("unbind")(p0);
+      this->get_override("unbind")(boost::ref(p0));
    }
 
    snx::SoundInfo& lookup(const std::string& p0)
@@ -742,7 +742,7 @@ struct snx_SoundImplementation_Wrapper
 #if defined(_MSC_VER)
             return call<snx::SoundInfo&>(lookup.ptr());
 #else
-            return lookup(p0);
+            return lookup(boost::ref(p0));
 #endif
          }
          return snx::SoundImplementation::lookup(p0);
@@ -767,7 +767,7 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override setName = this->get_override("setName") )
          {
-            setName(p0);
+            setName(boost::ref(p0));
          }
          else
          {
