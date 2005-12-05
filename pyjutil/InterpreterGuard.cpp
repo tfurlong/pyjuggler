@@ -21,16 +21,23 @@ namespace PyJuggler
 
 vpr::TSObjectProxy<InterpreterGuard::State> InterpreterGuard::mState;
 
-InterpreterGuard::State::State() : gilLocked(false), pyState(NULL)
+InterpreterGuard::State::State()
+   : gilLocked(false)
+#if ! HAVE_PY_GIL_STATE
+   , pyState(NULL)
+#endif
 {
+#if ! HAVE_PY_GIL_STATE
    vprDEBUG(pyjDBG_CXX, vprDBG_HVERB_LVL)
       << "InterpreterGuard::State constructor -- this->pyState: "
       << std::hex << this->pyState << std::dec << std::endl
       << vprDEBUG_FLUSH;
+#endif
 }
 
 InterpreterGuard::State::~State()
 {
+#if ! HAVE_PY_GIL_STATE
    if ( NULL != pyState )
    {
       PyEval_AcquireThread(pyState);
@@ -40,10 +47,13 @@ InterpreterGuard::State::~State()
       PyThreadState_Delete(pyState);
       pyState = NULL;
    }
+#endif
 }
 
-InterpreterGuard::InterpreterGuard() : mMyLock(false)
+InterpreterGuard::InterpreterGuard()
+   : mMyLock(false)
 {
+#if ! HAVE_PY_GIL_STATE
    if ( NULL == mState->pyState )
    {
       vprDEBUG(pyjDBG_CXX, vprDBG_VERB_LVL)
@@ -59,6 +69,7 @@ InterpreterGuard::InterpreterGuard() : mMyLock(false)
    vprDEBUG(pyjDBG_CXX, vprDBG_HVERB_LVL)
       << "mState->pyState: " << std::hex << mState->pyState << std::dec
       << std::endl << vprDEBUG_FLUSH;
+#endif
 
    if ( ! mState->gilLocked )
    {
@@ -66,7 +77,11 @@ InterpreterGuard::InterpreterGuard() : mMyLock(false)
          << std::hex << this << std::dec << " locking\n" << vprDEBUG_FLUSH;
 
       // Lock the GIL.
+#if HAVE_PY_GIL_STATE
+      mState->gilState = PyGILState_Ensure();
+#else
       PyEval_AcquireThread(mState->pyState);
+#endif
 
       vprDEBUG(pyjDBG_CXX, vprDBG_VERB_LVL)
          << std::hex << this << std::dec << " locked\n" << vprDEBUG_FLUSH;
@@ -85,7 +100,11 @@ InterpreterGuard::~InterpreterGuard()
          << std::hex << this << std::dec << " unlocking\n" << vprDEBUG_FLUSH;
 
       // Unlock the GIL.
+#if HAVE_PY_GIL_STATE
+      PyGILState_Release(mState->gilState);
+#else
       PyEval_ReleaseThread(mState->pyState);
+#endif
 
       vprDEBUG(pyjDBG_CXX, vprDBG_VERB_LVL)
          << std::hex << this << std::dec << " unlocked\n" << vprDEBUG_FLUSH;

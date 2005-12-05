@@ -68,6 +68,15 @@
 #   define PYJUTIL_DATA_API(__type) PYJUTIL_IMPORT_DATA(__type)
 #endif
 
+// Python 2.3 has handy functions for managing GIL state. Boost.Python still
+// supports Python 2.2, so we have this for backwards compatibility with
+// Python 2.2.
+#if PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION < 3       /* Python 2.2 case */
+#  define HAVE_PY_GIL_STATE 0
+#else                                                   /* Python 2.3+ case */
+#  define HAVE_PY_GIL_STATE 1
+#endif
+
 namespace PyJuggler
 {
 
@@ -96,8 +105,13 @@ private:
 
       ~State();
 
-      bool           gilLocked; /**< Indicates that the GIL is held. */
+      bool gilLocked; /**< Indicates that the GIL is held. */
+
+#if defined(HAVE_PY_GIL_STATE)
+      PyGILState_STATE gilState; /**< The Pythoon GIL state for this thread. */
+#else
       PyThreadState* pyState;   /**< The Python state info for this thread. */
+#endif
    };
 
 public:
