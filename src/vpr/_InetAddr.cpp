@@ -12,6 +12,7 @@
 
 // Includes ====================================================================
 #include <vpr/IO/Socket/InetAddr.h>
+#include <container_conversions.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -53,4 +54,7 @@ void _Export_InetAddr()
    );
 
    delete vpr_InetAddr_scope;
+
+   pyj::std_vector_copyable_to_list<std::string>();
+   pyj::std_vector_copyable_to_list<vpr::InetAddr>();
 }
