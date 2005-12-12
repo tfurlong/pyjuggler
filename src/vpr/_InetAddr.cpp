@@ -20,7 +20,7 @@ using namespace boost::python;
 namespace pyj
 {
 
-BOOST_PYTHON_FUNCTION_OVERLOADS(vpr_InetAddrBSD_getAllLocalAddrs_overloads_1_2, vpr::InetAddrBSD::getAllLocalAddrs, 1, 2)
+BOOST_PYTHON_FUNCTION_OVERLOADS(vpr_InetAddr_getAllLocalAddrs_overloads_1_2, vpr::InetAddr::getAllLocalAddrs, 1, 2)
 
 }
 
@@ -28,24 +28,24 @@ BOOST_PYTHON_FUNCTION_OVERLOADS(vpr_InetAddrBSD_getAllLocalAddrs_overloads_1_2, 
 void _Export_InetAddr()
 {
    scope* vpr_InetAddr_scope = new scope(
-   class_< vpr::InetAddrBSD >("InetAddr", init<  >())
-        .def(init< const vpr::InetAddrBSD& >())
-        .def_readonly("AnyAddr", &vpr::InetAddrBSD::AnyAddr)
-        .def("getLocalHost", &vpr::InetAddrBSD::getLocalHost)
-        .def("getAllLocalAddrs", &vpr::InetAddrBSD::getAllLocalAddrs, pyj::vpr_InetAddrBSD_getAllLocalAddrs_overloads_1_2())
-        .def("setAddress", (void (vpr::InetAddrBSD::*)(const std::string&)  throw(vpr::UnknownHostException))&vpr::InetAddrBSD::setAddress)
-        .def("setAddress", (void (vpr::InetAddrBSD::*)(const std::string&, const vpr::Uint16)  throw(vpr::UnknownHostException))&vpr::InetAddrBSD::setAddress)
-        .def("setAddress", (void (vpr::InetAddrBSD::*)(const vpr::Uint32, const vpr::Uint16) )&vpr::InetAddrBSD::setAddress)
-        .def("getLength", &vpr::InetAddrBSD::getLength)
-        .def("setLength", &vpr::InetAddrBSD::setLength)
-        .def("getFamily", &vpr::InetAddrBSD::getFamily)
-        .def("setFamily", &vpr::InetAddrBSD::setFamily)
-        .def("getPort", &vpr::InetAddrBSD::getPort)
-        .def("setPort", &vpr::InetAddrBSD::setPort)
-        .def("getAddressValue", &vpr::InetAddrBSD::getAddressValue)
-        .def("getAddressString", &vpr::InetAddrBSD::getAddressString)
-        .def("getHostname", &vpr::InetAddrBSD::getHostname)
-        .def("getHostnames", &vpr::InetAddrBSD::getHostnames)
+   class_< vpr::InetAddr >("InetAddr", init<  >())
+        .def(init< const vpr::InetAddr& >())
+        .def_readonly("AnyAddr", &vpr::InetAddr::AnyAddr)
+        .def("getLocalHost", &vpr::InetAddr::getLocalHost)
+        .def("getAllLocalAddrs", &vpr::InetAddr::getAllLocalAddrs, pyj::vpr_InetAddr_getAllLocalAddrs_overloads_1_2())
+        .def("setAddress", (void (vpr::InetAddr::*)(const std::string&)  throw(vpr::UnknownHostException))&vpr::InetAddr::setAddress)
+        .def("setAddress", (void (vpr::InetAddr::*)(const std::string&, const vpr::Uint16)  throw(vpr::UnknownHostException))&vpr::InetAddr::setAddress)
+        .def("setAddress", (void (vpr::InetAddr::*)(const vpr::Uint32, const vpr::Uint16) )&vpr::InetAddr::setAddress)
+        .def("getLength", &vpr::InetAddr::getLength)
+        .def("setLength", &vpr::InetAddr::setLength)
+        .def("getFamily", &vpr::InetAddr::getFamily)
+        .def("setFamily", &vpr::InetAddr::setFamily)
+        .def("getPort", &vpr::InetAddr::getPort)
+        .def("setPort", &vpr::InetAddr::setPort)
+        .def("getAddressValue", &vpr::InetAddr::getAddressValue)
+        .def("getAddressString", &vpr::InetAddr::getAddressString)
+        .def("getHostname", &vpr::InetAddr::getHostname)
+        .def("getHostnames", &vpr::InetAddr::getHostnames)
         .staticmethod("getAllLocalAddrs")
         .staticmethod("getLocalHost")
         .def( self == self )
