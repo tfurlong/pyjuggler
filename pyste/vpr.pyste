@@ -11,6 +11,7 @@ Class('vpr::ObjectWriter', 'vpr/IO/ObjectWriter.h')
 Class('vpr::ReadableObject', 'vpr/IO/SerializableObject.h')
 Class('vpr::WriteableObject', 'vpr/IO/SerializableObject.h')
 Class('vpr::SerializableObject', 'vpr/IO/SerializableObject.h')
+Class('vpr::InetAddr', 'vpr/IO/Socket/InetAddr.h')
 
 GUID = Class('vpr::GUID', 'vpr/Util/GUID.h')
 exclude(GUID.readObject)

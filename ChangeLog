@@ -1,5 +1,7 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Dec-12-2005 aronb       Adding bindings for vpr::InetAddr
+                        NEW VERSION: 1.1.7
 Dec-04-2005 patrickh    Fixed a crash when using pyjutil::InterpreterGuard
                         without using multiple native threads. This fix only
                         works for Python 2.3 and newer.
