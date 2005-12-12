@@ -68,6 +68,58 @@ struct std_vector_noncopyable_to_tuple
    }
 };
 
+template<typename ContainerType>
+struct to_list
+{
+   static PyObject* convert(ContainerType const& a)
+   {
+      boost::python::list result;
+      typedef typename ContainerType::const_iterator const_iter;
+      for ( const_iter p = a.begin(); p != a.end(); ++p )
+      {
+         result.append(boost::python::object(*p));
+      }
+      return boost::python::incref(result.ptr());
+   }
+};
+
+template<typename ContainerType>
+struct to_list_noncopyable
+{
+   static PyObject* convert(ContainerType const& a)
+   {
+      boost::python::list result;
+      typedef typename ContainerType::const_iterator const_iter;
+      for ( const_iter p = a.begin(); p != a.end(); ++p )
+      {
+         result.append(boost::python::object(boost::python::ptr(*p)));
+      }
+      return boost::python::incref(result.ptr());
+   }
+};
+
+template<typename T>
+struct std_vector_copyable_to_list
+{
+   std_vector_copyable_to_list()
+   {
+      boost::python::to_python_converter<
+         std::vector<T>, to_list< std::vector<T> >
+      >();
+   }
+};
+
+template<typename T>
+struct std_vector_noncopyable_to_list
+{
+   std_vector_noncopyable_to_list()
+   {
+      boost::python::to_python_converter<
+         std::vector<T>, to_list_noncopyable< std::vector<T> >
+      >();
+   }
+};
+
 } // namespace pyj
 
 #endif /* _PYJ_CONTAINER_CONVERSIONS_H_ */
