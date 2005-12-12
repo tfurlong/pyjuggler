@@ -17,6 +17,7 @@ MOD_NAME=	vpr
 
 SRCS= \
 	_GUID.cpp		\
+	_InetAddr.cpp		\
 	_Interval.cpp		\
 	_ObjectReader.cpp	\
 	_ObjectWriter.cpp	\

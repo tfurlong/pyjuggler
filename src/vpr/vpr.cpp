@@ -11,6 +11,7 @@
 #include <vpr/Util/Version.h>
 
 // Exports =====================================================================
+void _Export_InetAddr();
 void _Export_Interval();
 void _Export_ReturnStatus();
 void _Export_ObjectReader();
@@ -41,6 +42,7 @@ BOOST_PYTHON_MODULE(vpr)
                       "provides three digits for each of the major, minor,\n"
                       "and patch numbers with no leading zeros");
 
+   _Export_InetAddr();
    _Export_Interval();
    _Export_ReturnStatus();
    _Export_ObjectReader();
