@@ -20,7 +20,7 @@ using namespace boost::python;
 namespace pyj
 {
 
-BOOST_PYTHON_FUNCTION_OVERLOADS(vpr_InetAddr_getAllLocalAddrs_overloads_1_2, vpr::InetAddr::getAllLocalAddrs, 1, 2)
+BOOST_PYTHON_FUNCTION_OVERLOADS(vpr_InetAddr_getAllLocalAddrs_overloads_0_1, vpr::InetAddr::getAllLocalAddrs, 0, 1)
 
 }
 
@@ -32,7 +32,7 @@ void _Export_InetAddr()
         .def(init< const vpr::InetAddr& >())
         .def_readonly("AnyAddr", &vpr::InetAddr::AnyAddr)
         .def("getLocalHost", &vpr::InetAddr::getLocalHost)
-        .def("getAllLocalAddrs", &vpr::InetAddr::getAllLocalAddrs, pyj::vpr_InetAddr_getAllLocalAddrs_overloads_1_2())
+        .def("getAllLocalAddrs", &vpr::InetAddr::getAllLocalAddrs, pyj::vpr_InetAddr_getAllLocalAddrs_overloads_0_1())
         .def("setAddress", (void (vpr::InetAddr::*)(const std::string&)  throw(vpr::UnknownHostException))&vpr::InetAddr::setAddress)
         .def("setAddress", (void (vpr::InetAddr::*)(const std::string&, const vpr::Uint16)  throw(vpr::UnknownHostException))&vpr::InetAddr::setAddress)
         .def("setAddress", (void (vpr::InetAddr::*)(const vpr::Uint32, const vpr::Uint16) )&vpr::InetAddr::setAddress)
