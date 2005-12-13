@@ -242,5 +242,5 @@ void _Export_ConfigElement()
       .def(vector_indexing_suite< std::vector<std::string> >())
    ;
 
-   pyj::std_vector_copyable_to_tuple<jccl::ConfigElementPtr>();
+   pyj::copyable_to_python<std::vector<jccl::ConfigElementPtr>, tuple>();
 }

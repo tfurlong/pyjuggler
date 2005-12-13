@@ -5,9 +5,7 @@
 #ifndef _PYJ_CONTAINER_CONVERSIONS_H_
 #define _PYJ_CONTAINER_CONVERSIONS_H_
 
-#include <vector>
 #include <boost/python/list.hpp>
-#include <boost/python/tuple.hpp>
 #include <boost/python/to_python_converter.hpp>
 #include <boost/type_traits.hpp>
 
@@ -16,8 +14,8 @@ namespace pyj
 
 // This is adapted from scitbx::boost_python::container_conversions::to_tuple,
 // the source for which can be found at http://cctbx.sourceforge.net/
-template<typename ContainerType>
-struct to_tuple
+template<typename ContainerType, typename PythonType>
+struct container_to_python
 {
    static PyObject* convert(ContainerType const& a)
    {
@@ -27,12 +25,12 @@ struct to_tuple
       {
          result.append(boost::python::object(*p));
       }
-      return boost::python::incref(boost::python::tuple(result).ptr());
+      return boost::python::incref(PythonType(result).ptr());
    }
 };
 
-template<typename ContainerType>
-struct to_tuple_noncopyable
+template<typename ContainerType, typename PythonType>
+struct container_to_python_noncopyable
 {
    static PyObject* convert(ContainerType const& a)
    {
@@ -42,80 +40,37 @@ struct to_tuple_noncopyable
       {
          result.append(boost::python::object(boost::python::ptr(*p)));
       }
-      return boost::python::incref(boost::python::tuple(result).ptr());
+      return boost::python::incref(PythonType(result).ptr());
    }
 };
 
-template<typename T>
-struct std_vector_copyable_to_tuple
+/**
+ * \p PythonType must be convertible from boost::python::list. Suitable
+ * values are boost::python::list and boost::python::tuple.
+ */
+template<typename ContainerType, typename PythonType>
+struct copyable_to_python
 {
-   std_vector_copyable_to_tuple()
+   copyable_to_python()
    {
       boost::python::to_python_converter<
-         std::vector<T>, to_tuple< std::vector<T> >
+         ContainerType, container_to_python<ContainerType, PythonType>
       >();
    }
 };
 
-template<typename T>
-struct std_vector_noncopyable_to_tuple
+/**
+ * \p PythonType must be convertible from boost::python::list. Suitable
+ * values are boost::python::list and boost::python::tuple.
+ */
+template<typename ContainerType, typename PythonType>
+struct noncopyable_to_python
 {
-   std_vector_noncopyable_to_tuple()
+   noncopyable_to_python()
    {
       boost::python::to_python_converter<
-         std::vector<T>, to_tuple_noncopyable< std::vector<T> >
-      >();
-   }
-};
-
-template<typename ContainerType>
-struct to_list
-{
-   static PyObject* convert(ContainerType const& a)
-   {
-      boost::python::list result;
-      typedef typename ContainerType::const_iterator const_iter;
-      for ( const_iter p = a.begin(); p != a.end(); ++p )
-      {
-         result.append(boost::python::object(*p));
-      }
-      return boost::python::incref(result.ptr());
-   }
-};
-
-template<typename ContainerType>
-struct to_list_noncopyable
-{
-   static PyObject* convert(ContainerType const& a)
-   {
-      boost::python::list result;
-      typedef typename ContainerType::const_iterator const_iter;
-      for ( const_iter p = a.begin(); p != a.end(); ++p )
-      {
-         result.append(boost::python::object(boost::python::ptr(*p)));
-      }
-      return boost::python::incref(result.ptr());
-   }
-};
-
-template<typename T>
-struct std_vector_copyable_to_list
-{
-   std_vector_copyable_to_list()
-   {
-      boost::python::to_python_converter<
-         std::vector<T>, to_list< std::vector<T> >
-      >();
-   }
-};
-
-template<typename T>
-struct std_vector_noncopyable_to_list
-{
-   std_vector_noncopyable_to_list()
-   {
-      boost::python::to_python_converter<
-         std::vector<T>, to_list_noncopyable< std::vector<T> >
+         ContainerType,
+         container_to_python_noncopyable<ContainerType, PythonType>
       >();
    }
 };

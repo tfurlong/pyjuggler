@@ -246,5 +246,5 @@ void _Export_KeyboardMouse()
       )
    ;
 
-   pyj::std_vector_copyable_to_tuple<gadget::EventPtr>();
+   pyj::copyable_to_python<std::vector<gadget::EventPtr>, tuple>();
 }

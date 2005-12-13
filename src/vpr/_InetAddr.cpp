@@ -55,6 +55,6 @@ void _Export_InetAddr()
 
    delete vpr_InetAddr_scope;
 
-   pyj::std_vector_copyable_to_list<std::string>();
-   pyj::std_vector_copyable_to_list<vpr::InetAddr>();
+   pyj::copyable_to_python<std::vector<std::string>, list>();
+   pyj::copyable_to_python<std::vector<vpr::InetAddr>, list>();
 }
