@@ -22,6 +22,7 @@ void _Export_InetAddr()
 {
    scope* vpr_InetAddr_scope = new scope(
    class_< vpr::InetAddr >("InetAddr",
+      "Cross-platform abstraction to Internet address structures.",
       init<>(
          "__init__()\n"
          "Default constructor. This initializes the memory for the\n"
