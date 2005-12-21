@@ -75,7 +75,7 @@ struct GuidPickle : pickle_suite
    }
 };
 
-vpr::Uint32 guid_hash(vpr::GUID* g)
+vpr::Uint16 guid_hash(vpr::GUID* g)
 {
    static vpr::GUID::hash hash;
    return hash(*g);
