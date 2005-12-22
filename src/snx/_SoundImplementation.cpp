@@ -739,7 +739,8 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override lookup = this->get_override("lookup") )
          {
-#if defined(_MSC_VER) || (defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2)
+#if defined(_MSC_VER) || \
+    (defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2)
             return call<snx::SoundInfo&, std::string>(lookup.ptr(),
                                                       boost::ref(p0));
 #else
@@ -792,7 +793,8 @@ struct snx_SoundImplementation_Wrapper
       {
          if ( override name = this->get_override("name") )
          {
-#if defined(_MSC_VER) || (defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2)
+#if defined(_MSC_VER) || \
+    (defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2)
             return call<std::string&>(name.ptr());
 #else
             return name();
