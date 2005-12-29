@@ -1,5 +1,6 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Dec-28-2005 allenb      Fixed vpr.GUID.__hash__ to return a signed 32 bit int.
 Dec-12-2005 aronb       Adding bindings for vpr::InetAddr
                         NEW VERSION: 1.1.7
 Dec-04-2005 patrickh    Fixed a crash when using pyjutil::InterpreterGuard
