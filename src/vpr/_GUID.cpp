@@ -78,7 +78,8 @@ struct GuidPickle : pickle_suite
 vpr::Int32 guid_hash(vpr::GUID* g)
 {
    static vpr::GUID::hash hash;
-   return vpr::Int32(0x7FFFFFFF & vpr::Uint32(hash(*g)));		// Chop off the MSB and turn it into a signed Int.
+   // Chop off the most significant bit and turn it into a signed Int.
+   return vpr::Int32(0x7FFFFFFF & vpr::Uint32(hash(*g)));
 }
 
 }// namespace pyj
