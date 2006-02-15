@@ -105,12 +105,11 @@ private:
 
       ~State();
 
-      bool gilLocked; /**< Indicates that the GIL is held. */
-
 #if defined(HAVE_PY_GIL_STATE)
       PyGILState_STATE gilState; /**< The Pythoon GIL state for this thread. */
 #else
-      PyThreadState* pyState;   /**< The Python state info for this thread. */
+      bool             gilLocked; /**< Indicates that the GIL is held. */
+      PyThreadState*   pyState;   /**< The Python state info for this thread. */
 #endif
    };
 
@@ -133,7 +132,11 @@ private:
     * information.  This is used to ensure that a single thread never locks
     * the GIL twice.
     */
+#if defined(HAVE_PY_GIL_STATE)
+   State mState;
+#else
    static vpr::TSObjectProxy<State> mState;
+#endif
 
    /** Prevent copying. */
    InterpreterGuard(const InterpreterGuard&)
@@ -146,8 +149,10 @@ private:
       /* Do nothing. */ ;
    }
 
+#if ! HAVE_PY_GIL_STATE
    /** Indicates that this object was the one that acquired the GIL. */
    bool mMyLock;
+#endif
 };
 
 } // End of PyJuggler namespace

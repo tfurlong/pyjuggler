@@ -19,11 +19,13 @@
 namespace PyJuggler
 {
 
+#if ! HAVE_PY_GIL_STATE
 vpr::TSObjectProxy<InterpreterGuard::State> InterpreterGuard::mState;
+#endif
 
 InterpreterGuard::State::State()
-   : gilLocked(false)
 #if ! HAVE_PY_GIL_STATE
+   : gilLocked(false)
    , pyState(NULL)
 #endif
 {
@@ -50,10 +52,10 @@ InterpreterGuard::State::~State()
 #endif
 }
 
+#if ! HAVE_PY_GIL_STATE
 InterpreterGuard::InterpreterGuard()
    : mMyLock(false)
 {
-#if ! HAVE_PY_GIL_STATE
    if ( NULL == mState->pyState )
    {
       vprDEBUG(pyjDBG_CXX, vprDBG_VERB_LVL)
@@ -69,7 +71,6 @@ InterpreterGuard::InterpreterGuard()
    vprDEBUG(pyjDBG_CXX, vprDBG_HVERB_LVL)
       << "mState->pyState: " << std::hex << mState->pyState << std::dec
       << std::endl << vprDEBUG_FLUSH;
-#endif
 
    if ( ! mState->gilLocked )
    {
@@ -77,11 +78,7 @@ InterpreterGuard::InterpreterGuard()
          << std::hex << this << std::dec << " locking\n" << vprDEBUG_FLUSH;
 
       // Lock the GIL.
-#if HAVE_PY_GIL_STATE
-      mState->gilState = PyGILState_Ensure();
-#else
       PyEval_AcquireThread(mState->pyState);
-#endif
 
       vprDEBUG(pyjDBG_CXX, vprDBG_VERB_LVL)
          << std::hex << this << std::dec << " locked\n" << vprDEBUG_FLUSH;
@@ -100,11 +97,7 @@ InterpreterGuard::~InterpreterGuard()
          << std::hex << this << std::dec << " unlocking\n" << vprDEBUG_FLUSH;
 
       // Unlock the GIL.
-#if HAVE_PY_GIL_STATE
-      PyGILState_Release(mState->gilState);
-#else
       PyEval_ReleaseThread(mState->pyState);
-#endif
 
       vprDEBUG(pyjDBG_CXX, vprDBG_VERB_LVL)
          << std::hex << this << std::dec << " unlocked\n" << vprDEBUG_FLUSH;
@@ -112,5 +105,30 @@ InterpreterGuard::~InterpreterGuard()
       mState->gilLocked = false;
    }
 }
+
+#else   /* HAVE_PY_GIL_STATE */
+
+InterpreterGuard::InterpreterGuard()
+{
+   vprDEBUG(pyjDBG_CXX, vprDBG_VERB_LVL)
+      << std::hex << this << std::dec << " locking\n" << vprDEBUG_FLUSH;
+
+   mState.gilState = PyGILState_Ensure();
+
+   vprDEBUG(pyjDBG_CXX, vprDBG_VERB_LVL)
+         << std::hex << this << std::dec << " locked\n" << vprDEBUG_FLUSH;
+}
+
+InterpreterGuard::~InterpreterGuard()
+{
+   vprDEBUG(pyjDBG_CXX, vprDBG_VERB_LVL)
+      << std::hex << this << std::dec << " unlocking\n" << vprDEBUG_FLUSH;
+
+   PyGILState_Release(mState.gilState);
+
+   vprDEBUG(pyjDBG_CXX, vprDBG_VERB_LVL)
+      << std::hex << this << std::dec << " unlocked\n" << vprDEBUG_FLUSH;
+}
+#endif
 
 } // End of PyJuggler namespace
