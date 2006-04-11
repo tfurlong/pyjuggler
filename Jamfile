@@ -2,10 +2,6 @@
 # Distributed under the GNU Lesser General Public License 2.1.  (See
 # accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
-# File:          $RCSfile$
-# Date modified: $Date$
-# Version:       $Revision$
-
 # Jamfile for compiling the PyJuggler Python extension module.  This
 # depends on working installations of Python, Boost.Python, VR Juggler,
 # CppDOM, (for some platforms) NSPR, and (optionally) Open Scene Graph.

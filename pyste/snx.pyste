@@ -2,10 +2,6 @@
 # Distributed under the GNU Lesser General Public License 2.1.  (See
 # accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
-# File:          $RCSfile$
-# Date modified: $Date$
-# Version:       $Revision$
-
 sonix = Class('snx::sonix', 'snx/sonix.h')
 set_policy(sonix.instance, return_value_policy(reference_existing_object))
 

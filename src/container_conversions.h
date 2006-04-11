@@ -1,7 +1,3 @@
-// File:          $RCSfile$
-// Date modified: $Date$
-// Version:       $Revision$
-
 #ifndef _PYJ_CONTAINER_CONVERSIONS_H_
 #define _PYJ_CONTAINER_CONVERSIONS_H_
 
