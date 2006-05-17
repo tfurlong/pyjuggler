@@ -54,7 +54,7 @@ public:
       }
    }
 
-   virtual ~PickleObject() throw ()
+   virtual ~PickleObject()
    {
       /* Do nothing. */ ;
    }
@@ -65,7 +65,11 @@ public:
       __dict__ = extract<dict>(obj.attr("__dict__"));
    }
 
-   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   /**
+    * @throw vpr::IOException is thrown if a Python exception is caught when
+    *        pickling this object.
+    */
+   void writeObject(vpr::ObjectWriter* p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "pyj::PIckleObject::writeObject()\n",
@@ -101,7 +105,11 @@ public:
       }
    }
 
-   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   /**
+    * @throw vpr::IOException is thrown if a Python exception is caught when
+    *        un-pickling this object.
+    */
+   void readObject(vpr::ObjectReader* p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "pyj::PIckleObject::readObject()\n",
