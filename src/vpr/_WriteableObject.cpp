@@ -21,6 +21,13 @@ namespace pyj
 
 struct vpr_WriteableObject_Wrapper : vpr::WriteableObject
 {
+   vpr_WriteableObject_Wrapper(PyObject* self_)
+      : vpr::WriteableObject()
+      , self(self_)
+   {
+      /* Do nothing. */ ;
+   }
+
    virtual ~vpr_WriteableObject_Wrapper()
    {
       /* Do nothing. */ ;

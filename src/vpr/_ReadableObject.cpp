@@ -21,6 +21,13 @@ namespace pyj
 
 struct vpr_ReadableObject_Wrapper : vpr::ReadableObject
 {
+   vpr_ReadableObject_Wrapper(PyObject* self_)
+      : vpr::ReadableObject()
+      , self(self_)
+   {
+      /* Do nothing. */ ;
+   }
+
    virtual ~vpr_ReadableObject_Wrapper()
    {
       /* Do nothing. */ ;
