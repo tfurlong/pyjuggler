@@ -92,6 +92,7 @@ def doInstall(prefix):
    installDist(prefix)
    installLibs(prefix)
    installMods(prefix)
+   installHeaders(prefix)
    installExamples(prefix)
 
 def mkinstalldirs(dir):
@@ -105,6 +106,7 @@ def makeTree(prefix):
    mkinstalldirs(os.path.join(prefix, 'lib'))
    mkinstalldirs(os.path.join(prefix, python_pkg_dir))
    mkinstalldirs(os.path.join(prefix, 'share', 'pyjuggler'))
+   mkinstalldirs(os.path.join(prefix, 'include'))
 
 def installDir(startDir, destDir, allowedExts = None, disallowedExts = None,
                disallowedFiles = None):
@@ -190,6 +192,12 @@ def installMods(prefix):
    for f in files:
       shutil.copy2(f, destdir)
 
+def installHeaders(prefix):
+   print "Installing header files ..."
+   destdir = os.path.join(prefix, 'include', 'pyjutil')
+   srcdir  = os.path.join(pyj_dir, 'pyjutil')
+   installDir(srcdir, destdir, allowedExts = [".h",])
+      
 def installExamples(prefix):
    print "Installing example code ..."
 
@@ -216,7 +224,7 @@ def main():
 
    try:
       status = os.spawnl(os.P_WAIT, devenv_cmd, 'devenv', solution_file)
-
+      
       if status == 0:
          print "Proceed with PyJuggler installation [y]: ",
          proceed = sys.stdin.readline().strip(" \n")
