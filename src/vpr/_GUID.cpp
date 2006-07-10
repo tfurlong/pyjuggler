@@ -137,7 +137,7 @@ void _Export_GUID()
        init<>()
       )
       .def(init<const vpr::GUID::hash&>())
-      .def("__call__", &vpr::GUID::hash::operator())
+      .def("__call__", (::size_t (vpr::GUID::hash::*)(const vpr::GUID&) const)&vpr::GUID::hash::operator())
    ;
 
    delete vpr_GUID_scope;
