@@ -13,6 +13,30 @@
 // Using =======================================================================
 using namespace boost::python;
 
+#if defined(_MSC_VER)
+namespace
+{
+
+void setAddressCrutch1(vpr::InetAddr* a, const std::string& s)
+{
+   a->setAddress(s);
+}
+
+void setAddressCrutch2(vpr::InetAddr* a, const std::string& s,
+                       const vpr::Uint16 p)
+{
+   a->setAddress(s, p);
+}
+
+void setAddressCrutch3(vpr::InetAddr* a, const vpr::Uint32 v,
+                       const vpr::Uint16 p)
+{
+   a->setAddress(v, p);
+}
+
+}
+#endif
+
 // Module ======================================================================
 void _Export_InetAddr()
 {
@@ -57,7 +81,11 @@ void _Export_InetAddr()
            "                False."
       )
       .def("setAddress",
+#if defined(_MSC_VER)
+           setAddressCrutch1,
+#else
            (void (vpr::InetAddr::*)(const std::string&)) &vpr::InetAddr::setAddress,
+#endif
            "setAddress(address)\n"
            "Sets the address for this objet using the given string. The given\n"
            "string must be of the form address:port where address can be a\n"
@@ -83,24 +111,18 @@ void _Export_InetAddr()
            "port    -- The port to associate with this IPv4 address."
       )
       .def("setAddress",
-           (void (vpr::InetAddr::*)(const std::string&, const vpr::Uint16)) &vpr::InetAddr::setAddress)
-      .def("setAddress",
-           (void (vpr::InetAddr::*)(const vpr::Uint32, const vpr::Uint16)) &vpr::InetAddr::setAddress)
-      .def("getLength", &vpr::InetAddr::getLength,
-           "getLength() -> integer\n"
-           "Gets the length of the address structure (if supported by the\n"
-           "host OS).\n"
-           "<b>Post condition:</b> The length of the address structure is\n"
-           "                       returned if the OS supports that feature.\n"
-           "                       Otherwise, 0 is returned."
+#if defined(_MSC_VER)
+           setAddressCrutch2
+#else
+           (void (vpr::InetAddr::*)(const std::string&, const vpr::Uint16)) &vpr::InetAddr::setAddress
+#endif
       )
-      .def("setLength", &vpr::InetAddr::setLength,
-           "setLength(length)\n"
-           "Sets the length of the address structure (if the host OS allows\n"
-           "such an operation.)\n"
-           "<b>Post condition:</b> The length of the address structure is set\n"
-           "                       to the given value if the OS supports that\n"
-           "                       feature. Otherwise, this is a no-op."
+      .def("setAddress",
+#if defined(_MSC_VER)
+           setAddressCrutch3
+#else
+           (void (vpr::InetAddr::*)(const vpr::Uint32, const vpr::Uint16)) &vpr::InetAddr::setAddress
+#endif
       )
       .def("getFamily", &vpr::InetAddr::getFamily,
            "getFamily() -> integer\n"
