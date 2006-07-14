@@ -1,11 +1,9 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
-Jul-14-2006 patrick     Use automatic linking against Boost.Python on Windows.
 Jul-10-2006 allenb      Updated vpr.GUID.hash wrapper to latest changes in vpr.
                         NEW VERSION: 1.1.8
-Dec-28-2005 allenb      Fixed vpr.GUID.__hash__ to return a signed 32-bit
-                        integer.
-Dec-12-2005 aronb       Adding bindings for vpr::InetAddr.
+Dec-28-2005 allenb      Fixed vpr.GUID.__hash__ to return a signed 32 bit int.
+Dec-12-2005 aronb       Adding bindings for vpr::InetAddr
                         NEW VERSION: 1.1.7
 Dec-04-2005 patrickh    Fixed a crash when using pyjutil::InterpreterGuard
                         without using multiple native threads. This fix only

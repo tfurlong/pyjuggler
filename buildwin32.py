@@ -42,6 +42,7 @@ def setVars():
       'VJ_BASE_DIR'    : os.getenv('VJ_BASE_DIR', ''),
       'VJ_DEPS_DIR'    : os.getenv('VJ_DEPS_DIR', ''),
       'BOOST_VERSION'  : os.getenv('BOOST_VERSION', '1_32'),
+      'BOOST_TOOL'     : os.getenv('BOOST_TOOL', 'vc71'),
       'PYTHON_ROOT'    : os.getenv('PYTHON_ROOT', ''),
       'PYTHON_VERSION' : os.getenv('PYTHON_VERSION', sys.version[:3]),
       'prefix'         : r'C:\PyJuggler',
@@ -61,6 +62,8 @@ def setVars():
    processInput(options, 'VJ_DEPS_DIR',
                 'VR Juggler dependency installation directory')
    processInput(options, 'BOOST_VERSION', 'Boost C++ version')
+   processInput(options, 'BOOST_TOOL',
+                'the Boost.Build toolset used to compile Boost C++')
    processInput(options, 'PYTHON_ROOT', 'Python installation directory')
 
    py_ver = processInput(options, 'PYTHON_VERSION', 'Python version')
@@ -69,6 +72,12 @@ def setVars():
    print "\n+++ Optional Settings"
    processInput(options, 'OSGHOME', 'Open Scene Graph installation directory',
                 False)
+
+   # Check for Boost 1.32 Visual C++ toolset names.
+   match = re.compile(r'vc-(\d)_(\d)').match(options['BOOST_TOOL'])
+
+   if match is not None:
+      os.environ['BOOST_TOOL'] = 'vc%s%s' % (match.group(1), match.group(2))
 
    cache_file = open(cache_file, 'w')
    for k, v in options.iteritems():
