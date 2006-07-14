@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="pyjutil_d.lib sonix_d.lib vpr_d.lib cppdom_d.lib boost_python-$(BOOST_TOOL)-mt-gd-$(BOOST_VERSION).lib $(NOINHERIT)"
+				AdditionalDependencies="pyjutil_d.lib cppdom_d.lib boost_python-$(BOOST_TOOL)-mt-gd-$(BOOST_VERSION).lib $(NOINHERIT)"
 				OutputFile="$(OutDir)/snx_d.pyd"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -99,7 +99,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="pyjutil.lib sonix.lib vpr.lib cppdom.lib boost_python-$(BOOST_TOOL)-mt-$(BOOST_VERSION).lib $(NOINHERIT)"
+				AdditionalDependencies="pyjutil.lib cppdom.lib boost_python-$(BOOST_TOOL)-mt-$(BOOST_VERSION).lib $(NOINHERIT)"
 				OutputFile="$(OutDir)/snx.pyd"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
