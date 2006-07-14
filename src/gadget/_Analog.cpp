@@ -27,12 +27,12 @@ struct gadget_Analog_Wrapper : gadget::Analog, wrapper<gadget::Analog>
       /* Do nothing. */ ;
    }
 
-   virtual ~gadget_Analog_Wrapper() throw ()
+   virtual ~gadget_Analog_Wrapper()
    {
       /* Do nothing. */ ;
    }
 
-   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void writeObject(vpr::ObjectWriter* p0)
    {
       try
       {
@@ -55,12 +55,12 @@ struct gadget_Analog_Wrapper : gadget::Analog, wrapper<gadget::Analog>
       }
    }
 
-   void default_writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void default_writeObject(vpr::ObjectWriter* p0)
    {
       gadget::Analog::writeObject(p0);
    }
 
-   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   void readObject(vpr::ObjectReader* p0)
    {
       try
       {
@@ -83,7 +83,7 @@ struct gadget_Analog_Wrapper : gadget::Analog, wrapper<gadget::Analog>
       }
    }
 
-   void default_readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   void default_readObject(vpr::ObjectReader* p0)
    {
       gadget::Analog::readObject(p0);
    }

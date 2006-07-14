@@ -27,7 +27,7 @@ struct gadget_Command_Wrapper : gadget::Command, wrapper<gadget::Command>
       /* Do nothing. */ ;
    }
 
-   virtual ~gadget_Command_Wrapper() throw ()
+   virtual ~gadget_Command_Wrapper()
    {
       /* Do nothing. */ ;
    }
@@ -79,7 +79,7 @@ struct gadget_Command_Wrapper : gadget::Command, wrapper<gadget::Command>
       return gadget::Command::getInputTypeName();
    }
 
-   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void writeObject(vpr::ObjectWriter* p0)
    {
       try
       {
@@ -102,12 +102,12 @@ struct gadget_Command_Wrapper : gadget::Command, wrapper<gadget::Command>
       }
    }
 
-   void default_writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void default_writeObject(vpr::ObjectWriter* p0)
    {
       gadget::Command::writeObject(p0);
    }
 
-   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   void readObject(vpr::ObjectReader* p0)
    {
       try
       {
@@ -130,7 +130,7 @@ struct gadget_Command_Wrapper : gadget::Command, wrapper<gadget::Command>
       }
    }
 
-   void default_readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   void default_readObject(vpr::ObjectReader* p0)
    {
       gadget::Command::readObject(p0);
    }

@@ -27,7 +27,7 @@ struct gadget_Position_Wrapper : gadget::Position, wrapper<gadget::Position>
       /* Do nothing. */ ;
    }
 
-   virtual ~gadget_Position_Wrapper() throw ()
+   virtual ~gadget_Position_Wrapper()
    {
       /* Do nothing. */ ;
    }
@@ -78,7 +78,7 @@ struct gadget_Position_Wrapper : gadget::Position, wrapper<gadget::Position>
       return gadget::Position::getInputTypeName();
    }
 
-   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void writeObject(vpr::ObjectWriter* p0)
    {
       try
       {
@@ -101,12 +101,12 @@ struct gadget_Position_Wrapper : gadget::Position, wrapper<gadget::Position>
       }
    }
 
-   void default_writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void default_writeObject(vpr::ObjectWriter* p0)
    {
       gadget::Position::writeObject(p0);
    }
 
-   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   void readObject(vpr::ObjectReader* p0)
    {
       try
       {
@@ -129,7 +129,7 @@ struct gadget_Position_Wrapper : gadget::Position, wrapper<gadget::Position>
       }
    }
 
-   void default_readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   void default_readObject(vpr::ObjectReader* p0)
    {
       gadget::Position::readObject(p0);
    }

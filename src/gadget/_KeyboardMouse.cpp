@@ -35,7 +35,7 @@ struct gadget_KeyboardMouse_Wrapper
       /* Do nothing. */ ;
    }
 
-   virtual ~gadget_KeyboardMouse_Wrapper() throw ()
+   virtual ~gadget_KeyboardMouse_Wrapper()
    {
       /* Do nothing. */ ;
    }
@@ -64,7 +64,7 @@ struct gadget_KeyboardMouse_Wrapper
       return gadget::KeyboardMouse::getInputTypeName();
    }
 
-   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void writeObject(vpr::ObjectWriter* p0)
    {
       try
       {
@@ -87,12 +87,12 @@ struct gadget_KeyboardMouse_Wrapper
       }
    }
 
-   void default_writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void default_writeObject(vpr::ObjectWriter* p0)
    {
       gadget::KeyboardMouse::writeObject(p0);
    }
 
-   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   void readObject(vpr::ObjectReader* p0)
    {
       try
       {
@@ -115,7 +115,7 @@ struct gadget_KeyboardMouse_Wrapper
       }
    }
 
-   void default_readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   void default_readObject(vpr::ObjectReader* p0)
    {
       gadget::KeyboardMouse::readObject(p0);
    }

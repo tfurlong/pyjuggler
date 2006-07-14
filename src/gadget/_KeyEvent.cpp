@@ -46,12 +46,12 @@ struct gadget_KeyEvent_Wrapper : gadget::KeyEvent, wrapper<gadget::KeyEvent>
       /* Do nothing. */ ;
    }
 
-   virtual ~gadget_KeyEvent_Wrapper() throw ()
+   virtual ~gadget_KeyEvent_Wrapper()
    {
       /* Do nothing. */ ;
    }
 
-   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void writeObject(vpr::ObjectWriter* p0)
    {
       try
       {
@@ -74,12 +74,12 @@ struct gadget_KeyEvent_Wrapper : gadget::KeyEvent, wrapper<gadget::KeyEvent>
       }
    }
 
-   void default_writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void default_writeObject(vpr::ObjectWriter* p0)
    {
       gadget::KeyEvent::writeObject(p0);
    }
 
-   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   void readObject(vpr::ObjectReader* p0)
    {
       try
       {
@@ -102,7 +102,7 @@ struct gadget_KeyEvent_Wrapper : gadget::KeyEvent, wrapper<gadget::KeyEvent>
       }
    }
 
-   void default_readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   void default_readObject(vpr::ObjectReader* p0)
    {
       gadget::KeyEvent::readObject(p0);
    }

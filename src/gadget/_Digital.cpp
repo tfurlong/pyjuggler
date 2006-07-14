@@ -27,7 +27,7 @@ struct gadget_Digital_Wrapper : gadget::Digital, wrapper<gadget::Digital>
       /* Do nothing. */ ;
    }
 
-   virtual ~gadget_Digital_Wrapper() throw ()
+   virtual ~gadget_Digital_Wrapper()
    {
       /* Do nothing. */ ;
    }
@@ -79,7 +79,7 @@ struct gadget_Digital_Wrapper : gadget::Digital, wrapper<gadget::Digital>
       return gadget::Digital::getInputTypeName();
    }
 
-   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void writeObject(vpr::ObjectWriter* p0)
    {
       try
       {
@@ -102,12 +102,12 @@ struct gadget_Digital_Wrapper : gadget::Digital, wrapper<gadget::Digital>
       }
    }
 
-   void default_writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void default_writeObject(vpr::ObjectWriter* p0)
    {
       gadget::Digital::writeObject(p0);
    }
 
-   void readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   void readObject(vpr::ObjectReader* p0)
    {
       try
       {
@@ -130,7 +130,7 @@ struct gadget_Digital_Wrapper : gadget::Digital, wrapper<gadget::Digital>
       }
    }
 
-   void default_readObject(vpr::ObjectReader* p0) throw (vpr::IOException)
+   void default_readObject(vpr::ObjectReader* p0)
    {
       gadget::Digital::readObject(p0);
    }
