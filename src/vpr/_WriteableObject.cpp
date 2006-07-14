@@ -23,12 +23,12 @@ struct vpr_WriteableObject_Wrapper
    : vpr::WriteableObject
    , wrapper<vpr::WriteableObject>
 {
-   virtual ~vpr_WriteableObject_Wrapper() throw ()
+   virtual ~vpr_WriteableObject_Wrapper()
    {
       /* Do nothing. */ ;
    }
 
-   void writeObject(vpr::ObjectWriter* p0) throw (vpr::IOException)
+   void writeObject(vpr::ObjectWriter* p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_WriteableObject_Wrapper::writeObject()\n",

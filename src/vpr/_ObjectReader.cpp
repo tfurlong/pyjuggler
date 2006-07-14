@@ -20,12 +20,12 @@ namespace pyj
 
 struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
 {
-   virtual ~vpr_ObjectReader_Wrapper() throw ()
+   virtual ~vpr_ObjectReader_Wrapper()
    {
       /* Do nothing. */ ;
    }
 
-   void beginTag(const std::string& p0) throw (vpr::IOException)
+   void beginTag(const std::string& p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectReader_Wrapper::beginTag()\n",
@@ -42,7 +42,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       }
    }
 
-   void endTag() throw (vpr::IOException)
+   void endTag()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectReader_Wrapper::endTag()\n",
@@ -59,7 +59,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       }
    }
 
-   void beginAttribute(const std::string& p0) throw (vpr::IOException)
+   void beginAttribute(const std::string& p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectReader_Wrapper::beginAttribute()\n",
@@ -76,7 +76,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       }
    }
 
-   void endAttribute() throw (vpr::IOException)
+   void endAttribute()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectReader_Wrapper::endAttribute()\n",
@@ -144,7 +144,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       }
    }
 
-   vpr::Uint8 readUint8() throw (vpr::IOException)
+   vpr::Uint8 readUint8()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectReader_Wrapper::readUint8()\n",
@@ -161,7 +161,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       }
    }
 
-   vpr::Uint16 readUint16() throw (vpr::IOException)
+   vpr::Uint16 readUint16()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectReader_Wrapper::readUint16()\n",
@@ -178,7 +178,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       }
    }
 
-   vpr::Uint32 readUint32() throw (vpr::IOException)
+   vpr::Uint32 readUint32()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectReader_Wrapper::readUint32()\n",
@@ -195,7 +195,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       }
    }
 
-   vpr::Uint64 readUint64() throw (vpr::IOException)
+   vpr::Uint64 readUint64()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectReader_Wrapper::readUint64()\n",
@@ -212,7 +212,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       }
    }
 
-   float readFloat() throw (vpr::IOException)
+   float readFloat()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::readFloat()\n",
@@ -229,7 +229,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       }
    }
 
-   double readDouble() throw (vpr::IOException)
+   double readDouble()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::readDouble()\n",
@@ -246,7 +246,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       }
    }
 
-   std::string readString() throw (vpr::IOException)
+   std::string readString()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::readString()\n",
@@ -263,7 +263,7 @@ struct vpr_ObjectReader_Wrapper : vpr::ObjectReader, wrapper<vpr::ObjectReader>
       }
    }
 
-   bool readBool() throw (vpr::IOException)
+   bool readBool()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::readBool()\n",

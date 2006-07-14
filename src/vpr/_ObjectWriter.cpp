@@ -20,12 +20,12 @@ namespace pyj
 
 struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
 {
-   virtual ~vpr_ObjectWriter_Wrapper() throw ()
+   virtual ~vpr_ObjectWriter_Wrapper()
    {
       /* Do nothing. */ ;
    }
 
-   void beginTag(const std::string& p0) throw (vpr::IOException)
+   void beginTag(const std::string& p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::beginTag()\n",
@@ -42,7 +42,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   void endTag() throw (vpr::IOException)
+   void endTag()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::endTag()\n",
@@ -59,7 +59,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   void beginAttribute(const std::string& p0) throw (vpr::IOException)
+   void beginAttribute(const std::string& p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::beginAttribute()\n",
@@ -76,7 +76,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   void endAttribute() throw (vpr::IOException)
+   void endAttribute()
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::endAttribute()\n",
@@ -93,7 +93,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   void writeUint8(vpr::Uint8 p0) throw (vpr::IOException)
+   void writeUint8(vpr::Uint8 p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeUint8()\n",
@@ -110,7 +110,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   void writeUint16(vpr::Uint16 p0) throw (vpr::IOException)
+   void writeUint16(vpr::Uint16 p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeUint16()\n",
@@ -127,7 +127,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   void writeUint32(vpr::Uint32 p0) throw (vpr::IOException)
+   void writeUint32(vpr::Uint32 p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeUint32()\n",
@@ -144,7 +144,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   void writeUint64(vpr::Uint64 p0) throw (vpr::IOException)
+   void writeUint64(vpr::Uint64 p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeUint64()\n",
@@ -161,7 +161,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   void writeFloat(float p0) throw (vpr::IOException)
+   void writeFloat(float p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeFloat()\n",
@@ -178,7 +178,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   void writeDouble(double p0) throw (vpr::IOException)
+   void writeDouble(double p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeDouble()\n",
@@ -195,7 +195,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   void writeString(std::string p0) throw (vpr::IOException)
+   void writeString(std::string p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeString()\n",
@@ -212,7 +212,7 @@ struct vpr_ObjectWriter_Wrapper : vpr::ObjectWriter, wrapper<vpr::ObjectWriter>
       }
    }
 
-   void writeBool(bool p0) throw (vpr::IOException)
+   void writeBool(bool p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
                                "vpr_ObjectWriter_Wrapper::writeBool()\n",

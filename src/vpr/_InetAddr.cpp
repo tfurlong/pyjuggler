@@ -57,7 +57,7 @@ void _Export_InetAddr()
            "                False."
       )
       .def("setAddress",
-           (void (vpr::InetAddr::*)(const std::string&) throw(vpr::UnknownHostException)) &vpr::InetAddr::setAddress,
+           (void (vpr::InetAddr::*)(const std::string&)) &vpr::InetAddr::setAddress,
            "setAddress(address)\n"
            "Sets the address for this objet using the given string. The given\n"
            "string must be of the form address:port where address can be a\n"
@@ -83,7 +83,7 @@ void _Export_InetAddr()
            "port    -- The port to associate with this IPv4 address."
       )
       .def("setAddress",
-           (void (vpr::InetAddr::*)(const std::string&, const vpr::Uint16) throw(vpr::UnknownHostException)) &vpr::InetAddr::setAddress)
+           (void (vpr::InetAddr::*)(const std::string&, const vpr::Uint16)) &vpr::InetAddr::setAddress)
       .def("setAddress",
            (void (vpr::InetAddr::*)(const vpr::Uint32, const vpr::Uint16)) &vpr::InetAddr::setAddress)
       .def("getLength", &vpr::InetAddr::getLength,
