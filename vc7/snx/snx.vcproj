@@ -22,7 +22,7 @@
 				Optimization="0"
 				ImproveFloatingPointConsistency="TRUE"
 				AdditionalIncludeDirectories="&quot;$(PYTHON_ROOT)\include&quot;;&quot;$(VJ_BASE_DIR)\include&quot;;&quot;$(VJ_DEPS_DIR)\include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;_USRDLL;BOOST_PYTHON_DYNAMIC_LIB"
+				PreprocessorDefinitions="CPPDOM_DYN_LINK;WIN32;_DEBUG;_CONSOLE;_USRDLL;BOOST_PYTHON_DYNAMIC_LIB"
 				MinimalRebuild="FALSE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -39,7 +39,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="pyjutil_d.lib cppdom_d.lib boost_python-$(BOOST_TOOL)-mt-gd-$(BOOST_VERSION).lib $(NOINHERIT)"
+				AdditionalDependencies="pyjutil_d.lib boost_python-$(BOOST_TOOL)-mt-gd-$(BOOST_VERSION).lib $(NOINHERIT)"
 				OutputFile="$(OutDir)/snx_d.pyd"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -84,7 +84,7 @@
 				ImproveFloatingPointConsistency="TRUE"
 				OmitFramePointers="TRUE"
 				AdditionalIncludeDirectories="&quot;$(PYTHON_ROOT)\include&quot;;&quot;$(VJ_BASE_DIR)\include&quot;;&quot;$(VJ_DEPS_DIR)\include&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_USRDLL;BOOST_PYTHON_DYNAMIC_LIB"
+				PreprocessorDefinitions="CPPDOM_DYN_LINK;WIN32;NDEBUG;_CONSOLE;_USRDLL;BOOST_PYTHON_DYNAMIC_LIB"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
@@ -99,7 +99,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="pyjutil.lib cppdom.lib boost_python-$(BOOST_TOOL)-mt-$(BOOST_VERSION).lib $(NOINHERIT)"
+				AdditionalDependencies="pyjutil.lib boost_python-$(BOOST_TOOL)-mt-$(BOOST_VERSION).lib $(NOINHERIT)"
 				OutputFile="$(OutDir)/snx.pyd"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
