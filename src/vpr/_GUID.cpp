@@ -106,7 +106,7 @@ void _Export_GUID()
       .def(init<const std::string&>())
       .def(init<const vpr::GUID&, const std::string&>())
       .def(init<const vpr::GUID&>())
-      .def_readwrite("generateTag", &vpr::GUID::generateTag)
+      .def_readonly("generateTag", &vpr::GUID::generateTag)
       .def_readonly("NullGUID", &vpr::GUID::NullGUID)
       .def("toString", &vpr::GUID::toString,
            "Converts this GUID to its corresponding string representation."
