@@ -117,10 +117,10 @@ void _Export_GUID()
       )
       .def("__hash__", pyj::guid_hash)
       .def_pickle(pyj::GuidPickle())
-      .def(self_ns::str(self))
-      .def(self == self)
-      .def(self != self)
-      .def(self < self)
+      .def("__str__", &vpr::GUID::toString)
+      .def("__eq__", &vpr::GUID::operator==)
+      .def("__ne__", &vpr::GUID::operator!=)
+      .def("__lt__", &vpr::GUID::operator<)
    );
 
    class_<vpr::GUID::GenerateTag>("GenerateTag",
