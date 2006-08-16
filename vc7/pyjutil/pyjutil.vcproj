@@ -39,9 +39,9 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(PYTHON_ROOT)\libs&quot;;&quot;$(VJ_BASE_DIR)\lib&quot;;&quot;$(VJ_DEPS_DIR)\lib&quot;"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/pyjutil.pdb"
+				ProgramDatabaseFile="$(OutDir)/pyjutil_d.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/pyjutil.lib"
+				ImportLibrary="$(OutDir)/pyjutil_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
