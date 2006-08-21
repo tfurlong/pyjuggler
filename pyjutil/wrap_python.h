@@ -4,8 +4,8 @@
 //
 // Based on: boost/python/detail/wrap_python.hpp from Boost.Python libary.
 //
-// NOTE: If you are using boost.python just go ahead and include the file from boost.python
-//  before including anything from this library.
+// NOTE: If you are using Boost.Python just go ahead and include the file from
+// Boost.python before including anything from this library.
 
 //  This file serves as a wrapper around <Python.h> which allows it to be
 //  compiled with GCC 2.95.2 under Win32 and which disables the default MSVC
