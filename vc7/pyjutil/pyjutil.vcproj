@@ -34,7 +34,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="vpr_d.lib"
+				AdditionalDependencies=""
 				OutputFile="$(OutDir)/pyjutil_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(PYTHON_ROOT)\libs&quot;;&quot;$(VJ_BASE_DIR)\lib&quot;;&quot;$(VJ_DEPS_DIR)\lib&quot;"
@@ -85,7 +85,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="vpr.lib"
+				AdditionalDependencies=""
 				OutputFile="$(OutDir)/pyjutil.dll"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(PYTHON_ROOT)\libs&quot;;&quot;$(VJ_BASE_DIR)\lib&quot;;&quot;$(VJ_DEPS_DIR)\lib&quot;"

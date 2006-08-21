@@ -1,5 +1,7 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Aug-21-2006 patrick     Use automatic linking for CppDOM and the Juggler
+                        libraries on Windows.
 Dec-21-2005 patrickh    Fixed a crash when using pyjutil::InterpreterGuard
                         without using multiple native threads. This fix only
                         works for Python 2.3 and newer.
