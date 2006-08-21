@@ -19,7 +19,7 @@
 
 #ifdef _DEBUG
 # ifndef PYJUTIL_DEBUG_PYTHON
-#  ifdef _MSC_VER  
+#  ifdef _MSC_VER
     // VC8.0 will complain if system headers are #included both with
     // and without _DEBUG defined, so we have to #include all the
     // system headers used by pyconfig.h right here.
@@ -60,5 +60,3 @@
 #if _MSC_VER
 # pragma warning(disable:4786)
 #endif
-
-
