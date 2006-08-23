@@ -11,7 +11,6 @@ import shutil
 import sys
 import time
 import traceback
-pj = os.path.join
 
 python_ver_re = re.compile(r'(\d+)\.(\d+)')
 python_pkg_dir = ''
@@ -40,19 +39,18 @@ def setVars():
 
    options = {
       # Default values for required settings.
-      'VJ_BASE_DIR'     : os.getenv('VJ_BASE_DIR', ''),
-      'VJ_DEPS_DIR'     : os.getenv('VJ_DEPS_DIR', ''),
-      'CPPDOM_INCLUDES' : os.getenv('CPPDOM_INCLUDES',''), 
-      'BOOST_VERSION'   : os.getenv('BOOST_VERSION', '1_32'),
-      'BOOST_TOOL'      : os.getenv('BOOST_TOOL', 'vc71'),
-      'PYTHON_ROOT'     : os.getenv('PYTHON_ROOT', ''),
-      'PYTHON_VERSION'  : os.getenv('PYTHON_VERSION', sys.version[:3]),
-      'prefix'          : r'C:\PyJuggler',
+      'VJ_BASE_DIR'    : os.getenv('VJ_BASE_DIR', ''),
+      'VJ_DEPS_DIR'    : os.getenv('VJ_DEPS_DIR', ''),
+      'BOOST_VERSION'  : os.getenv('BOOST_VERSION', '1_32'),
+      'BOOST_TOOL'     : os.getenv('BOOST_TOOL', 'vc71'),
+      'PYTHON_ROOT'    : os.getenv('PYTHON_ROOT', ''),
+      'PYTHON_VERSION' : os.getenv('PYTHON_VERSION', sys.version[:3]),
+      'prefix'         : r'C:\PyJuggler',
 
       # Default values for optional settings.
       'OSGHOME'        : os.getenv('OSGHOME', '')
    }
-      
+
    # If there are cached options, read them in.
    cache_file = os.path.join(pyj_dir, 'options.cache')
    if os.path.exists(cache_file):
@@ -63,13 +61,6 @@ def setVars():
    processInput(options, 'VJ_BASE_DIR', 'VR Juggler installation directory')
    processInput(options, 'VJ_DEPS_DIR',
                 'VR Juggler dependency installation directory')
-   
-   if "" == options["CPPDOM_INCLUDES"]:
-      roots = [pj(options[v],'include') for v in ['VJ_BASE_DIR','VJ_DEPS_DIR']]
-      options["CPPDOM_INCLUDES"] = findCppdomIncludeDir(roots)
-
-   processInput(options, 'CPPDOM_INCLUDES', 
-                'Directory containing the CppDOM header tree')                
    processInput(options, 'BOOST_VERSION', 'Boost C++ version')
    processInput(options, 'BOOST_TOOL',
                 'the Boost.Build toolset used to compile Boost C++')
@@ -96,27 +87,6 @@ def setVars():
 
    return options
 
-def findCppdomIncludeDir(potentialIncRoots):
-   """ Attempt to search for cppdom include directory.  If found return it.
-       potentialIncRoots should be an 'include' directory to search in.
-   """
-   found_dir = ""
-   potential_dirs = []
-   for root in potentialIncRoots:
-      if os.path.isdir(root):
-         potential_dirs += [pj(root,d) for d in os.listdir(root) if d.count("cppdom")]
-   
-   # Sort them and reverse the order to get a list based on version.
-   potential_dirs.sort()
-   potential_dirs.reverse()
-
-   for d in potential_dirs:
-      if os.path.isfile(pj(d,'cppdom','version.h')):
-         found_dir = d
-         break         
-
-   return found_dir
-            
 def doInstall(prefix):
    makeTree(prefix)
    installDist(prefix)
