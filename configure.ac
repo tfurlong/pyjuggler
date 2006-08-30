@@ -26,8 +26,8 @@ DPP_STD_CPP([yes])
 # -------------------------------------------- #
 
 AC_ARG_WITH([python],
-            [  --with-python=<PATH>    Path to Python root             [default=/usr]],
-            [PYTHON_ROOT="$withval"], [PYTHON_ROOT='/usr'])
+            [  --with-python=<PATH>    Path to Python root             [default=/usr/local]],
+            [PYTHON_ROOT="$withval"], [PYTHON_ROOT='/usr/local'])
 
 AC_ARG_WITH([boost-python],
             [  --with-boost-python=<PATH>
