@@ -7,7 +7,7 @@ prefix=		@prefix@
 srcdir=		@srcdir@
 
 ifeq (@OS_TYPE@, Win32)
-   CXXFLAGS=	$(shell vrjuggler-config --includes) /Zm800 /GX /GR /Op	\
+   CXXFLAGS=	$(shell flagpoll vrjuggler --cflags) /Zm800 /GX /GR /Op	\
 		/I$(srcdir) /Zc:wchar_t,forScope $(CXXFLAGS_OPT)
    CXXFLAGS_DBG=/Z7 /Od /Ob0 /MDd /D_DEBUG
    CXXFLAGS_OPT=/Ogity /O2 /Gs /Ob2 /MD /D_OPT /DNDEBUG
@@ -15,7 +15,7 @@ ifeq (@OS_TYPE@, Win32)
    LDFLAGS_OPT=	/RELEASE
    LDFLAGS=	$(LDFLAGS_OPT)
 else
-   CXXFLAGS=	$(shell vrjuggler-config --cxxflags) -I$(srcdir)	\
+   CXXFLAGS=	$(shell flagpoll vrjuggler --cflags) -I$(srcdir)	\
 		$(CXXFLAGS_OPT)
    CXXFLAGS_DBG=-D_DEBUG -g
    CXXFLAGS_OPT=-D_OPT -DNDEBUG -O2
@@ -26,8 +26,8 @@ endif
 
 CXX=		@CXX@
 CXXFLAGS+=	@PYTHON_INCLUDES@
-LIBS=		$(shell vrjuggler-config --libs)
-EXTRA_LIBS=	$(shell vrjuggler-config --extra-libs)
+LIBS=		$(shell flagpoll vrjuggler --get-all-libs)
+EXTRA_LIBS=	$(shell flagpoll vrjuggler --get-all-extra-libs)
 
 PYTHON_VERSION=		@PYTHON_VERSION@
 #PYTHON_LIB=		@PYTHON_LIB_DBG@
