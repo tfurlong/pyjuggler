@@ -4,10 +4,10 @@
 
 srcdir=		@srcdir@
 
-VPR_LIBS=	$(shell vpr-config --libs)
-VPR_EXTRA_LIBS=	$(shell vpr-config --extra-libs)
+VPR_LIBS=	@VPR_LIBS@
+VPR_EXTRA_LIBS=	@VPR_EXTRA_LIBS@
 
-EXTRA_CXXFLAGS=	$(shell vpr-config --cxxflags)
+EXTRA_CXXFLAGS=	@VPR_CXXFLAGS@
 EXTRA_LDFLAGS=	$(PYJUTIL_LIB) $(VPR_LIBS) $(VPR_EXTRA_LIBS)
 MOD_NAME=	vpr
 
