@@ -4,10 +4,10 @@
 
 srcdir=		@srcdir@
 
-GADGET_LIBS=		$(shell flagpoll gadgeteer --get-all-libs)
-GADGET_EXTRA_LIBS=	$(shell flagpoll gadgeteer --get-all-extra-libs)
+GADGET_LIBS=		$(shell flagpoll gadgeteer jccl --get-all-libs)
+GADGET_EXTRA_LIBS=	$(shell flagpoll gadgeteer jccl --get-all-extra-libs)
 
-EXTRA_CXXFLAGS=		$(shell flagpoll gadgeteer --cflags)
+EXTRA_CXXFLAGS=		$(shell flagpoll gadgeteer jccl --cflags)
 EXTRA_LDFLAGS=		$(PYJUTIL_LIB) $(GADGET_LIBS) $(GADGET_EXTRA_LIBS)
 MOD_NAME=		cluster
 
