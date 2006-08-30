@@ -4,10 +4,10 @@
 
 srcdir=		@srcdir@
 
-VJ_LIBS=	$(shell vrjuggler-config --libs)
-VJ_EXTRA_LIBS=	$(shell vrjuggler-config --extra-libs)
+VJ_LIBS=	$(shell flagpoll vrjuggler --get-all-libs)
+VJ_EXTRA_LIBS=	$(shell flagpoll vrjuggler --get-all-extra-libs)
 
-EXTRA_CXXFLAGS=	$(shell vrjuggler-config --cxxflags)
+EXTRA_CXXFLAGS=	$(shell flagpoll vrjuggler --cflags)
 EXTRA_LDFLAGS=	$(PYJUTIL_LIB) $(VJ_LIBS) $(VJ_EXTRA_LIBS)
 MOD_NAME=	__vrj
 
