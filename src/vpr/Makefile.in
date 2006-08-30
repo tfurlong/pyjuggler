@@ -4,10 +4,10 @@
 
 srcdir=		@srcdir@
 
-VPR_LIBS=	@VPR_LIBS@
-VPR_EXTRA_LIBS=	@VPR_EXTRA_LIBS@
+VPR_LIBS=	$(shell flagpoll vpr --get-all-libs)
+VPR_EXTRA_LIBS=	$(shell flagpoll vpr --get-all-extra-libs)
 
-EXTRA_CXXFLAGS=	@VPR_CXXFLAGS@
+EXTRA_CXXFLAGS=	$(shell flagpoll vpr --cflags)
 EXTRA_LDFLAGS=	$(PYJUTIL_LIB) $(VPR_LIBS) $(VPR_EXTRA_LIBS)
 MOD_NAME=	vpr
 
