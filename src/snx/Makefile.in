@@ -4,10 +4,10 @@
 
 srcdir=		@srcdir@
 
-SONIX_LIBS=		$(shell sonix-config --libs)
-SONIX_EXTRA_LIBS=	$(shell sonix-config --extra-libs)
+SONIX_LIBS=		$(shell flagpoll sonix --get-all-libs)
+SONIX_EXTRA_LIBS=	$(shell flagpoll sonix --get-all-extra-libs)
 
-EXTRA_CXXFLAGS=		$(shell sonix-config --cxxflags)
+EXTRA_CXXFLAGS=		$(shell flagpoll sonix --cflags)
 EXTRA_LDFLAGS=		$(PYJUTIL_LIB) $(SONIX_LIBS) $(SONIX_EXTRA_LIBS)
 MOD_NAME=		snx
 
