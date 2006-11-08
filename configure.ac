@@ -395,7 +395,7 @@ JCCL_PATH_CXX([0.12], ,
 SNX_PATH([0.5.0], , [AC_MSG_ERROR([*** Sonix is required for PyJuggler ***])])
 GADGETEER_PATH([1.1.8], ,
                [AC_MSG_ERROR([*** Gadgeteer is required for PyJuggler ***])])
-VRJUGGLER_PATH([2.1.5], ,
+VRJUGGLER_PATH([2.1.12], ,
                [AC_MSG_ERROR([*** VR Juggler is required for PyJuggler ***])])
 
 HAVE_OSG='N'
