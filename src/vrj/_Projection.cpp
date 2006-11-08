@@ -37,7 +37,7 @@ struct vrj_Projection_Wrapper : vrj::Projection
       /* Do nothing. */ ;
    }
 
-   void calcViewMatrix(gmtl::Matrix44f& p0, const float p1)
+   void calcViewMatrix(const gmtl::Matrix44f& p0, const float p1)
    {
       try
       {

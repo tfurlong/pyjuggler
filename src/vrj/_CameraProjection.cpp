@@ -38,7 +38,7 @@ struct vrj_CameraProjection_Wrapper : vrj::CameraProjection
       /* Do nothing. */ ;
    }
 
-   void calcViewMatrix(gmtl::Matrix44f& p0, const float p1)
+   void calcViewMatrix(const gmtl::Matrix44f& p0, const float p1)
    {
       try
       {
@@ -50,7 +50,7 @@ struct vrj_CameraProjection_Wrapper : vrj::CameraProjection
       }
    }
 
-   void default_calcViewMatrix(gmtl::Matrix44f& p0, const float p1)
+   void default_calcViewMatrix(const gmtl::Matrix44f& p0, const float p1)
    {
       vrj::CameraProjection::calcViewMatrix(p0, p1);
    }
