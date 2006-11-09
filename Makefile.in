@@ -2,7 +2,7 @@
 # Distributed under the GNU Lesser General Public License 2.1.  (See
 # accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
-default: debug
+default: optim
 
 exec_prefix=	@exec_prefix@
 datadir=	@datadir@
