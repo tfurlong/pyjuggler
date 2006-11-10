@@ -67,15 +67,24 @@ ifeq ($(BUILD_TYPE), DEBUG)
    LDFLAGS+=			$(LDFLAGS_DBG)
    MOD_SUFFIX=			$(MODEXT_DBG)
    OBJDIR=			$(OBJDIR_DBG)
-   BOOST_PYTHON_LDFLAGS=	@BOOST_PYTHON_LDFLAGS_DBG@
    PYJUTIL_LIB=			@PYJUTIL_LDFLAGS_DBG@
 else
    CXXFLAGS+=			$(CXXFLAGS_OPT)
    LDFLAGS+=			$(LDFLAGS_OPT)
    MOD_SUFFIX=			$(MODEXT_OPT)
    OBJDIR=			$(OBJDIR_OPT)
-   BOOST_PYTHON_LDFLAGS=	@BOOST_PYTHON_LDFLAGS_OPT@
    PYJUTIL_LIB=			@PYJUTIL_LDFLAGS_OPT@
+endif
+
+# Set the type of Boost.Python against which PyJuggler will be linked. Valid
+# values are "optim" (for the optimized Boost.Python build) or "debug" (for
+# the debug Boost.Python build).
+BP_TYPE?=			optim
+
+ifeq ($(BP_TYPE), debug)
+   BOOST_PYTHON_LDFLAGS=	@BOOST_PYTHON_LDFLAGS_DBG@
+else
+   BOOST_PYTHON_LDFLAGS=	@BOOST_PYTHON_LDFLAGS_OPT@
 endif
 
 PYMOD_EXT=		$(MOD_SUFFIX)@PYMOD_EXT@
