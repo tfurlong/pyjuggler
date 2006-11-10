@@ -410,7 +410,6 @@ if test "x$osg_base_dir" != "xno" ; then
    # if $OSGROOT is "/usr".
    if test "x$osg_base_dir" != "x/usr" ; then
       OSG_INCLUDES="-I$osg_base_dir/include"
-      OSG_LDFLAGS="-L$osg_base_dir/lib"
       OSG_LIBS='-losg -losgProducer -losgUtil -losgDB -losgText -losgGA -lProducer -lOpenThreads'
    fi
 
@@ -420,16 +419,92 @@ if test "x$osg_base_dir" != "xno" ; then
       X_LDFLAGS="-L$x_libraries"
    fi
 
-   DPP_LANG_SAVE
-   DPP_LANG_CPLUSPLUS
+   if test "lib$LIBBITSUF" != "lib" ; then
+      libdirs="lib$LIBBITSUF lib"
+   else
+      libdirs="lib"
+   fi
 
    CFLAGS="$CFLAGS ${_EXTRA_FLAGS}"
    CPPFLAGS="$CPPFLAGS $OSG_INCLUDES $STDFLAGS"
-   LDFLAGS="$LDFLAGS $OSG_LDFLAGS"
 
-   AC_CHECK_LIB([osg], [osgGetVersion],
-      [AC_CHECK_HEADER([osg/Vec3], [HAVE_OSG='Y'], [HAVE_OSG='N'])],
-      [HAVE_OSG='N'], [$X_LDFLAGS -lOpenThreads -lX11 -lXext])
+   DPP_LANG_SAVE
+   DPP_LANG_CPLUSPLUS
+
+   LIBS="-lOpenThreads $LIBS"
+
+   for l in $libdirs ; do
+      cur_ot_libdir="$osg_base_dir/$l"
+      LDFLAGS="-L$cur_ot_libdir $pyjsave_LDFLAGS"
+
+      AC_MSG_CHECKING([for OpenThreads::Thread::GetConcurrency() in -lOpenThreads in $cur_ot_libdir])
+      AC_TRY_LINK([#include <OpenThreads/Thread>],
+                  [OpenThreads::Thread::GetConcurrency();],
+                  [pyj_have_ot='yes'], [pyj_have_ot='no'])
+      AC_MSG_RESULT([$pyj_have_ot])
+      rm -rf ./ii_files
+
+      if test "x$pyj_have_ot" = "xyes" ; then
+         OT_LDFLAGS="-L$cur_ot_libdir"
+         break
+      fi
+   done
+
+   # We already have -lOpenThreads in $LIBS, so now prepend -lProducer.
+   LIBS="-lProducer $LIBS"
+
+   for l in $libdirs ; do
+      cur_producer_libdir="$osg_base_dir/$l"
+      LDFLAGS="-L$cur_producer_libdir $pyjsave_LDFLAGS"
+
+      AC_MSG_CHECKING([for Producer::Timer::instance() in -lProducer in $cur_producer_libdir])
+      AC_TRY_LINK([#include <Producer/Timer>], [Producer::Timer::instance();],
+                  [pyj_have_producer='yes'], [pyj_have_producer='no'])
+      AC_MSG_RESULT([$pyj_have_producer])
+      rm -rf ./ii_files
+
+      if test "x$pyj_have_producer" = "xyes" ; then
+         PRODUCER_LDFLAGS="-L$cur_producer_libdir"
+         if test "x$OT_LDFLAGS" = "x$PRODUCER_LDFLAGS" ; then
+            OT_LDFLAGS=''
+         fi
+         break
+      fi
+   done
+
+   LIBS="$pyjsave_LIBS"
+
+   HAVE_OSG='N'
+
+   if test "x$pyj_have_ot" = "xyes" -a "x$pyj_have_producer" = "xyes" ; then
+      LIBS="$PRODUCER_LDFLAGS $OSG_LIBS $X_LDFLAGS $OT_LDFLAGS -lOpenThreads -lX11 -lXext"
+
+      for l in $libdirs ; do
+         cur_osg_libdir="$osg_base_dir/$l"
+         LDFLAGS="-L$cur_osg_libdir $pyjsave_LDFLAGS"
+
+         AC_MSG_CHECKING([for osgGetVersion in -losg in $cur_osg_libdir])
+         AC_TRY_LINK([#include <osg/Version>], [osgGetVersion();],
+                     [pyj_have_osg='yes'], [pyj_have_osg='no'])
+         AC_MSG_RESULT([$pyj_have_osg])
+         rm -rf ./ii_files
+
+         if test "x$pyj_have_osg" = "xyes" ; then
+            OSG_LDFLAGS="-L$cur_osg_libdir"
+            if test "x$OSG_LDFLAGS" = "x$PRODUCER_LDFLAGS" ; then
+               PRODUCER_LDFLAGS=''
+            fi
+            if test "x$OSG_LDFLAGS" = "x$OT_LDFLAGS" ; then
+               OT_LDFLAGS=''
+            fi
+            break
+         fi
+      done
+
+      if test "x$pyj_have_osg" = "xyes" ; then
+         HAVE_OSG='Y'
+      fi
+   fi
 
    DPP_LANG_RESTORE
 
@@ -473,6 +548,8 @@ AC_SUBST(PYJUTIL_LDFLAGS_OPT)
 
 AC_SUBST(HAVE_OSG)
 AC_SUBST(OSG_INCLUDES)
+AC_SUBST(OT_LDFLAGS)
+AC_SUBST(PRODUCER_LDFLAGS)
 AC_SUBST(OSG_LDFLAGS)
 AC_SUBST(OSG_LIBS)
 
