@@ -339,18 +339,33 @@ if test "x$PLATFORM" = "xIRIX" -a "x$USE_GCC" != "xyes" ; then
    CPPFLAGS="$CPPFLAGS -I$BOOST_PYTHON_HEADER_DIR/compatibility/cpp_c_headers"
 fi
 
-LIBS="$LIBS $bpl_link_option $PYTHON_LIB $UTIL_LIB $PYTHON_LIB_DEPS"
-LDFLAGS="$LDFLAGS -L$BOOST_PYTHON_DIR/lib $PYTHON_LDFLAGS"
+if test "lib$LIBBITSUF" != "lib" ; then
+   libdirs="lib$LIBBITSUF lib"
+else
+   libdirs='lib'
+fi
 
-AC_CACHE_CHECK([for boost::python::handle<> in $bpl_link_option],
-   ac_cv_boost__python__handle_in_boost_python,
-   [AC_TRY_LINK([
+LIBS="$LIBS $bpl_link_option $PYTHON_LIB $UTIL_LIB $PYTHON_LIB_DEPS"
+
+for l in $libdirs ; do
+   cur_bp_libdir="$BOOST_PYTHON_DIR/$l"
+   LDFLAGS="-L$cur_bp_libdir $PYTHON_LDFLAGS ${_pyj_save_LDFLAGS}"
+
+   AC_MSG_CHECKING([for boost::python::handle<> in $bpl_link_option in $cur_bp_libdir])
+   AC_TRY_LINK([
 #include <boost/python.hpp>
 using namespace boost::python;],
-                [handle<> main_module(borrowed(PyImport_AddModule("__main__")));],
-                [ac_cv_boost__python__handle_in_boost_python='yes'
-                 rm -rf ./ii_files],
-                [ac_cv_boost__python__handle_in_boost_python='no'])])
+               [handle<> main_module(borrowed(PyImport_AddModule("__main__")));],
+               [pyj_have_bp='yes'
+                rm -rf ./ii_files],
+               [pyj_have_bp='no'])
+   AC_MSG_RESULT([$pyj_have_bp])
+
+   if test "x$pyj_have_bp" = "xyes" ; then
+      BPL_LIBDIR="$cur_bp_libdir"
+      break
+   fi
+done
 
 DPP_LANG_RESTORE
 
@@ -358,7 +373,7 @@ CPPFLAGS="${_pyj_save_CPPFLAGS}"
 LIBS="${_pyj_save_LIBS}"
 LDFLAGS="${_pyj_save_LDFLAGS}"
 
-if test "x$ac_cv_boost__python__handle_in_boost_python" = "xyes" ; then
+if test "x$pyj_have_bp" = "xyes" ; then
    if test "x$GXX" = "xyes" ; then
       BOOST_PYTHON_CXXFLAGS="-ftemplate-depth-256"
    fi
@@ -382,9 +397,9 @@ if test "x$ac_cv_boost__python__handle_in_boost_python" = "xyes" ; then
       BOOST_PYTHON_INCLUDES="$BOOST_PYTHON_INCLUDES -I$BOOST_PYTHON_HEADER_DIR/compatibility/cpp_c_headers"
    fi
 
-   bpl_dir="-L$BOOST_PYTHON_DIR/lib"
-   BOOST_PYTHON_LDFLAGS_OPT="$bpl_dir -l$BOOST_PYTHON_LIB"
-   BOOST_PYTHON_LDFLAGS_DBG="$bpl_dir -l$BASE_BP_LIBNAME$boost_debug_suffix$BPL_VER_SUFFIX"
+   bpl_ldflags="-L$BPL_LIBDIR"
+   BOOST_PYTHON_LDFLAGS_OPT="$bpl_ldflags -l$BOOST_PYTHON_LIB"
+   BOOST_PYTHON_LDFLAGS_DBG="$bpl_ldflags -l$BASE_BP_LIBNAME$boost_debug_suffix$BPL_VER_SUFFIX"
 else
    AC_MSG_ERROR([*** Boost.Python v2 is required for PyJuggler ***])
 fi
