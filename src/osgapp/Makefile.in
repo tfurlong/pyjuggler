@@ -6,7 +6,7 @@ srcdir=		@srcdir@
 
 VJ_LIBS=	$(shell vrjuggler-config --libs)
 VJ_EXTRA_LIBS=	$(shell vrjuggler-config --extra-libs)
-OSG_EXTRA_LIBS=	@OSG_LDFLAGS@ @OSG_LIBS@
+OSG_EXTRA_LIBS=	@OT_LDFLAGS@ @PRODUCER_LDFLAGS@ @OSG_LDFLAGS@ @OSG_LIBS@
 
 EXTRA_CXXFLAGS=	$(shell vrjuggler-config --cxxflags)
 EXTRA_INCLUDES=	@OSG_INCLUDES@
