@@ -1,5 +1,6 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Nov-10-2006 patrick     Handle 64-bit installations of Open Scene Graph.
 Jul-14-2006 patrick     Use automatic linking for CppDOM and the Juggler
                         libraries on Windows.
 Jul-10-2006 allenb      Updated vpr.GUID.hash wrapper to latest changes in vpr.
