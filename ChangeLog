@@ -1,5 +1,6 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Nov-10-2006 patrick     Handle 64-bit installations of Open Scene Graph.
 Aug-21-2006 patrick     Use automatic linking for CppDOM and the Juggler
                         libraries on Windows.
 Dec-21-2005 patrickh    Fixed a crash when using pyjutil::InterpreterGuard
