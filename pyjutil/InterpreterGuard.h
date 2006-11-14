@@ -5,7 +5,6 @@
 #ifndef _PYJUGGLER_INTERPRETER_GUARD_H_
 #define _PYJUGGLER_INTERPRETER_GUARD_H_
 
-//#include <Python.h>
 #include "wrap_python.h"
 
 #include <vpr/vpr.h>
