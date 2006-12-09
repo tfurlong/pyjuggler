@@ -234,6 +234,12 @@ void _Export_DigitalProxy()
            "updateData()\n"
            "Updates the cached data copy from the device."
       )
+      .def("updateDataIfNeeded", &gadget::Proxy::updateDataIfNeeded,
+           "updateDataIfNeeded()\n"
+      )
+      .def("resetData", &gadget::Proxy::resetData,
+           "resetData()\n"
+      )
       .def("getTimeStamp", &gadget::DigitalProxy::getTimeStamp,
           &pyj::gadget_DigitalProxy_Wrapper::default_getTimeStamp,
           "getTimeStamp() -> vpr.Interval object\n"

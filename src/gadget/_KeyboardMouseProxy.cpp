@@ -262,6 +262,12 @@ void _Export_KeyboardMouseProxy()
            "Updates the cached data copy from the device.  Copies the\n"
            "device data to local storage and transforms it if necessary."
       )
+      .def("updateDataIfNeeded", &gadget::Proxy::updateDataIfNeeded,
+           "updateDataIfNeeded()\n"
+      )
+      .def("resetData", &gadget::Proxy::resetData,
+           "resetData()\n"
+      )
       .def("isStupefied", &gadget::Proxy::isStupefied,
            &pyj::gadget_KeyboardMouseProxy_Wrapper::default_isStupefied,
            "isStupefied() -> Boolean\n"

@@ -199,6 +199,10 @@ void _Export_InputManager()
            "Returns:\n"
            "True is returned if the device was configured and added."
       )
+      .def("resetAllDevicesAndProxies",
+           &gadget::InputManager::resetAllDevicesAndProxies,
+           "resetAllDevicesAndProxies()\n"
+      )
       .def("updateAllDevices", &gadget::InputManager::updateAllDevices,
            "updateAllDevices()\n"
            "Updates the data in all the devices.  This calls updateData()\n"
