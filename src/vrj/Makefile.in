@@ -4,7 +4,8 @@
 
 srcdir=		@srcdir@
 
-VJ_LIBS=	$(shell flagpoll vrjuggler --get-all-libs)
+VJ_LIBS=	$(shell flagpoll vrjuggler --get-vrj-ogl-libs)		\
+		$(shell flagpoll vrjuggler --get-all-libs)
 VJ_EXTRA_LIBS=	$(shell flagpoll vrjuggler --get-all-extra-libs)
 
 EXTRA_CXXFLAGS=	$(shell flagpoll vrjuggler --cflags)
