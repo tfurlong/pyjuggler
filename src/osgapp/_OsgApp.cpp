@@ -431,7 +431,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp, wrapper<vrj::OsgApp>
          }
          else
          {
-            vrj::App::latePreFrame();
+            vrj::OsgApp::latePreFrame();
          }
       }
       catch (error_already_set)
@@ -442,7 +442,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp, wrapper<vrj::OsgApp>
 
    void default_latePreFrame()
    {
-      vrj::App::latePreFrame();
+      vrj::OsgApp::latePreFrame();
    }
 
    void intraFrame()
@@ -897,7 +897,7 @@ void _Export_OsgApp()
            "called after input device updates but before the start of a\n"
            "new frame."
       )
-      .def("latePreFrame", &vrj::App::latePreFrame,
+      .def("latePreFrame", &vrj::OsgApp::latePreFrame,
            &pyj::vrj_OsgApp_Wrapper::default_latePreFrame,
            "latePreFrame()\n"
            "Function called after preFrame() and application-specific data\n"
