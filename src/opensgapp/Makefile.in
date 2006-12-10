@@ -1,0 +1,21 @@
+# PyJuggler is (C) Copyright 2002-2006 by Patrick Hartling
+# Distributed under the GNU Lesser General Public License 2.1.  (See
+# accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
+
+srcdir=		@srcdir@
+
+VJ_LIBS=		$(shell flagpoll vrjuggler --get-vrj-ogl-libs)		\
+			$(shell flagpoll vrjuggler --get-all-libs)
+VJ_EXTRA_LIBS=		$(shell flagpoll vrjuggler --get-all-extra-libs)
+OPENSG_EXTRA_LIBS=	@OPENSG_LDFLAGS@ @OPENSG_LIBS@
+
+EXTRA_CXXFLAGS=	$(shell flagpoll vrjuggler --cflags)
+EXTRA_INCLUDES=	@OPENSG_INCLUDES@
+EXTRA_LDFLAGS=	$(PYJUTIL_LIB) $(VJ_LIBS) $(VJ_EXTRA_LIBS) $(OPENSG_EXTRA_LIBS)
+MOD_NAME=	__opensgapp
+
+SRCS= \
+	_OpenSGApp.cpp	\
+	__opensgapp.cpp
+
+include ../common-targets.mk

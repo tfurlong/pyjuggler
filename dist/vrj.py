@@ -14,11 +14,21 @@ try:
 except:
    pass
 
-__doc__ = '''PyJuggler.vrj is a module that imports the symbols from
-PyJuggler.__vrj and PyJuggler.__osgapp into its namespace.  PyJuggler.__osgapp
-is an optional module, and importing it may fail if it was not compiled
-or if the Open Scene Graph is not available at run time.
+# Attempt to import everything from __opensgapp into our namespace. If it
+# fails, then OpenSG is not available for use. For people who don't want to
+# use vrj.OpenSGApp, this is fine. For those who do, they have to have OpenSG
+# and PyOpenSG installed.
+try:
+   from __opensgapp import *
+except:
+   pass
 
-Refer to the PyJuggler.__vrj and PyJuggler.__osgapp modules for class
-documentation.
+__doc__ = '''PyJuggler.vrj is a module that imports the symbols from
+PyJuggler.__vrj, PyJuggler.__osgapp, and PyJuggler.__opensgapp into its
+namespace. PyJuggler.__osgapp and PyJuggler.__opensgapp are optional modules,
+and importing one or both may fail if the module was not compiled or if the
+Open Scene Graph and/or OpenSG libraries are not available at run time.
+
+Refer to the PyJuggler.__vrj, PyJuggler.__osgapp, and PyJuggler.__opensgapp
+modules for class documentation.
 '''
