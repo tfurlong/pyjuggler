@@ -537,12 +537,8 @@ fi
 HAVE_OPENSG='N'
 
 if test "x$opensg_base_dir" != "xno" ; then
-#   pyjsave_CFLAGS="$CFLAGS"
-#   pyjsave_CPPFLAGS="$CPPFLAGS"
-#   pyjsave_LDFLAGS="$LDFLAGS"
-#   pyjsave_LIBS="$LIBS"
-
    AC_PATH_PROG(OPENSG_CONFIG, osg-config, no, [$opensg_base_dir/bin:$PATH])
+
    if test "x$OPENSG_CONFIG" != "xno" ; then
       opensg_pkgs='Base System'
       OPENSG_INCLUDES=`$OPENSG_CONFIG --opt --cflags $opensg_pkgs`
@@ -550,11 +546,6 @@ if test "x$opensg_base_dir" != "xno" ; then
       OPENSG_LIBS=`$OPENSG_CONFIG --opt --libs $opensg_pkgs`
       HAVE_OPENSG='Y'
    fi
-
-#   CFLAGS="$pyjsave_CFLAGS"
-#   CPPFLAGS="$pyjsave_CPPFLAGS"
-#   LDFLAGS="$pyjsave_LDFLAGS"
-#   LIBS="$pyjsave_LIBS"
 fi
 
 # -----------------------------------------------------------------------------
