@@ -10,6 +10,10 @@ ifeq (@HAVE_OSG@, Y)
 DIRS+=	osgapp
 endif
 
+ifeq (@HAVE_OPENSG@, Y)
+DIRS+=	opensgapp
+endif
+
 all clean cleandepend clobber debug optim:
 	@for d in $(DIRS) ; do			\
             echo "===> $$d" ;			\

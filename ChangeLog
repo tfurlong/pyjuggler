@@ -1,5 +1,7 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Dec-10-2006 patrick     Exposed vrj::OpenSGApp so that developers can combine
+                        PyJuggler and PyOpenSG.
 Dec-10-2006 patrick     Added bindings for methods added in Gadgeteer 1.0.2.
 Nov-10-2006 patrick     Handle 64-bit installations of Open Scene Graph.
 Aug-21-2006 patrick     Use automatic linking for CppDOM and the Juggler

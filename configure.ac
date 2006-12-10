@@ -55,6 +55,11 @@ AC_ARG_WITH([osg],
             [  --with-osg=<PATH>       Open Scene Graph installation   [default=$OSGHOME then /usr/local]],
             [osg_base_dir="$withval"], [osg_base_dir=${OSGHOME-/usr/local}])
 
+AC_ARG_WITH([opensg],
+            [  --with-opensg=<PATH>    OpenSG installation             [default=$OSGROOT then /usr/local]],
+            [opensg_base_dir="$withval"],
+            [opensg_base_dir=${OSGROOT-/usr/local}])
+
 # Force the use of GCC as the compiler.
 # NOTE: This is not fully implemented yet for any platform, but it is partially
 # usable on Windows.
@@ -512,6 +517,20 @@ if test "x$osg_base_dir" != "xno" ; then
    LIBS="$pyjsave_LIBS"
 fi
 
+HAVE_OPENSG='N'
+
+if test "x$opensg_base_dir" != "xno" ; then
+   AC_PATH_PROG(OPENSG_CONFIG, osg-config, no, [$opensg_base_dir/bin:$PATH])
+
+   if test "x$OPENSG_CONFIG" != "xno" ; then
+      opensg_pkgs='Base System'
+      OPENSG_INCLUDES=`$OPENSG_CONFIG --opt --cflags $opensg_pkgs`
+      OPENSG_LDFLAGS=`$OPENSG_CONFIG --opt --lflags $opensg_pkgs`
+      OPENSG_LIBS=`$OPENSG_CONFIG --opt --libs $opensg_pkgs`
+      HAVE_OPENSG='Y'
+   fi
+fi
+
 # -----------------------------------------------------------------------------
 # Miscellaneous checks.
 # -----------------------------------------------------------------------------
@@ -551,6 +570,11 @@ AC_SUBST(PRODUCER_LDFLAGS)
 AC_SUBST(OSG_LDFLAGS)
 AC_SUBST(OSG_LIBS)
 
+AC_SUBST(HAVE_OPENSG)
+AC_SUBST(OPENSG_INCLUDES)
+AC_SUBST(OPENSG_LDFLAGS)
+AC_SUBST(OPENSG_LIBS)
+
 AC_SUBST(PYTHON_ROOT)
 AC_SUBST(PYTHON_INCLUDES)
 AC_SUBST(PYTHON_LIB_OPT)
@@ -582,6 +606,7 @@ AC_CONFIG_FILES([Makefile
                  src/gadget/Makefile
                  src/jccl/Makefile
                  src/osgapp/Makefile
+                 src/opensgapp/Makefile
                  src/snx/Makefile
                  src/vpr/Makefile
                  src/vrj/Makefile
