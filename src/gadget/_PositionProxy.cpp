@@ -212,6 +212,12 @@ void _Export_PositionProxy()
            "Updates the cached data copy from the device.  Copies the\n"
            "device data to local storage and transforms it if necessary."
       )
+      .def("updateDataIfNeeded", &gadget::Proxy::updateDataIfNeeded,
+           "updateDataIfNeeded()\n"
+      )
+      .def("resetData", &gadget::Proxy::resetData,
+           "resetData()\n"
+      )
       .def("getTimeStamp", &gadget::PositionProxy::getTimeStamp,
            &pyj::gadget_PositionProxy_Wrapper::default_getTimeStamp,
            "getTimeStamp() -> vpr.Interval object\n"
