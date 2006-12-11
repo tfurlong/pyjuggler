@@ -1,5 +1,7 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Dec-11-2006 patrick     Exposed vrj::Projection::setNearFar() and
+                        vrj::Projection::getNearFar().
 Dec-10-2006 patrick     Exposed vrj::OpenSGApp so that developers can combine
                         PyJuggler and PyOpenSG.
 Dec-10-2006 patrick     Added bindings for methods added in Gadgeteer 1.0.2.

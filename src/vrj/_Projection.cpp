@@ -52,6 +52,13 @@ struct vrj_Projection_Wrapper : vrj::Projection
    PyObject* self;
 };
 
+tuple Projection_getNearFar()
+{
+   float near_val, far_val;
+   vrj::Projection::getNearFar(near_val, far_val);
+   return make_tuple(near_val, far_val);
+}
+
 }// namespace 
 
 
@@ -118,6 +125,19 @@ void _Export_Projection()
            "getFrustum() -> vrj.Frustum object\n"
            "Returns a copy of this projection's frustum."
       )
+      .def("setNearFar", &vrj::Projection::setNearFar,
+           "setNearFar(near, far)\n"
+           "Arguments:\n"
+           "near -- A single-precision floating point value for near.\n"
+           "far  -- A single-precision floating point value for far.\n"
+           "Sets the system-wide near and far values."
+      )
+      .def("getNearFar", &pyj::Projection_getNearFar,
+           "getNearFar() -> (float, float)\n"
+           "Retrieves the system-wide near and far values."
+      )
+      .staticmethod("setNearFar")
+      .staticmethod("getNearFar")
 //      .def(self_ns::str(self))
    );
 
