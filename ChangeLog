@@ -1,5 +1,8 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Dec-11-2006 patrick     Exposed vrj::Projection::setNearFar() and
+                        vrj::Projection::getNearFar().
+                        NEW VERSION: 1.1.10
 Dec-10-2006 patrick     Exposed vrj::OpenSGApp so that developers can combine
                         PyJuggler and PyOpenSG.
                         NEW VERSION: 1.1.9
