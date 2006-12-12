@@ -48,7 +48,8 @@ def setVars():
       'prefix'         : r'C:\PyJuggler',
 
       # Default values for optional settings.
-      'OSGHOME'        : os.getenv('OSGHOME', '')
+      'OSGHOME'        : os.getenv('OSGHOME', ''),
+      'OSGROOT'        : os.getenv('OSGROOT', '')
    }
 
    # If there are cached options, read them in.
@@ -72,6 +73,7 @@ def setVars():
    print "\n+++ Optional Settings"
    processInput(options, 'OSGHOME', 'Open Scene Graph installation directory',
                 False)
+   processInput(options, 'OSGROOT', 'OpenSG installation directory', False)
 
    # Check for Boost 1.32 Visual C++ toolset names.
    match = re.compile(r'vc-(\d)_(\d)').match(options['BOOST_TOOL'])
