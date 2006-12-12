@@ -264,7 +264,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    void default_contextPostDraw()
    {
-      vrj::GlApp::contextPostDraw();
+      vrj::OsgApp::contextPostDraw();
    }
 
    void apiInit()
@@ -286,7 +286,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    void default_apiInit()
    {
-      vrj::App::apiInit();
+      vrj::OsgApp::apiInit();
    }
 
    void exit()
@@ -308,7 +308,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    void default_exit()
    {
-      vrj::App::exit();
+      vrj::OsgApp::exit();
    }
 
    void preFrame()
@@ -330,7 +330,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    void default_preFrame()
    {
-      vrj::App::preFrame();
+      vrj::OsgApp::preFrame();
    }
 
    void latePreFrame()
@@ -374,7 +374,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    void default_intraFrame()
    {
-      vrj::App::intraFrame();
+      vrj::OsgApp::intraFrame();
    }
 
    void postFrame()
@@ -396,7 +396,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    void default_postFrame()
    {
-      vrj::App::postFrame();
+      vrj::OsgApp::postFrame();
    }
 
    void reset()
@@ -418,7 +418,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    void default_reset()
    {
-      vrj::App::reset();
+      vrj::OsgApp::reset();
    }
 
    void focusChanged()
@@ -440,7 +440,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    void default_focusChanged()
    {
-      vrj::App::focusChanged();
+      vrj::OsgApp::focusChanged();
    }
 
    float getDrawScaleFactor()
@@ -459,12 +459,12 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
          PyErr_Print();
       }
 
-      return vrj::App::getDrawScaleFactor();
+      return vrj::OsgApp::getDrawScaleFactor();
    }
 
    float default_getDrawScaleFactor()
    {
-      return vrj::App::getDrawScaleFactor();
+      return vrj::OsgApp::getDrawScaleFactor();
    }
 
    bool configCanHandle(jccl::ConfigElementPtr p0)
@@ -488,7 +488,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    bool default_configCanHandle(jccl::ConfigElementPtr p0)
    {
-      return vrj::App::configCanHandle(p0);
+      return vrj::OsgApp::configCanHandle(p0);
    }
 
    bool depSatisfied()
@@ -512,7 +512,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    bool default_depSatisfied()
    {
-      return vrj::App::depSatisfied();
+      return vrj::OsgApp::depSatisfied();
    }
 
    bool configAdd(jccl::ConfigElementPtr p0)
@@ -536,7 +536,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    bool default_configAdd(jccl::ConfigElementPtr p0)
    {
-      return vrj::App::configAdd(p0);
+      return vrj::OsgApp::configAdd(p0);
    }
 
    bool configRemove(jccl::ConfigElementPtr p0)
@@ -560,7 +560,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    bool default_configRemove(jccl::ConfigElementPtr p0)
    {
-      return vrj::App::configRemove(p0);
+      return vrj::OsgApp::configRemove(p0);
    }
 
    int configProcessPending()
@@ -584,7 +584,7 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp
 
    int default_configProcessPending()
    {
-      return vrj::App::configProcessPending();
+      return vrj::OsgApp::configProcessPending();
    }
 
    PyObject* self;
@@ -729,7 +729,7 @@ void _Export_OsgApp()
            "Currently the OpenGL context is not set when this function is\n"
            "called.  This is a TEST function.  USE AT YOUR OWN RISK!"
       )
-      .def("contextPostDraw", &vrj::GlApp::contextPostDraw,
+      .def("contextPostDraw", &vrj::OsgApp::contextPostDraw,
            &pyj::vrj_OsgApp_Wrapper::default_contextPostDraw,
            "contextPostDraw()\n"
            "Function that is called upon exit of the context after\n"
@@ -737,19 +737,19 @@ void _Export_OsgApp()
            "Pre-conditions:\n"
            "The OpenGL context has been set to the context for drawing."
       )
-      .def("apiInit", &vrj::App::apiInit,
+      .def("apiInit", &vrj::OsgApp::apiInit,
            &pyj::vrj_OsgApp_Wrapper::default_apiInit,
            "apiInit()\n"
            "Application graphics API initialization function.  Execute any\n"
            "initialization needed after the graphics API is started but\n"
            "before the Draw Manager starts the rendering loop(s)."
       )
-      .def("exit", &vrj::App::exit, &pyj::vrj_OsgApp_Wrapper::default_exit,
+      .def("exit", &vrj::OsgApp::exit, &pyj::vrj_OsgApp_Wrapper::default_exit,
            "exit()\n"
            "Executes any final clean-up needed for the application before\n"
            "exiting."
       )
-      .def("preFrame", &vrj::App::preFrame,
+      .def("preFrame", &vrj::OsgApp::preFrame,
            &pyj::vrj_OsgApp_Wrapper::default_preFrame,
            "preFrame()\n"
            "Function called before the Juggler frame starts.  This is\n"
@@ -766,30 +766,30 @@ void _Export_OsgApp()
            "This is required because we cannot update data during the\n"
            "rendering process since it might be using multiple threads."
       )
-      .def("intraFrame", &vrj::App::intraFrame,
+      .def("intraFrame", &vrj::OsgApp::intraFrame,
            &pyj::vrj_OsgApp_Wrapper::default_intraFrame,
            "intraFrame()\n"
            "Function called during the application's drawing time."
       )
-      .def("postFrame", &vrj::App::postFrame,
+      .def("postFrame", &vrj::OsgApp::postFrame,
            &pyj::vrj_OsgApp_Wrapper::default_postFrame,
            "postFrame()\n"
            "Function alled before updating input devices but after the\n"
            "frame is complete."
       )
-      .def("reset", &vrj::App::reset,
+      .def("reset", &vrj::OsgApp::reset,
            &pyj::vrj_OsgApp_Wrapper::default_reset,
            "reset()\n"
            "Resets the application.  This is used when the kernel (or\n"
            "applications would like this application to reset to its\n"
            "initial state."
       )
-      .def("focusChanged", &vrj::App::focusChanged,
+      .def("focusChanged", &vrj::OsgApp::focusChanged,
            &pyj::vrj_OsgApp_Wrapper::default_focusChanged,
            "focusChanged()\n"
            "Called when the focus state changes."
       )
-      .def("getDrawScaleFactor", &vrj::App::getDrawScaleFactor,
+      .def("getDrawScaleFactor", &vrj::OsgApp::getDrawScaleFactor,
            &pyj::vrj_OsgApp_Wrapper::default_getDrawScaleFactor,
            "getDrawScaleFactor() -> float\n"
            "Returns the scale factor to convert from Juggler units\n"
@@ -800,14 +800,14 @@ void _Export_OsgApp()
            "application wants to use.  For example, to render in feet,\n"
            "return 3.28 (gadget.PositionUnitConversion.ConvertToFeet)."
       )
-      .def("configCanHandle", &vrj::App::configCanHandle,
+      .def("configCanHandle", &vrj::OsgApp::configCanHandle,
            &pyj::vrj_OsgApp_Wrapper::default_configCanHandle,
            "configCanHandle(element) -> Boolean\n"
            "Defaults to handling nothing.\n\n"
            "Arguments:\n"
            "element -- An instance of jccl.ConfigElement."
       )
-      .def("depSatisfied", &vrj::App::depSatisfied,
+      .def("depSatisfied", &vrj::OsgApp::depSatisfied,
            &pyj::vrj_OsgApp_Wrapper::default_depSatisfied,
            "depSatisfied() -> Boolean\n"
            "Are any application dependencies satisified?  If this\n"
@@ -823,7 +823,7 @@ void _Export_OsgApp()
            "configProcessPending() -> int\n"
            "Inherited from jccl.ConfigElementHandler and not overridden."
       )
-      .def("haveFocus", &vrj::App::haveFocus,
+      .def("haveFocus", &vrj::OsgApp::haveFocus,
            "haveFocus() -> Boolean\n"
            "Does this application currently have focus?  If an application\n"
            "has focus, the user may be attempting to interact with it, so\n"
@@ -833,7 +833,7 @@ void _Export_OsgApp()
            "animations, etc.  This is akin to the way that a user can only\n"
            "interact with a GUI window that has focus."
       )
-      .def("setFocus", &vrj::App::setFocus,
+      .def("setFocus", &vrj::OsgApp::setFocus,
            "setFocus(newState)\n"
            "Sets the focus state.\n\n"
            "Post-condition:\n"
