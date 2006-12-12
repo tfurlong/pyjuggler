@@ -38,10 +38,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PyJuggler.snx module", "snx
 		{9A13DC64-2EB4-40CF-95A8-5B17965D771A} = {9A13DC64-2EB4-40CF-95A8-5B17965D771A}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PyJuggler.__opensgapp module", "opensgapp\opensgapp.vcproj", "{7FE7B3C6-6195-4120-A9D1-D0837624A351}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9A13DC64-2EB4-40CF-95A8-5B17965D771A} = {9A13DC64-2EB4-40CF-95A8-5B17965D771A}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
 		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{69CEC8D9-E7A7-44B7-9651-CD4AB9CEE89D}.Debug.ActiveCfg = Debug|Win32
@@ -76,6 +83,10 @@ Global
 		{F8FDFE2C-4471-433A-A7A4-3F2ECCB55BE0}.Debug.Build.0 = Debug|Win32
 		{F8FDFE2C-4471-433A-A7A4-3F2ECCB55BE0}.Release.ActiveCfg = Release|Win32
 		{F8FDFE2C-4471-433A-A7A4-3F2ECCB55BE0}.Release.Build.0 = Release|Win32
+		{7FE7B3C6-6195-4120-A9D1-D0837624A351}.Debug.ActiveCfg = Debug|Win32
+		{7FE7B3C6-6195-4120-A9D1-D0837624A351}.Debug.Build.0 = Debug|Win32
+		{7FE7B3C6-6195-4120-A9D1-D0837624A351}.Release.ActiveCfg = Release|Win32
+		{7FE7B3C6-6195-4120-A9D1-D0837624A351}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		README.html = README.html
