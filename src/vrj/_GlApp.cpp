@@ -239,7 +239,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          }
          else
          {
-            vrj::App::init();
+            vrj::GlApp::init();
          }
       }
       catch (error_already_set)
@@ -250,7 +250,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    void default_init()
    {
-      vrj::App::init();
+      vrj::GlApp::init();
    }
 
    void apiInit()
@@ -268,7 +268,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          }
          else
          {
-            vrj::App::apiInit();
+            vrj::GlApp::apiInit();
          }
       }
       catch (error_already_set)
@@ -279,7 +279,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    void default_apiInit()
    {
-      vrj::App::apiInit();
+      vrj::GlApp::apiInit();
    }
 
    void exit()
@@ -297,7 +297,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          }
          else
          {
-            vrj::App::exit();
+            vrj::GlApp::exit();
          }
       }
       catch (error_already_set)
@@ -308,7 +308,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    void default_exit()
    {
-      vrj::App::exit();
+      vrj::GlApp::exit();
    }
 
    void preFrame()
@@ -326,7 +326,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          }
          else
          {
-            vrj::App::preFrame();
+            vrj::GlApp::preFrame();
          }
       }
       catch (error_already_set)
@@ -337,7 +337,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    void default_preFrame()
    {
-      vrj::App::preFrame();
+      vrj::GlApp::preFrame();
    }
 
    void latePreFrame()
@@ -355,7 +355,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          }
          else
          {
-            vrj::App::latePreFrame();
+            vrj::GlApp::latePreFrame();
          }
       }
       catch (error_already_set)
@@ -366,7 +366,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    void default_latePreFrame()
    {
-      vrj::App::latePreFrame();
+      vrj::GlApp::latePreFrame();
    }
 
    void intraFrame()
@@ -384,7 +384,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          }
          else
          {
-            vrj::App::intraFrame();
+            vrj::GlApp::intraFrame();
          }
       }
       catch (error_already_set)
@@ -395,7 +395,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    void default_intraFrame()
    {
-      vrj::App::intraFrame();
+      vrj::GlApp::intraFrame();
    }
 
    void postFrame()
@@ -413,7 +413,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          }
          else
          {
-            vrj::App::postFrame();
+            vrj::GlApp::postFrame();
          }
       }
       catch (error_already_set)
@@ -424,7 +424,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    void default_postFrame()
    {
-      vrj::App::postFrame();
+      vrj::GlApp::postFrame();
    }
 
    void reset()
@@ -442,7 +442,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          }
          else
          {
-            vrj::App::reset();
+            vrj::GlApp::reset();
          }
       }
       catch (error_already_set)
@@ -453,7 +453,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    void default_reset()
    {
-      vrj::App::reset();
+      vrj::GlApp::reset();
    }
 
    void focusChanged()
@@ -471,7 +471,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          }
          else
          {
-            vrj::App::focusChanged();
+            vrj::GlApp::focusChanged();
          }
       }
       catch (error_already_set)
@@ -482,7 +482,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    void default_focusChanged()
    {
-      vrj::App::focusChanged();
+      vrj::GlApp::focusChanged();
    }
 
    float getDrawScaleFactor()
@@ -499,19 +499,19 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          {
             return getDrawScaleFactor();
          }
-         return vrj::App::getDrawScaleFactor();
+         return vrj::GlApp::getDrawScaleFactor();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return vrj::App::getDrawScaleFactor();
+      return vrj::GlApp::getDrawScaleFactor();
    }
 
    float default_getDrawScaleFactor()
    {
-      return vrj::App::getDrawScaleFactor();
+      return vrj::GlApp::getDrawScaleFactor();
    }
 
    bool configCanHandle(jccl::ConfigElementPtr p0)
@@ -527,7 +527,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          {
             return configCanHandle(p0);
          }
-         return vrj::App::configCanHandle(p0);
+         return vrj::GlApp::configCanHandle(p0);
       }
       catch (error_already_set)
       {
@@ -539,7 +539,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    bool default_configCanHandle(jccl::ConfigElementPtr p0)
    {
-      return vrj::App::configCanHandle(p0);
+      return vrj::GlApp::configCanHandle(p0);
    }
 
    bool depSatisfied()
@@ -555,7 +555,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          {
             return depSatisfied();
          }
-         return vrj::App::depSatisfied();
+         return vrj::GlApp::depSatisfied();
       }
       catch (error_already_set)
       {
@@ -567,7 +567,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    bool default_depSatisfied()
    {
-      return vrj::App::depSatisfied();
+      return vrj::GlApp::depSatisfied();
    }
 
    bool configAdd(jccl::ConfigElementPtr p0)
@@ -583,7 +583,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          {
             return configAdd(p0);
          }
-         return vrj::App::configAdd(p0);
+         return vrj::GlApp::configAdd(p0);
       }
       catch (error_already_set)
       {
@@ -595,7 +595,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    bool default_configAdd(jccl::ConfigElementPtr p0)
    {
-      return vrj::App::configAdd(p0);
+      return vrj::GlApp::configAdd(p0);
    }
 
    bool configRemove(jccl::ConfigElementPtr p0)
@@ -611,7 +611,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
          {
             return configRemove(p0);
          }
-         return vrj::App::configRemove(p0);
+         return vrj::GlApp::configRemove(p0);
       }
       catch (error_already_set)
       {
@@ -623,7 +623,7 @@ struct vrj_GlApp_Wrapper : vrj::GlApp, wrapper<vrj::GlApp>
 
    bool default_configRemove(jccl::ConfigElementPtr p0)
    {
-      return vrj::App::configRemove(p0);
+      return vrj::GlApp::configRemove(p0);
    }
 
    vrj::DrawManager* getDrawManager()
@@ -806,7 +806,7 @@ void _Export_GlApp()
            "Currently the OpenGL context is not set when this function is\n"
            "called.  This is a TEST function.  USE AT YOUR OWN RISK!"
       )
-      .def("init", &vrj::App::init, &pyj::vrj_GlApp_Wrapper::default_init,
+      .def("init", &vrj::GlApp::init, &pyj::vrj_GlApp_Wrapper::default_init,
            "init()\n"
            "Application initialization function.  Execute any\n"
            "initialization needed before the graphics API is started.\n\n"
@@ -814,26 +814,26 @@ void _Export_GlApp()
            "Derived classes MUST call the base class version of this\n"
            "method."
       )
-      .def("apiInit", &vrj::App::apiInit,
+      .def("apiInit", &vrj::GlApp::apiInit,
            &pyj::vrj_GlApp_Wrapper::default_apiInit,
            "apiInit()\n"
            "Application graphics API initialization function.  Execute any\n"
            "initialization needed after the graphics API is started but\n"
            "before the Draw Manager starts the rendering loop(s)."
       )
-      .def("exit", &vrj::App::exit, &pyj::vrj_GlApp_Wrapper::default_exit,
+      .def("exit", &vrj::GlApp::exit, &pyj::vrj_GlApp_Wrapper::default_exit,
            "exit()\n"
            "Executes any final clean-up needed for the application before\n"
            "exiting."
       )
-      .def("preFrame", &vrj::App::preFrame,
+      .def("preFrame", &vrj::GlApp::preFrame,
            &pyj::vrj_GlApp_Wrapper::default_preFrame,
            "preFrame()\n"
            "Function called before the Juggler frame starts.  This is\n"
            "called after input device updates but before the start of a\n"
            "new frame."
       )
-      .def("latePreFrame", &vrj::App::latePreFrame,
+      .def("latePreFrame", &vrj::GlApp::latePreFrame,
            &pyj::vrj_GlApp_Wrapper::default_latePreFrame,
            "latePreFrame()\n"
            "Function called after preFrame() and application-specific data\n"
@@ -843,29 +843,30 @@ void _Export_GlApp()
            "This is required because we cannot update data during the\n"
            "rendering process since it might be using multiple threads."
       )
-      .def("intraFrame", &vrj::App::intraFrame,
+      .def("intraFrame", &vrj::GlApp::intraFrame,
            &pyj::vrj_GlApp_Wrapper::default_intraFrame,
            "intraFrame()\n"
            "Function called during the application's drawing time."
       )
-      .def("postFrame", &vrj::App::postFrame,
+      .def("postFrame", &vrj::GlApp::postFrame,
            &pyj::vrj_GlApp_Wrapper::default_postFrame,
            "postFrame()\n"
            "Function alled before updating input devices but after the\n"
            "frame is complete."
       )
-      .def("reset", &vrj::App::reset, &pyj::vrj_GlApp_Wrapper::default_reset,
+      .def("reset", &vrj::GlApp::reset,
+           &pyj::vrj_GlApp_Wrapper::default_reset,
            "reset()\n"
            "Resets the application.  This is used when the kernel (or\n"
            "applications would like this application to reset to its\n"
            "initial state."
       )
-      .def("focusChanged", &vrj::App::focusChanged,
+      .def("focusChanged", &vrj::GlApp::focusChanged,
            &pyj::vrj_GlApp_Wrapper::default_focusChanged,
            "focusChanged()\n"
            "Called when the focus state changes."
       )
-      .def("getDrawScaleFactor", &vrj::App::getDrawScaleFactor,
+      .def("getDrawScaleFactor", &vrj::GlApp::getDrawScaleFactor,
            &pyj::vrj_GlApp_Wrapper::default_getDrawScaleFactor,
            "getDrawScaleFactor() -> float\n"
            "Returns the scale factor to convert from Juggler units\n"
@@ -876,14 +877,14 @@ void _Export_GlApp()
            "application wants to use.  For example, to render in feet,\n"
            "return 3.28 (gadget.PositionUnitConversion.ConvertToFeet)."
       )
-      .def("configCanHandle", &vrj::App::configCanHandle,
+      .def("configCanHandle", &vrj::GlApp::configCanHandle,
            &pyj::vrj_GlApp_Wrapper::default_configCanHandle,
            "configCanHandle(element) -> Boolean\n"
            "Defaults to handling nothing.\n\n"
            "Arguments:\n"
            "element -- An instance of jccl.ConfigElement."
       )
-      .def("depSatisfied", &vrj::App::depSatisfied,
+      .def("depSatisfied", &vrj::GlApp::depSatisfied,
            &pyj::vrj_GlApp_Wrapper::default_depSatisfied,
            "depSatisfied() -> Boolean\n"
            "Are any application dependencies satisified?  If this\n"

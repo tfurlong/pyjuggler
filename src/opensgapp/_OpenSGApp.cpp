@@ -321,7 +321,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          }
          else
          {
-            vrj::App::apiInit();
+            vrj::OpenSGApp::apiInit();
          }
       }
       catch (error_already_set)
@@ -332,7 +332,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    void default_apiInit()
    {
-      vrj::App::apiInit();
+      vrj::OpenSGApp::apiInit();
    }
 
    void exit()
@@ -350,7 +350,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          }
          else
          {
-            vrj::App::exit();
+            vrj::OpenSGApp::exit();
          }
       }
       catch (error_already_set)
@@ -361,7 +361,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    void default_exit()
    {
-      vrj::App::exit();
+      vrj::OpenSGApp::exit();
    }
 
    void preFrame()
@@ -379,7 +379,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          }
          else
          {
-            vrj::App::preFrame();
+            vrj::OpenSGApp::preFrame();
          }
       }
       catch (error_already_set)
@@ -390,7 +390,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    void default_preFrame()
    {
-      vrj::App::preFrame();
+      vrj::OpenSGApp::preFrame();
    }
 
    void latePreFrame()
@@ -410,7 +410,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          }
          else
          {
-            vrj::App::latePreFrame();
+            vrj::OpenSGApp::latePreFrame();
          }
       }
       catch (error_already_set)
@@ -421,7 +421,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    void default_latePreFrame()
    {
-      vrj::App::latePreFrame();
+      vrj::OpenSGApp::latePreFrame();
    }
 
    void intraFrame()
@@ -439,7 +439,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          }
          else
          {
-            vrj::App::intraFrame();
+            vrj::OpenSGApp::intraFrame();
          }
       }
       catch (error_already_set)
@@ -450,7 +450,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    void default_intraFrame()
    {
-      vrj::App::intraFrame();
+      vrj::OpenSGApp::intraFrame();
    }
 
    void postFrame()
@@ -468,7 +468,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          }
          else
          {
-            vrj::App::postFrame();
+            vrj::OpenSGApp::postFrame();
          }
       }
       catch (error_already_set)
@@ -479,7 +479,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    void default_postFrame()
    {
-      vrj::App::postFrame();
+      vrj::OpenSGApp::postFrame();
    }
 
    void reset()
@@ -497,7 +497,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          }
          else
          {
-            vrj::App::reset();
+            vrj::OpenSGApp::reset();
          }
       }
       catch (error_already_set)
@@ -508,7 +508,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    void default_reset()
    {
-      vrj::App::reset();
+      vrj::OpenSGApp::reset();
    }
 
    void focusChanged()
@@ -528,7 +528,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          }
          else
          {
-            vrj::App::focusChanged();
+            vrj::OpenSGApp::focusChanged();
          }
       }
       catch (error_already_set)
@@ -539,7 +539,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    void default_focusChanged()
    {
-      vrj::App::focusChanged();
+      vrj::OpenSGApp::focusChanged();
    }
 
    float getDrawScaleFactor()
@@ -558,19 +558,19 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          {
             return getDrawScaleFactor();
          }
-         return vrj::App::getDrawScaleFactor();
+         return vrj::OpenSGApp::getDrawScaleFactor();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return vrj::App::getDrawScaleFactor();
+      return vrj::OpenSGApp::getDrawScaleFactor();
    }
 
    float default_getDrawScaleFactor()
    {
-      return vrj::App::getDrawScaleFactor();
+      return vrj::OpenSGApp::getDrawScaleFactor();
    }
 
    bool configCanHandle(jccl::ConfigElementPtr p0)
@@ -588,7 +588,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          {
             return configCanHandle(p0);
          }
-         return vrj::App::configCanHandle(p0);
+         return vrj::OpenSGApp::configCanHandle(p0);
       }
       catch (error_already_set)
       {
@@ -600,7 +600,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    bool default_configCanHandle(jccl::ConfigElementPtr p0)
    {
-      return vrj::App::configCanHandle(p0);
+      return vrj::OpenSGApp::configCanHandle(p0);
    }
 
    bool depSatisfied()
@@ -618,7 +618,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          {
             return depSatisfied();
          }
-         return vrj::App::depSatisfied();
+         return vrj::OpenSGApp::depSatisfied();
       }
       catch (error_already_set)
       {
@@ -630,7 +630,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    bool default_depSatisfied()
    {
-      return vrj::App::depSatisfied();
+      return vrj::OpenSGApp::depSatisfied();
    }
 
    bool configAdd(jccl::ConfigElementPtr p0)
@@ -646,7 +646,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          {
             return configAdd(p0);
          }
-         return vrj::App::configAdd(p0);
+         return vrj::OpenSGApp::configAdd(p0);
       }
       catch (error_already_set)
       {
@@ -658,7 +658,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    bool default_configAdd(jccl::ConfigElementPtr p0)
    {
-      return vrj::App::configAdd(p0);
+      return vrj::OpenSGApp::configAdd(p0);
    }
 
    bool configRemove(jccl::ConfigElementPtr p0)
@@ -676,7 +676,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          {
             return configRemove(p0);
          }
-         return vrj::App::configRemove(p0);
+         return vrj::OpenSGApp::configRemove(p0);
       }
       catch (error_already_set)
       {
@@ -688,7 +688,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    bool default_configRemove(jccl::ConfigElementPtr p0)
    {
-      return vrj::App::configRemove(p0);
+      return vrj::OpenSGApp::configRemove(p0);
    }
 
    int configProcessPending()
@@ -707,7 +707,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
          {
             return configProcessPending();
          }
-         return vrj::App::configProcessPending();
+         return vrj::OpenSGApp::configProcessPending();
       }
       catch (error_already_set)
       {
@@ -719,7 +719,7 @@ struct vrj_OpenSGApp_Wrapper : vrj::OpenSGApp, wrapper<vrj::OpenSGApp>
 
    int default_configProcessPending()
    {
-      return vrj::App::configProcessPending();
+      return vrj::OpenSGApp::configProcessPending();
    }
 
    vrj::OpenSGApp::context_data& getContextData()
@@ -897,14 +897,14 @@ void _Export_OpenSGApp()
            "Executes any final clean-up needed for the application before\n"
            "exiting."
       )
-      .def("preFrame", &vrj::App::preFrame,
+      .def("preFrame", &vrj::OpenSGApp::preFrame,
            &pyj::vrj_OpenSGApp_Wrapper::default_preFrame,
            "preFrame()\n"
            "Function called before the Juggler frame starts.  This is\n"
            "called after input device updates but before the start of a\n"
            "new frame."
       )
-      .def("latePreFrame", &vrj::App::latePreFrame,
+      .def("latePreFrame", &vrj::OpenSGApp::latePreFrame,
            &pyj::vrj_OpenSGApp_Wrapper::default_latePreFrame,
            "latePreFrame()\n"
            "Function called after preFrame() and application-specific data\n"
@@ -914,30 +914,30 @@ void _Export_OpenSGApp()
            "This is required because we cannot update data during the\n"
            "rendering process since it might be using multiple threads."
       )
-      .def("intraFrame", &vrj::App::intraFrame,
+      .def("intraFrame", &vrj::OpenSGApp::intraFrame,
            &pyj::vrj_OpenSGApp_Wrapper::default_intraFrame,
            "intraFrame()\n"
            "Function called during the application's drawing time."
       )
-      .def("postFrame", &vrj::App::postFrame,
+      .def("postFrame", &vrj::OpenSGApp::postFrame,
            &pyj::vrj_OpenSGApp_Wrapper::default_postFrame,
            "postFrame()\n"
            "Function alled before updating input devices but after the\n"
            "frame is complete."
       )
-      .def("reset", &vrj::App::reset,
+      .def("reset", &vrj::OpenSGApp::reset,
            &pyj::vrj_OpenSGApp_Wrapper::default_reset,
            "reset()\n"
            "Resets the application.  This is used when the kernel (or\n"
            "applications would like this application to reset to its\n"
            "initial state."
       )
-      .def("focusChanged", &vrj::App::focusChanged,
+      .def("focusChanged", &vrj::OpenSGApp::focusChanged,
            &pyj::vrj_OpenSGApp_Wrapper::default_focusChanged,
            "focusChanged()\n"
            "Called when the focus state changes."
       )
-      .def("getDrawScaleFactor", &vrj::App::getDrawScaleFactor,
+      .def("getDrawScaleFactor", &vrj::OpenSGApp::getDrawScaleFactor,
            &pyj::vrj_OpenSGApp_Wrapper::default_getDrawScaleFactor,
            "getDrawScaleFactor() -> float\n"
            "Returns the scale factor to convert from Juggler units\n"
@@ -948,14 +948,14 @@ void _Export_OpenSGApp()
            "application wants to use.  For example, to render in feet,\n"
            "return 3.28 (gadget.PositionUnitConversion.ConvertToFeet)."
       )
-      .def("configCanHandle", &vrj::App::configCanHandle,
+      .def("configCanHandle", &vrj::OpenSGApp::configCanHandle,
            &pyj::vrj_OpenSGApp_Wrapper::default_configCanHandle,
            "configCanHandle(element) -> Boolean\n"
            "Defaults to handling nothing.\n\n"
            "Arguments:\n"
            "element -- An instance of jccl.ConfigElement."
       )
-      .def("depSatisfied", &vrj::App::depSatisfied,
+      .def("depSatisfied", &vrj::OpenSGApp::depSatisfied,
            &pyj::vrj_OpenSGApp_Wrapper::default_depSatisfied,
            "depSatisfied() -> Boolean\n"
            "Are any application dependencies satisified?  If this\n"
@@ -971,7 +971,7 @@ void _Export_OpenSGApp()
            "configProcessPending() -> int\n"
            "Inherited from jccl.ConfigElementHandler and not overridden."
       )
-      .def("haveFocus", &vrj::App::haveFocus,
+      .def("haveFocus", &vrj::OpenSGApp::haveFocus,
            "haveFocus() -> Boolean\n"
            "Does this application currently have focus?  If an application\n"
            "has focus, the user may be attempting to interact with it, so\n"
@@ -981,7 +981,7 @@ void _Export_OpenSGApp()
            "animations, etc.  This is akin to the way that a user can only\n"
            "interact with a GUI window that has focus."
       )
-      .def("setFocus", &vrj::App::setFocus,
+      .def("setFocus", &vrj::OpenSGApp::setFocus,
            "setFocus(newState)\n"
            "Sets the focus state.\n\n"
            "Post-condition:\n"
