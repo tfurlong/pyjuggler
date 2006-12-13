@@ -410,7 +410,7 @@ else
 fi
 
 VPR_PATH([1.1.20], , [AC_MSG_ERROR([*** VPR is required for PyJuggler ***])])
-JCCL_PATH_CXX([0.12], ,
+JCCL_PATH_CXX([1.1.11], ,
               [AC_MSG_ERROR([*** JCCL is required for PyJuggler ***])])
 SNX_PATH([0.5.0], , [AC_MSG_ERROR([*** Sonix is required for PyJuggler ***])])
 GADGETEER_PATH([1.1.20], ,

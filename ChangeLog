@@ -1,5 +1,8 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Dec-13-2006 patrick     Exposed jccl::ConfigManager::shutdown() and
+                        gadget::InputManager::shutdown().
+                        NEW VERSION: 1.1.12
 Dec-13-2006 patrick     gadget::BaseDeviceInterface::refreshAllDevices() was
                         renamed to
                         gadget::BaseDeviceInterface::refreshAllInterfaces() in

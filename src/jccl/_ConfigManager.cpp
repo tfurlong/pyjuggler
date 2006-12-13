@@ -129,6 +129,15 @@ void _Export_ConfigManager()
            "Un-registers the given handler (a subclass of\n"
            "jccl.ConfigElementHandler."
       )
+      .def("shutdown", &jccl::ConfigManager::shutdown,
+           (args("attemptRemoval") = false),
+           "shutdown()\n"
+           "Shuts down the Configuration system. Removes all new, pending,\n"
+           "and active configuration elements.\n"
+           "Keyword arguments:\n"
+           "attemptRemoval -- If True, add all active config elements as\n"
+           "                  removals and attempt to reconfigure."
+      )
       .def("instance", &jccl::ConfigManager::instance,
            return_value_policy< reference_existing_object >())
       .staticmethod("instance")

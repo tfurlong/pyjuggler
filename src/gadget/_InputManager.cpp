@@ -199,6 +199,9 @@ void _Export_InputManager()
            "Returns:\n"
            "True is returned if the device was configured and added."
       )
+      .def("shutdown", &gadget::InputManager::shutdown,
+           "Shuts down all devices and proxies."
+      )
       .def("resetAllDevicesAndProxies",
            &gadget::InputManager::resetAllDevicesAndProxies,
            "resetAllDevicesAndProxies()\n"
