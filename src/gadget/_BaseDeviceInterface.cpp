@@ -93,11 +93,11 @@ void _Export_BaseDeviceInterface()
           "Identifies whether this device interface is connected to a\n"
           "proxy."
       )
-      .def("refreshAllDevices",
-           &gadget::BaseDeviceInterface::refreshAllDevices,
-           "refreshAllDevices()\n"
+      .def("refreshAllInterfaces",
+           &gadget::BaseDeviceInterface::refreshAllInterfaces,
+           "refreshAllInterfaces()\n"
            "Refreshes all the known device interface objects."
       )
-      .staticmethod("refreshAllDevices")
+      .staticmethod("refreshAllInterfaces")
    ;
 }

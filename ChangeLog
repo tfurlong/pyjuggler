@@ -1,5 +1,10 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Dec-13-2006 patrick     gadget::BaseDeviceInterface::refreshAllDevices() was
+                        renamed to
+                        gadget::BaseDeviceInterface::refreshAllInterfaces() in
+                        Gadgeteer 1.1.20.
+                        NEW VERSION: 1.1.11
 Dec-11-2006 patrick     Exposed vrj::Projection::setNearFar() and
                         vrj::Projection::getNearFar().
                         NEW VERSION: 1.1.10
