@@ -1,5 +1,7 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Dec-17-2006 patrick     Updated for the deprecation of
+                        gadget::BaseDeviceInterface::refreshAllDevices().
 Dec-11-2006 patrick     Exposed vrj::Projection::setNearFar() and
                         vrj::Projection::getNearFar().
 Dec-10-2006 patrick     Exposed vrj::OpenSGApp so that developers can combine
