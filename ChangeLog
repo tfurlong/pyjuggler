@@ -1,5 +1,8 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Dec-18-2006 patrick     Exposed vrj::D3dApp (Windows only). This requires
+                        VR Juggler 2.1.16 or newer.
+                        NEW VERSION: 1.1.13
 Dec-13-2006 patrick     Exposed jccl::ConfigManager::shutdown() and
                         gadget::InputManager::shutdown().
                         NEW VERSION: 1.1.12

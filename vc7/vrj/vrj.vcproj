@@ -148,6 +148,9 @@
 				RelativePath="..\..\src\vrj\_CameraProjection.cpp">
 			</File>
 			<File
+				RelativePath="..\..\src\vrj\_D3dApp.cpp">
+			</File>
+			<File
 				RelativePath="..\..\src\vrj\_Display.cpp">
 			</File>
 			<File
