@@ -430,8 +430,9 @@ if test "x$osg_base_dir" != "xno" ; then
    # if $OSGROOT is "/usr".
    if test "x$osg_base_dir" != "x/usr" ; then
       OSG_INCLUDES="-I$osg_base_dir/include"
-      OSG_LIBS='-losg -losgProducer -losgUtil -losgDB -losgText -losgGA -lProducer -lOpenThreads'
    fi
+
+   OSG_LIBS='-losg -losgProducer -losgUtil -losgDB -losgText -losgGA -lProducer -lOpenThreads'
 
    AC_PATH_X
 
