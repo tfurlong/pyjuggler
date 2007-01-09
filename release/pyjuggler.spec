@@ -1,7 +1,7 @@
 # Spec file for PyJuggler.
 %define name pyjuggler
 %define version 1.1.13
-%define release 1%{?dist}
+%define release 2%{?dist}
 
 %define vpr_version 1.1.20
 %define jccl_version 1.1.11
@@ -187,6 +187,10 @@ make -C doc/getting.started.guide prefix=$docdir/getting.started.guide  \
 # Just in case... stupid scons
 find $instdir -name .sconsign -exec rm {} \;
 
+if test "%{_libdir}" != "/usr/lib" ; then
+   mv %{buildroot}%{_prefix}/lib %{buildroot}%{_libdir}
+fi
+
 %clean
 rm -rf %{buildroot}
 
@@ -231,5 +235,8 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
-* Mon Jan 08 2007 Patrick Hartling
+* Tue Jan 09 2007 Patrick Hartling <patrick@infiscape.com> 1.1.13-2
+- Fixed x86_64 case.
+
+* Mon Jan 08 2007 Patrick Hartling <patrick@infiscape.com> 1.1.13-1
 - Initial version.
