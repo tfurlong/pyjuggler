@@ -1,7 +1,7 @@
 # Spec file for PyJuggler.
 %define name pyjuggler
 %define version 1.1.13
-%define release 2%{?dist}
+%define release 3%{?dist}
 
 %define vpr_version 1.1.20
 %define jccl_version 1.1.11
@@ -202,7 +202,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root)
-%{_libdir}/python%{pybasever}/site-packages/PyJuggler/*.py
+%{_libdir}/python%{pybasever}/site-packages/PyJuggler/*.py*
 %{_libdir}/python%{pybasever}/site-packages/PyJuggler/vpr.so
 %{_libdir}/python%{pybasever}/site-packages/PyJuggler/jccl.so
 %{_libdir}/python%{pybasever}/site-packages/PyJuggler/snx.so
@@ -235,6 +235,9 @@ rm -rf %{buildroot}
 %endif
 
 %changelog
+* Wed Jan 10 2007 Patrick Hartling <patrick@infiscape.com> 1.1.13-3
+- Fixed Fedora Core 6 packaging.
+
 * Tue Jan 09 2007 Patrick Hartling <patrick@infiscape.com> 1.1.13-2
 - Fixed x86_64 case.
 
