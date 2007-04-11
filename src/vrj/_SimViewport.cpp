@@ -88,7 +88,6 @@ void _Export_SimViewport()
            "                 from Juggler units (meters) to the display\n"
            "                 units."
       )
-      .def("getDrawSimInterface", &vrj::SimViewport::getDrawSimInterface,
-           return_internal_reference<1>())
+      .def("getDrawSimInterface", &vrj::SimViewport::getDrawSimInterface)
    ;
 }

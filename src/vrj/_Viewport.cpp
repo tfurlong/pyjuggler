@@ -122,7 +122,6 @@ void _Export_Viewport()
            "Gets the user associated with this viewport."
       )
       .def("getDisplay", &vrj::Viewport::getDisplay,
-           return_internal_reference<1>(),
            "getDisplay() -> vrj.Display object\n"
            "Gets the display contaning this viewprot."
       )

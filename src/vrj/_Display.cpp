@@ -19,18 +19,6 @@ namespace pyj
 
 struct vrj_Display_Wrapper : vrj::Display, wrapper<vrj::Display>
 {
-   vrj_Display_Wrapper(const vrj::Display& p0)
-      : vrj::Display(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
-   vrj_Display_Wrapper()
-      : vrj::Display()
-   {
-      /* Do nothing. */ ;
-   }
-
    virtual ~vrj_Display_Wrapper()
    {
       /* Do nothing. */ ;
@@ -50,14 +38,18 @@ static tuple vrj_Display_getOriginAndSize_wrapper(vrj::Display* disp)
 // Module ======================================================================
 void _Export_Display()
 {
-   class_<pyj::vrj_Display_Wrapper>("Display",
+   class_<pyj::vrj_Display_Wrapper, vrj::DisplayPtr, boost::noncopyable>(
+       "Display",
        "Container class for viewports and window information.  This stores\n"
        "the size and location of the window and the viewports contained\n"
        "within."
        ,
-       init<>()
+       no_init
       )
-      .def(init<const vrj::Display&>())
+      .def("create", &vrj::Display::create,
+           "vrj.Display.create() -> vrj.DisplayPtr\n"
+           "Creates a new vrj::Display object and wraps in a vrj::DisplayPtr."
+      )
       .def("isActive", &vrj::Display::isActive,
            "isActive() -> Boolean\n"
            "Determines whether this display window is active."
@@ -93,5 +85,6 @@ void _Export_Display()
            "vpNum -- The integer identifier of the requested viewport."
       )
 //      .def(self_ns::str(self))
+      .staticmethod("create")
    ;
 }

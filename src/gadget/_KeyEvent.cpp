@@ -26,16 +26,25 @@ struct gadget_KeyEvent_Wrapper : gadget::KeyEvent, wrapper<gadget::KeyEvent>
       /* Do nothing. */ ;
    }
 
-   gadget_KeyEvent_Wrapper(const gadget::EventType& p0, const gadget::Keys& p1,
-                           const int& p2, const long unsigned int& p3)
+   gadget_KeyEvent_Wrapper(const gadget::EventType p0, const gadget::Keys p1,
+                           const int p2, const long unsigned int p3)
       : gadget::KeyEvent(p0, p1, p2, p3)
    {
       /* Do nothing. */ ;
    }
 
-   gadget_KeyEvent_Wrapper(const gadget::EventType& p0, const gadget::Keys& p1,
-                           const int& p2, const long unsigned int& p3, char p4)
+   gadget_KeyEvent_Wrapper(const gadget::EventType p0, const gadget::Keys p1,
+                           const int p2, const long unsigned int p3,
+                           const char p4)
       : gadget::KeyEvent(p0, p1, p2, p3, p4)
+   {
+      /* Do nothing. */ ;
+   }
+
+   gadget_KeyEvent_Wrapper(const gadget::EventType p0, const gadget::Keys p1,
+                           const int p2, const long unsigned int p3,
+                           const char p4, const wchar_t p5)
+      : gadget::KeyEvent(p0, p1, p2, p3, p4, p5)
    {
       /* Do nothing. */ ;
    }
@@ -125,26 +134,32 @@ void _Export_KeyEvent()
           "__init__(type, key, mask, time, asciiKey = 0)\n"
           "Initializes data members.\n"
           "Arguments:\n"
-          "type     -- The type of this event (either key press or key\n"
-          "            release).\n"
-          "key      -- The platform-specific value of the key that was\n"
-          "            pressed or released.\n"
-          "mask     -- The mask of modifiers pressed in addition to key.\n"
-          "            This should be constructed using the bitwise OR of\n"
-          "            gadget.ModifierMask values.\n"
-          "time     -- The time at which this event occurred.  This should\n"
-          "            be as accurate as possible, preferrably acquired\n"
-          "            from the operating system or windowing event system\n"
-          "            event data structure.  The time at which the event\n"
-          "            was processed is not an acceptable value.\n"
-          "asciiKey -- The ASCII value of the key associated with this\n"
-          "            event.  This paramter is optional, and it defaults\n"
-          "            to 0 if not specified."
+          "type       -- The type of this event (either key press or key\n"
+          "              release).\n"
+          "key        -- The platform-specific value of the key that was\n"
+          "              pressed or released.\n"
+          "mask       -- The mask of modifiers pressed in addition to key.\n"
+          "              This should be constructed using the bitwise OR of\n"
+          "              gadget.ModifierMask values.\n"
+          "time       -- The time at which this event occurred.  This should\n"
+          "              be as accurate as possible, preferrably acquired\n"
+          "              from the operating system or windowing event system\n"
+          "              event data structure.  The time at which the event\n"
+          "              was processed is not an acceptable value.\n"
+          "asciiKey   -- The ASCII value of the key associated with this\n"
+          "              event.  This paramter is optional, and it defaults\n"
+          "              to 0 if not specified.\n"
+          "unicodeKey -- The Unicode value of the key associated with this\n"
+          "              event.  This parameter is optional, and it defaults\n"
+          "              to 0 if not specified."
        )
       )
       .def(init<const gadget::KeyEvent&>())
-      .def(init<const gadget::EventType&, const gadget::Keys&, const int&,
-                const long unsigned int&, optional<char> >())
+      .def(init<const gadget::EventType, const gadget::Keys, const int,
+                const long unsigned int, optional<const char> >())
+      .def(init<const gadget::EventType, const gadget::Keys, const int,
+                const long unsigned int, const char,
+                optional<const wchar_t> >())
       .def("writeObject", &gadget::KeyEvent::writeObject,
            &pyj::gadget_KeyEvent_Wrapper::default_writeObject,
            "writeObject(writer)\n"
@@ -156,12 +171,10 @@ void _Export_KeyEvent()
            "De-serializes this event using the given vpr.ObjectReader."
       )
       .def("getKey", &gadget::KeyEvent::getKey,
-           return_value_policy<copy_const_reference>(),
            "getKey() -> gadget.Key object\n"
            "Gets the key that was pressed while generating this event."
       )
       .def("getModifierMask", &gadget::KeyEvent::getModifierMask,
-           return_value_policy<copy_const_reference>(),
            "getModifierMask() -> int\n"
            "Returns the modifier mask for this event.  This tells which\n"
            "modifier keys (if any) were pressed at the same time as the\n"
@@ -169,13 +182,16 @@ void _Export_KeyEvent()
            "of values in the enumeration gadget.ModifierMask."
       )
       .def("getKeyChar", &gadget::KeyEvent::getKeyChar,
-           return_value_policy<copy_const_reference>(),
            "getKeyChar() -> character\n"
            "Returns the ASCII character corresponding to the key that was\n"
            "pressed."
       )
+      .def("getKeyUnicode", &gadget::KeyEvent::getKeyUnicode,
+           "getKeyUnicode() -> Unicode character\n"
+           "Returns the Unicode character corresponding to the key that was\n"
+           "pressed."
+      )
       .def("type", &gadget::Event::type,
-           return_value_policy<copy_const_reference>(),
            "type() -> gadget.EventType object\n"
            "Returns the type of this event.  This can be used for dynamic\n"
            "casting to more specific event types."
@@ -190,7 +206,6 @@ void _Export_KeyEvent()
            "type -- A gadget.EventType object or a subclass thereof."
       )
       .def("time", &gadget::Event::time,
-           return_value_policy<copy_const_reference>(),
            "time() -> int\n"
            "Returns the time at which the event occurred."
       )

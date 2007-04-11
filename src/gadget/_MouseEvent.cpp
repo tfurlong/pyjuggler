@@ -28,10 +28,10 @@ struct gadget_MouseEvent_Wrapper
       /* Do nothing. */ ;
    }
 
-   gadget_MouseEvent_Wrapper(const gadget::EventType& p0,
-                             const gadget::Keys& p1, const int& p2,
-                             const int& p3, const int& p4, const int& p5,
-                             const int& p6, const long unsigned int& p7)
+   gadget_MouseEvent_Wrapper(const gadget::EventType p0,
+                             const gadget::Keys p1, const int p2,
+                             const int p3, const int p4, const int p5,
+                             const int p6, const long unsigned int p7)
       : gadget::MouseEvent(p0, p1, p2, p3, p4, p5, p6, p7)
    {
       /* Do nothing. */ ;
@@ -146,9 +146,9 @@ void _Export_MouseEvent()
        )
       )
       .def(init<const gadget::MouseEvent&>())
-      .def(init<const gadget::EventType&, const gadget::Keys&, const int&,
-                const int&, const int&, const int&, const int&,
-                const long unsigned int&>())
+      .def(init<const gadget::EventType, const gadget::Keys, const int,
+                const int, const int, const int, const int,
+                const long unsigned int>())
       .def("writeObject", &gadget::MouseEvent::writeObject,
            &pyj::gadget_MouseEvent_Wrapper::default_writeObject,
            "writeObject(writer)\n"
@@ -160,41 +160,34 @@ void _Export_MouseEvent()
            "De-serializes this event using the given vpr.ObjectReader."
       )
       .def("getButton", &gadget::MouseEvent::getButton,
-           return_value_policy<copy_const_reference>(),
            "getButton() -- gadget.Keys value\n"
       )
       .def("getX", &gadget::MouseEvent::getX,
-           return_value_policy<copy_const_reference>(),
            "getX() -> int\n"
            "Returns the X coordinate of the mouse pointer relative to the\n"
            "window."
       )
       .def("getY", &gadget::MouseEvent::getY,
-           return_value_policy<copy_const_reference>(),
            "getY() -> int\n"
            "Returns the Y coordinate of the mouse pointer relative to the\n"
            "window."
       )
       .def("getGlobalX", &gadget::MouseEvent::getGlobalX,
-           return_value_policy<copy_const_reference>(),
            "getGlobalX() -> int\n"
            "Returns the X coordinate of the mouse pointer relative to the\n"
            "root window (i.e., the desktop)."
       )
       .def("getGlobalY", &gadget::MouseEvent::getGlobalY,
-           return_value_policy<copy_const_reference>(),
            "getGlobalY() -> int\n"
            "Returns the Y coordinate of the mouse pointer relative to the\n"
            "root window (i.e., the desktop)."
       )
       .def("getState", &gadget::MouseEvent::getState,
-           return_value_policy<copy_const_reference>(),
            "getState() -> int\n"
            "Returns the state of the mouse buttons and keyboard modifier\n"
            "keys (CTRL, ALT, and SHIFT)."
       )
       .def("type", &gadget::Event::type,
-           return_value_policy<copy_const_reference>(),
            "type() -> gadget.EventType object\n"
            "Returns the type of this event.  This can be used for dynamic\n"
            "casting to more specific event types."
@@ -209,7 +202,6 @@ void _Export_MouseEvent()
            "type -- A gadget.EventType object or a subclass thereof."
       )
       .def("time", &gadget::Event::time,
-           return_value_policy<copy_const_reference>(),
            "time() -> int\n"
            "Returns the time at which the event occurred."
       )

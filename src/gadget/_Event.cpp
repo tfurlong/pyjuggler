@@ -112,7 +112,6 @@ void _Export_Event()
            "De-serializes this object."
       )
       .def("type", &gadget::Event::type,
-           return_value_policy<copy_const_reference>(),
            "type() -> gadget.EventType object\n"
            "Returns the type of this event.  This can be used for dynamic\n"
            "casting to more specific event types."
@@ -127,7 +126,6 @@ void _Export_Event()
            "type -- A gadget.EventType object or a subclass thereof."
       )
       .def("time", &gadget::Event::time,
-           return_value_policy<copy_const_reference>(),
            "time() -> int\n"
            "Returns the time at which the event occurred."
       )
