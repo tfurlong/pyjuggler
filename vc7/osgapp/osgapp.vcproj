@@ -22,7 +22,66 @@
 				Optimization="0"
 				ImproveFloatingPointConsistency="TRUE"
 				AdditionalIncludeDirectories="..\..\src;..\..;&quot;$(PYTHON_ROOT)\include&quot;;&quot;$(OSGHOME)\include&quot;;&quot;$(VJ_BASE_DIR)\include&quot;;&quot;$(VJ_DEPS_DIR)\include&quot;"
-				PreprocessorDefinitions="CPPDOM_DYN_LINK;WIN32;_DEBUG;_CONSOLE;_USRDLL;BOOST_PYTHON_DYNAMIC_LIB"
+				PreprocessorDefinitions="CPPDOM_DYN_LINK;WIN32;PYJUGGLER_DEBUG;JUGGLER_DEBUG;_CONSOLE;_USRDLL;BOOST_PYTHON_DYNAMIC_LIB"
+				MinimalRebuild="FALSE"
+				RuntimeLibrary="2"
+				BufferSecurityCheck="FALSE"
+				TreatWChar_tAsBuiltInType="TRUE"
+				ForceConformanceInForLoopScope="TRUE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="1"
+				DisableSpecificWarnings="4005;4244;4251;4267;4275;4290;4312"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="pyjutil_g.lib boost_python-$(BOOST_TOOL)-mt-$(BOOST_VERSION).lib osg.lib osgProducer.lib osgUtil.lib osgDB.lib opengl32.lib glu32.lib $(NOINHERIT)"
+				OutputFile="$(OutDir)/__osgapp_g.pyd"
+				LinkIncremental="1"
+				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="&quot;$(PYTHON_ROOT)\libs&quot;;..\pyjutil\Debug;&quot;$(OSGHOME)\lib&quot;;&quot;$(VJ_BASE_DIR)\lib&quot;;&quot;$(VJ_DEPS_DIR)\lib&quot;"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/__osgapp_g.pdb"
+				SubSystem="1"
+				ImportLibrary="$(OutDir)/__osgapp_g.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="DebugRt|Win32"
+			OutputDirectory="../lib"
+			IntermediateDirectory="Debug"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="/Zm800"
+				Optimization="0"
+				ImproveFloatingPointConsistency="TRUE"
+				AdditionalIncludeDirectories="..\..\src;..\..;&quot;$(PYTHON_ROOT)\include&quot;;&quot;$(OSGHOME)\include&quot;;&quot;$(VJ_BASE_DIR)\include&quot;;&quot;$(VJ_DEPS_DIR)\include&quot;"
+				PreprocessorDefinitions="CPPDOM_DYN_LINK;WIN32;PYJUGGLER_DEBUG;JUGGLER_DEBUG;_CONSOLE;_USRDLL;BOOST_PYTHON_DYNAMIC_LIB"
 				MinimalRebuild="FALSE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -43,7 +102,7 @@
 				OutputFile="$(OutDir)/__osgapp_d.pyd"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				AdditionalLibraryDirectories="&quot;$(PYTHON_ROOT)\libs&quot;;..\pyjutil\Debug;&quot;$(OSGHOME)\lib&quot;;&quot;$(VJ_BASE_DIR)\lib&quot;;&quot;$(VJ_DEPS_DIR)\lib&quot;"
+				AdditionalLibraryDirectories="&quot;$(PYTHON_ROOT)\libs&quot;;..\pyjutil\DebugRt;&quot;$(OSGHOME)\lib&quot;;&quot;$(VJ_BASE_DIR)\lib&quot;;&quot;$(VJ_DEPS_DIR)\lib&quot;"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/__osgapp_d.pdb"
 				SubSystem="1"

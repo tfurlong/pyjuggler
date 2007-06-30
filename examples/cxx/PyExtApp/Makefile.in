@@ -12,16 +12,16 @@ ifeq (@OS_TYPE@, Win32)
    CXXFLAGS=	$(shell flagpoll vrjuggler --cflags) /Zm800 /GX /GR /Op	\
 		/I$(srcdir) /I$(top_srcdir) /Zc:wchar_t,forScope	\
 		$(CXXFLAGS_OPT)
-   CXXFLAGS_DBG=/Z7 /Od /Ob0 /MDd /D_DEBUG
-   CXXFLAGS_OPT=/Ogity /O2 /Gs /Ob2 /MD /D_OPT /DNDEBUG
+   CXXFLAGS_DBG=/Z7 /Od /Ob0 /MDd /DPYJUGGLER_DEBUG /DJUGGLER_DEBUG
+   CXXFLAGS_OPT=/Ogity /O2 /Gs /Ob2 /MD /DPYJUGGLER_OPT /DJUGGLER_OPT /DNDEBUG
    LDFLAGS_DBG=	/DEBUG
    LDFLAGS_OPT=	/RELEASE
    LDFLAGS=	$(LDFLAGS_OPT)
 else
    CXXFLAGS=	$(shell flagpoll vrjuggler --cflags) -I$(srcdir)	\
 		-I$(top_srcdir) $(CXXFLAGS_OPT)
-   CXXFLAGS_DBG=-D_DEBUG -g
-   CXXFLAGS_OPT=-D_OPT -DNDEBUG -O2
+   CXXFLAGS_DBG=-DPYJUGGLER_DEBUG -DJUGGLER_DEBUG -g
+   CXXFLAGS_OPT=-DPYJUGGLER_OPT -DJUGGLER_OPT -DNDEBUG -O2
    LDFLAGS_DBG=	-g
    LDFLAGS_OPT=	-O2
    LDFLAGS=	-Wl,--export-dynamic $(LDFLAGS_OPT)
