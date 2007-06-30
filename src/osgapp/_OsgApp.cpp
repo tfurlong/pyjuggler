@@ -68,6 +68,36 @@ struct vrj_OsgApp_Wrapper : vrj::OsgApp, wrapper<vrj::OsgApp>
       return NULL;
    }
 
+   osgUtil::SceneView::Options getSceneViewDefaults()
+   {
+      vpr::DebugOutputGuard og(
+         pyjDBG_CXX, vprDBG_VERB_LVL,
+         "vrj_OsgApp_Wrapper::getSceneViewDefaults()\n",
+         "vrj_OsgApp_Wrapper::getSceneViewDefaults() done.\n"
+      );
+      PyJuggler::InterpreterGuard guard;
+
+      try
+      {
+         if ( override getSceneViewDefaults =
+                 this->get_override("getSceneViewDefaults") )
+         {
+            return getSceneViewDefaults();
+         }
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+
+      return vrj::OsgApp::getSceneViewDefaults();
+   }
+
+   osgUtil::SceneView::Options default_getSceneViewDefaults()
+   {
+      return vrj::OsgApp::getSceneViewDefaults();
+   }
+
    void configSceneView(osgUtil::SceneView* p0)
    {
       vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
@@ -771,6 +801,14 @@ void _Export_OsgApp()
            "getScene() -> osg.Group object\n"
            "Gets the root fo the scene to render.  Called each frame to\n"
            "get teh current scene to render."
+      )
+      .def("getSceneViewDefaults", &vrj::OsgApp::getSceneViewDefaults,
+           &pyj::vrj_OsgApp_Wrapper::default_getSceneViewDefaults,
+           "getSceneViewDefaults() -> osgUtil.SceneView.Options\n"
+           "Returns the options to be passed to osgUtil.SceneView.setDefaults()\n"
+           "for each scene view that is configured.  This is called by the\n"
+           "default implementation of vrj.OsgApp.configSceneView().  See\n"
+           "osgUtil.SceneView.Options for the available settings."
       )
       .def("configSceneView", &vrj::OsgApp::configSceneView,
            &pyj::vrj_OsgApp_Wrapper::default_configSceneView,

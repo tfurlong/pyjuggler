@@ -1,5 +1,9 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Jun-30-2007 patrick     Updated for enhancements to vrj::OsgApp in VR Juggler
+                        2.3.0. This allows subclasses of vrj.OsgApp to override
+                        the getSceneViewDefaults() method.
+                        NEW VERSION: 1.3.4
 Jun-30-2007 patrick     Updated for VPR 1.1.43.
                         NEW VERSION: 1.3.3
 Jun-30-2007 patrick     Updated for VR Juggler 2.3.4 and exposed
