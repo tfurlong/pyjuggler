@@ -50,7 +50,6 @@ void _Export_KeyboardMouseInterface()
            "proxy."
       )
       .def("getProxy", &gadgetWrapper::KeyboardMouseInterface::getProxy,
-           return_internal_reference<1>(),
            "getProxy() -> gadget.KeyboardMouseProxy object\n"
            "Returns the underlying proxy to which we are connected."
       )

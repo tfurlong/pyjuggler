@@ -2,9 +2,9 @@
 # Distributed under the GNU Lesser General Public License 2.1.  (See
 # accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
-AC_INIT([PyJuggler], [1.1], [vrjuggler-devel@lists.sourceforge.net])
+AC_INIT([PyJuggler], [1.3], [vrjuggler-devel@lists.sourceforge.net])
 AC_PREREQ([2.53])
-AC_COPYRIGHT([PyJuggler is (C) Copyright 2002-2005 by Patrick Hartling])
+AC_COPYRIGHT([PyJuggler is (C) Copyright 2002-2007 by Patrick Hartling])
 AC_REVISION([$Revision$])
 AC_CONFIG_SRCDIR([src/gadgeteer-wrappers.h])
 AC_CONFIG_AUX_DIR([Doozer++/scripts])
@@ -413,7 +413,7 @@ VPR_PATH([1.1.20], , [AC_MSG_ERROR([*** VPR is required for PyJuggler ***])])
 JCCL_PATH_CXX([1.1.11], ,
               [AC_MSG_ERROR([*** JCCL is required for PyJuggler ***])])
 SNX_PATH([0.5.0], , [AC_MSG_ERROR([*** Sonix is required for PyJuggler ***])])
-GADGETEER_PATH([1.1.24], ,
+GADGETEER_PATH([1.3.9], ,
                [AC_MSG_ERROR([*** Gadgeteer is required for PyJuggler ***])])
 VRJUGGLER_PATH([2.1.21], ,
                [AC_MSG_ERROR([*** VR Juggler is required for PyJuggler ***])])

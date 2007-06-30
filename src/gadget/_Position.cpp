@@ -55,29 +55,6 @@ struct gadget_Position_Wrapper : gadget::Position, wrapper<gadget::Position>
       return gadget::Position::config(p0);
    }
 
-   std::string getInputTypeName()
-   {
-      try
-      {
-         if ( override getInputTypeName = this->get_override("getInputTypeName") )
-         {
-            return getInputTypeName();
-         }
-         return gadget::Position::getInputTypeName();
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-
-      return std::string("UNKNOWN");
-   }
-
-   std::string default_getInputTypeName()
-   {
-      return gadget::Position::getInputTypeName();
-   }
-
    void writeObject(vpr::ObjectWriter* p0)
    {
       try
@@ -141,7 +118,8 @@ struct gadget_Position_Wrapper : gadget::Position, wrapper<gadget::Position>
 // Module ======================================================================
 void _Export_Position()
 {
-   class_<pyj::gadget_Position_Wrapper, boost::noncopyable>("Position",
+   class_<pyj::gadget_Position_Wrapper, gadget::PositionPtr, boost::noncopyable>(
+       "Position",
        "gadget.Position is the abstract base class from which devices\n"
        "returning positional (translation and/or rotation) data must\n"
        "derive.  This is in addition to gadget.Input.  gadget.Input\n"
@@ -152,8 +130,9 @@ void _Export_Position()
        "the received positional data.  This is similar to the additions\n"
        "made by gadget.Analog and gadget.Digital."
        ,
-       init<>()
+       no_init
       )
+      .def("create", &gadget::Position::create)
       .def("config", &gadget::Position::config,
            &pyj::gadget_Position_Wrapper::default_config,
            "config(element) -> Boolean\n"
@@ -163,8 +142,7 @@ void _Export_Position()
            "           must derive from the base config element type\n"
            "           'positional_device'."
       )
-      .def("getInputTypeName", &gadget::Position::getInputTypeName,
-           &pyj::gadget_Position_Wrapper::default_getInputTypeName
+      .def("getInputTypeName", &gadget::Position::getInputTypeName
       )
       .def("writeObject", &gadget::Position::writeObject,
            &pyj::gadget_Position_Wrapper::default_writeObject,
@@ -211,6 +189,8 @@ void _Export_Position()
            "getPositionDataBuffer() -> list of lists of DigitalData objects\n"
            "Returns the current stable sample buffers for this device."
       )
+      .staticmethod("create")
+      .staticmethod("getInputTypeName")
    ;
 
    class_< std::vector<gadget::PositionData> >("PositionDataVec",

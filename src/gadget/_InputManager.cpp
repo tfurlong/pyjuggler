@@ -217,7 +217,6 @@ void _Export_InputManager()
            "transforming it."
       )
       .def("getDevice", &gadget::InputManager::getDevice,
-           return_internal_reference<1>(),
            "getDevice(deviceName) -> gadget.Input object\n"
            "Returns a gadget.Input object to the named device.\n"
            "Returns:\n"
@@ -261,7 +260,7 @@ void _Export_InputManager()
            "devPtr -- The device object to remove."
       )
       .def("removeDevice",
-           (bool (gadget::InputManager::*)(const gadget::Input*)) &gadget::InputManager::removeDevice)
+           (bool (gadget::InputManager::*)(const gadget::InputPtr)) &gadget::InputManager::removeDevice)
       .def("addProxy", &gadget::InputManager::addProxy,
            "addProxy(proxy) -> Boolean\n"
            "Adds the given gadget.Proxy object to the proxy table.\n"
@@ -272,7 +271,6 @@ void _Export_InputManager()
            "True is returned if the proxy was added correctly."
       )
       .def("getProxy", &gadget::InputManager::getProxy,
-           return_internal_reference<1>(),
            "getProxy(proxyName) -> gadget.Proxy object\n"
            "Gets a proxy having the given name (or alias).\n"
            "Arguments:\n"

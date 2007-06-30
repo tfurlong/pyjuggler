@@ -55,30 +55,6 @@ struct gadget_Command_Wrapper : gadget::Command, wrapper<gadget::Command>
       return gadget::Command::config(p0);
    }
 
-   std::string getInputTypeName()
-   {
-      try
-      {
-         if ( override getInputTypeName =
-                 this->get_override("getInputTypeName") )
-         {
-             return getInputTypeName();
-         }
-         return gadget::Command::getInputTypeName();
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-
-      return std::string("UNKONWN");
-   }
-
-   std::string default_getInputTypeName()
-   {
-      return gadget::Command::getInputTypeName();
-   }
-
    void writeObject(vpr::ObjectWriter* p0)
    {
       try
@@ -142,7 +118,8 @@ struct gadget_Command_Wrapper : gadget::Command, wrapper<gadget::Command>
 // Module ======================================================================
 void _Export_Command()
 {
-   class_<pyj::gadget_Command_Wrapper, boost::noncopyable>("Command",
+   class_<pyj::gadget_Command_Wrapper, gadget::CommandPtr, boost::noncopyable>(
+       "Command",
        "gadget.Command is the abstract base class for devices that\n"
        "translate spoken commands into integer-identified commands.\n"
        "Drivers for all such devices must derive from this class.  This is\n"
@@ -153,8 +130,9 @@ void _Export_Command()
        "the received commands.  This is similar to the additions made by\n"
        "gadget.Position and gadget.Analog."
        ,
-       init<>()
+       no_init
       )
+      .def("create", &gadget::Command::create)
       .def("config", &gadget::Command::config,
            &pyj::gadget_Command_Wrapper::default_config,
            "config(element) -> Boolean\n"
@@ -164,8 +142,7 @@ void _Export_Command()
            "           It must derive from the base config element type\n"
            "           'command_device'."
       )
-      .def("getInputTypeName", &gadget::Command::getInputTypeName,
-           &pyj::gadget_Command_Wrapper::default_getInputTypeName
+      .def("getInputTypeName", &gadget::Command::getInputTypeName
       )
       .def("writeObject", &gadget::Command::writeObject,
            &pyj::gadget_Command_Wrapper::default_writeObject,
@@ -209,5 +186,6 @@ void _Export_Command()
            "getCommandDataBuffer() -> list of lists of CommandData objects\n"
            "Returns the current stable sample buffers for this device."
       )
+      .staticmethod("create")
    ;
 }

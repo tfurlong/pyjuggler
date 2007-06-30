@@ -107,13 +107,13 @@ struct gadget_CommandProxy_Wrapper
       return gadget::CommandProxy::config(p0);
    }
 
-   void set(const std::string& p0, gadget::Command* p1)
+   void set(const std::string& p0, gadget::CommandPtr p1)
    {
       try
       {
          if ( override set = this->get_override("set") )
          {
-            set(boost::ref(p0), ptr(p1));
+            set(boost::ref(p0), p1);
          }
          else
          {
@@ -126,7 +126,7 @@ struct gadget_CommandProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, gadget::Command* p1)
+   void default_set(const std::string& p0, gadget::CommandPtr p1)
    {
       gadget::CommandProxy::set(p0, p1);
    }
@@ -207,7 +207,8 @@ struct gadget_CommandProxy_Wrapper
 // Module ======================================================================
 void _Export_CommandProxy()
 {
-   class_<pyj::gadget_CommandProxy_Wrapper>("CommandProxy",
+   class_<pyj::gadget_CommandProxy_Wrapper, gadget::CommandProxyPtr>(
+       "CommandProxy",
        "A proxy class to command-oriented devices used by the Input\n"
        "Manager.\n\n"
        "A command proxy always points to a command-oriented device and a\n"
@@ -216,9 +217,9 @@ void _Export_CommandProxy()
        "devices that only return a single sub-device's amount of data (one\n"
        "int)."
        ,
-       init<>()
+       no_init
       )
-      .def(init<const gadget::CommandProxy&>())
+      .def("create", &gadget::CommandProxy::create)
       .def("updateData", &gadget::CommandProxy::updateData,
            &pyj::gadget_CommandProxy_Wrapper::default_updateData,
            "updateData()\n"
@@ -283,7 +284,6 @@ void _Export_CommandProxy()
            return_internal_reference<1>()
       )
       .def("getCommandPtr", &gadget::CommandProxy::getCommandPtr,
-           return_internal_reference<1>(),
            "getCommandPtr() -> gadget.Command object\n"
       )
       .def("getUnit", &gadget::CommandProxy::getUnit,
@@ -310,6 +310,7 @@ void _Export_CommandProxy()
            "Keyword arguments:\n"
            "newState -- The new state of stupefication."
       )
+      .staticmethod("create")
       .staticmethod("getElementType")
    ;
 }

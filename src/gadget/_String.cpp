@@ -55,30 +55,6 @@ struct gadget_String_Wrapper : gadget::String, wrapper<gadget::String>
       return gadget::String::config(p0);
    }
 
-   std::string getInputTypeName()
-   {
-      try
-      {
-         if ( override getInputTypeName =
-                 this->get_override("getInputTypeName") )
-         {
-            return getInputTypeName();
-         }
-         return gadget::String::getInputTypeName();
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-
-      return std::string("UNKONWN");
-   }
-
-   std::string default_getInputTypeName()
-   {
-      return gadget::String::getInputTypeName();
-   }
-
    void writeObject(vpr::ObjectWriter* p0)
    {
       try
@@ -142,7 +118,8 @@ struct gadget_String_Wrapper : gadget::String, wrapper<gadget::String>
 // Module ======================================================================
 void _Export_String()
 {
-   class_<pyj::gadget_String_Wrapper, boost::noncopyable>("String",
+   class_<pyj::gadget_String_Wrapper, gadget::StringPtr, boost::noncopyable>(
+       "String",
        "gadget.String is the abstract base class for devices that return\n"
        "strinsg.  Drivers for all such devices must derive from this class.\n"
        "This is in addition to gadget.Input.  gadget.Input provides pure\n"
@@ -152,8 +129,9 @@ void _Export_String()
        "retrieving the received commands.  This is similar to the\n"
        "additions made by gadget.Position and gadget.Analog."
        ,
-       init<>()
+       no_init
       )
+      .def("create", &gadget::String::create)
       .def("config", &gadget::String::config,
            &pyj::gadget_String_Wrapper::default_config,
            "config(element) -> Boolean\n"
@@ -163,8 +141,7 @@ void _Export_String()
            "           derive from the base config element type\n"
            "           'string_device'."
       )
-      .def("getInputTypeName", &gadget::String::getInputTypeName,
-           &pyj::gadget_String_Wrapper::default_getInputTypeName
+      .def("getInputTypeName", &gadget::String::getInputTypeName
       )
       .def("writeObject", &gadget::String::writeObject,
            &pyj::gadget_String_Wrapper::default_writeObject,
@@ -208,6 +185,8 @@ void _Export_String()
            "getStringDataBuffer() -> list of lists of StringData objects\n"
            "Returns the current stable sample buffers for this device."
       )
+      .staticmethod("create")
+      .staticmethod("getInputTypeName")
    ;
 
    class_< std::vector<gadget::StringData> >("StringDataVec",

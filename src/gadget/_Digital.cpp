@@ -55,30 +55,6 @@ struct gadget_Digital_Wrapper : gadget::Digital, wrapper<gadget::Digital>
       return gadget::Digital::config(p0);
    }
 
-   std::string getInputTypeName()
-   {
-      try
-      {
-         if ( override getInputTypeName =
-                 this->get_override("getInputTypeName") )
-         {
-            return getInputTypeName();
-         }
-         return gadget::Digital::getInputTypeName();
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-
-      return std::string("UNKONWN");
-   }
-
-   std::string default_getInputTypeName()
-   {
-      return gadget::Digital::getInputTypeName();
-   }
-
    void writeObject(vpr::ObjectWriter* p0)
    {
       try
@@ -143,7 +119,8 @@ struct gadget_Digital_Wrapper : gadget::Digital, wrapper<gadget::Digital>
 void _Export_Digital()
 {
    scope* gadget_Digital_scope = new scope(
-   class_<pyj::gadget_Digital_Wrapper, boost::noncopyable>("Digital",
+   class_<pyj::gadget_Digital_Wrapper, gadget::DigitalPtr, boost::noncopyable>(
+       "Digital",
        "gadget.Digital is the abstract base class from which devices\n"
        "returning digital data must derive.  This is in addition to\n"
        "gadget.Input.  gadget.Input provides pure virtual function\n"
@@ -153,8 +130,9 @@ void _Export_Digital()
        "the received digital data.  This is similar to the additions made\n"
        "by gadget.Position and gadget.Analog."
        ,
-       init<>()
+       no_init
       )
+      .def("create", &gadget::Digital::create)
       .def("config", &gadget::Digital::config,
            &pyj::gadget_Digital_Wrapper::default_config,
            "config(element) -> Boolean\n"
@@ -164,8 +142,7 @@ void _Export_Digital()
            "           derive from the base config element type\n"
            "           'digital_device'."
       )
-      .def("getInputTypeName", &gadget::Digital::getInputTypeName,
-           &pyj::gadget_Digital_Wrapper::default_getInputTypeName
+      .def("getInputTypeName", &gadget::Digital::getInputTypeName
       )
       .def("writeObject", &gadget::Digital::writeObject,
            &pyj::gadget_Digital_Wrapper::default_writeObject,
@@ -209,6 +186,8 @@ void _Export_Digital()
            "getDigitalDataBuffer() -> list of lists of DigitalData objects\n"
            "Returns the current stable sample buffers for this device."
       )
+      .staticmethod("create")
+      .staticmethod("getInputTypeName")
    );
 
    enum_<gadget::Digital::State>("State")

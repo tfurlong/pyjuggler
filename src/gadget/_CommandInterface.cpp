@@ -52,7 +52,6 @@ void _Export_CommandInterface()
            "proxy."
       )
       .def("getProxy", &gadgetWrapper::CommandInterface::getProxy,
-           return_internal_reference<1>(),
            "getProxy() -> gadget.DigitalProxy object\n"
            "Returns the underlying proxy to which we are connected."
       )

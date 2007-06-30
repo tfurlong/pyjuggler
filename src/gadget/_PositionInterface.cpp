@@ -48,7 +48,6 @@ void _Export_PositionInterface()
            "proxy."
       )
       .def("getProxy", &gadgetWrapper::PositionInterface::getProxy,
-           return_internal_reference<1>(),
            "getProxy() -> gadget.PositionProxy object\n"
            "Returns the underlying proxy to which we are connected."
       )

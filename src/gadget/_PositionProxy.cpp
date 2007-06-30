@@ -107,13 +107,13 @@ struct gadget_PositionProxy_Wrapper
       return gadget::PositionProxy::config(p0);
    }
 
-   void set(const std::string& p0, gadget::Position* p1)
+   void set(const std::string& p0, gadget::PositionPtr p1)
    {
       try
       {
          if ( override set = this->get_override("set") )
          {
-            set(boost::ref(p0), ptr(p1));
+            set(boost::ref(p0), p1);
          }
          else
          {
@@ -126,7 +126,7 @@ struct gadget_PositionProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, gadget::Position* p1)
+   void default_set(const std::string& p0, gadget::PositionPtr p1)
    {
       gadget::PositionProxy::set(p0, p1);
    }
@@ -207,16 +207,17 @@ struct gadget_PositionProxy_Wrapper
 // Module ======================================================================
 void _Export_PositionProxy()
 {
-   class_<pyj::gadget_PositionProxy_Wrapper>("PositionProxy",
+   class_<pyj::gadget_PositionProxy_Wrapper, gadget::PositionProxyPtr>(
+       "PositionProxy",
        "A proxy class to positional devices used by the Input Manager.\n\n"
        "A position proxy always points to a positional device and a unit\n"
        "number within that device.  The Input Manager can therefore keep\n"
        "an array of these around and treat them as positional devices that\n"
        "only return a single sub-device's amount of data (one int)."
        ,
-       init<>()
+       no_init
       )
-      .def(init<const gadget::PositionProxy&>())
+      .def("create", &gadget::PositionProxy::create)
       .def("updateData", &gadget::PositionProxy::updateData,
            &pyj::gadget_PositionProxy_Wrapper::default_updateData,
            "updateData()\n"
@@ -297,7 +298,6 @@ void _Export_PositionProxy()
            "proxy is reading data."
       )
       .def("getPositionPtr", &gadget::PositionProxy::getPositionPtr,
-           return_internal_reference<1>(),
            "getPositionPtr() -> gadget.Position object\n"
            "Returns the gadget.Position object held by this proxy."
       )
@@ -320,6 +320,7 @@ void _Export_PositionProxy()
            "Keyword arguments:\n"
            "newState -- The new state of stupefication."
       )
+      .staticmethod("create")
       .staticmethod("getElementType")
    ;
 }

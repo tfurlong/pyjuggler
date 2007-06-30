@@ -83,13 +83,13 @@ struct gadget_KeyboardMouseProxy_Wrapper
       return gadget::KeyboardMouseProxy::config(p0);
    }
 
-   void set(const std::string& p0, gadget::KeyboardMouse* p1)
+   void set(const std::string& p0, gadget::KeyboardMousePtr p1)
    {
       try
       {
          if ( override set = this->get_override("set") )
          {
-            set(boost::ref(p0), ptr(p1));
+            set(boost::ref(p0), p1);
          }
          else
          {
@@ -102,7 +102,7 @@ struct gadget_KeyboardMouseProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, gadget::KeyboardMouse* p1)
+   void default_set(const std::string& p0, gadget::KeyboardMousePtr p1)
    {
       gadget::TypedProxy<gadget::KeyboardMouse>::set(p0, p1);
    }
@@ -207,7 +207,8 @@ struct gadget_KeyboardMouseProxy_Wrapper
 // Module ======================================================================
 void _Export_KeyboardMouseProxy()
 {
-   class_<pyj::gadget_KeyboardMouseProxy_Wrapper>("KeyboardMouseProxy",
+   class_<pyj::gadget_KeyboardMouseProxy_Wrapper, gadget::KeyboardMouseProxyPtr>(
+       "KeyboardMouseProxy",
        "A proxy class to keyboard/mouse devices used by the Input Manager.\n\n"
        "A keyboard/mouse proxy always points to a keyboard/mouse device\n"
        "and a unit number within that device.  The Input Manager can\n"
@@ -215,9 +216,9 @@ void _Export_KeyboardMouseProxy()
        "keyboard/mouse devices that only return a single sub-device's\n"
        "amount of data (an event queue and individual keys)."
        ,
-       init<>()
+       no_init
       )
-      .def(init<const gadget::KeyboardMouseProxy&>())
+      .def("create", &gadget::KeyboardMouseProxy::create)
       .def("getTimeStamp", &gadget::KeyboardMouseProxy::getTimeStamp,
            &pyj::gadget_KeyboardMouseProxy_Wrapper::default_getTimeStamp,
            "getTimeStamp() -> vpr.Interval object\n"
@@ -277,7 +278,6 @@ void _Export_KeyboardMouseProxy()
       )
       .def("getKeyboardMousePtr",
            &gadget::KeyboardMouseProxy::getKeyboardMousePtr,
-           return_internal_reference<1>(),
            "getKeyboardMousePtr() -> gadget.KeyboardMouse object\n"
            "Returns the gadget.KeyboardMouse object held by this proxy."
       )
@@ -331,6 +331,7 @@ void _Export_KeyboardMouseProxy()
            "Keyword arguments:\n"
            "newState -- The new state of stupefication."
       )
+      .staticmethod("create")
       .staticmethod("getElementType")
    ;
 }

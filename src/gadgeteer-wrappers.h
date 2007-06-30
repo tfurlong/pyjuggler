@@ -38,7 +38,7 @@ namespace gadgetWrapper
          return mInter.isConnected();
       }
 
-      gadget::AnalogProxy* getProxy()
+      gadget::AnalogProxyPtr getProxy()
       {
          return mInter.getProxy();
       }
@@ -80,7 +80,7 @@ namespace gadgetWrapper
          return mInter.isConnected();
       }
 
-      gadget::DigitalProxy* getProxy()
+      gadget::DigitalProxyPtr getProxy()
       {
          return mInter.getProxy();
       }
@@ -122,7 +122,7 @@ namespace gadgetWrapper
          return mInter.isConnected();
       }
 
-      gadget::PositionProxy* getProxy()
+      gadget::PositionProxyPtr getProxy()
       {
          return mInter.getProxy();
       }
@@ -164,7 +164,7 @@ namespace gadgetWrapper
          return mInter.isConnected();
       }
 
-      gadget::KeyboardMouseProxy* getProxy()
+      gadget::KeyboardMouseProxyPtr getProxy()
       {
          return mInter.getProxy();
       }
@@ -216,7 +216,7 @@ namespace gadgetWrapper
          return mInter.isConnected();
       }
 
-      gadget::CommandProxy* getProxy()
+      gadget::CommandProxyPtr getProxy()
       {
          return mInter.getProxy();
       }
@@ -258,7 +258,7 @@ namespace gadgetWrapper
          return mInter.isConnected();
       }
 
-      gadget::StringProxy* getProxy()
+      gadget::StringProxyPtr getProxy()
       {
          return mInter.getProxy();
       }

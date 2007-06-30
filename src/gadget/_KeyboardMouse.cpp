@@ -23,12 +23,6 @@ struct gadget_KeyboardMouse_Wrapper
    : gadget::KeyboardMouse
    , wrapper<gadget::KeyboardMouse>
 {
-   gadget_KeyboardMouse_Wrapper(const gadget::KeyboardMouse& p0)
-      : gadget::KeyboardMouse(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
    gadget_KeyboardMouse_Wrapper()
       : gadget::KeyboardMouse()
    {
@@ -38,30 +32,6 @@ struct gadget_KeyboardMouse_Wrapper
    virtual ~gadget_KeyboardMouse_Wrapper()
    {
       /* Do nothing. */ ;
-   }
-
-   std::string getInputTypeName()
-   {
-      try
-      {
-         if ( override getInputTypeName =
-                 this->get_override("getInputTypeName") )
-         {
-            return getInputTypeName();
-         }
-         return gadget::KeyboardMouse::getInputTypeName();
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-
-      return std::string("UNKNOWN");
-   }
-
-   std::string default_getInputTypeName()
-   {
-      return gadget::KeyboardMouse::getInputTypeName();
    }
 
    void writeObject(vpr::ObjectWriter* p0)
@@ -151,7 +121,7 @@ struct gadget_KeyboardMouse_Wrapper
 // Module ======================================================================
 void _Export_KeyboardMouse()
 {
-   class_<pyj::gadget_KeyboardMouse_Wrapper, boost::noncopyable>
+   class_<pyj::gadget_KeyboardMouse_Wrapper, gadget::KeyboardMousePtr, boost::noncopyable>
       ("KeyboardMouse",
        "gadget.KeyboardMouse is an abstract class for interfacing with\n"
        "keyboard and mouse devices.  Informally, a keyboard/mouse device\n"
@@ -162,11 +132,11 @@ void _Export_KeyboardMouse()
        "mouse events between updates.  Updates in Juggler occur once per\n"
        "frame."
        ,
-       init<>()
+       no_init
       )
-      .def(init<const gadget::KeyboardMouse&>())
-      .def("getInputTypeName", &gadget::KeyboardMouse::getInputTypeName,
-           &pyj::gadget_KeyboardMouse_Wrapper::default_getInputTypeName)
+      .def("create", &gadget::KeyboardMouse::create)
+      .def("getInputTypeName", &gadget::KeyboardMouse::getInputTypeName
+      )
       .def("writeObject", &gadget::KeyboardMouse::writeObject,
            &pyj::gadget_KeyboardMouse_Wrapper::default_writeObject,
            "writeObject(writer)\n"
@@ -240,6 +210,8 @@ void _Export_KeyboardMouse()
            "Arguments:\n"
            "event -- The gadget.Event object that is the new event."
       )
+      .staticmethod("create")
+      .staticmethod("getInputTypeName")
    ;
 
    pyj::copyable_to_python<std::vector<gadget::EventPtr>, tuple>();

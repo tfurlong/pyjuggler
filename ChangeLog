@@ -1,5 +1,7 @@
 DATE        AUTHOR      CHANGE
 ----------- ----------- -------------------------------------------------------
+Jun-30-2007 patrick     Updated for Gadgeteer 1.3.9.
+                        NEW VERSION: 1.3.1
 Apr-11-2007 patrick     Updated for Gadgeteer 1.1.24.
                         NEW VERSION: 1.1.14
 Dec-18-2006 patrick     Exposed vrj::D3dApp (Windows only). This requires

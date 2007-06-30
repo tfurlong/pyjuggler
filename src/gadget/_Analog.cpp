@@ -110,30 +110,6 @@ struct gadget_Analog_Wrapper : gadget::Analog, wrapper<gadget::Analog>
    {
       return gadget::Analog::config(p0);
    }
-
-   std::string getInputTypeName()
-   {
-      try
-      {
-         if ( override getInputTypeName =
-                 this->get_override("getInputTypeName") )
-         {
-            return getInputTypeName();
-         }
-         return gadget::Analog::getInputTypeName();
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-
-      return std::string("UNKONWN");
-   }
-
-   std::string default_getInputTypeName()
-   {
-      return gadget::Analog::getInputTypeName();
-   }
 };
 
 }// namespace 
@@ -142,7 +118,8 @@ struct gadget_Analog_Wrapper : gadget::Analog, wrapper<gadget::Analog>
 // Module ======================================================================
 void _Export_Analog()
 {
-   class_<pyj::gadget_Analog_Wrapper, boost::noncopyable>("Analog",
+   class_<pyj::gadget_Analog_Wrapper, gadget::AnalogPtr, boost::noncopyable>(
+       "Analog",
        "gadget.Analog is the abstract base class from which devices\n"
        "returning analog data must derive.  This is in addition to\n"
        "gadget.Input.  gadget.Input provides pure virtual function\n"
@@ -152,8 +129,9 @@ void _Export_Analog()
        "received analog data.  This is similar to the additions made by\n"
        "gadget.Position and gadget.Digital."
        ,
-       init<>()
+       no_init
       )
+      .def("create", &gadget::Analog::create)
       .def("writeObject", &gadget::Analog::writeObject,
            &pyj::gadget_Analog_Wrapper::default_writeObject,
            "writeObject(writer)\n"
@@ -174,8 +152,7 @@ void _Export_Analog()
            "           derive from the base config element type\n"
            "           'analog_device'."
       )
-      .def("getInputTypeName", &gadget::Analog::getInputTypeName,
-           &pyj::gadget_Analog_Wrapper::default_getInputTypeName)
+      .def("getInputTypeName", &gadget::Analog::getInputTypeName)
       .def("getAnalogData", &gadget::Analog::getAnalogData,
            (args("devNum") = 0),
            "getAnalogData(devNum = 0) -> gadget.AnalogData object\n"
@@ -212,6 +189,8 @@ void _Export_Analog()
            "getAnalogDataBuffer() -> list of lists of AnalogData objects\n"
            "Returns the current stable sample buffers for this device."
       )
+      .staticmethod("create")
+      .staticmethod("getInputTypeName")
    ;
 
    class_< std::vector<gadget::AnalogData> >("AnalogDataVec",

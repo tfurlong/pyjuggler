@@ -107,13 +107,13 @@ struct gadget_StringProxy_Wrapper
       return gadget::StringProxy::config(p0);
    }
 
-   void set(const std::string& p0, gadget::String* p1)
+   void set(const std::string& p0, gadget::StringPtr p1)
    {
       try
       {
          if ( override set = this->get_override("set") )
          {
-            set(boost::ref(p0), ptr(p1));
+            set(boost::ref(p0), p1);
          }
          else
          {
@@ -126,7 +126,7 @@ struct gadget_StringProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, gadget::String* p1)
+   void default_set(const std::string& p0, gadget::StringPtr p1)
    {
       gadget::StringProxy::set(p0, p1);
    }
@@ -207,16 +207,17 @@ struct gadget_StringProxy_Wrapper
 // Module ======================================================================
 void _Export_StringProxy()
 {
-   class_<pyj::gadget_StringProxy_Wrapper>("StringProxy",
+   class_<pyj::gadget_StringProxy_Wrapper, gadget::StringProxyPtr>(
+       "StringProxy",
        "A proxy class to string devices used by the Input Manager.\n\n"
        "A string proxy always points to a string device and a unit number\n"
        "within that device.  The Input Manager can therefore keep an array\n"
        "of these around and treat them as string devices that only return a\n"
        "single sub-device's amount of data (one string)."
        ,
-       init<>()
+       no_init
       )
-      .def(init<const gadget::StringProxy&>())
+      .def("create", &gadget::StringProxy::create)
       .def("updateData", &gadget::StringProxy::updateData,
            &pyj::gadget_StringProxy_Wrapper::default_updateData,
            "updateData()\n"
@@ -281,7 +282,6 @@ void _Export_StringProxy()
            return_internal_reference<1>()
       )
       .def("getStringPtr", &gadget::StringProxy::getStringPtr,
-           return_internal_reference<1>(),
            "getStringPtr() -> gadget.String object\n"
       )
       .def("getUnit", &gadget::StringProxy::getUnit,
@@ -308,6 +308,7 @@ void _Export_StringProxy()
            "Keyword arguments:\n"
            "newState -- The new state of stupefication."
       )
+      .staticmethod("create")
       .staticmethod("getElementType")
    ;
 }

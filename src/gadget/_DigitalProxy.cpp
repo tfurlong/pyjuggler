@@ -113,13 +113,13 @@ struct gadget_DigitalProxy_Wrapper
       return gadget::DigitalProxy::config(p0);
    }
 
-   void set(const std::string& p0, gadget::Digital* p1)
+   void set(const std::string& p0, gadget::DigitalPtr p1)
    {
       try
       {
          if ( override set = this->get_override("set") )
          {
-            set(boost::ref(p0), ptr(p1));
+            set(boost::ref(p0), p1);
          }
          else
          {
@@ -132,7 +132,7 @@ struct gadget_DigitalProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, gadget::Digital* p1)
+   void default_set(const std::string& p0, gadget::DigitalPtr p1)
    {
       gadget::DigitalProxy::set(p0, p1);
    }
@@ -219,16 +219,17 @@ struct gadget_DigitalProxy_Wrapper
 // Module ======================================================================
 void _Export_DigitalProxy()
 {
-   class_<pyj::gadget_DigitalProxy_Wrapper>("DigitalProxy",
+   class_<pyj::gadget_DigitalProxy_Wrapper, gadget::DigitalProxyPtr>(
+       "DigitalProxy",
        "A proxy class to digital devices used by the Input Manager.\n\n"
        "A digital proxy always points to a digital device and a unit\n"
        "number within that device.  The Input Manager can therefore keep\n"
        "an array of these around and treat them as digital devices that\n"
        "only return a single sub-device's amount of data (one int)."
        ,
-       init<>()
+       no_init
       )
-      .def(init<const gadget::DigitalProxy&>())
+      .def("create", &gadget::DigitalProxy::create)
       .def("updateData", &gadget::DigitalProxy::updateData,
            &pyj::gadget_DigitalProxy_Wrapper::default_updateData,
            "updateData()\n"
@@ -293,7 +294,6 @@ void _Export_DigitalProxy()
            return_internal_reference<1>()
       )
       .def("getDigitalPtr", &gadget::DigitalProxy::getDigitalPtr,
-           return_internal_reference<1>(),
            "getDigitalPtr() -> gadget.Digital object\n"
       )
       .def("getUnit", &gadget::DigitalProxy::getUnit,
@@ -320,6 +320,7 @@ void _Export_DigitalProxy()
            "Keyword arguments:\n"
            "newState -- The new state of stupefication."
       )
+      .staticmethod("create")
       .staticmethod("getElementType")
    ;
 }

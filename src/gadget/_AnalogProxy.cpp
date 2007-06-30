@@ -107,13 +107,13 @@ struct gadget_AnalogProxy_Wrapper
       return gadget::AnalogProxy::config(p0);
    }
 
-   void set(const std::string& p0, gadget::Analog* p1)
+   void set(const std::string& p0, gadget::AnalogPtr p1)
    {
       try
       {
          if ( override set = this->get_override("set") )
          {
-            set(boost::ref(p0), ptr(p1));
+            set(boost::ref(p0), p1);
          }
          else
          {
@@ -126,7 +126,7 @@ struct gadget_AnalogProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, gadget::Analog* p1)
+   void default_set(const std::string& p0, gadget::AnalogPtr p1)
    {
       gadget::AnalogProxy::set(p0, p1);
    }
@@ -207,16 +207,17 @@ struct gadget_AnalogProxy_Wrapper
 // Module ======================================================================
 void _Export_AnalogProxy()
 {
-   class_<pyj::gadget_AnalogProxy_Wrapper>("AnalogProxy",
+   class_<pyj::gadget_AnalogProxy_Wrapper, gadget::AnalogProxyPtr>(
+       "AnalogProxy",
        "A proxy class to analog devices used by the Input Manager.\n\n"
        "An analog proxy always points to an analog device and a unit\n"
        "number within that device.  The Input Manager can therefore keep\n"
        "an array of these around and treat them as analog devices that\n"
        "only return a single sub-device's amount of data (one float)."
        ,
-       init<>()
+       no_init
       )
-      .def(init<const gadget::AnalogProxy&>())
+      .def("create", &gadget::AnalogProxy::create)
       .def("updateData", &gadget::AnalogProxy::updateData,
            &pyj::gadget_AnalogProxy_Wrapper::default_updateData,
            "updateData()\n"
@@ -278,7 +279,6 @@ void _Export_AnalogProxy()
            "Gets the current analog data value."
       )
       .def("getAnalogPtr", &gadget::AnalogProxy::getAnalogPtr,
-           return_internal_reference<1>(),
            "getAnalogPtr() -> gadget.Analog object\n"
       )
       .def("getUnit", &gadget::AnalogProxy::getUnit,
@@ -305,6 +305,7 @@ void _Export_AnalogProxy()
            "Keyword arguments:\n"
            "newState -- The new state of stupefication."
       )
+      .staticmethod("create")
       .staticmethod("getElementType")
    ;
 }

@@ -48,7 +48,6 @@ void _Export_AnalogInterface()
            "proxy."
       )
       .def("getProxy", &gadgetWrapper::AnalogInterface::getProxy,
-           return_internal_reference<1>(),
            "getProxy() -> gadget.AnalogProxy object\n"
            "Returns the underlying proxy to which we are connected."
       )
