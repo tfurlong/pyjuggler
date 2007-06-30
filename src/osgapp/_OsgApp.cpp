@@ -800,7 +800,7 @@ void _Export_OsgApp()
            return_internal_reference<1>(), 
            "getScene() -> osg.Group object\n"
            "Gets the root fo the scene to render.  Called each frame to\n"
-           "get teh current scene to render."
+           "get the current scene to render."
       )
       .def("getSceneViewDefaults", &vrj::OsgApp::getSceneViewDefaults,
            &pyj::vrj_OsgApp_Wrapper::default_getSceneViewDefaults,
