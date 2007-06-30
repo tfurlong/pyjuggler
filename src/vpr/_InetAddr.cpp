@@ -69,7 +69,7 @@ void _Export_InetAddr()
            "default address with the port number set to 0."
       )
       .def("getAllLocalAddrs", &vpr::InetAddr::getAllLocalAddrs,
-           (args("withLoopback") = false),
+           (args("withLoopback") = false, args("withDown") = false),
            "getAllLocalAddrs(withLoopback = False) -> list of InetAddr objects\n"
            "Retrieves all the IPv4 addresses associated with the local\n"
            "machine including the loopback address (127.0.0.1) if so\n"
@@ -78,7 +78,10 @@ void _Export_InetAddr()
            "withLoopback -- A Boolean flag indicating whether to include the\n"
            "                loopback address (127.0.0.1) in the returned\n"
            "                list. This parameter is optional and defaults to\n"
-           "                False."
+           "                False.\n"
+           "withDown     -- A Boolean flag indicating whether the address for\n"
+           "                interfaces in the down state should be included.\n"
+           "                This parameter is optional and defaults to False."
       )
       .def("setAddress",
 #if defined(_MSC_VER)
