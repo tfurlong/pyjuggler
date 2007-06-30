@@ -20,12 +20,6 @@ struct vrj_CameraProjection_Wrapper
    : vrj::CameraProjection
    , wrapper<vrj::CameraProjection>
 {
-   vrj_CameraProjection_Wrapper(const vrj::CameraProjection& p0)
-      : vrj::CameraProjection(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
    vrj_CameraProjection_Wrapper()
       : vrj::CameraProjection()
    {
@@ -68,12 +62,16 @@ struct vrj_CameraProjection_Wrapper
 // Module ======================================================================
 void _Export_CameraProjection()
 {
-   class_<pyj::vrj_CameraProjection_Wrapper, bases<vrj::Projection> >
+   class_<pyj::vrj_CameraProjection_Wrapper, vrj::CameraProjectionPtr,
+          bases<vrj::Projection>, boost::noncopyable>
       ("CameraProjection",
        "Projection class that simply takes a matrix for the camera position.",
-       init<>()
+       no_init
       )
-      .def(init<const vrj::CameraProjection&>())
+      .def("create", &vrj::CameraProjection::create,
+           "create() -> vrj.CameraProjection\n"
+           "Creates a vrj.CameraProjection instance."
+      )
       .def_readwrite("mVertFOV", &vrj::CameraProjection::mVertFOV)
       .def("calcViewMatrix", &vrj::CameraProjection::calcViewMatrix,
            &pyj::vrj_CameraProjection_Wrapper::default_calcViewMatrix,
@@ -87,5 +85,6 @@ void _Export_CameraProjection()
            "               camera position.\n"
            "scaleFactor -- The scaling factor."
       )
+      .staticmethod("create")
    ;
 }

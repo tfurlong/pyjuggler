@@ -120,6 +120,28 @@ struct vrj_Kernel_Wrapper : vrj::Kernel, wrapper<vrj::Kernel>
    }
 };
 
+void vrj_Kernel_init(vrj::Kernel* kernel, list pythonArgv)
+{
+   const int orig_len = extract<int>(pythonArgv.attr("__len__")());
+   int argc = orig_len;
+   std::vector<char*> argv(argc);
+
+   for ( int i = 0; i < argc; ++i )
+   {
+      argv[i] = extract<char*>(pythonArgv[i]);
+   }
+
+   kernel->init(argc, &argv[0]);
+
+   // vrj::Kernel::init() may have removed items from argv by relocating them
+   // to the range [argc,orig_len) within argv. We need to remove each of
+   // those values from pythonArgv.
+   for ( int i = argc; argc < orig_len; ++i )
+   {
+      pythonArgv.remove(argv[i]);
+   }
+}
+
 void vrj_Kernel_waitForKernelStop(vrj::Kernel* kernel)
 {
    // A VR Juggler application written entirely in Python will call
@@ -151,6 +173,10 @@ void _Export_Kernel()
            &pyj::vrj_Kernel_Wrapper::default_configProcessPending,
            "configProcessPending() -> int\n"
            "Inherited from jccl.ConfigElementHandler and not overridden."
+      )
+      .def("init", &pyj::vrj_Kernel_init,
+           "init(list)\n"
+           "Parses command line arguments."
       )
       .def("start", &vrj::Kernel::start,
            "start()\n"
@@ -203,13 +229,13 @@ void _Export_Kernel()
            "        for .jdef files."
       )
       .def("getUser", &vrj::Kernel::getUser,
-           return_internal_reference<1>(),
            "getUser(userName) -> vrj.User object\n"
            "Gets the user associated with the given name.\n\n"
            "Arguments:\n"
            "name -- The name of the user to be returned."
       )
       .def("getUsers", &vrj::Kernel::getUsers,
+           return_value_policy<copy_const_reference>(),
            "getUsers() -> vrj.UserVec object (indexable container)\n"
            "Returns an indexable container of all the users."
       )
@@ -221,9 +247,9 @@ void _Export_Kernel()
       .staticmethod("instance")
    ;
 
-   class_< std::vector<vrj::User*> >("UserVec",
+   class_< std::vector<vrj::UserPtr> >("UserVec",
        "An indexable container of vrj.User objects."
       )
-      .def(vector_indexing_suite< std::vector<vrj::User*> >())
+      .def(vector_indexing_suite< std::vector<vrj::UserPtr> >())
    ;
 }

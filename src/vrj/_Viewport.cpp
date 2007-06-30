@@ -27,12 +27,6 @@ struct vrj_Viewport_Wrapper : vrj::Viewport, wrapper<vrj::Viewport>
       /* Do nothing. */ ;
    }
 
-   vrj_Viewport_Wrapper(const vrj::Viewport& p0)
-      : vrj::Viewport(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
    virtual ~vrj_Viewport_Wrapper()
    {
       /* Do nothing. */ ;
@@ -65,12 +59,12 @@ inline tuple vrj_Viewport_getOriginAndSize_wrapper(vrj::Viewport* vp)
 void _Export_Viewport()
 {
    scope* vrj_Viewport_scope = new scope(
-   class_<pyj::vrj_Viewport_Wrapper, boost::noncopyable>
+   class_<pyj::vrj_Viewport_Wrapper, vrj::ViewportPtr, boost::noncopyable>
       ("Viewport",
        "Base class for window viewports and all viewport data.  This\n"
        "stores projection data, viewport info, and relevant user."
        ,
-       init<>()
+       no_init
       )
       .def("updateProjections",
            pure_virtual(&vrj::Viewport::updateProjections),
@@ -117,7 +111,6 @@ void _Export_Viewport()
            "gets the config element that configured this viewport."
       )
       .def("getUser", &vrj::Viewport::getUser,
-           return_internal_reference<1>(),
            "getUser() -> vrj.User object\n"
            "Gets the user associated with this viewport."
       )
@@ -126,12 +119,10 @@ void _Export_Viewport()
            "Gets the display contaning this viewprot."
       )
       .def("getLeftProj", &vrj::Viewport::getLeftProj,
-           return_internal_reference<1>(),
            "getLeftProj() -> vrj.Projection object\n"
            "Gets the left projection."
       )
       .def("getRightProj", &vrj::Viewport::getRightProj,
-           return_internal_reference<1>(),
            "getRightProj() -> vrj.Projection object\n"
            "Gets the right projection."
       )

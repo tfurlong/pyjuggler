@@ -55,6 +55,7 @@ void _Export_Display()
            "Determines whether this display window is active."
       )
       .def("getName", &vrj::Display::getName,
+           return_value_policy<copy_const_reference>(),
            "getName() -> string object\n"
            "Gets the name of this display window."
       )
@@ -76,7 +77,6 @@ void _Export_Display()
            "Gets the number of viewports contained within this window."
       )
       .def("getViewport", &vrj::Display::getViewport,
-           return_internal_reference<1>(),
            "getViewport(vpNum) -> vrj.Viewport object\n"
            "Returns the requested viewprot from this display window.\n\n"
            "Pre-conditions:\n"

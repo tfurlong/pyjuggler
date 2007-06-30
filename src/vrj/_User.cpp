@@ -12,31 +12,11 @@
 // Using =======================================================================
 using namespace boost::python;
 
-// Declarations ================================================================
-namespace pyj
-{
-
-struct vrj_User_Wrapper : vrj::User, wrapper<vrj::User>
-{
-   vrj_User_Wrapper()
-      : vrj::User()
-   {
-      /* Do nothing. */ ;
-   }
-
-   virtual ~vrj_User_Wrapper()
-   {
-      /* Do nothing. */ ;
-   }
-};
-
-}// namespace 
-
 
 // Module ======================================================================
 void _Export_User()
 {
-   class_<pyj::vrj_User_Wrapper, boost::noncopyable>("User",
+   class_<vrj::User, vrj::UserPtr, boost::noncopyable>("User",
        "Representation for Juggler user in multi-user environments.\n\n"
        "Each user has a system-assigned ID as well as a string name from\n"
        "the 'user' config element that created the user.  These IDs can be\n"
@@ -46,7 +26,11 @@ void _Export_User()
        "program array (or other data structure) that stores user-specific\n"
        "data such as navigation matrices or input devices."
        ,
-       init<>()
+       no_init
+      )
+      .def("create", &vrj::User::create,
+           "create() -> vrj.User\n"
+           "Creates a vrj.User instance."
       )
       .def("getId", &vrj::User::getId,
            "getId() -> int\n"
@@ -55,8 +39,11 @@ void _Export_User()
            "-1 implies that the user has not been configured yet."
       )
       .def("getName", &vrj::User::getName,
+           return_value_policy<copy_const_reference>(),
            "getName() -> string object\n"
            "Returns the name of thss user object."
+      )
+      .def("getHeadPosProxy", &vrj::User::getHeadPosProxy
       )
       .def("getHeadUpdateTime", &vrj::User::getHeadUpdateTime,
            "getHeadUpdateTime() -> vpr.Interval object\n"
@@ -66,5 +53,6 @@ void _Export_User()
            "getInterocularDistance() -> float\n"
            "Gets the eye separation."
       )
+      .staticmethod("create")
    ;
 }

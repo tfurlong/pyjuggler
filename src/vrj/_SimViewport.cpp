@@ -26,12 +26,6 @@ struct vrj_SimViewport_Wrapper : vrj::SimViewport, wrapper<vrj::SimViewport>
       /* Do nothing. */ ;
    }
 
-   vrj_SimViewport_Wrapper(const vrj::SimViewport& p0)
-      : vrj::SimViewport(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
    virtual ~vrj_SimViewport_Wrapper()
    {
       /* Do nothing. */ ;
@@ -76,9 +70,13 @@ inline tuple vrj_SimViewport_getOriginAndSize_wrapper(vrj::SimViewport* vp)
 // Module ======================================================================
 void _Export_SimViewport()
 {
-   class_<pyj::vrj_SimViewport_Wrapper, bases<vrj::Viewport> >
-      ("SimViewport", init<>())
-      .def(init<const vrj::SimViewport&>())
+   class_<pyj::vrj_SimViewport_Wrapper, vrj::SimViewportPtr,
+          bases<vrj::Viewport>, boost::noncopyable>
+      ("SimViewport", no_init)
+      .def("create", &vrj::SimViewport::create,
+           "create() -> vrj.SimViewport\n"
+           "Creates a SimViewport instance."
+      )
       .def("updateProjections", &vrj::SimViewport::updateProjections,
            &pyj::vrj_SimViewport_Wrapper::default_updateProjections,
            "updateProjections(positionScale)\n"
@@ -89,5 +87,6 @@ void _Export_SimViewport()
            "                 units."
       )
       .def("getDrawSimInterface", &vrj::SimViewport::getDrawSimInterface)
+      .staticmethod("create")
    ;
 }

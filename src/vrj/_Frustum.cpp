@@ -9,6 +9,7 @@
 // Includes ====================================================================
 #include <vrj/Display/Frustum.h>
 #include <vrj-helpers.h>
+#include <container_conversions.h>
 
 // Using =======================================================================
 using namespace boost::python;
@@ -30,9 +31,11 @@ void _Export_Frustum()
       .def("setBottomLeftTopRight", &vrj::Frustum::setBottomLeftTopRight)
       .def("setNearFar", &vrj::Frustum::setNearFar)
       .def("set", &vrj::Frustum::set)
+      .def("getValues", &vrj::Frustum::getValues,
+           return_value_policy<copy_const_reference>())
       .def("__getitem__",
-           (float& (vrj::Frustum::*)(int)) &vrj::Frustum::operator[],
-           return_value_policy<copy_non_const_reference>())
+           (const float& (vrj::Frustum::*)(unsigned int) const) &vrj::Frustum::operator[],
+           return_value_policy<copy_const_reference>())
 //      .def(self_ns::str(self))
    );
 
@@ -46,4 +49,6 @@ void _Export_Frustum()
    ;
 
    delete vrj_Frustum_scope;
+
+   pyj::copyable_to_python<std::vector<float>, tuple>();
 }

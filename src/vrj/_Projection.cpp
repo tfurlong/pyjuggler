@@ -24,12 +24,6 @@ struct vrj_Projection_Wrapper : vrj::Projection, wrapper<vrj::Projection>
       /* Do nothing. */ ;
    }
 
-   vrj_Projection_Wrapper(const vrj::Projection& p0)
-      : vrj::Projection(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
    virtual ~vrj_Projection_Wrapper()
    {
       /* Do nothing. */ ;
@@ -62,14 +56,14 @@ tuple Projection_getNearFar()
 void _Export_Projection()
 {
    scope* vrj_Projection_scope = new scope(
-   class_<pyj::vrj_Projection_Wrapper, boost::noncopyable>
+   class_<pyj::vrj_Projection_Wrapper, vrj::ProjectionPtr, boost::noncopyable>
       ("Projection",
        "Abstract base class for viewport definitions.  This class is\n"
        "responsible for storing and computing projection information\n"
        "based upon eye positions.  This class is an abstract base class\n"
        "for other classes that actually compute the projections."
        ,
-       init<>()
+       no_init
       )
       .def("calcViewMatrix", pure_virtual(&vrj::Projection::calcViewMatrix),
            "calcViewMatrix(eyePos, scaleFactor)\n"
@@ -87,7 +81,6 @@ void _Export_Projection()
            "Returns the eye for this projection."
       )
       .def("getViewport", &vrj::Projection::getViewport,
-           return_internal_reference<1>(),
            "getViewport() -> vrj.Viewport object\n"
            "Returns the viewport associated with this projection."
       )
@@ -118,6 +111,7 @@ void _Export_Projection()
            "Returns this projection's view matrix."
       )
       .def("getFrustum", &vrj::Projection::getFrustum,
+           return_value_policy<copy_const_reference>(),
            "getFrustum() -> vrj.Frustum object\n"
            "Returns a copy of this projection's frustum."
       )
