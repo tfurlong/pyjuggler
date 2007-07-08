@@ -11,7 +11,7 @@ from PyOSG import *
 
 import os
 
-if os.name == 'mac':
+if sys.platform == 'darwin':
    os.environ['NO_RTRC_PLUGIN'] = "1"
    os.environ['NO_PERF_PLUGIN'] = "1"
 
