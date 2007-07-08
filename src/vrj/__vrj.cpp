@@ -7,8 +7,6 @@
 #include <vrj/Util/Version.h>
 
 // Exports =====================================================================
-void _Export_GlApp();
-void _Export_GlContextData();
 void _Export_Kernel();
 void _Export_App();
 void _Export_Projection();
@@ -50,8 +48,6 @@ BOOST_PYTHON_MODULE(__vrj)
                       "minor, and patch numbers with no leading zeros");
 
    _Export_App();
-   _Export_GlApp();
-   _Export_GlContextData();
    _Export_Kernel();
    _Export_Projection();
    _Export_Display();

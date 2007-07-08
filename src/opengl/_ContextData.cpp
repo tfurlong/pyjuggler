@@ -7,7 +7,7 @@
 #include <boost/cstdint.hpp>
 
 // Includes ====================================================================
-#include <vrj/Draw/OGL/GlContextData.h>
+#include <vrj/Draw/OpenGL/ContextData.h>
 #include <pyjutil/InterpreterGuard.h>
 #include <pyjutil/Debug.h>
 
@@ -87,24 +87,24 @@ private:
    /**
     * The context-specific dictionary.
     *
-    * @note I had wanted this type to be vrj::GlContextData<dict>, but
+    * @note I had wanted this type to be vrj::opengl::ContextData<dict>, but
     *       Boost.Python generated errors about missing to_python (by-value)
     *       converters.  This type instantiation works, and it probably has a
     *       lot less overhead.
     *
-    * @note This type can be switched to vrj::GlContextData<dict> without
-    *       changing any of the code above.
+    * @note This type can be switched to vrj::opengl::ContextData<dict>
+    *       without changing any of the code above.
     */
-   vrj::GlContextData< std::map<const char*, object> > __dict__;
+   vrj::opengl::ContextData< std::map<const char*, object> > __dict__;
 };
 
 }// namespace 
 
 
 // Module ======================================================================
-void _Export_GlContextData()
+void _Export_ContextData()
 {
-   class_<pyj::ContextDict, boost::noncopyable>("GlContextData",
+   class_<pyj::ContextDict, boost::noncopyable>("ContextData",
        "OpenGL helper class that stores context-specific data.\n\n"
        "This class allows the user to store Python objects or data in a\n"
        "context-specific manner.  In other words, there will be one\n"
@@ -118,10 +118,10 @@ void _Export_GlContextData()
        "   def __init__(self, v0, v1):\n"
        "      self.data0 = v0\n"
        "      self.data1 = v1\n\n"
-       "class AppObj(vrj.GlApp):\n"
+       "class AppObj(vrj.opengl.App):\n"
        "   def __init__(self):\n"
-       "      vrj.GlApp.__init__(self)\n"
-       "      self.context_data = vrj.GlContextData()\n\n"
+       "      vrj.opengl.App.__init__(self)\n"
+       "      self.context_data = vrj.opengl.ContextData()\n\n"
        "   def contextInit(self):\n"
        "      self.context_data.obj = Data(1, 2)\n\n"
        "   def draw(self):\n"

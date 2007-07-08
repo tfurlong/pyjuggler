@@ -11,18 +11,21 @@
 
 #include <gadget/Type/DigitalInterface.h>
 #include <gadget/Type/PositionInterface.h>
-#include <vrj/Draw/OGL/GlApp.h>
+#include <vrj/Draw/OpenGL/App.h>
 
 
 // Simplify (visually) calls to Boost.Python.
 namespace python = boost::python;
 
-class PyExtApp : public vrj::GlApp
+class PyExtApp : public vrj::opengl::App
 {
 public:
    PyExtApp(const std::string& moduleName)
-      : vrj::GlApp(), mModuleName(moduleName), mModule(),
-        mModuleDict(), mPythonFunc()
+      : vrj::opengl::App()
+      , mModuleName(moduleName)
+      , mModule()
+      , mModuleDict()
+      , mPythonFunc()
    {
       /* Do nothing. */ ;
    }

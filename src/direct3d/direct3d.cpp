@@ -6,22 +6,20 @@
 #include <boost/python.hpp>
 
 // Exports =====================================================================
-void _Export_OpenSGApp();
+void _Export_App();
 
 // Module ======================================================================
-BOOST_PYTHON_MODULE(__opensgapp)
+BOOST_PYTHON_MODULE(direct3d)
 {
    boost::python::scope().attr("__doc__") =
-      "PyJuggler.__opensgapp is an extension module written in Boost.Python\n"
-      "that exposes the C++ class vrj::OpenSGApp. Upon successful loading,\n"
-      "the symbols of this module are imported into the PyJuggler.vrj\n"
-      "namespace for use in the authoring of VR Juggler application\n"
-      "objects based on OpenSG. To accomplish this, PyOpenSG must be used\n"
-      "together with vrj.OpenSGApp.\n\n"
-      "Refer to the VR Juggler 2.0 C++ documentation for general usage\n"
+      "PyJuggler.vrj.direct3d is an extension module written in Boost.Python\n"
+      "that exposes the C++ classes from the vrj::direct3d namespace.  To\n"
+      "use Direct3D with VR Juggler in Python, PyOpenGL must be used together\n"
+      "with vrj.direct3d.App.\n\n"
+      "Refer to the VR Juggler 3.0 C++ documentation for general usage\n"
       "details:\n"
       "   http://www.vrjuggler.org/vrjuggler/docs.php"
    ;
 
-   _Export_OpenSGApp();
+   _Export_App();
 }

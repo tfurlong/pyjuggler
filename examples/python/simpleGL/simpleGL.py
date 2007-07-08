@@ -17,11 +17,12 @@ if sys.platform == 'darwin':
 # NOTE: If you import the individual modules from PyJuggler, make sure to
 # import PyJuggler.vrj first.
 from PyJuggler import *
+import PyJuggler.vrj.opengl as vrj.opengl
 
 
-class SimpleGlApp(vrj.GlApp):
+class SimpleGlApp(vrj.opengl.App):
    def __init__(self):
-      vrj.GlApp.__init__(self)
+      vrj.opengl.App.__init__(self)
 
       self.mButton0 = gadget.DigitalInterface()
       self.mButton1 = gadget.DigitalInterface()

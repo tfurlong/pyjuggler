@@ -16,6 +16,8 @@ if sys.platform == 'darwin':
    os.environ['NO_PERF_PLUGIN'] = "1"
 
 from PyJuggler import *
+import PyJuggler.vrj.opengl as vrj.opengl
+import PyJuggler.vrj.osg as vrj.osg
 
 
 class NavData(vpr.SerializableObject):
@@ -134,9 +136,9 @@ class OsgNavigator:
       if self.mActive:
          self.mNavData.mCurPos = pos
 
-class PyOsgNav(vrj.OsgApp):
+class PyOsgNav(vrj.osg.App):
    def __init__(self, filename):
-      vrj.OsgApp.__init__(self)
+      vrj.osg.App.__init__(self)
 
       self.mFileToLoad = filename
 
@@ -168,7 +170,7 @@ class PyOsgNav(vrj.OsgApp):
    # XXX: Not currently working because Boost.Python does not seem to know
    # about PyOSG.osgUtil.SceneView.
    def configSceneView(self, newSceneViewer):
-      vrj.OsgApp.configSceneView(self, newSceneViewer)
+      vrj.osg.App.configSceneView(self, newSceneViewer)
 
       newSceneViewer.getLight().setAmbient(osgVec4(0.3, 0.3, 0.3, 1.0))
       newSceneViewer.getLight().setDiffuse(osgVec4(0.9, 0.9, 0.9, 1.0))

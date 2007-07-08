@@ -16,11 +16,13 @@ if sys.platform == 'darwin':
    os.environ['NO_PERF_PLUGIN'] = "1"
 
 from PyJuggler import *
+import PyJuggler.vrj.opengl as vrj.opengl
+import PyJuggler.vrj.opensg as vrj.opensg
 
 
-class PyOpenSGNav(vrj.OpenSGApp):
+class PyOpenSGNav(vrj.opensg.App):
    def __init__(self, filename):
-      vrj.OpenSGApp.__init__(self)
+      vrj.opensg.App.__init__(self)
 
       self.mFileToLoad = filename
 
@@ -98,7 +100,7 @@ class PyOpenSGNav(vrj.OpenSGApp):
       return self.mSceneRoot
 
    def contextInit(self):
-      vrj.OpenSGApp.contextInit(self)
+      vrj.opensg.App.contextInit(self)
       self._initGLState()
 
    sIncVel = 0.005      # Initial velocity
@@ -145,7 +147,7 @@ class PyOpenSGNav(vrj.OpenSGApp):
 
    def exit(self):
       self.mSceneRoot = None
-      vrj.OpenSGApp.exit(self)
+      vrj.opensg.App.exit(self)
 
    def _initGLState(self):
       # OpenSG does not handle this yet. Being smart about it is non-trivial.

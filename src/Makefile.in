@@ -4,14 +4,14 @@
 
 include @topdir@/src/common.mk
 
-DIRS=	vpr jccl snx gadget cluster vrj
+DIRS=	vpr jccl snx gadget cluster vrj opengl
 
 ifeq (@HAVE_OSG@, Y)
-DIRS+=	osgapp
+DIRS+=	osg
 endif
 
 ifeq (@HAVE_OPENSG@, Y)
-DIRS+=	opensgapp
+DIRS+=	opensg
 endif
 
 all clean cleandepend clobber debug optim:
@@ -29,5 +29,4 @@ install:
             echo "<=== $$d" ;			\
           done
 	cp $(top_srcdir)/dist/__init__.py $(PYTHON_PACKAGES)
-	cp $(top_srcdir)/dist/vrj.py $(PYTHON_PACKAGES)
-
+	cp $(top_srcdir)/dist/vrj.py $(PYTHON_PACKAGES)/vrj/__init__.py

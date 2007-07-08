@@ -129,8 +129,8 @@ debug:
 	$(MAKE) BUILD_TYPE=DEBUG $(MOD)
 
 install:
-	$(MKINSTALLDIRS) $(PYTHON_PACKAGES)
-	cp -p $(MOD) $(PYTHON_PACKAGES)
+	$(MKINSTALLDIRS) $(PYTHON_PACKAGES)/$(MOD_SUBDIR)
+	cp -p $(MOD) $(PYTHON_PACKAGES)/$(MOD_SUBDIR)
 
 # Rule for generating a .cpp file from a .pyste file.
 #%.cpp: %.pyste
