@@ -148,23 +148,6 @@ class PyOpenSGNav(vrj.OpenSGApp):
       vrj.OpenSGApp.exit(self)
 
    def _initGLState(self):
-      glLight(GL_LIGHT0, GL_AMBIENT, [0.1, 0.1, 0.1, 1.0])
-      glLight(GL_LIGHT0, GL_DIFFUSE, [0.7, 0.7, 0.7, 1.0])
-      glLight(GL_LIGHT0, GL_SPECULAR, [1.0, 1.0, 1.0, 1.0])
-      glLight(GL_LIGHT0, GL_POSITION, [0.5, 0.75, 0.75, 0.0])
-
-      glMaterial(GL_FRONT, GL_AMBIENT, [0.7, 0.7, 0.7, 1.0])
-      glMaterial(GL_FRONT, GL_DIFFUSE, [1.0, 0.5, 0.8, 1.0])
-      glMaterial(GL_FRONT, GL_SPECULAR, [1.0, 1.0, 1.0, 1.0])
-      glMaterial(GL_FRONT, GL_SHININESS, [50.0])
-      glMaterial(GL_FRONT, GL_EMISSION, [0.0, 0.0, 0.0, 1.0])
-
-      glEnable(GL_DEPTH_TEST)
-      glEnable(GL_LIGHTING)
-      glEnable(GL_LIGHT0)
-      glEnable(GL_COLOR_MATERIAL)
-      glShadeModel(GL_SMOOTH)
-
       # OpenSG does not handle this yet. Being smart about it is non-trivial.
       glEnable(GL_NORMALIZE)
 
