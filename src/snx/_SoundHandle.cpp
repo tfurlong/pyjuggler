@@ -76,7 +76,7 @@ struct snx_SoundHandle_Wrapper
       /* Do nothing. */ ;
    }
 
-   void trigger(const int& p0)
+   void trigger(const int p0)
    {
       try
       {
@@ -95,12 +95,7 @@ struct snx_SoundHandle_Wrapper
       }
    }
 
-   void default_trigger_0()
-   {
-      snx::SoundHandle::trigger();
-   }
-
-   void default_trigger_1(const int& p0)
+   void default_trigger(const int p0)
    {
       snx::SoundHandle::trigger(p0);
    }
@@ -396,7 +391,7 @@ struct snx_SoundHandle_Wrapper
       snx::SoundHandle::setCutoff(p0);
    }
 
-   void setPosition(const float& p0, const float& p1, const float& p2)
+   void setPosition(const float p0, const float p1, const float p2)
    {
       try
       {
@@ -415,7 +410,7 @@ struct snx_SoundHandle_Wrapper
       }
    }
 
-   void default_setPosition(const float& p0, const float& p1, const float& p2)
+   void default_setPosition(const float p0, const float p1, const float p2)
    {
       snx::SoundHandle::setPosition(p0, p1, p2);
    }
@@ -588,8 +583,9 @@ void _Export_SoundHandle()
       .def(init<const snx::SoundHandle&>())
       .def(init<const std::string&>())
       .def("trigger", &snx::SoundHandle::trigger,
-           &pyj::snx_SoundHandle_Wrapper::default_trigger_1,
-           "trigger(repeat)\n"
+           &pyj::snx_SoundHandle_Wrapper::default_trigger,
+           (arg("repeat") = 1),
+           "trigger(repeat = 1)\n"
            "Triggers a sound.\n\n"
            "Pre-condition:\n"
            "This object does not have to be a sound.\n\n"
@@ -601,7 +597,6 @@ void _Export_SoundHandle()
            "trigger()\n"
            "Triggers a sound once."
       )
-      .def("trigger", &pyj::snx_SoundHandle_Wrapper::default_trigger_0)
       .def("isPlaying", &snx::SoundHandle::isPlaying,
            &pyj::snx_SoundHandle_Wrapper::default_isPlaying,
            "isPlaying() -> Boolean\n"

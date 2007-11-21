@@ -76,7 +76,7 @@ struct snx_SoundImplementation_Wrapper
       }
    }
 
-   void trigger(const std::string& p0, const int& p1)
+   void trigger(const std::string& p0, const int p1)
    {
       try
       {
@@ -95,12 +95,7 @@ struct snx_SoundImplementation_Wrapper
       }
    }
 
-   void default_trigger_1(const std::string& p0)
-   {
-      snx::SoundImplementation::trigger(p0);
-   }
-
-   void default_trigger_2(const std::string& p0, const int& p1)
+   void default_trigger(const std::string& p0, const int p1)
    {
       snx::SoundImplementation::trigger(p0, p1);
    }
@@ -271,7 +266,7 @@ struct snx_SoundImplementation_Wrapper
       return snx::SoundImplementation::isPaused(p0);
    }
 
-   void setAmbient(const std::string& p0, bool p1)
+   void setAmbient(const std::string& p0, const bool p1)
    {
       try
       {
@@ -290,15 +285,10 @@ struct snx_SoundImplementation_Wrapper
       }
    }
 
-   void default_setAmbient_1(const std::string& p0)
-   {
-      snx::SoundImplementation::setAmbient(p0);
-   }
-
-   void default_setAmbient_2(const std::string& p0, bool p1)
+   void default_setAmbient(const std::string& p0, const bool p1 = false)
    {
       snx::SoundImplementation::setAmbient(p0, p1);
-    }
+   }
 
    bool isAmbient(const std::string& p0)
    {
@@ -616,7 +606,7 @@ struct snx_SoundImplementation_Wrapper
       snx::SoundImplementation::remove(p0);
    }
 
-   void step(const float& p0)
+   void step(const float p0)
    {
       try
       {
@@ -635,7 +625,7 @@ struct snx_SoundImplementation_Wrapper
       }
    }
 
-   void default_step(const float& p0)
+   void default_step(const float p0)
    {
       snx::SoundImplementation::step(p0);
    }
@@ -845,8 +835,8 @@ void _Export_SoundImplementation()
            "Every implementation can return a new copy of itself."
       )
       .def("trigger", &snx::SoundImplementation::trigger,
-           &pyj::snx_SoundImplementation_Wrapper::default_trigger_2,
-           "trigger(alias, repeat)\n"
+           (arg("alias"), arg("repeat") = 1),
+           "trigger(alias, repeat = 1)\n"
            "Triggers a sound.\n\n"
            "Pre-condition:\n"
            "alias does not have to be associated with a loaded sound.\n\n"
@@ -856,11 +846,7 @@ void _Export_SoundImplementation()
            "Arguments:\n"
            "alias  -- Alias of the sound to trigger.\n"
            "repeat -- The number of times to play.  Use -1 to repeat\n\n"
-           "          forever.\n\n"
-           "trigger(alias)\n"
-           "Triggers a sound once."
-      )
-      .def("trigger", &pyj::snx_SoundImplementation_Wrapper::default_trigger_1
+           "          forever.  The default is to play the sound once.\n\n"
       )
       .def("isPlaying", &snx::SoundImplementation::isPlaying,
            &pyj::snx_SoundImplementation_Wrapper::default_isPlaying,
@@ -918,8 +904,8 @@ void _Export_SoundImplementation()
            "alias -- The alias of the sound to query."
       )
       .def("setAmbient", &snx::SoundImplementation::setAmbient,
-           &pyj::snx_SoundImplementation_Wrapper::default_setAmbient_2,
-           "setAmbient(alias, ambient)\n"
+           &pyj::snx_SoundImplementation_Wrapper::default_setAmbient,
+           "setAmbient(alias, ambient = False)\n"
            "Sets the named sound as either ambient or positional depending\n"
            "on the value of the given argument.  If the sound is ambient,\n"
            "it is attached to the listener, and its volume does not change\n"
@@ -929,13 +915,6 @@ void _Export_SoundImplementation()
            "alias   -- The alias of the sound to change\n"
            "ambient -- A Boolean flag identifying whether this sound is\n"
            "           ambient (True) or positional (False).\n\n"
-           "setAmbient(alias)\n"
-           "Sets the sound as being positional.\n\n"
-           "Arguments:\n"
-           "alias -- The alias of the sound to change\n"
-      )
-      .def("setAmbient",
-           &pyj::snx_SoundImplementation_Wrapper::default_setAmbient_1
       )
       .def("isAmbient", &snx::SoundImplementation::isAmbient,
            &pyj::snx_SoundImplementation_Wrapper::default_isAmbient,

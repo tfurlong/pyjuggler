@@ -12,599 +12,27 @@
 // Using =======================================================================
 using namespace boost::python;
 
-// Declarations ================================================================
+// Declarations ===============================================================
+
 namespace pyj
 {
 
-struct snx_sonix_Adapter : snx::sonix
+tuple getPositionWrapper(const std::string& alias)
 {
-   snx_sonix_Adapter(const snx::sonix& p0)
-      : snx::sonix(p0)
-   {
-      /* Do nothing. */ ;
-   }
+   float p0, p1, p2;
+   snx::sonix::instance()->getPosition(alias, p0, p1, p2);
+   return make_tuple(p0, p1, p2);
+}
 
-   virtual ~snx_sonix_Adapter()
-   {
-      /* Do nothing. */ ;
-   }
-
-   virtual tuple getPositionWrapper(const std::string& alias)
-   {
-      float p0, p1, p2;
-      snx::sonix::getPosition(alias, p0, p1, p2);
-      return make_tuple(p0, p1, p2);
-   }
-};
-
-struct snx_sonix_Wrapper : snx_sonix_Adapter, wrapper<snx_sonix_Adapter>
-{
-   snx_sonix_Wrapper(const snx::sonix& p0)
-      : snx_sonix_Adapter(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
-   virtual ~snx_sonix_Wrapper()
-   {
-      /* Do nothing. */ ;
-   }
-
-   void trigger(const std::string& p0, const int& p1)
-   {
-      try
-      {
-         if ( override trigger = this->get_override("trigger") )
-         {
-            trigger(boost::ref(p0), p1);
-         }
-         else
-         {
-            snx::sonix::trigger(p0, p1);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_trigger_1(const std::string& p0)
-   {
-      snx::sonix::trigger(p0);
-   }
-
-   void default_trigger_2(const std::string& p0, const int& p1)
-   {
-      snx::sonix::trigger(p0, p1);
-   }
-
-   bool isPlaying(const std::string& p0)
-   {
-      try
-      {
-         if ( override isPlaying = this->get_override("isPlaying") )
-         {
-            return isPlaying(boost::ref(p0));
-         }
-         return snx::sonix::isPlaying(p0);
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   bool default_isPlaying(const std::string& p0)
-   {
-      return snx::sonix::isPlaying(p0);
-   }
-
-   void setRetriggerable(const std::string& p0, bool p1)
-   {
-      try
-      {
-         if ( override setRetriggerable =
-                 this->get_override("setRetriggerable") )
-         {
-            setRetriggerable(boost::ref(p0), p1);
-         }
-         else
-         {
-            snx::sonix::setRetriggerable(p0, p1);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_setRetriggerable(const std::string& p0, bool p1)
-   {
-      snx::sonix::setRetriggerable(p0, p1);
-   }
-
-   bool isRetriggerable(const std::string& p0)
-   {
-      try
-      {
-         if ( override isRetriggerable =
-                 this->get_override("isRetriggerable") )
-         {
-            return isRetriggerable(boost::ref(p0));
-         }
-         return snx::sonix::isRetriggerable(p0);
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   bool default_isRetriggerable(const std::string& p0)
-   {
-      return snx::sonix::isRetriggerable(p0);
-   }
-
-   void stop(const std::string& p0)
-   {
-      try
-      {
-         if ( override stop = this->get_override("stop") )
-         {
-            stop(boost::ref(p0));
-         }
-         else
-         {
-            snx::sonix::stop(p0);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_stop(const std::string& p0)
-   {
-      snx::sonix::stop(p0);
-   }
-
-   void pause(const std::string& p0)
-   {
-      try
-      {
-         if ( override pause = this->get_override("pause") )
-         {
-            pause(boost::ref(p0));
-         }
-         else
-         {
-            snx::sonix::pause(p0);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_pause(const std::string& p0)
-   {
-      snx::sonix::pause(p0);
-   }
-
-   void unpause(const std::string& p0)
-   {
-      try
-      {
-         if ( override unpause = this->get_override("unpause") )
-         {
-            unpause(boost::ref(p0));
-         }
-         else
-         {
-            snx::sonix::unpause(p0);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_unpause(const std::string& p0)
-   {
-      snx::sonix::unpause(p0);
-   }
-
-   bool isPaused(const std::string& p0)
-   {
-      try
-      {
-         if ( override isPaused = this->get_override("isPaused") )
-         {
-            return isPaused(boost::ref(p0));
-         }
-         return snx::sonix::isPaused(p0);
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   bool default_isPaused(const std::string& p0)
-   {
-      return snx::sonix::isPaused(p0);
-   }
-
-   void setAmbient(const std::string& p0, const bool p1)
-   {
-      try
-      {
-         if ( override setAmbient = this->get_override("setAmbient") )
-         {
-            setAmbient(boost::ref(p0), p1);
-         }
-         else
-         {
-            snx::sonix::setAmbient(p0, p1);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_setAmbient_1(const std::string& p0)
-   {
-      snx::sonix::setAmbient(p0);
-   }
-
-   void default_setAmbient_2(const std::string& p0, const bool p1)
-   {
-      snx::sonix::setAmbient(p0, p1);
-   }
-
-   bool isAmbient(const std::string& p0)
-   {
-      try
-      {
-         if ( override isAmbient = this->get_override("isAmbient") )
-         {
-            return isAmbient(boost::ref(p0));
-         }
-         return snx::sonix::isAmbient(p0);
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-
-      return false;
-   }
-
-   bool default_isAmbient(const std::string& p0)
-   {
-      return snx::sonix::isAmbient(p0);
-   }
-
-   void setPitchBend(const std::string& p0, float p1)
-   {
-      try
-      {
-         if ( override setPitchBend = this->get_override("setPitchBend") )
-         {
-            setPitchBend(boost::ref(p0), p1);
-         }
-         else
-         {
-            snx::sonix::setPitchBend(p0, p1);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_setPitchBend(const std::string& p0, float p1)
-   {
-      snx::sonix::setPitchBend(p0, p1);
-   }
-
-   void setVolume(const std::string& p0, float p1)
-   {
-      try
-      {
-         if ( override setVolume = this->get_override("setVolume") )
-         {
-            setVolume(boost::ref(p0), p1);
-         }
-         else
-         {
-            snx::sonix::setVolume(p0, p1);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_setVolume(const std::string& p0, float p1)
-   {
-      snx::sonix::setVolume(p0, p1);
-   }
-
-   void setCutoff(const std::string& p0, float p1)
-   {
-      try
-      {
-         if ( override setCutoff = this->get_override("setCutoff") )
-         {
-            setCutoff(boost::ref(p0), p1);
-         }
-         else
-         {
-            snx::sonix::setCutoff(p0, p1);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_setCutoff(const std::string& p0, float p1)
-   {
-      snx::sonix::setCutoff(p0, p1);
-   }
-
-   void setPosition(const std::string& p0, const float& p1, const float& p2,
-                    const float& p3)
-   {
-      try
-      {
-         if ( override setPosition = this->get_override("setPosition") )
-         {
-            setPosition(boost::ref(p0), p1, p2, p3);
-         }
-         else
-         {
-            snx::sonix::setPosition(p0, p1, p2, p3);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_setPosition(const std::string& p0, const float& p1,
-                            const float& p2, const float& p3)
-   {
-      snx::sonix::setPosition(p0, p1, p2, p3);
-   }
-
-   void getPosition(const std::string& p0, float& p1, float& p2, float& p3)
-   {
-      tuple result = getPositionWrapper(p0);
-      p1 = extract<float>(result[0]);
-      p2 = extract<float>(result[1]);
-      p3 = extract<float>(result[2]);
-   }
-
-   tuple getPositionWrapper(const std::string& p0)
-   {
-      try
-      {
-         if ( override getPosition = this->get_override("getPosition") )
-         {
-            return getPosition(boost::ref(p0));
-         }
-         return snx_sonix_Adapter::getPositionWrapper(p0);
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-
-      return make_tuple();
-   }
-
-   tuple default_getPositionWrapper(const std::string& p0)
-   {
-      return snx_sonix_Adapter::getPositionWrapper(p0);
-   }
-
-   void setListenerPosition(const gmtl::Matrix44f& p0)
-   {
-      try
-      {
-         if ( override setListenerPosition =
-                 this->get_override("setListenerPosition") )
-         {
-            setListenerPosition(boost::ref(p0));
-         }
-         else
-         {
-            snx::sonix::setListenerPosition(p0);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_setListenerPosition(const gmtl::Matrix44f& p0)
-   {
-      snx::sonix::setListenerPosition(p0);
-   }
-
-   void getListenerPosition(gmtl::Matrix44f& p0)
-   {
-      try
-      {
-         if ( override getListenerPosition =
-                 this->get_override("getListenerPosition") )
-         {
-            getListenerPosition(p0);
-         }
-         else
-         {
-            snx::sonix::getListenerPosition(p0);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_getListenerPosition(gmtl::Matrix44f& p0)
-   {
-      snx::sonix::getListenerPosition(p0);
-   }
-
-   void changeAPI(const std::string& p0)
-   {
-      try
-      {
-         if ( override changeAPI = this->get_override("changeAPI") )
-         {
-            changeAPI(boost::ref(p0));
-         }
-         else
-         {
-            snx::sonix::changeAPI(p0);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_changeAPI(const std::string& p0)
-   {
-      snx::sonix::changeAPI(p0);
-   }
-
-   void configure(const snx::SoundAPIInfo& p0)
-   {
-      try
-      {
-         if ( override configure = this->get_override("configure") )
-         {
-            configure(boost::ref(p0));
-         }
-         else
-         {
-            snx::sonix::configure(p0);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_configure(const snx::SoundAPIInfo& p0)
-   {
-      snx::sonix::configure(p0);
-   }
-
-   void configure(const std::string& p0, const snx::SoundInfo& p1)
-   {
-      try
-      {
-         if ( override configure = this->get_override("configure") )
-         {
-            configure(boost::ref(p0), p1);
-         }
-         else
-         {
-            snx::sonix::configure(p0, p1);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_configure(const std::string& p0, const snx::SoundInfo& p1)
-   {
-      snx::sonix::configure(p0, p1);
-   }
-
-   void remove(const std::string p0)
-   {
-      try
-      {
-         if ( override remove = this->get_override("remove") )
-         {
-            remove(boost::ref(p0));
-         }
-         else
-         {
-            snx::sonix::remove(p0);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_remove(const std::string p0)
-   {
-      snx::sonix::remove(p0);
-   }
-
-   void step(const float& p0)
-   {
-      try
-      {
-         if ( override step = this->get_override("step") )
-         {
-            step(p0);
-         }
-         else
-         {
-            snx::sonix::step(p0);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
-   }
-
-   void default_step(const float& p0)
-   {
-      snx::sonix::step(p0);
-   }
-
-   PyObject* self;
-};
-
-
-}// namespace pyj
-
+}
 
 // Module ======================================================================
 void _Export_sonix()
 {
-   class_<pyj::snx_sonix_Wrapper, boost::noncopyable>("sonix", no_init)
+   class_<snx::sonix, boost::noncopyable>("sonix", no_init)
       .def("trigger", &snx::sonix::trigger,
-           &pyj::snx_sonix_Wrapper::default_trigger_2,
-           "trigger(alias, repeat)\n"
+           (arg("alias"), arg("repeat") = 1),
+           "trigger(alias, repeat = 1)\n"
            "Triggers a sound.\n\n"
            "Pre-condition:\n"
            "alias does not have to be associated with a loaded sound.\n\n"
@@ -614,20 +42,15 @@ void _Export_sonix()
            "Arguments:\n"
            "alias  -- Alias of the sound to trigger.\n"
            "repeat -- The number of times to play.  Use -1 to repeat\n\n"
-           "          forever.\n\n"
-           "trigger(alias)\n"
-           "Triggers a sound once."
+           "          forever.  The default is to trigger the sound once."
       )
-      .def("trigger", &pyj::snx_sonix_Wrapper::default_trigger_1)
       .def("isPlaying", &snx::sonix::isPlaying,
-           &pyj::snx_sonix_Wrapper::default_isPlaying,
            "isPlaying(alias) -> Boolean\n"
            "Is the named sound currently playing?\n\n"
            "Arguments:\n"
            "alias -- The alias of the sound to query."
       )
       .def("setRetriggerable", &snx::sonix::setRetriggerable,
-           &pyj::snx_sonix_Wrapper::default_setRetriggerable,
            "setRetriggerable(alias, onOff)\n"
            "Specifies whether the named sound retriggers from the beginning\n"
            "when triggered while playing.  In other words, when the named\n"
@@ -638,20 +61,18 @@ void _Export_sonix()
            "onOff -- A Boolean value enabling or disabling retriggering."
       )
       .def("isRetriggerable", &snx::sonix::isRetriggerable,
-           &pyj::snx_sonix_Wrapper::default_isRetriggerable,
            "isRetriggerable(alais) -> Boolean\n"
            "Is the named sound retriggerable?\n\n"
            "Arguments:\n"
            "alias -- The alias of the sound to query."
       )
-      .def("stop", &snx::sonix::stop, &pyj::snx_sonix_Wrapper::default_stop,
+      .def("stop", &snx::sonix::stop,
            "stop(alias)\n"
            "Stops the named sound.\n\n"
            "Arguments:\n"
            "alias -- The alias of the sound to stop."
       )
       .def("pause", &snx::sonix::pause,
-           &pyj::snx_sonix_Wrapper::default_pause,
            "pause(alias)\n"
            "Pauses the sound.  Use unpause() to return playback from where\n"
            "the sound was paused.\n\n"
@@ -659,7 +80,6 @@ void _Export_sonix()
            "alias -- The alias of the sound to pause."
       )
       .def("unpause", &snx::sonix::unpause,
-           &pyj::snx_sonix_Wrapper::default_unpause,
            "unpause(alias)\n"
            "Resumes playback of the named sound from a paused state.  This\n"
            "does nothing if the sound was not paused.\n\n"
@@ -667,15 +87,14 @@ void _Export_sonix()
            "alias -- The alias of the sound to unpause."
       )
       .def("isPaused", &snx::sonix::isPaused,
-           &pyj::snx_sonix_Wrapper::default_isPaused,
            "isPaused(alias) -> Boolean\n"
            "If the sound is paused, then return True.\n\n"
            "Arguments:\n"
            "alias -- The alias of the sound to query."
       )
       .def("setAmbient", &snx::sonix::setAmbient,
-           &pyj::snx_sonix_Wrapper::default_setAmbient_2,
-           "setAmbient(alias, ambient)\n"
+           (arg("alias"), arg("ambient") = false),
+           "setAmbient(alias, ambient = False)\n"
            "Sets the named sound as either ambient or positional depending\n"
            "on the value of the given argument.  If the sound is ambient,\n"
            "it is attached to the listener, and its volume does not change\n"
@@ -684,22 +103,16 @@ void _Export_sonix()
            "Arguments:\n"
            "alias   -- The alias of the sound to change\n"
            "ambient -- A Boolean flag identifying whether this sound is\n"
-           "           ambient (True) or positional (False).\n\n"
-           "setAmbient(alias)\n"
-           "Sets the sound as being positional.\n\n"
-           "Arguments:\n"
-           "alias -- The alias of the sound to change\n"
+           "           ambient (True) or positional (False).  The default is\n"
+           "           positional."
       )
-      .def("setAmbient", &pyj::snx_sonix_Wrapper::default_setAmbient_1)
       .def("isAmbient", &snx::sonix::isAmbient,
-           &pyj::snx_sonix_Wrapper::default_isAmbient,
            "isAmbient(alias) -> Boolean\n"
            "Is the named sound ambient?\n\n"
            "Arguments:\n"
            "alias -- The name of the sound to query."
       )
       .def("setPitchBend", &snx::sonix::setPitchBend,
-           &pyj::snx_sonix_Wrapper::default_setPitchBend,
            "setPitchBend(alias, amount)\n"
            "Alters the frequency of the named sound.\n\n"
            "Arguments:\n"
@@ -710,7 +123,6 @@ void _Export_sonix()
            "          high."
       )
       .def("setVolume", &snx::sonix::setVolume,
-           &pyj::snx_sonix_Wrapper::default_setVolume,
            "setVolume(alias, amount)\n"
            "Sets the effect volume of the named sound.  The value must be\n"
            "in the range [0,1].\n\n"
@@ -720,7 +132,6 @@ void _Export_sonix()
            "          It must be between 0.0 and 1.0 inclusive."
       )
       .def("setCutoff", &snx::sonix::setCutoff,
-           &pyj::snx_sonix_Wrapper::default_setCutoff,
            "setCutoff(alias, amount)\n"
            "Sets the effect cutoff of the named sound.  Set to a value in\n"
            "the range [0,1].\n\n"
@@ -731,7 +142,6 @@ void _Export_sonix()
            "          1.0 means no change; 0.0 is total cutoff."
       )
       .def("setPosition", &snx::sonix::setPosition,
-           &pyj::snx_sonix_Wrapper::default_setPosition,
            "setPosition(alias, x, y, z)\n"
            "Sets the named sound's three-dimensional position.\n\n"
            "Arguments:\n"
@@ -740,8 +150,7 @@ void _Export_sonix()
            "y     -- The Y coordinate of the sound in 3D OpenGL coordinates.\n"
            "z     -- The Z coordinate of the sound in 3D OpenGL coordinates."
       )
-      .def("getPosition", &pyj::snx_sonix_Adapter::getPositionWrapper,
-           &pyj::snx_sonix_Wrapper::default_getPositionWrapper,
+      .def("getPosition", &pyj::getPositionWrapper,
            "getPosition(alias) -> tuple\n"
            "Gets the named sound's 3D position.\n\n"
            "Arguments:\n"
@@ -751,7 +160,6 @@ void _Export_sonix()
            "position of the named sound."
       )
       .def("setListenerPosition", &snx::sonix::setListenerPosition,
-           &pyj::snx_sonix_Wrapper::default_setListenerPosition,
            "setListenerPosition(matrix)\n"
            "Sets the position of the listener.\n\n"
            "Arguments:\n"
@@ -759,7 +167,6 @@ void _Export_sonix()
            "          of the listener."
       )
       .def("getListenerPosition", &snx::sonix::getListenerPosition,
-           &pyj::snx_sonix_Wrapper::default_getListenerPosition,
            "getListenerPosition(matrix)\n"
            "Gets the listeners's 3D position.\n\n"
            "Arguments:\n"
@@ -767,7 +174,6 @@ void _Export_sonix()
            "          of the listener."
       )
       .def("changeAPI", &snx::sonix::changeAPI,
-           &pyj::snx_sonix_Wrapper::default_changeAPI,
            "changeAPI(apiName)\n"
            "Changes the underlying sound API to something else.  This\n"
            "function is safe.  It always changes to a valid implementation.\n"
@@ -784,7 +190,6 @@ void _Export_sonix()
       )
       .def("configure",
            (void (snx::sonix::*)(const snx::SoundAPIInfo&)) &snx::sonix::configure,
-           (void (pyj::snx_sonix_Wrapper::*)(const snx::SoundAPIInfo&)) &pyj::snx_sonix_Wrapper::default_configure,
            "configure(description)\n"
            "Configures/reconfigures the sound API global settings.\n\n"
            "Arguments:\n"
@@ -793,7 +198,6 @@ void _Export_sonix()
       )
       .def("configure",
            (void (snx::sonix::*)(const std::string&, const snx::SoundInfo&)) &snx::sonix::configure,
-           (void (pyj::snx_sonix_Wrapper::*)(const std::string&, const snx::SoundInfo&)) &pyj::snx_sonix_Wrapper::default_configure,
            "configure(alais, description)\n"
            "Configures/reconfigures the named sound by associating sound\n"
            "data with the named sound.  Afterwards, the alias can be used\n"
@@ -813,7 +217,6 @@ void _Export_sonix()
            "               for which this object will be a handle."
       )
       .def("remove", &snx::sonix::remove,
-           &pyj::snx_sonix_Wrapper::default_remove,
            "remove(alias)\n"
            "Removes a configured sound.  Any future reference to the alias\n"
            "will not cause an error, but it will not result in a rendered\n"
@@ -821,7 +224,7 @@ void _Export_sonix()
            "Arguments:\n"
            "alias -- The alias of the sound to remove."
       )
-      .def("step", &snx::sonix::step, &pyj::snx_sonix_Wrapper::default_step,
+      .def("step", &snx::sonix::step,
            "step(timeElapsed)\n"
            "Call once per sound frame (which does not have to be the same\n"
            "as the graphics frame).\n\n"
