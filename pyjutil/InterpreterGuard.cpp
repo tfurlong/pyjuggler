@@ -112,7 +112,7 @@ InterpreterGuard::InterpreterGuard()
    mState.gilState = PyGILState_Ensure();
 
    vprDEBUG(pyjDBG_CXX, vprDBG_VERB_LVL)
-         << std::hex << this << std::dec << " locked\n" << vprDEBUG_FLUSH;
+      << std::hex << this << std::dec << " locked\n" << vprDEBUG_FLUSH;
 }
 
 InterpreterGuard::~InterpreterGuard()
