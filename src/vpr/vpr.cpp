@@ -9,7 +9,6 @@
 // Exports =====================================================================
 void _Export_InetAddr();
 void _Export_Interval();
-void _Export_ReturnStatus();
 void _Export_ObjectReader();
 void _Export_ObjectWriter();
 void _Export_ReadableObject();
@@ -40,7 +39,6 @@ BOOST_PYTHON_MODULE(vpr)
 
    _Export_InetAddr();
    _Export_Interval();
-   _Export_ReturnStatus();
    _Export_ObjectReader();
    _Export_ObjectWriter();
    _Export_ReadableObject();

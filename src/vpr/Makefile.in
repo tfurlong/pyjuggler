@@ -18,7 +18,6 @@ SRCS= \
 	_ObjectReader.cpp	\
 	_ObjectWriter.cpp	\
 	_ReadableObject.cpp	\
-	_ReturnStatus.cpp	\
 	_SerializableObject.cpp	\
 	_WriteableObject.cpp	\
 	vpr.cpp

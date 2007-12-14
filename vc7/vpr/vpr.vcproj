@@ -216,9 +216,6 @@
 				RelativePath="..\..\src\vpr\_ReadableObject.cpp">
 			</File>
 			<File
-				RelativePath="..\..\src\vpr\_ReturnStatus.cpp">
-			</File>
-			<File
 				RelativePath="..\..\src\vpr\_SerializableObject.cpp">
 			</File>
 			<File
