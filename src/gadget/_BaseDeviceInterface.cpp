@@ -85,6 +85,7 @@ void _Export_BaseDeviceInterface()
            "proxyName -- String name of the proxy to connect to."
       )
       .def("getProxyName", &gadget::BaseDeviceInterface::getProxyName,
+           return_value_policy<copy_const_reference>(),
            "getProxyName() -> string object\n"
            "Returns the name of the proxy."
       )

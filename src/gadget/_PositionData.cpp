@@ -21,12 +21,14 @@ void _Export_PositionData()
       )
       .def(init<const gadget::PositionData&>())
       .def_readwrite("mPosData", &gadget::PositionData::mPosData)
-      .def("getPosition", &gadget::PositionData::getPosition)
+      .def("getPosition", &gadget::PositionData::getPosition,
+           return_value_policy<copy_const_reference>())
       .def("setPosition", &gadget::PositionData::setPosition)
       .def("setTime",
            (void (gadget::InputData::*)()) &gadget::InputData::setTime)
       .def("setTime",
            (void (gadget::InputData::*)(const vpr::Interval&)) &gadget::InputData::setTime)
-      .def("getTime", &gadget::InputData::getTime)
+      .def("getTime", &gadget::InputData::getTime,
+           return_value_policy<copy_const_reference>())
    ;
 }

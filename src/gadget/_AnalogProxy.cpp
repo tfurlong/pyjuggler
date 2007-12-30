@@ -221,7 +221,8 @@ void _Export_AnalogProxy()
       .def("updateData", &gadget::AnalogProxy::updateData,
            &pyj::gadget_AnalogProxy_Wrapper::default_updateData,
            "updateData()\n"
-           "Updates the cached data copy from the device."
+           "Updates the cached data copy from the device and the normalized\n"
+           "form of that data."
       )
       .def("updateDataIfNeeded", &gadget::Proxy::updateDataIfNeeded,
            "updateDataIfNeeded()\n"
@@ -276,7 +277,13 @@ void _Export_AnalogProxy()
       )
       .def("getData", &gadget::AnalogProxy::getData,
            "getData() -> float\n"
-           "Gets the current analog data value."
+           "Gets the current normalized analog data value. This value will\n"
+           "be in the range [0.0,1.0]."
+      )
+      .def("getRawData", &gadget::AnalogProxy::getRawData,
+           "getData() -> float\n"
+           "Gets the current raw analog data value. This is the value read\n"
+           "direcctly from the device without perfomring any normalization."
       )
       .def("getAnalogPtr", &gadget::AnalogProxy::getAnalogPtr,
            "getAnalogPtr() -> gadget.Analog object\n"
@@ -290,6 +297,7 @@ void _Export_AnalogProxy()
            "getElementType() -> string object"
       )
       .def("getName", &gadget::Proxy::getName,
+           return_value_policy<copy_const_reference>(),
            "getName() -> string object\n"
            "Gets the name of the proxy."
       )

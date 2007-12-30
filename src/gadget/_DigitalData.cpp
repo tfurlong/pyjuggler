@@ -27,6 +27,7 @@ void _Export_DigitalData()
           (void (gadget::InputData::*)()) &gadget::InputData::setTime)
      .def("setTime",
           (void (gadget::InputData::*)(const vpr::Interval&)) &gadget::InputData::setTime)
-     .def("getTime", &gadget::InputData::getTime)
+     .def("getTime", &gadget::InputData::getTime,
+          return_value_policy<copy_const_reference>())
    ;
 }

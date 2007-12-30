@@ -189,6 +189,12 @@ void _Export_Analog()
            "getAnalogDataBuffer() -> list of lists of AnalogData objects\n"
            "Returns the current stable sample buffers for this device."
       )
+      .def("normalize", &gadget::Analog::normalize,
+           "normalize(float) -> float\n"
+           "Given a value that will range from [min() <= n <= max()], this\n"
+           "returns a value that is normalized to the range [0,1].")
+      .def("getMin", &gadget::Analog::getMin)
+      .def("getMax", &gadget::Analog::getMax)
       .staticmethod("create")
       .staticmethod("getInputTypeName")
    ;

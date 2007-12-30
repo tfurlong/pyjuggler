@@ -157,6 +157,7 @@ void _Export_KeyboardMouse()
            "element -- The config element for an keyboard/mouse device."
       )
       .def("getSyncTime", &gadget::KeyboardMouse::getSyncTime,
+           return_value_policy<copy_const_reference>(),
            "getSyncTime -> vpr.Interval object\n"
            "Gets the interval that will be used for synchronization while\n"
            "only sharing keyboard data across the cluster."

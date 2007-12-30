@@ -155,6 +155,7 @@ void _Export_String()
       )
       .def("getStringData", &gadget::String::getStringData,
            (args("devNum") = 0),
+           return_value_policy<copy_const_reference>(),
            "getStringData(devNum = 0) -> gadget.StringData object\n"
            "Returns string data.\n"
            "Keyword arguments:\n"

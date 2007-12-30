@@ -305,6 +305,7 @@ void _Export_DigitalProxy()
            "getElementType() -> string object"
       )
       .def("getName", &gadget::Proxy::getName,
+           return_value_policy<copy_const_reference>(),
            "getName() -> string object\n"
            "Gets the name of the proxy."
       )

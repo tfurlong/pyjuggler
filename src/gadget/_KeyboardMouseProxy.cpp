@@ -316,6 +316,7 @@ void _Export_KeyboardMouseProxy()
       )
       .def("getElementType", &gadget::KeyboardMouseProxy::getElementType)
       .def("getName", &gadget::Proxy::getName,
+           return_value_policy<copy_const_reference>(),
            "getName() -> string object\n"
            "Gets the name of the proxy."
       )

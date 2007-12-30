@@ -156,6 +156,7 @@ void _Export_Position()
       )
       .def("getPositionData", &gadget::Position::getPositionData,
            (args("devNum") = 0),
+           return_value_policy<copy_const_reference>(),
            "getPositionData(devNum = 0) -> gadget.PositionData object\n"
            "Returns positional data.\n"
            "Keyword arguments:\n"
