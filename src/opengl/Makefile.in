@@ -16,6 +16,7 @@ MOD_SUBDIR=	vrj
 SRCS= \
 	_App.cpp		\
 	_ContextData.cpp	\
+	_DrawManager.cpp	\
 	opengl.cpp
 
 include ../common-targets.mk
