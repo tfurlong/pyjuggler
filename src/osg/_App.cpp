@@ -68,7 +68,7 @@ struct vrj_osg_App_Wrapper : vrj::osg::App, wrapper<vrj::osg::App>
       return NULL;
    }
 
-   osgUtil::SceneView::Options getSceneViewDefaults()
+   unsigned int getSceneViewDefaults()
    {
       vpr::DebugOutputGuard og(
          pyjDBG_CXX, vprDBG_VERB_LVL,
@@ -93,7 +93,7 @@ struct vrj_osg_App_Wrapper : vrj::osg::App, wrapper<vrj::osg::App>
       return vrj::osg::App::getSceneViewDefaults();
    }
 
-   osgUtil::SceneView::Options default_getSceneViewDefaults()
+   unsigned int default_getSceneViewDefaults()
    {
       return vrj::osg::App::getSceneViewDefaults();
    }
@@ -774,6 +774,35 @@ struct vrj_osg_App_Wrapper : vrj::osg::App, wrapper<vrj::osg::App>
    {
       return vrj::osg::App::configProcessPending();
    }
+
+   void update()
+   {
+      vpr::DebugOutputGuard og(pyjDBG_CXX, vprDBG_VERB_LVL,
+                               "vrj_osg_App_Wrapper::update()\n",
+                               "vrj_osg_App_Wrapper::update() done.\n");
+      PyJuggler::InterpreterGuard guard;
+
+      try
+      {
+         if ( override update = this->get_override("update") )
+         {
+            update();
+         }
+         else
+         {
+            vrj::osg::App::update();
+         }
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+   }
+
+   void default_update()
+   {
+      return vrj::osg::App::update();
+   }
 };
 
 
@@ -1038,6 +1067,16 @@ void _Export_App()
            "Arguments:\n"
            "newState -- A Boolean value indicating whether this application\n"
            "            now has focus."
+      )
+      .def("update", &vrj::osg::App::update,
+           &pyj::vrj_osg_App_Wrapper::default_update,
+           "update()\n"
+           "Performs the update stage on the scene graph. This function\n"
+           "should be called as the last thing that happens in\n"
+           "latePreFrame(). If latePreFrame() is not overridden, then this\n"
+           "happens automatically. Otherwise be sure to call\n"
+           "vrj.osg.App.latePreFrame() as the last thing in application\n"
+           "object's override of latePreFrame()."
       )
    ;
 }
