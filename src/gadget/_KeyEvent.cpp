@@ -9,166 +9,20 @@
 // Includes ====================================================================
 #include <vpr/IO/ObjectReader.h>
 #include <vpr/IO/ObjectWriter.h>
+#include <gadget/Devices/KeyboardMouseDevice/InputArea.h>
 #include <gadget/Type/KeyboardMouse/KeyEvent.h>
 
 // Using =======================================================================
 using namespace boost::python;
 
-// Declarations ================================================================
-namespace pyj
-{
-
-struct gadget_KeyEvent_Wrapper : gadget::KeyEvent, wrapper<gadget::KeyEvent>
-{
-   gadget_KeyEvent_Wrapper(const gadget::KeyEvent& p0)
-      : gadget::KeyEvent(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
-   gadget_KeyEvent_Wrapper(const gadget::EventType p0, const gadget::Keys p1,
-                           const int p2, const long unsigned int p3)
-      : gadget::KeyEvent(p0, p1, p2, p3)
-   {
-      /* Do nothing. */ ;
-   }
-
-   gadget_KeyEvent_Wrapper(const gadget::EventType p0, const gadget::Keys p1,
-                           const int p2, const long unsigned int p3,
-                           const char p4)
-      : gadget::KeyEvent(p0, p1, p2, p3, p4)
-   {
-      /* Do nothing. */ ;
-   }
-
-   gadget_KeyEvent_Wrapper(const gadget::EventType p0, const gadget::Keys p1,
-                           const int p2, const long unsigned int p3,
-                           const char p4, const wchar_t p5)
-      : gadget::KeyEvent(p0, p1, p2, p3, p4, p5)
-   {
-      /* Do nothing. */ ;
-   }
-
-   gadget_KeyEvent_Wrapper()
-       : gadget::KeyEvent()
-   {
-      /* Do nothing. */ ;
-   }
-
-   virtual ~gadget_KeyEvent_Wrapper()
-   {
-      /* Do nothing. */ ;
-   }
-
-   void writeObject(vpr::ObjectWriter* p0)
-   {
-      try
-      {
-         if ( override writeObject = this->get_override("writeObject") )
-         {
-            writeObject(ptr(p0));
-         }
-         else
-         {
-            gadget::KeyEvent::writeObject(p0);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-         throw vpr::IOException(
-            "Python exception caught by pyj::gadget_KeyEvent_Wrapper::writeObject()",
-            VPR_LOCATION
-         );
-      }
-   }
-
-   void default_writeObject(vpr::ObjectWriter* p0)
-   {
-      gadget::KeyEvent::writeObject(p0);
-   }
-
-   void readObject(vpr::ObjectReader* p0)
-   {
-      try
-      {
-         if ( override readObject = this->get_override("readObject") )
-         {
-            readObject(ptr(p0));
-         }
-         else
-         {
-            gadget::KeyEvent::readObject(p0);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-         throw vpr::IOException(
-            "Python exception caught by pyj::gadget_KeyEvent_Wrapper::readObject()",
-            VPR_LOCATION
-         );
-      }
-   }
-
-   void default_readObject(vpr::ObjectReader* p0)
-   {
-      gadget::KeyEvent::readObject(p0);
-   }
-};
-
-}// namespace 
-
-
 // Module ======================================================================
 void _Export_KeyEvent()
 {
    scope* gadget_KeyEvent_scope = new scope(
-   class_<pyj::gadget_KeyEvent_Wrapper, bases<gadget::Event> >
+   class_<gadget::KeyEvent, bases<gadget::Event> >
       ("KeyEvent",
        "Key press or release event class.",
-       init<>(
-          "__init__()\n"
-          "Default constructor needed in order to use the templated\n"
-          "EventFactory without modification.\n\n"
-          "__init__(type, key, mask, time, asciiKey = 0)\n"
-          "Initializes data members.\n"
-          "Arguments:\n"
-          "type       -- The type of this event (either key press or key\n"
-          "              release).\n"
-          "key        -- The platform-specific value of the key that was\n"
-          "              pressed or released.\n"
-          "mask       -- The mask of modifiers pressed in addition to key.\n"
-          "              This should be constructed using the bitwise OR of\n"
-          "              gadget.ModifierMask values.\n"
-          "time       -- The time at which this event occurred.  This should\n"
-          "              be as accurate as possible, preferrably acquired\n"
-          "              from the operating system or windowing event system\n"
-          "              event data structure.  The time at which the event\n"
-          "              was processed is not an acceptable value.\n"
-          "asciiKey   -- The ASCII value of the key associated with this\n"
-          "              event.  This paramter is optional, and it defaults\n"
-          "              to 0 if not specified.\n"
-          "unicodeKey -- The Unicode value of the key associated with this\n"
-          "              event.  This parameter is optional, and it defaults\n"
-          "              to 0 if not specified."
-       )
-      )
-      .def(init<const gadget::KeyEvent&>())
-      .def(init<const gadget::EventType, const gadget::Keys, const int,
-                const long unsigned int, optional<const char> >())
-      .def(init<const gadget::EventType, const gadget::Keys, const int,
-                const long unsigned int, const char,
-                optional<const wchar_t> >())
-      .def("writeObject", &gadget::KeyEvent::writeObject,
-           &pyj::gadget_KeyEvent_Wrapper::default_writeObject,
-           "writeObject(writer)\n"
-           "Serializes this event using the given vpr.ObjectWriter."
-      )
-      .def("readObject", &gadget::KeyEvent::readObject,
-           &pyj::gadget_KeyEvent_Wrapper::default_readObject,
-           "readObject(reader)\n"
-           "De-serializes this event using the given vpr.ObjectReader."
+       no_init
       )
       .def("getKey", &gadget::KeyEvent::getKey,
            "getKey() -> gadget.Key object\n"
