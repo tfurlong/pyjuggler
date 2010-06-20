@@ -163,5 +163,5 @@ BASIC_OBJECTS=	$(SRCS:.cpp=.$(OBJEXT))
 MKDEP_C=	$(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS) -M
 MKDEP_CXX=	$(CXX) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CXXFLAGS) -M
 
-include $(top_srcdir)/Doozer++/mk/dpp.dep.mk
+include $(top_srcdir)/dpp/mk/dpp.dep.mk
 -include $(DEPEND_FILES)
