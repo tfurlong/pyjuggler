@@ -395,11 +395,16 @@ if test "x$pyj_have_bp" = "xyes" ; then
    fi
 
    if test "x$PLATFORM" = "xDarwin" ; then
-      BOOST_PYTHON_CXXFLAGS="$BOOST_PYTHON_CXXFLAGS -Wno-long-double -no-cpp-precomp"
+      BOOST_PYTHON_CXXFLAGS="$BOOST_PYTHON_CXXFLAGS -no-cpp-precomp"
 
       #  GCC 4.0 in Darwin removed -fcoalesce-templates.
       if test $pyj_gcc_major -lt 4 ; then
          BOOST_PYTHON_CXXFLAGS="$BOOST_PYTHON_CXXFLAGS -fcoalesce-templates"
+      fi
+
+      # Do not use -Wno-long-double with GCC 4.2.
+      if test $pyj_gcc_minor -lt 2 ; then
+         BOOST_PYTHON_CXXFLAGS="$BOOST_PYTHON_CXXFLAGS -Wno-long-double"
       fi
    fi
 
