@@ -1,34 +1,11 @@
-# ************** <auto-copyright.pl BEGIN do not edit this line> **************
-# Doozer++ is (C) Copyright 2000-2005 by Iowa State University
+# Doozer++ is (C) Copyright 2000-2010 by Iowa State University
+# Distributed under the GNU Lesser General Public License 2.1.  (See
+# accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 #
 # Original Author:
 #   Patrick Hartling
-#
-# This library is free software; you can redistribute it and/or
-# modify it under the terms of the GNU Library General Public
-# License as published by the Free Software Foundation; either
-# version 2 of the License, or (at your option) any later version.
-#
-# This library is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Library General Public License for more details.
-#
-# You should have received a copy of the GNU Library General Public
-# License along with this library; if not, write to the
-# Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-# Boston, MA 02111-1307, USA.
-#
-# -----------------------------------------------------------------
-# File:          common.defs.mk.in,v
-# Date modified: 2005/01/08 22:44:42
-# Version:       1.40
-# -----------------------------------------------------------------
-# *************** <auto-copyright.pl END do not edit this line> ***************
 
 # =============================================================================
-# common.defs.mk.in,v 1.40 2005/01/08 22:44:42 patrickh Exp
-#
 # This file <common.defs.mk> provides variable assignments based on the
 # results of running a Doozer++-aware configure script.  It is distributed
 # with Doozer++ as a means for users to get quick, effortless access to all
@@ -407,6 +384,48 @@ ifeq ($(ISA), mips4)
    CXXFLAGS+=	-mips4
    LDOPTS+=	-mips4
 endif
+
+# Using GCC.
+else
+
+ifeq ($(ABI), ELF)
+   ifeq ($(ISA), i386)
+      CFLAGS+=		-m32
+      CXXFLAGS+=	-m32
+      LDOPTS+=		-m32
+   endif
+   ifeq ($(ISA), x86_64)
+      CFLAGS+=		-m64
+      CXXFLAGS+=	-m64
+      LDOPTS+=		-m64
+   endif
+endif
+ifeq ($(ABI), Mach-O)
+   ifeq ($(ISA), powerpc)
+      CFLAGS+=		-arch ppc $(PLATFORM_SDK)
+      CXXFLAGS+=	-arch ppc $(PLATFORM_SDK)
+      LDOPTS+=		-arch ppc $(PLATFORM_SDK)
+   endif
+   ifeq ($(ISA), i386)
+      CFLAGS+=		-arch i386 $(PLATFORM_SDK)
+      CXXFLAGS+=	-arch i386 $(PLATFORM_SDK)
+      LDOPTS+=		-arch i386 $(PLATFORM_SDK)
+   endif
+   ifeq ($(ISA), x86_64)
+      CFLAGS+=		-arch x86_64 $(PLATFORM_SDK)
+      CXXFLAGS+=	-arch x86_64 $(PLATFORM_SDK)
+      LDOPTS+=		-arch x86_64 $(PLATFORM_SDK)
+   endif
+   ifeq ($(ISA), universal)
+      CFLAGS+=		$(foreach arch,$(UNIVERSAL_ARCH_LIST),-arch $(arch)) \
+			$(PLATFORM_SDK)
+      CXXFLAGS+=	$(foreach arch,$(UNIVERSAL_ARCH_LIST),-arch $(arch)) \
+			$(PLATFORM_SDK)
+      LDOPTS+=		$(foreach arch,$(UNIVERSAL_ARCH_LIST),-arch $(arch)) \
+			$(PLATFORM_SDK)
+   endif
+endif
+
 endif
 
 @SET_MAKE@

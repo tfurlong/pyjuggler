@@ -1,30 +1,9 @@
-dnl ************* <auto-copyright.pl BEGIN do not edit this line> *************
-dnl Doozer++ is (C) Copyright 2000-2005 by Iowa State University
+dnl Doozer++ is (C) Copyright 2000-2010 by Iowa State University
+dnl Distributed under the GNU Lesser General Public License 2.1.  (See
+dnl accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 dnl
 dnl Original Author:
 dnl   Patrick Hartling
-dnl
-dnl This library is free software; you can redistribute it and/or
-dnl modify it under the terms of the GNU Library General Public
-dnl License as published by the Free Software Foundation; either
-dnl version 2 of the License, or (at your option) any later version.
-dnl
-dnl This library is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-dnl Library General Public License for more details.
-dnl
-dnl You should have received a copy of the GNU Library General Public
-dnl License along with this library; if not, write to the
-dnl Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-dnl Boston, MA 02111-1307, USA.
-dnl
-dnl -----------------------------------------------------------------
-dnl File:          audiere.m4,v
-dnl Date modified: 2005/01/08 22:44:41
-dnl Version:       1.6
-dnl -----------------------------------------------------------------
-dnl ************** <auto-copyright.pl END do not edit this line> **************
 
 dnl ===========================================================================
 dnl Find the target host's Audiere installation if one exists.
@@ -43,10 +22,10 @@ dnl     AUDIERE_ROOT     - The Audiere installation directory.
 dnl     LIBAUDIERE       - The list of libraries to link for Audiere
 dnl                        appliations.
 dnl     AUDIERE_INCLUDES - Extra include path for the Audiere header directory.
-dnl     AUDIERE_LDFLAGS  - Extra linker flags for the Audiere library directory.
+dnl     AUDIERE_LDFLAGS  - Extra linker flags for the Audiere library
+dnl                        directory.
+dnl     AUDIERE_LIBDIR   - The directory contaning the Audiere library.
 dnl ===========================================================================
-
-dnl audiere.m4,v 1.6 2005/01/08 22:44:41 patrickh Exp
 
 dnl ---------------------------------------------------------------------------
 dnl Determine if the target system has Audiere installed.  This adds the
@@ -88,35 +67,52 @@ AC_DEFUN([DPP_HAVE_AUDIERE],
       dpp_save_CXXFLAGS="$CXXFLAGS"
       dpp_save_CPPFLAGS="$CPPFLAGS"
       dpp_save_LDFLAGS="$LDFLAGS"
+      dpp_save_LIBS="$LIBS"
 
       dnl Add the user-specified Audiere installation directory to these
       dnl paths.  Ensure that the /usr dir is not included multiple times
       dnl if $AUDIERE_ROOT is "/usr"
       if test "x$AUDIERE_ROOT" != "x/usr" ; then
          CPPFLAGS="$CPPFLAGS -I$AUDIERE_ROOT/include"
-         LDFLAGS="-L$AUDIERE_ROOT/lib $LDFLAGS $ABI_FLAGS"
       fi
 
       CXXFLAGS="$CXXFLAGS $ABI_FLAGS"
-
-      dpp_save_LIBS="$LIBS"
 
       if test "x$PLATFORM" = "xIRIX" ; then
          LIB_AUDIO="-laudio"
       fi
 
+      if test "lib$LIBBITSUF" != "lib" ; then
+         libdirs="lib$LIBBITSUF lib"
+      else
+         libdirs="lib"
+      fi
+
+      LIBS="-laudiere $LIB_AUDIO $LIBS"
+
       DPP_LANG_SAVE
       DPP_LANG_CPLUSPLUS
 
-      AC_CHECK_LIB([audiere], [AdrOpenDevice],
-         [AC_CHECK_HEADER([audiere.h], [dpp_have_audiere='yes'],
-                          [dpp_have_audiere='no'])],
-         [dpp_have_audiere='no'], [$LIB_AUDIO])
+      for l in $libdirs ; do
+         cur_audiere_libdir="$AUDIERE_ROOT/$l"
+         LDFLAGS="-L$cur_audiere_libdir $dpp_save_LDFLAGS $ABI_FLAGS"
+
+         AC_MSG_CHECKING([for audiere::OpenDevice in -laudiere in $cur_audiere_libdir])
+         AC_TRY_LINK([#include <audiere.h>], [audiere::OpenDevice();],
+                     [dpp_have_audiere='yes'], [dpp_have_audiere='no'])
+         AC_MSG_RESULT([$dpp_have_audiere])
+
+         if test "x$dpp_have_audiere" = "xyes" ; then
+            AUDIERE_LIBDIR="$cur_audiere_libdir"
+            break
+         fi
+      done
 
       DPP_LANG_RESTORE
 
-      dnl this is necessary because AC_CHECK_LIB() adds -lauidere to
-      dnl $LIBS.  We want to do that ourselves later.
+      CXXFLAGS="$dpp_save_CXXFLAGS"
+      CPPFLAGS="$dpp_save_CPPFLAGS"
+      LDFLAGS="$dpp_save_LDFLAGS"
       LIBS="$dpp_save_LIBS"
 
       if test "x$dpp_have_audiere" = "xyes" ; then
@@ -133,10 +129,6 @@ AC_DEFUN([DPP_HAVE_AUDIERE],
          AUDIERE_LDFLAGS="-L$AUDIERE_ROOT/lib"
          AUDIERE='yes'
       fi
-
-      CXXFLAGS="$dpp_save_CXXFLAGS"
-      CPPFLAGS="$dpp_save_CPPFLAGS"
-      LDFLAGS="$dpp_save_LDFLAGS"
    fi
 
    AC_SUBST(AUDIERE)
@@ -144,4 +136,5 @@ AC_DEFUN([DPP_HAVE_AUDIERE],
    AC_SUBST(LIBAUDIERE)
    AC_SUBST(AUDIERE_INCLUDES)
    AC_SUBST(AUDIERE_LDFLAGS)
+   AC_SUBST(AUDIERE_LIBDIR)
 ])

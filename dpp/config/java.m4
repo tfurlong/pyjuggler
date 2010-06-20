@@ -1,30 +1,9 @@
-dnl ************* <auto-copyright.pl BEGIN do not edit this line> *************
-dnl Doozer++ is (C) Copyright 2000-2005 by Iowa State University
+dnl Doozer++ is (C) Copyright 2000-2010 by Iowa State University
+dnl Distributed under the GNU Lesser General Public License 2.1.  (See
+dnl accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 dnl
 dnl Original Author:
 dnl   Patrick Hartling
-dnl
-dnl This library is free software; you can redistribute it and/or
-dnl modify it under the terms of the GNU Library General Public
-dnl License as published by the Free Software Foundation; either
-dnl version 2 of the License, or (at your option) any later version.
-dnl
-dnl This library is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-dnl Library General Public License for more details.
-dnl
-dnl You should have received a copy of the GNU Library General Public
-dnl License along with this library; if not, write to the
-dnl Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-dnl Boston, MA 02111-1307, USA.
-dnl
-dnl -----------------------------------------------------------------
-dnl File:          java.m4,v
-dnl Date modified: 2005/08/23 19:45:45
-dnl Version:       1.56
-dnl -----------------------------------------------------------------
-dnl ************** <auto-copyright.pl END do not edit this line> **************
 
 dnl ===========================================================================
 dnl Provide command-line options and checks for Java utilities in the
@@ -57,8 +36,6 @@ dnl     JNI_INC  - The include paths necessary for JNI.
 dnl     JNI_LIB  - The library which needs to be statically linked for JNI.
 dnl     JCPS     - Java classpath separator character (: on UNIX, ; on Win32).
 dnl ===========================================================================
-
-dnl java.m4,v 1.56 2005/08/23 19:45:45 patrickh Exp
 
 dnl ---------------------------------------------------------------------------
 dnl Find the path to the Java installation.  Substition is performed on the
@@ -383,6 +360,8 @@ AC_DEFUN([DPP_CHECK_JNI],
    LDFLAGS="$LDFLAGS $JNI_LDFLAGS"
 
    if test "x$PLATFORM" = "xDarwin" ; then
+      dpp_save_CFLAGS="$CFLAGS"
+      CFLAGS="$CFLAGS $ABI_FLAGS"
       LIBS="$LIBS $JVM_LIB"
       AC_CACHE_CHECK([for JNI_CreateJavaVM in JavaVM framework],
                      [dpp_cv_JNI_CreateJavaVM_javavm_fw],
@@ -391,6 +370,7 @@ AC_DEFUN([DPP_CHECK_JNI],
                         [dpp_cv_JNI_CreateJavaVM_javavm_fw='yes'],
                         [dpp_cv_JNI_CreateJavaVM_javavm_fw='no'])])
       dpp_jni_libs="$dpp_cv_JNI_CreateJavaVM_javavm_fw"
+      CFLAGS="$dpp_save_CFLAGS"
    elif test "x$OS_TYPE" = "xUNIX" ; then
       AC_CHECK_LIB([$JVM_LIB], [JNI_CreateJavaVM],
          [AC_CHECK_HEADER([jni.h], [dpp_jni_libs='yes'], [dpp_jni_libs='no'])],

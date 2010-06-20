@@ -1,30 +1,9 @@
-dnl ************* <auto-copyright.pl BEGIN do not edit this line> *************
-dnl Doozer++ is (C) Copyright 2000-2005 by Iowa State University
+dnl Doozer++ is (C) Copyright 2000-2010 by Iowa State University
+dnl Distributed under the GNU Lesser General Public License 2.1.  (See
+dnl accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 dnl
 dnl Original Author:
 dnl   Patrick Hartling
-dnl
-dnl This library is free software; you can redistribute it and/or
-dnl modify it under the terms of the GNU Library General Public
-dnl License as published by the Free Software Foundation; either
-dnl version 2 of the License, or (at your option) any later version.
-dnl
-dnl This library is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-dnl Library General Public License for more details.
-dnl
-dnl You should have received a copy of the GNU Library General Public
-dnl License along with this library; if not, write to the
-dnl Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-dnl Boston, MA 02111-1307, USA.
-dnl
-dnl -----------------------------------------------------------------
-dnl File:          compiler.m4,v
-dnl Date modified: 2005/01/08 22:44:39
-dnl Version:       1.43
-dnl -----------------------------------------------------------------
-dnl ************** <auto-copyright.pl END do not edit this line> **************
 
 dnl ===========================================================================
 dnl Determine which C and C++ compilers to use for compiling.  The
@@ -132,8 +111,6 @@ dnl     WIN32
 dnl     _MBCS
 dnl ===========================================================================
 
-dnl compiler.m4,v 1.43 2005/01/08 22:44:39 patrickh Exp
-
 dnl ---------------------------------------------------------------------------
 dnl Check if the given compiler accepts a given flag.  This can be used for
 dnl all compiler flags except -c.
@@ -190,6 +167,10 @@ AC_DEFUN([DPP_SETUP_COMPILER],
    CXX_DLL=''
    C_PLUGIN=''
    CXX_PLUGIN=''
+   OBJC_DLL=''
+   OBJCXX_DLL=''
+   OBJC_PLUGIN=''
+   OBJCXX_PLUGIN=''
 
    dnl Flag used for naming a compiled object file.
    OBJ_NAME_FLAG='-o $[@]'
@@ -222,6 +203,18 @@ AC_DEFUN([DPP_SETUP_COMPILER],
    CXX_WARNS_LEVEL_3=''
    CXX_WARNS_LEVEL_4=''
    CXX_WARNS_LEVEL_5=''
+   OBJC_WARNS_LEVEL_0=''
+   OBJC_WARNS_LEVEL_1=''
+   OBJC_WARNS_LEVEL_2=''
+   OBJC_WARNS_LEVEL_3=''
+   OBJC_WARNS_LEVEL_4=''
+   OBJC_WARNS_LEVEL_5=''
+   OBJCXX_WARNS_LEVEL_0=''
+   OBJCXX_WARNS_LEVEL_1=''
+   OBJCXX_WARNS_LEVEL_2=''
+   OBJCXX_WARNS_LEVEL_3=''
+   OBJCXX_WARNS_LEVEL_4=''
+   OBJCXX_WARNS_LEVEL_5=''
 
    dnl IRIX junk.
    DSOREGFILE=''
@@ -279,24 +272,40 @@ AC_DEFUN([DPP_SETUP_COMPILER],
          AC_DEFINE(WIN32, , [define if compiling on a Win32 platform])
          AC_DEFINE(_MBCS, , [define if compiling on a Win32 platform])
          ;;
-      dnl A machine running OSX
+      dnl A machine running Mac OS X.
       darwin*)
-         AR='ar'
-         ARFLAGS='-ruv'
+         AR='libtool'
+         ARFLAGS='-static'
+         AR_NAME_FLAG='-o '
          LD='$(CXX) -dynamiclib'
          LDOPTS=''
          C_DLL='$(CC) -dynamiclib'
          CXX_DLL='$(CXX) -dynamiclib'
          C_PLUGIN='$(CC) -bundle'
          CXX_PLUGIN='$(CXX) -bundle'
+         OBJC_DLL='$(OBJC) -dynamiclib'
+         OBJCXX_DLL="$CXX_DLL"
+         OBJC_PLUGIN='$(OBJC) -bundle'
+         OBJCXX_PLUGIN="$CXX_PLUGIN"
          OPT_FLAGS="-O$dpp_opt_level"
          DBG_FLAGS='-g'
          DYNAMICLIB_EXT='dylib'
          CFLAGS="-fno-common $CFLAGS"
          CXXFLAGS="-fno-common $CXXFLAGS"
+         OBJCFLAGS="-fno-common $OBJCFLAGS"
+         OBJCXXFLAGS="-fno-common $OBJCXXFLAGS"
          ;;
       dnl A machine running FreeBSD.
       freebsd*)
+         if test "x$ICC" = "xyes" ; then
+            DPP_SETUP_ICC($dpp_opt_level)
+         else
+            DPP_SETUP_GCC($dpp_opt_level)
+         fi
+         DYNAMICLIB_EXT='so'
+         ;;
+      dnl A machine running DragonFly.
+      dragonfly*)
          if test "x$ICC" = "xyes" ; then
             DPP_SETUP_ICC($dpp_opt_level)
          else
@@ -508,6 +517,12 @@ dnl            _LD_REGOPTS='-check_registry $(DSOREGFILE)'
    AC_SUBST(LDOPTS_DBG)
    AC_SUBST(LDOPTS_OPT)
    AC_SUBST(LDOPTS_PROF)
+   AC_SUBST(OBJCFLAGS)
+   AC_SUBST(OBJCXXFLAGS)
+   AC_SUBST(OBJC_DLL)
+   AC_SUBST(OBJCXX_DLL)
+   AC_SUBST(OBJC_PLUGIN)
+   AC_SUBST(OBJCXX_PLUGIN)
    AC_SUBST(OBJ_NAME_FLAG)
    AC_SUBST(OBJ_BUILD_FLAG)
    AC_SUBST(EXE_NAME_FLAG)
@@ -535,6 +550,18 @@ dnl            _LD_REGOPTS='-check_registry $(DSOREGFILE)'
    AC_SUBST(CXX_WARNS_LEVEL_3)
    AC_SUBST(CXX_WARNS_LEVEL_4)
    AC_SUBST(CXX_WARNS_LEVEL_5)
+   AC_SUBST(OBJC_WARNS_LEVEL_0)
+   AC_SUBST(OBJC_WARNS_LEVEL_1)
+   AC_SUBST(OBJC_WARNS_LEVEL_2)
+   AC_SUBST(OBJC_WARNS_LEVEL_3)
+   AC_SUBST(OBJC_WARNS_LEVEL_4)
+   AC_SUBST(OBJC_WARNS_LEVEL_5)
+   AC_SUBST(OBJCXX_WARNS_LEVEL_0)
+   AC_SUBST(OBJCXX_WARNS_LEVEL_1)
+   AC_SUBST(OBJCXX_WARNS_LEVEL_2)
+   AC_SUBST(OBJCXX_WARNS_LEVEL_3)
+   AC_SUBST(OBJCXX_WARNS_LEVEL_4)
+   AC_SUBST(OBJCXX_WARNS_LEVEL_5)
 
    AC_SUBST(DSOREGFILE)
    AC_SUBST(DSOVERSION)
@@ -544,16 +571,16 @@ dnl            _LD_REGOPTS='-check_registry $(DSOREGFILE)'
 ])
 
 dnl ---------------------------------------------------------------------------
-dnl Check for the existence and usability of a C compiler (or the given C
-dnl compiler if one is specified) and how to run its preprocessor.  A
-dnl platform-specific hint for the C compiler can be given by setting a value
-dnl for the variable $CC_<PLATFORM> (e.g., $CC_Linux).  A value for the
-dnl C-compiler argument overrides any hint given, however.  A list of
-dnl fallbacks can be provided by setting a value for the variable
-dnl $CC_FALLBACKS.  This must be in the format of an sh list.
+dnl Check for the existence of a C compiler (or the given C compiler if one is
+dnl specified) and how to run its preprocessor.  A platform-specific hint for
+dnl the C compiler can be given by setting a value for the variable
+dnl $CC_<PLATFORM> (e.g., $CC_Linux).  A value for the C-compiler argument
+dnl overrides any hint given, however.  A list of fallbacks can be provided by
+dnl setting a value for the variable $CC_FALLBACKS.  This must be in the
+dnl format of an sh list.
 dnl
 dnl Usage:
-dnl     DPP_PROG_CC([C-compiler [, extra-flags [, action-if-not-found [, path ]]]])
+dnl     DPP_CHECK_CC_FALLBACKS([C-compiler [, extra-flags [, action-if-not-found [, path ]]]])
 dnl
 dnl Arguments:
 dnl     C-compiler          - Force the check to look for this C compiler.
@@ -565,7 +592,7 @@ dnl                           found or does not work.  This is optional.
 dnl     path                - Extra path information for finding the C
 dnl                           compiler.  This is optional.
 dnl ---------------------------------------------------------------------------
-AC_DEFUN([DPP_PROG_CC],
+AC_DEFUN([DPP_CHECK_CC_FALLBACKS],
 [
    dpp_save_CFLAGS="$CFLAGS"
    CFLAGS="$CFLAGS $2 $ABI_FLAGS"
@@ -611,8 +638,20 @@ AC_DEFUN([DPP_PROG_CC],
          fi
       fi
    fi
+])
 
-   AC_PROG_CC
+dnl ---------------------------------------------------------------------------
+dnl Check for the existence and usability of a C compiler (or the given C
+dnl compiler if one is specified) and how to run its preprocessor. Use
+dnl DPP_CHECK_CC_FALLBACKS to customize this detection before calling this
+dnl macro.
+dnl
+dnl Usage:
+dnl     DPP_PROG_CC
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([DPP_PROG_CC],
+[
+   AC_REQUIRE([AC_PROG_CC])
    AC_PROG_CPP
    DPP_C_COMPILER_INTEL
 
@@ -771,13 +810,13 @@ AC_DEFUN([DPP_GET_EXT],
 ])
 
 dnl ---------------------------------------------------------------------------
-dnl Check for the existence and usability of a C++ compiler (or the given C++
-dnl compiler if one is specified) and how to run its preprocessor.  A
-dnl platform-specific hint for the C++ compiler can be given by setting a
-dnl value for the variable $CXX_<PLATFORM> (e.g., $CXX_Linux).  A value for
-dnl the C++-compiler argument overrides any hint given, however.  A list of
-dnl fallbacks can be provided by setting a value for the variable
-dnl $CXX_FALLBACKS.  This must be in the format of an sh list.
+dnl Check for the existence of a C++ compiler (or the given C++ compiler if
+dnl one is specified) and how to run its preprocessor.  A platform-specific
+dnl hint for the C++ compiler can be given by setting a value for the variable
+dnl $CXX_<PLATFORM> (e.g., $CXX_Linux).  A value for the C++-compiler argument
+dnl overrides any hint given, however.  A list of fallbacks can be provided by
+dnl setting a value for the variable $CXX_FALLBACKS.  This must be in the
+dnl format of an sh list.
 dnl
 dnl Usage:
 dnl     DPP_PROG_CXX([C++-compiler [, extra-flags [, action-if-not-found [, path]]]])
@@ -792,7 +831,7 @@ dnl                           found or does not work.  This is optional.
 dnl     path                - Extra path information for finding the C++
 dnl                           compiler.  This is optional.
 dnl ---------------------------------------------------------------------------
-AC_DEFUN([DPP_PROG_CXX],
+AC_DEFUN([DPP_CHECK_CXX_FALLBACKS],
 [
    dpp_save_CXXFLAGS="$CXXFLAGS"
    CXXFLAGS="$CXXFLAGS $2 $ABI_FLAGS"
@@ -839,8 +878,20 @@ AC_DEFUN([DPP_PROG_CXX],
          fi
       fi
    fi
+])
 
-   AC_PROG_CXX
+dnl ---------------------------------------------------------------------------
+dnl Check for the existence and usability of a C++ compiler (or the given C++
+dnl compiler if one is specified) and how to run its preprocessor. Use
+dnl DPP_CHECK_CXX_FALLBACKS to customize this detection before calling this
+dnl macro.
+dnl
+dnl Usage:
+dnl     DPP_PROG_CXX
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([DPP_PROG_CXX],
+[
+   AC_REQUIRE([AC_PROG_CXX])
    AC_PROG_CXXCPP
    DPP_CXX_COMPILER_INTEL
 
@@ -969,4 +1020,341 @@ AC_DEFUN([DPP_PROG_CXX_PROF_PG],
    fi
 
    AC_SUBST(CXX_PROF_FLAGS)
+])
+
+m4_ifdef([AC_LANG(Objective C)], ,
+[m4_ifdef([AC_LANG_DEFINE],
+[AC_LANG_DEFINE(
+   [Objective C], [objc], [OBJC], [C],
+   [ac_ext=m
+   ac_cpp='$OBJCPP $CPPFLAGS'
+   ac_compile='$OBJC -c $OBJCFLAGS $CPPFLAGS conftest.$ac_ext >&AS_MESSAGE_LOG_FD'
+   ac_link='$OBJC -o conftest$ac_exeext $OBJCFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&AS_MESSAGE_LOG_FD'
+   ac_compiler_gnu=$ac_cv_objc_compiler_gnu
+   ]
+)],
+
+[m4_define([AC_LANG(Objective C)],
+[ac_ext=m
+ac_cpp='$OBJCCPP $OBJCPPFLAGS'
+ac_compile='$OBJC -c $OBJCFLAGS $OBJCPPFLAGS conftest.$ac_ext >&AS_MESSAGE_LOG_FD'
+ac_link='$OBJC -o conftest$ac_exeext $OBJCFLAGS $OBJCPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&AS_MESSAGE_LOG_FD'
+ac_compiler_gnu=$ac_cv_objc_compiler_gnu
+])
+
+m4_define([_AC_LANG_ABBREV(Objective C)], [objc])
+
+m4_define([_AC_LANG_PREFIX(Objective C)], [OBJC])
+
+m4_copy([AC_LANG_SOURCE(C)], [AC_LANG_SOURCE(Objective C)])
+
+m4_copy([AC_LANG_PROGRAM(C)], [AC_LANG_PROGRAM(Objective C)])
+])
+])
+
+m4_ifdef([AC_PROG_OBJC], ,
+[m4_define([_AC_PROG_OBJC_G],
+[ac_test_OBJCFLAGS=${OBJCFLAGS+set}
+ac_save_OBJCFLAGS=$OBJCFLAGS
+OBJCFLAGS="-g"
+AC_CACHE_CHECK(whether $OBJC accepts -g, ac_cv_prog_objc_g,
+               [_AC_COMPILE_IFELSE([AC_LANG_PROGRAM()],
+                                   [ac_cv_prog_objc_g=yes],
+                                   [ac_cv_prog_objc_g=no])])
+if test "$ac_test_OBJCFLAGS" = set; then
+  OBJCFLAGS=$ac_save_OBJCFLAGS
+elif test $ac_cv_prog_objc_g = yes; then
+  if test "$GNU_OBJC" = yes; then
+    OBJCFLAGS="-g -O2"
+  else
+    OBJCFLAGS="-g"
+  fi
+else
+  if test "$GNU_OBJC" = yes; then
+    OBJCFLAGS="-O2"
+  else
+    OBJCFLAGS=
+  fi
+fi[]dnl
+])
+])
+
+dnl ---------------------------------------------------------------------------
+dnl Check for the existence and usability of an Objective-C compiler (or the
+dnl given Objective-C compiler if one is specified) and how to run its
+dnl preprocessor. A platform-specific hint for the Objective-C compiler can be
+dnl given by setting a value for the variable $OBJC_<PLATFORM> (e.g.,
+dnl $OBJC_Linux). A value for the Objective-C-compiler argument overrides any
+dnl hint given, however.  A list of fallbacks can be provided by setting a
+dnl value for the variable $OBJC_FALLBACKS.  This must be in the format of an
+dnl sh list.
+dnl
+dnl Usage:
+dnl     DPP_PROG_OBJC([Objective-C-compiler [, extra-flags [, action-if-not-found [, path ]]]])
+dnl
+dnl Arguments:
+dnl     Objective-C-compiler - Force the check to look for this Objective-C
+dnl                            compiler. This is optional.
+dnl     extra-flags          - Extra compiler flags to use when checking.  This
+dnl                            is optional.
+dnl     action-if-not-found  - The action to take if the Objective-C compiler
+dnl                            cannot be found or does not work. This is
+dnl                            optional.
+dnl     path                 - Extra path information for finding the
+dnl                            Objective-C compiler. This is optional.
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([DPP_PROG_OBJC],
+[
+m4_ifdef([AC_PROG_OBJC], [AC_PROG_OBJC],
+[
+   dpp_save_OBJCFLAGS="$OBJCFLAGS"
+   OBJCFLAGS="$OBJCFLAGS $2 $ABI_FLAGS"
+
+   dnl Get the platform-specific compiler hint value.
+   dpp_objc_var="OBJC_$dpp_platform"
+   dpp_objc_val=`eval echo '$''{'$dpp_objc_var'}'`
+
+   if test "x$dpp_objc_val" != "x" -a "x$OBJC" = "x" ; then
+      OBJC="$dpp_objc_val"
+   fi
+
+   if test "x$1" != "x" -o "x$OBJC" != "x" ; then
+      if test "x$1" != "x" ; then
+         dpp_OBJC_found_val=$1
+         AC_CHECK_PROG([dpp_OBJC_check_val], $1, $1, , $4)
+      else
+         dpp_OBJC_found_val="$OBJC"
+         AC_CHECK_PROG([dpp_OBJC_check_val], [$OBJC], [$OBJC], , $4)
+      fi
+
+      if test "x$dpp_OBJC_check_val" = "x$dpp_OBJC_found_val" ; then
+         OBJC="$dpp_OBJC_found_val"
+      else
+         dpp_OBJC_found='no'
+
+         dnl If the caller provided a list of fallbacks in the $OBJC_FALLBACKS
+         dnl variable, loop over them and try to use another Objective-C
+         dnl compiler.
+         if test "x$OBJC_FALLBACKS" != "x" ; then
+            for dpp_objc in $OBJC_FALLBACKS ; do
+               AC_CHECK_PROG([dpp_OBJC_check_val], [$dpp_objc], [$dpp_objc], ,
+                             $4)
+               if test "x$dpp_OBJC_check_val" = "x$dpp_objc" ; then
+                  OBJC="$dpp_objc"
+                  dpp_OBJC_found='yes'
+                  break
+               fi
+            done
+         fi
+
+         dnl No viable Objective-C compiler was found.
+         if test "x$dpp_OBJC_found" = "xno" ; then
+            ifelse([$3], , :, [$3])
+         fi
+      fi
+   fi
+
+   AC_LANG_PUSH([Objective C])
+
+   AC_CHECK_TOOL(OBJC, gcc)
+   if test -z "$OBJC" ; then
+      AC_CHECK_TOOL(OBJC, cc)
+   fi
+   if test -z "$OBJC" ; then
+      AC_CHECK_PROG(OBJC, cc, cc)
+   fi
+
+   test -z "$OBJC" && AC_MSG_FAILURE([no acceptable Objective-C compiler found in \$PATH])
+dnl   AC_PROG_CPP
+
+   m4_expand_once([_AC_COMPILER_EXEEXT])[]dnl
+   m4_expand_once([_AC_COMPILER_OBJEXT])[]dnl
+   _AC_LANG_COMPILER_GNU
+   GNU_OBJC=`test $ac_compiler_gnu = yes && echo yes`
+   _AC_PROG_OBJC_G
+
+   OBJCFLAGS="$dpp_save_OBJCFLAGS"
+
+   dnl If GCC will be the Objective-C compiler, -fPIC is the
+   dnl position-independent code generation option.
+   if test "x$GNU_OBJC" = "xyes" ; then
+      OBJCFLAGS_DYNLIB='-fPIC'
+   dnl Otherwise, get the platform-specific compiler PIC option hint value.
+   else
+      dpp_objc_pic_var="OBJC_PIC_$dpp_platform"
+      OBJCFLAGS_DYNLIB=`eval echo '$''{'$dpp_objc_pic_var'}'`
+   fi
+
+   OBJCFLAGS_DYNLIB="$OBJCFLAGS_DYNLIB -DPIC"
+
+   AC_LANG_POP([Objective C])
+
+   AC_SUBST(OBJCFLAGS_DYNLIB)
+])
+])
+
+m4_ifdef([AC_LANG(Objective C++)], ,
+[m4_ifdef([AC_LANG_DEFINE],
+[AC_LANG_DEFINE(
+   [Objective C++], [objcxx], [OBJCXX], [C],
+   [ac_ext=m
+   ac_cpp='$OBJCPP $CPPFLAGS'
+   ac_compile='$OBJC -c $OBJCFLAGS $CPPFLAGS conftest.$ac_ext >&AS_MESSAGE_LOG_FD'
+   ac_link='$OBJC -o conftest$ac_exeext $OBJCFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&AS_MESSAGE_LOG_FD'
+   ac_compiler_gnu=$ac_cv_objc_compiler_gnu
+   ]
+)],
+
+[m4_define([AC_LANG(Objective C++)],
+[ac_ext=mm
+ac_cpp='$OBJCXXCPP $OBJCXXPPFLAGS'
+ac_compile='$OBJCXX -c $OBJCXXFLAGS $OBJCXXPPFLAGS conftest.$ac_ext >&AS_MESSAGE_LOG_FD'
+ac_link='$CXX -o conftest$ac_exeext $OBJCXXFLAGS $OBJCXXPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&AS_MESSAGE_LOG_FD'
+ac_compiler_gnu=$ac_cv_objcxx_compiler_gnu
+])
+
+m4_define([_AC_LANG_ABBREV(Objective C++)], [objcxx])
+
+m4_define([_AC_LANG_PREFIX(Objective C++)], [OBJCXX])
+
+m4_copy([AC_LANG_SOURCE(C)], [AC_LANG_SOURCE(Objective C++)])
+
+m4_copy([AC_LANG_PROGRAM(C)], [AC_LANG_PROGRAM(Objective C++)])
+])
+])
+
+m4_define([_AC_PROG_OBJCXX_G],
+[ac_test_OBJCXXFLAGS=${OBJCXXFLAGS+set}
+ac_save_OBJCXXFLAGS=$OBJCXXFLAGS
+OBJCXXFLAGS="-g"
+AC_CACHE_CHECK(whether $OBJCXX accepts -g, ac_cv_prog_objcxx_g,
+               [_AC_COMPILE_IFELSE([AC_LANG_PROGRAM()],
+                                   [ac_cv_prog_objcxx_g=yes],
+                                   [ac_cv_prog_objcxx_g=no])])
+if test "$ac_test_OBJCXXFLAGS" = set; then
+  OBJCXXFLAGS=$ac_save_OBJCXXFLAGS
+elif test $ac_cv_prog_objcxx_g = yes; then
+  if test "$GNU_OBJCXX" = yes; then
+    OBJCXXFLAGS="-g -O2"
+  else
+    OBJCXXFLAGS="-g"
+  fi
+else
+  if test "$GNU_OBJCXX" = yes; then
+    OBJCXXFLAGS="-O2"
+  else
+    OBJCXXFLAGS=
+  fi
+fi[]dnl
+])
+
+dnl ---------------------------------------------------------------------------
+dnl Check for the existence and usability of an Objective-C++ compiler (or the
+dnl given Objective-C++ compiler if one is specified) and how to run its
+dnl preprocessor. A platform-specific hint for the Objective-C++ compiler can
+dnl be given by setting a value for the variable $OBJCXX_<PLATFORM> (e.g.,
+dnl $OBJCXX_Linux). A value for the Objective-C++-compiler argument overrides
+dnl any hint given, however. A list of fallbacks can be provided by setting a
+dnl value for the variable $OBJCXX_FALLBACKS. This must be in the format of an
+dnl sh list.
+dnl
+dnl Usage:
+dnl     DPP_PROG_OBJCXX([Objective-C++-compiler [, extra-flags [, action-if-not-found [, path ]]]])
+dnl
+dnl Arguments:
+dnl     Objective-C++-compiler - Force the check to look for this Objective-C++
+dnl                              compiler. This is optional.
+dnl     extra-flags            - Extra compiler flags to use when checking.
+dnl                              This is optional.
+dnl     action-if-not-found    - The action to take if the Objective-C++
+dnl                              compiler cannot be found or does not work.
+dnl                              This is optional.
+dnl     path                   - Extra path information for finding the
+dnl                              Objective-C++ compiler. This is optional.
+dnl ---------------------------------------------------------------------------
+AC_DEFUN([DPP_PROG_OBJCXX],
+[
+   dpp_save_OBJCXXFLAGS="$OBJCXXFLAGS"
+   OBJCXXFLAGS="$OBJCXXFLAGS $2 $ABI_FLAGS"
+
+   dnl Get the platform-specific compiler hint value.
+   dpp_objcxx_var="OBJCXX_$dpp_platform"
+   dpp_objcxx_val=`eval echo '$''{'$dpp_objcxx_var'}'`
+
+   if test "x$dpp_objcxx_val" != "x" -a "x$OBJCXX" = "x" ; then
+      OBJCXX="$dpp_objcxx_val"
+   fi
+
+   if test "x$1" != "x" -o "x$OBJCXX" != "x" ; then
+      if test "x$1" != "x" ; then
+         dpp_OBJCXX_found_val=$1
+         AC_CHECK_PROG([dpp_OBJCXX_check_val], $1, $1, , $4)
+      else
+         dpp_OBJCXX_found_val="$OBJCXX"
+         AC_CHECK_PROG([dpp_OBJCXX_check_val], [$OBJCXX], [$OBJCXX], , $4)
+      fi
+
+      if test "x$dpp_OBJCXX_check_val" = "x$dpp_OBJCXX_found_val" ; then
+         OBJCXX="$dpp_OBJCXX_found_val"
+      else
+         dpp_OBJCXX_found='no'
+
+         dnl If the caller provided a list of fallbacks in the
+         dnl $OBJCXX_FALLBACKS variable, loop over them and try to use another
+         dnl Objective-C++ compiler.
+         if test "x$OBJCXX_FALLBACKS" != "x" ; then
+            for dpp_objcxx in $OBJCXX_FALLBACKS ; do
+               AC_CHECK_PROG([dpp_OBJCXX_check_val], [$dpp_objcxx],
+                             [$dpp_objcxx], , $4)
+               if test "x$dpp_OBJCXX_check_val" = "x$dpp_objcxx" ; then
+                  OBJCXX="$dpp_objcxx"
+                  dpp_OBJCXX_found='yes'
+                  break
+               fi
+            done
+         fi
+
+         dnl No viable Objective-C++ compiler was found.
+         if test "x$dpp_OBJCXX_found" = "xno" ; then
+            ifelse([$3], , :, [$3])
+         fi
+      fi
+   fi
+
+   AC_LANG_PUSH([Objective C++])
+
+   AC_CHECK_TOOL(OBJCXX, gcc)
+   if test -z "$OBJCXX" ; then
+      AC_CHECK_TOOL(OBJCXX, cc)
+   fi
+   if test -z "$OBJCXX" ; then
+      AC_CHECK_PROG(OBJCXX, cc, cc)
+   fi
+
+   test -z "$OBJCXX" && AC_MSG_FAILURE([no acceptable Objective-C++ compiler found in \$PATH])
+dnl   AC_PROG_CPP
+
+   m4_expand_once([_AC_COMPILER_EXEEXT])[]dnl
+   m4_expand_once([_AC_COMPILER_OBJEXT])[]dnl
+   _AC_LANG_COMPILER_GNU
+   GNU_OBJCXX=`test $ac_compiler_gnu = yes && echo yes`
+   _AC_PROG_OBJCXX_G
+
+   OBJCXXFLAGS="$dpp_save_OBJCXXFLAGS"
+
+   dnl If GCC will be the Objective-C++ compiler, -fPIC is the
+   dnl position-independent code generation option.
+   if test "x$GNU_OBJCXX" = "xyes" ; then
+      OBJCXXFLAGS_DYNLIB='-fPIC'
+   dnl Otherwise, get the platform-specific compiler PIC option hint value.
+   else
+      dpp_objcxx_pic_var="OBJCXX_PIC_$dpp_platform"
+      OBJCXXFLAGS_DYNLIB=`eval echo '$''{'$dpp_objcxx_pic_var'}'`
+   fi
+
+   OBJCXXFLAGS_DYNLIB="$OBJCXXFLAGS_DYNLIB -DPIC"
+
+   AC_LANG_POP([Objective C++])
+
+   AC_SUBST(OBJCXXFLAGS_DYNLIB)
 ])

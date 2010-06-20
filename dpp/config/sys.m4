@@ -1,9 +1,10 @@
-dnl ************* <auto-copyright.pl BEGIN do not edit this line> *************
-dnl Doozer++ is (C) Copyright 2000-2005 by Iowa State University
+dnl Doozer++ is (C) Copyright 2000-2010 by Iowa State University
+dnl Distributed under the GNU Lesser General Public License 2.1.  (See
+dnl accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 dnl
 dnl Original Author:
 dnl   Patrick Hartling
-dnl ---------------------------------------------------------------------------
+
 dnl VR Juggler is (C) Copyright 1998, 1999, 2000, 2001 by Iowa State University
 dnl
 dnl Original Authors:
@@ -25,18 +26,12 @@ dnl You should have received a copy of the GNU Library General Public
 dnl License along with this library; if not, write to the
 dnl Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 dnl Boston, MA 02111-1307, USA.
-dnl
-dnl -----------------------------------------------------------------
-dnl File:          sys.m4,v
-dnl Date modified: 2006/04/12 15:15:24
-dnl Version:       1.64
-dnl -----------------------------------------------------------------
-dnl ************** <auto-copyright.pl END do not edit this line> **************
 
 dnl ===========================================================================
 dnl Determine the canonical system type and define a ton of variables for
 dnl system-dependent settings.  The platforms supported in this file are AIX,
-dnl Cygnus-Win32, FreeBSD, HP-UX, IRIX, Linux, and Solaris.
+dnl Cygnus-Win32, FreeBSD, NetBSD, OpenBSD, DragonFly, HP-UX, IRIX, Linux, and
+dnl Solaris.
 dnl ---------------------------------------------------------------------------
 dnl Macros:
 dnl     DPP_SYSTEM_SETUP - Based on the given detected host and CPU, set up
@@ -57,8 +52,6 @@ dnl Possible preprocssor symbols defined:
 dnl     IRIXREL      - Defined to the string "IRIX5" or "IRIX6" based on the
 dnl                    determined version of IRIX.
 dnl ===========================================================================
-
-dnl sys.m4,v 1.64 2006/04/12 15:15:24 patrickh Exp
 
 dnl ---------------------------------------------------------------------------
 dnl Based on the given detected host and CPU, set up the system-specific
@@ -152,7 +145,11 @@ AC_DEFUN([DPP_SYSTEM_SETUP],
          dnl If no ABI has been set yet, default to Mach-O with whatever the
          dnl CPU architecture is.
          if test "x$ABI" = "x" ; then
-            DPP_ABI_CFG('Mach-O', $target_cpu)
+            if test $OS_REL_NUM_MAJOR -ge 10 ; then
+               DPP_ABI_CFG('Mach-O', 'x86_64')
+            else
+               DPP_ABI_CFG('Mach-O', $target_cpu)
+            fi
          fi
 
          PLATFORM='Darwin'
@@ -175,6 +172,25 @@ AC_DEFUN([DPP_SYSTEM_SETUP],
          esac
 
          PLATFORM='FreeBSD'
+         ;;
+      dnl A machine running DragonFly.
+      dragonfly*)
+         dnl If no ABI has been set yet, default to ELF with whatever the
+         dnl CPU architecture is.
+         if test "x$ABI" = "x" ; then
+            DPP_ABI_CFG('ELF', $target_cpu)
+         fi
+
+         case $target_cpu in
+            *86)
+               ABI_LIST='ELF_i386'
+               ;;
+            *)
+               ABI_LIST="ELF_$target_cpu"
+               ;;
+         esac
+
+         PLATFORM='DragonFly'
          ;;
       dnl HP PA-RISC machine running HP-UX 10.20.
       hpux10.20)

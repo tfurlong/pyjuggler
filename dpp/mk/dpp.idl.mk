@@ -1,9 +1,10 @@
-# ************** <auto-copyright.pl BEGIN do not edit this line> **************
-# Doozer++ is (C) Copyright 2000-2005 by Iowa State University
+# Doozer++ is (C) Copyright 2000-2010 by Iowa State University
+# Distributed under the GNU Lesser General Public License 2.1.  (See
+# accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 #
 # Original Author:
 #   Patrick Hartling
-#
+
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Library General Public
 # License as published by the Free Software Foundation; either
@@ -18,17 +19,8 @@
 # License along with this library; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
-#
-# -----------------------------------------------------------------
-# File:          dpp.idl.mk,v
-# Date modified: 2005/01/08 22:44:42
-# Version:       1.14
-# -----------------------------------------------------------------
-# *************** <auto-copyright.pl END do not edit this line> ***************
 
 # =============================================================================
-# dpp.idl.mk,v 1.14 2005/01/08 22:44:42 patrickh Exp
-#
 # This file <dpp.idl.mk> handles compiling a CORBA IDL file into source files
 # for various languages using the appropriate IDL compiler.
 # -----------------------------------------------------------------------------
