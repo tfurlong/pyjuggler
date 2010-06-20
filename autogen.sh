@@ -32,7 +32,7 @@ DIE=0
 
 # Fill in the "<...>" string with the default path to your Doozer++ directory
 # and uncomment the following line for easier use.
-: ${DPP_PATH=Doozer++}
+: ${DPP_PATH=dpp}
 : ${VJ_MACRO_PATH="$VJ_BASE_DIR/share/aclocal"}
 
 if [ -n "$DPP_PATH" ]; then
