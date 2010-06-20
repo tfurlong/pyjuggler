@@ -275,6 +275,12 @@ DPP_VERSION_CHECK_MSG_NO_CACHE([Boost], [$pyj_boost_version],
                                [$req_boost_version], ,
                                [AC_MSG_ERROR([*** Boost $req_boost_version is required for PyJuggler ***])])
 
+if test "x$GCC" = "xyes" ; then
+   split_gcc_ver=`$CXX -dumpversion | sed -e 's/\./ /g'`
+   pyj_gcc_major=`echo $split_gcc_ver | awk '{ print $[1] }' -`
+   pyj_gcc_minor=`echo $split_gcc_ver | awk '{ print $[2] }' -`
+fi
+
 if test "x$bp_libname" = "x" ; then
    if test $boost_minor_ver -ge 31; then
       case $CC in
@@ -286,7 +292,11 @@ if test "x$bp_libname" = "x" ; then
             ;;
          cc)
             if test "x$GCC" = "xyes" ; then
-               toolset='-gcc'
+               if test $pyj_boost_minor -ge 34 ; then
+                  toolset="-gcc$pyj_gcc_major$pyj_gcc_minor"
+               else
+                  toolset='-gcc'
+               fi
             else
                case $PLATFORM in
                   IRIX)
@@ -301,14 +311,15 @@ if test "x$bp_libname" = "x" ; then
       esac
 
       if test "x$PLATFORM" = "xDarwin" ; then
-         toolset=''
-         threading=''
-      else
-         # We can only use multi-threading versions of Boost libraries if we
-         # are not using SPROC threads.  Boost does not support SPROC.
-         if test "x$VPR_SUBSYSTEM" != "xSPROC" ; then
+         if test $pyj_boost_minor -ge 37 ; then
+            toolset="-xgcc$pyj_gcc_major$pyj_gcc_minor"
             threading='-mt'
+         else
+            toolset=''
+            threading=''
          fi
+      else
+         threading='-mt'
       fi
 
       BASE_BP_LIBNAME="boost_python$toolset$threading"
@@ -384,10 +395,6 @@ if test "x$pyj_have_bp" = "xyes" ; then
    fi
 
    if test "x$PLATFORM" = "xDarwin" ; then
-      changequote(<<, >>)
-      pyj_gcc_major=`echo $dpp_gcc_ver | sed -e 's/^\([0-9]*\)\..*/\1/'`
-      changequote([, ])
-
       BOOST_PYTHON_CXXFLAGS="$BOOST_PYTHON_CXXFLAGS -Wno-long-double -no-cpp-precomp"
 
       #  GCC 4.0 in Darwin removed -fcoalesce-templates.
