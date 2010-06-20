@@ -7,6 +7,7 @@
 #include <boost/cstdint.hpp>
 
 // Includes ====================================================================
+#include <jccl/Config/ConfigElement.h>
 #include <vrj/Display/Display.h>
 #include <vrj/Display/Viewport.h>
 

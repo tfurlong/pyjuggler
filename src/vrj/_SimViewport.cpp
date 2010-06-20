@@ -9,6 +9,7 @@
 // Includes ====================================================================
 #include <vrj/Display/SimViewport.h>
 #include <vrj/Display/Display.h>
+#include <vrj/Draw/DrawSimInterface.h>
 #include <vrj/Kernel/User.h>
 
 // Using =======================================================================

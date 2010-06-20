@@ -8,6 +8,7 @@
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
 
 // Includes ====================================================================
+#include <jccl/Config/ConfigDefinition.h>
 #include <jccl/Config/ConfigElement.h>
 #include <container_conversions.h>
 

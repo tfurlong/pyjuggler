@@ -7,7 +7,9 @@
 #include <boost/cstdint.hpp>
 
 // Includes ====================================================================
+#include <jccl/Config/ConfigElement.h>
 #include <gadget/Type/Proxy.h>
+#include <gadget/InputLogger.h>
 #include <gadget/InputManager.h>
 
 // Using =======================================================================

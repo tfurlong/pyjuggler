@@ -7,6 +7,7 @@
 #include <boost/cstdint.hpp>
 
 // Includes ====================================================================
+#include <vrj/Display/Viewport.h>
 #include <vrj/Display/Projection.h>
 
 // Using =======================================================================
