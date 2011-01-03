@@ -3,7 +3,6 @@
 // accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
 // Boost Includes ==============================================================
-#include <boost/bind.hpp>
 #include <boost/python.hpp>
 #include <boost/cstdint.hpp>
 
