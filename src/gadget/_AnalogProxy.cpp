@@ -61,7 +61,7 @@ struct gadget_AnalogProxy_Wrapper
       gadget::AnalogProxy::updateData();
    }
 
-   vpr::Interval getTimeStamp() const
+   const vpr::Interval& getTimeStamp() const
    {
       try
       {
@@ -69,17 +69,16 @@ struct gadget_AnalogProxy_Wrapper
         {
            return getTimeStamp();
         }
-        return gadget::AnalogProxy::getTimeStamp();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return vpr::Interval();
+     return gadget::AnalogProxy::getTimeStamp();
    }
 
-   vpr::Interval default_getTimeStamp() const
+   const vpr::Interval& default_getTimeStamp() const
    {
       return gadget::AnalogProxy::getTimeStamp();
    }
@@ -107,7 +106,7 @@ struct gadget_AnalogProxy_Wrapper
       return gadget::AnalogProxy::config(p0);
    }
 
-   void set(const std::string& p0, gadget::AnalogPtr p1)
+   void set(const std::string& p0, const gadget::AnalogPtr& p1)
    {
       try
       {
@@ -126,7 +125,7 @@ struct gadget_AnalogProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, gadget::AnalogPtr p1)
+   void default_set(const std::string& p0, const gadget::AnalogPtr& p1)
    {
       gadget::AnalogProxy::set(p0, p1);
    }
@@ -154,7 +153,7 @@ struct gadget_AnalogProxy_Wrapper
       return gadget::AnalogProxy::refresh();
    }
 
-   std::string getDeviceName() const
+   const std::string& getDeviceName() const
    {
       try
       {
@@ -162,17 +161,16 @@ struct gadget_AnalogProxy_Wrapper
          {
             return getDeviceName();
          }
-         return gadget::AnalogProxy::getDeviceName();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return std::string("UNKNOWN");
+      return gadget::AnalogProxy::getDeviceName();
    }
 
-   std::string default_getDeviceName() const
+   const std::string& default_getDeviceName() const
    {
       return gadget::AnalogProxy::getDeviceName();
    }
@@ -198,6 +196,28 @@ struct gadget_AnalogProxy_Wrapper
    bool default_isStupefied() const
    {
       return gadget::AnalogProxy::isStupefied();
+   }
+
+   virtual const float getData() const
+   {
+      try
+      {
+         if ( override getData = this->get_override("getData") )
+         {
+            return getData();
+         }
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+
+      return gadget::AnalogProxy::getData();
+   }
+
+   const float default_getData() const
+   {
+      return gadget::AnalogProxy::getData();
    }
 };
 
@@ -232,6 +252,7 @@ void _Export_AnalogProxy()
       )
       .def("getTimeStamp", &gadget::AnalogProxy::getTimeStamp,
            &pyj::gadget_AnalogProxy_Wrapper::default_getTimeStamp,
+           return_value_policy<copy_const_reference>(),
            "getTimeStamp() -> vpr.Interval object\n"
            "Returns the time of the last update."
       )
@@ -265,6 +286,7 @@ void _Export_AnalogProxy()
       )
       .def("getDeviceName", &gadget::AnalogProxy::getDeviceName,
            &pyj::gadget_AnalogProxy_Wrapper::default_getDeviceName,
+           return_value_policy<copy_const_reference>(),
            "getDeviceName() -> string object\n"
            "Gets the name of the device that we are proxying."
       )
@@ -276,17 +298,19 @@ void _Export_AnalogProxy()
            "return True."
       )
       .def("getData", &gadget::AnalogProxy::getData,
+           &pyj::gadget_AnalogProxy_Wrapper::default_getData,
            "getData() -> float\n"
            "Gets the current normalized analog data value. This value will\n"
            "be in the range [0.0,1.0]."
       )
       .def("getRawData", &gadget::AnalogProxy::getRawData,
+           return_value_policy<copy_const_reference>(),
            "getData() -> float\n"
            "Gets the current raw analog data value. This is the value read\n"
            "direcctly from the device without perfomring any normalization."
       )
-      .def("getAnalogPtr", &gadget::AnalogProxy::getAnalogPtr,
-           "getAnalogPtr() -> gadget.Analog object\n"
+      .def("getTypedInputDevice", &gadget::AnalogProxy::getTypedInputDevice,
+           "getTypedInputDevice() -> gadget.Analog object\n"
       )
       .def("getUnit", &gadget::AnalogProxy::getUnit,
            "getUnit() -> int\n"

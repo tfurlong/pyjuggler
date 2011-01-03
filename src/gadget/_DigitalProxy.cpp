@@ -61,7 +61,7 @@ struct gadget_DigitalProxy_Wrapper
       gadget::DigitalProxy::updateData();
    }
 
-   vpr::Interval getTimeStamp() const
+   const vpr::Interval& getTimeStamp() const
    {
       try
       {
@@ -69,20 +69,16 @@ struct gadget_DigitalProxy_Wrapper
          {
             return getTimeStamp();
          }
-         else
-         {
-            return gadget::DigitalProxy::getTimeStamp();
-         }
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return vpr::Interval();
+      return gadget::DigitalProxy::getTimeStamp();
    }
 
-   vpr::Interval default_getTimeStamp() const
+   const vpr::Interval& default_getTimeStamp() const
    {
       return gadget::DigitalProxy::getTimeStamp();
    }
@@ -113,7 +109,7 @@ struct gadget_DigitalProxy_Wrapper
       return gadget::DigitalProxy::config(p0);
    }
 
-   void set(const std::string& p0, gadget::DigitalPtr p1)
+   void set(const std::string& p0, const gadget::DigitalPtr& p1)
    {
       try
       {
@@ -132,7 +128,7 @@ struct gadget_DigitalProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, gadget::DigitalPtr p1)
+   void default_set(const std::string& p0, const gadget::DigitalPtr& p1)
    {
       gadget::DigitalProxy::set(p0, p1);
    }
@@ -163,7 +159,7 @@ struct gadget_DigitalProxy_Wrapper
       return gadget::DigitalProxy::refresh();
    }
 
-   std::string getDeviceName() const
+   const std::string& getDeviceName() const
    {
       try
       {
@@ -171,20 +167,16 @@ struct gadget_DigitalProxy_Wrapper
          {
             return getDeviceName();
          }
-         else
-         {
-            return gadget::DigitalProxy::getDeviceName();
-         }
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return std::string("UNKNOWN");
+      return gadget::DigitalProxy::getDeviceName();
    }
 
-   std::string default_getDeviceName() const
+   const std::string& default_getDeviceName() const
    {
       return gadget::DigitalProxy::getDeviceName();
    }
@@ -210,6 +202,28 @@ struct gadget_DigitalProxy_Wrapper
    bool default_isStupefied() const
    {
       return gadget::DigitalProxy::isStupefied();
+   }
+
+   virtual const gadget::DigitalState::State getData() const
+   {
+      try
+      {
+         if ( override getData = this->get_override("getData") )
+         {
+            return getData();
+         }
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+
+      return gadget::DigitalProxy::getData();
+   }
+
+   const gadget::DigitalState::State default_getData() const
+   {
+      return gadget::DigitalProxy::getData();
    }
 };
 
@@ -242,9 +256,10 @@ void _Export_DigitalProxy()
            "resetData()\n"
       )
       .def("getTimeStamp", &gadget::DigitalProxy::getTimeStamp,
-          &pyj::gadget_DigitalProxy_Wrapper::default_getTimeStamp,
-          "getTimeStamp() -> vpr.Interval object\n"
-          "Returns the time of the last update."
+           &pyj::gadget_DigitalProxy_Wrapper::default_getTimeStamp,
+           return_value_policy<copy_const_reference>(),
+           "getTimeStamp() -> vpr.Interval object\n"
+           "Returns the time of the last update."
       )
       .def("config", &gadget::DigitalProxy::config,
            &pyj::gadget_DigitalProxy_Wrapper::default_config,
@@ -276,6 +291,7 @@ void _Export_DigitalProxy()
       )
       .def("getDeviceName", &gadget::DigitalProxy::getDeviceName,
            &pyj::gadget_DigitalProxy_Wrapper::default_getDeviceName,
+           return_value_policy<copy_const_reference>(),
            "getDeviceName() -> string object\n"
            "Gets the name of the device that we are proxying."
       )
@@ -287,14 +303,12 @@ void _Export_DigitalProxy()
            "return True."
       )
       .def("getData", &gadget::DigitalProxy::getData,
-           "getData() -> float\n"
+           &pyj::gadget_DigitalProxy_Wrapper::default_getData,
+           "getData() -> gadget.DigitalState.State\n"
            "Gets the current digital data value."
       )
-      .def("getDigitalData", &gadget::DigitalProxy::getDigitalData,
-           return_internal_reference<1>()
-      )
-      .def("getDigitalPtr", &gadget::DigitalProxy::getDigitalPtr,
-           "getDigitalPtr() -> gadget.Digital object\n"
+      .def("getTypedInputDevice", &gadget::DigitalProxy::getTypedInputDevice,
+           "getTypedInputDevice() -> gadget.Digital object\n"
       )
       .def("getUnit", &gadget::DigitalProxy::getUnit,
            "getUnit() -> int\n"

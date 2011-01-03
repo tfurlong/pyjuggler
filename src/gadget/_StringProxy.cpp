@@ -61,7 +61,7 @@ struct gadget_StringProxy_Wrapper
       gadget::StringProxy::updateData();
    }
 
-   vpr::Interval getTimeStamp() const
+   const vpr::Interval& getTimeStamp() const
    {
       try
       {
@@ -69,17 +69,16 @@ struct gadget_StringProxy_Wrapper
          {
             return getTimeStamp();
          }
-         return gadget::StringProxy::getTimeStamp();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return vpr::Interval();
+      return gadget::StringProxy::getTimeStamp();
    }
 
-   vpr::Interval default_getTimeStamp() const
+   const vpr::Interval& default_getTimeStamp() const
    {
       return gadget::StringProxy::getTimeStamp();
    }
@@ -107,7 +106,7 @@ struct gadget_StringProxy_Wrapper
       return gadget::StringProxy::config(p0);
    }
 
-   void set(const std::string& p0, gadget::StringPtr p1)
+   void set(const std::string& p0, const gadget::StringPtr& p1)
    {
       try
       {
@@ -126,7 +125,7 @@ struct gadget_StringProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, gadget::StringPtr p1)
+   void default_set(const std::string& p0, const gadget::StringPtr& p1)
    {
       gadget::StringProxy::set(p0, p1);
    }
@@ -154,7 +153,7 @@ struct gadget_StringProxy_Wrapper
       return gadget::StringProxy::refresh();
    }
 
-   std::string getDeviceName() const
+   const std::string& getDeviceName() const
    {
       try
       {
@@ -162,17 +161,16 @@ struct gadget_StringProxy_Wrapper
          {
             return getDeviceName();
          }
-         return gadget::StringProxy::getDeviceName();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return std::string("UNKNOWN");
+      return gadget::StringProxy::getDeviceName();
    }
 
-   std::string default_getDeviceName() const
+   const std::string& default_getDeviceName() const
    {
       return gadget::StringProxy::getDeviceName();
    }
@@ -198,6 +196,28 @@ struct gadget_StringProxy_Wrapper
    bool default_isStupefied() const
    {
       return gadget::StringProxy::isStupefied();
+   }
+
+   virtual const std::string getData() const
+   {
+      try
+      {
+         if ( override getData = this->get_override("getData") )
+         {
+            return getData();
+         }
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+
+      return gadget::StringProxy::getData();
+   }
+
+   const std::string default_getData() const
+   {
+      return gadget::StringProxy::getData();
    }
 };
 
@@ -231,6 +251,7 @@ void _Export_StringProxy()
       )
       .def("getTimeStamp", &gadget::StringProxy::getTimeStamp,
            &pyj::gadget_StringProxy_Wrapper::default_getTimeStamp,
+           return_value_policy<copy_const_reference>(),
            "getTimeStamp() -> vpr.Interval object\n"
            "Returns the time of the last update."
       )
@@ -264,6 +285,7 @@ void _Export_StringProxy()
       )
       .def("getDeviceName", &gadget::StringProxy::getDeviceName,
            &pyj::gadget_StringProxy_Wrapper::default_getDeviceName,
+           return_value_policy<copy_const_reference>(),
            "getDeviceName() -> string object\n"
            "Gets the name of the device that we are proxying."
       )
@@ -275,14 +297,12 @@ void _Export_StringProxy()
            "return True."
       )
       .def("getData", &gadget::StringProxy::getData,
+           &pyj::gadget_StringProxy_Wrapper::default_getData,
            "getData() -> float\n"
            "Gets the current string data value."
       )
-      .def("getStringData", &gadget::StringProxy::getStringData,
-           return_internal_reference<1>()
-      )
-      .def("getStringPtr", &gadget::StringProxy::getStringPtr,
-           "getStringPtr() -> gadget.String object\n"
+      .def("getTypedInputDevice", &gadget::StringProxy::getTypedInputDevice,
+           "getTypedInputDevice() -> gadget.String object\n"
       )
       .def("getUnit", &gadget::StringProxy::getUnit,
            "getUnit() -> int\n"

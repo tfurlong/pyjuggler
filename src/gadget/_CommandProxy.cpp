@@ -61,7 +61,7 @@ struct gadget_CommandProxy_Wrapper
       gadget::CommandProxy::updateData();
    }
 
-   vpr::Interval getTimeStamp() const
+   const vpr::Interval& getTimeStamp() const
    {
       try
       {
@@ -69,17 +69,16 @@ struct gadget_CommandProxy_Wrapper
          {
             return getTimeStamp();
          }
-         return gadget::CommandProxy::getTimeStamp();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return vpr::Interval();
+      return gadget::CommandProxy::getTimeStamp();
    }
 
-   vpr::Interval default_getTimeStamp() const
+   const vpr::Interval& default_getTimeStamp() const
    {
       return gadget::CommandProxy::getTimeStamp();
    }
@@ -107,7 +106,7 @@ struct gadget_CommandProxy_Wrapper
       return gadget::CommandProxy::config(p0);
    }
 
-   void set(const std::string& p0, gadget::CommandPtr p1)
+   void set(const std::string& p0, const gadget::CommandPtr& p1)
    {
       try
       {
@@ -126,7 +125,7 @@ struct gadget_CommandProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, gadget::CommandPtr p1)
+   void default_set(const std::string& p0, const gadget::CommandPtr& p1)
    {
       gadget::CommandProxy::set(p0, p1);
    }
@@ -154,7 +153,7 @@ struct gadget_CommandProxy_Wrapper
       return gadget::CommandProxy::refresh();
    }
 
-   std::string getDeviceName() const
+   const std::string& getDeviceName() const
    {
       try
       {
@@ -162,17 +161,16 @@ struct gadget_CommandProxy_Wrapper
          {
             return getDeviceName();
          }
-         return gadget::CommandProxy::getDeviceName();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return std::string("UNKNOWN");
+      return gadget::CommandProxy::getDeviceName();
    }
 
-   std::string default_getDeviceName() const
+   const std::string& default_getDeviceName() const
    {
       return gadget::CommandProxy::getDeviceName();
    }
@@ -198,6 +196,28 @@ struct gadget_CommandProxy_Wrapper
    bool default_isStupefied() const
    {
       return gadget::CommandProxy::isStupefied();
+   }
+
+   virtual const int getData() const
+   {
+      try
+      {
+         if ( override getData = this->get_override("getData") )
+         {
+            return getData();
+         }
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+
+      return gadget::CommandProxy::getData();
+   }
+
+   const int default_getData() const
+   {
+      return gadget::CommandProxy::getData();
    }
 };
 
@@ -233,6 +253,7 @@ void _Export_CommandProxy()
       )
       .def("getTimeStamp", &gadget::CommandProxy::getTimeStamp,
            &pyj::gadget_CommandProxy_Wrapper::default_getTimeStamp,
+           return_value_policy<copy_const_reference>(),
            "getTimeStamp() -> vpr.Interval object\n"
            "Returns the time of the last update."
       )
@@ -266,6 +287,7 @@ void _Export_CommandProxy()
       )
       .def("getDeviceName", &gadget::CommandProxy::getDeviceName,
            &pyj::gadget_CommandProxy_Wrapper::default_getDeviceName,
+           return_value_policy<copy_const_reference>(),
            "getDeviceName() -> string object\n"
            "Gets the name of the device that we are proxying."
       )
@@ -277,14 +299,12 @@ void _Export_CommandProxy()
            "return True."
       )
       .def("getData", &gadget::CommandProxy::getData,
-           "getData() -> float\n"
+           &pyj::gadget_CommandProxy_Wrapper::default_getData,
+           "getData() -> int\n"
            "Gets the current command data value."
       )
-      .def("getCommandData", &gadget::CommandProxy::getCommandData,
-           return_internal_reference<1>()
-      )
-      .def("getCommandPtr", &gadget::CommandProxy::getCommandPtr,
-           "getCommandPtr() -> gadget.Command object\n"
+      .def("getTypedInputDevice", &gadget::CommandProxy::getTypedInputDevice,
+           "getTypedInputDevice() -> gadget.Command object\n"
       )
       .def("getUnit", &gadget::CommandProxy::getUnit,
            "getUnit() -> int\n"

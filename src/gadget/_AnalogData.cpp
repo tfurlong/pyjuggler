@@ -15,14 +15,15 @@ using namespace boost::python;
 // Module ======================================================================
 void _Export_AnalogData()
 {
+   typedef gadget::AnalogData::data_type data_type;
    class_<gadget::AnalogData>("AnalogData",
        "gadget.InputData subclass for analog data.",
        init<>()
       )
-      .def(init<const gadget::AnalogData&>())
-      .def(init<float>())
-      .def("getAnalog", &gadget::AnalogData::getAnalog)
-      .def("setAnalog", &gadget::AnalogData::setAnalog)
+      .def(init<const data_type&>())
+      .def("getValue", &gadget::AnalogData::getValue,
+           return_value_policy<copy_const_reference>())
+      .def("setValue", &gadget::AnalogData::setValue)
       .def("setTime",
            (void (gadget::InputData::*)()) &gadget::InputData::setTime)
       .def("setTime",

@@ -61,7 +61,7 @@ struct gadget_PositionProxy_Wrapper
       gadget::PositionProxy::updateData();
    }
 
-   vpr::Interval getTimeStamp() const
+   const vpr::Interval& getTimeStamp() const
    {
       try
       {
@@ -69,17 +69,16 @@ struct gadget_PositionProxy_Wrapper
          {
             return getTimeStamp();
          }
-         return gadget::PositionProxy::getTimeStamp();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return vpr::Interval();
+      return gadget::PositionProxy::getTimeStamp();
    }
 
-   vpr::Interval default_getTimeStamp() const
+   const vpr::Interval& default_getTimeStamp() const
    {
       return gadget::PositionProxy::getTimeStamp();
    }
@@ -107,7 +106,7 @@ struct gadget_PositionProxy_Wrapper
       return gadget::PositionProxy::config(p0);
    }
 
-   void set(const std::string& p0, gadget::PositionPtr p1)
+   void set(const std::string& p0, const gadget::PositionPtr& p1)
    {
       try
       {
@@ -126,7 +125,7 @@ struct gadget_PositionProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, gadget::PositionPtr p1)
+   void default_set(const std::string& p0, const gadget::PositionPtr& p1)
    {
       gadget::PositionProxy::set(p0, p1);
    }
@@ -154,7 +153,7 @@ struct gadget_PositionProxy_Wrapper
       return gadget::PositionProxy::refresh();
    }
 
-   std::string getDeviceName() const
+   const std::string& getDeviceName() const
    {
       try
       {
@@ -162,17 +161,16 @@ struct gadget_PositionProxy_Wrapper
          {
             return getDeviceName();
          }
-         return gadget::PositionProxy::getDeviceName();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return std::string("UNKNOWN");
+      return gadget::PositionProxy::getDeviceName();
    }
 
-   std::string default_getDeviceName() const
+   const std::string& default_getDeviceName() const
    {
       return gadget::PositionProxy::getDeviceName();
    }
@@ -198,6 +196,28 @@ struct gadget_PositionProxy_Wrapper
    bool default_isStupefied() const
    {
       return gadget::PositionProxy::isStupefied();
+   }
+
+   virtual const gmtl::Matrix44f getData() const
+   {
+      try
+      {
+         if ( override getData = this->get_override("getData") )
+         {
+            return getData();
+         }
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+
+      return gadget::PositionProxy::getData();
+   }
+
+   const gmtl::Matrix44f default_getData() const
+   {
+      return gadget::PositionProxy::getData();
    }
 };
 
@@ -232,6 +252,7 @@ void _Export_PositionProxy()
       )
       .def("getTimeStamp", &gadget::PositionProxy::getTimeStamp,
            &pyj::gadget_PositionProxy_Wrapper::default_getTimeStamp,
+           return_value_policy<copy_const_reference>(),
            "getTimeStamp() -> vpr.Interval object\n"
            "Returns the time of the last update."
       )
@@ -265,6 +286,7 @@ void _Export_PositionProxy()
       )
       .def("getDeviceName", &gadget::PositionProxy::getDeviceName,
            &pyj::gadget_PositionProxy_Wrapper::default_getDeviceName,
+           return_value_policy<copy_const_reference>(),
            "getDeviceName() -> string object\n"
            "Gets the name of the device that we are proxying."
       )
@@ -275,7 +297,15 @@ void _Export_PositionProxy()
            "If the device we are proxying does not exist, then this will\n"
            "return True."
       )
-      .def("getData", &gadget::PositionProxy::getData,
+      .def("getData",
+           (const gmtl::Matrix44f (gadget::PositionProxy::*)() const) &gadget::PositionProxy::getData,
+           &pyj::gadget_PositionProxy_Wrapper::default_getData,
+           "getData() -> gmtl.Matrix44f object\n"
+           "Gets the current positional data value from the device as a.\n"
+           "matrix using feet as the scale factor.\n"
+      )
+      .def("getData",
+           (const gmtl::Matrix44f (gadget::PositionProxy::*)(const float) const) &gadget::PositionProxy::getData,
            (args("scaleFactor") = gadget::PositionUnitConversion::ConvertToFeet),
            "getData(scaleFactor = gadget.PositionUnitConversion.ConvertToFeet) -> gmtl.Matrix44f object\n"
            "Gets the current positional data value from the device as a.\n"
@@ -287,18 +317,13 @@ void _Export_PositionProxy()
            "               specified, it defaults to the conversion factor\n"
            "               from meters to feet."
       )
-      .def("getPositionData", &gadget::PositionProxy::getPositionData,
-           return_internal_reference<1>(),
-           "getPositionData() -> gadget.PositionData object\n"
-           "Gets the actual gadget.PositionData object."
-      )
       .def("getUnit", &gadget::PositionProxy::getUnit,
            "getUnit() -> int\n"
            "Returns the unit index into the analog device from which this\n"
            "proxy is reading data."
       )
-      .def("getPositionPtr", &gadget::PositionProxy::getPositionPtr,
-           "getPositionPtr() -> gadget.Position object\n"
+      .def("getTypedInputDevice", &gadget::PositionProxy::getTypedInputDevice,
+           "getTypedInputDevice() -> gadget.Position object\n"
            "Returns the gadget.Position object held by this proxy."
       )
       .def("getElementType", &gadget::PositionProxy::getElementType,

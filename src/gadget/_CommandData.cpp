@@ -7,23 +7,23 @@
 #include <boost/cstdint.hpp>
 
 // Includes ====================================================================
-#include <gadget/Type/DigitalData.h>
+#include <gadget/Type/CommandData.h>
 
 // Using =======================================================================
 using namespace boost::python;
 
 // Module ======================================================================
-void _Export_DigitalData()
+void _Export_CommandData()
 {
-   typedef gadget::DigitalData::data_type data_type;
-   class_<gadget::DigitalData>("DigitalData",
-      "gadget.InputData subclass for digital data.",
+   typedef gadget::CommandData::data_type data_type;
+   class_<gadget::CommandData>("CommandData",
+      "gadget.InputData subclass for command data.",
       init<>()
      )
      .def(init<const data_type&>())
-     .def("getValue", &gadget::DigitalData::getValue,
+     .def("getValue", &gadget::CommandData::getValue,
           return_value_policy<copy_const_reference>())
-     .def("setValue", &gadget::DigitalData::setValue)
+     .def("setValue", &gadget::CommandData::setValue)
      .def("setTime",
           (void (gadget::InputData::*)()) &gadget::InputData::setTime)
      .def("setTime",

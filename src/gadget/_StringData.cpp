@@ -15,14 +15,15 @@ using namespace boost::python;
 // Module ======================================================================
 void _Export_StringData()
 {
+   typedef gadget::StringData::data_type data_type;
    class_<gadget::StringData>("StringData",
        "gadget.InputData subclass for string data.",
        init<>()
       )
-      .def(init<const gadget::StringData&>())
-      .def("getString", &gadget::StringData::getString,
+      .def(init<const data_type&>())
+      .def("getString", &gadget::StringData::getValue,
            return_value_policy<copy_const_reference>())
-      .def("setString", &gadget::StringData::setString)
+      .def("setString", &gadget::StringData::setValue)
       .def("setTime",
            (void (gadget::InputData::*)()) &gadget::InputData::setTime)
       .def("setTime",

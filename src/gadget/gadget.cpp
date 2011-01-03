@@ -9,6 +9,7 @@
 // Exports =====================================================================
 void _Export_InputManager();
 void _Export_AnalogData();
+void _Export_CommandData();
 void _Export_DigitalData();
 void _Export_PositionData();
 void _Export_StringData();
@@ -65,6 +66,7 @@ BOOST_PYTHON_MODULE(gadget)
 
    _Export_InputManager();
    _Export_AnalogData();
+   _Export_CommandData();
    _Export_DigitalData();
    _Export_PositionData();
    _Export_StringData();

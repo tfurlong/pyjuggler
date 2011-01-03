@@ -118,7 +118,19 @@ struct gadget_Digital_Wrapper : gadget::Digital, wrapper<gadget::Digital>
 // Module ======================================================================
 void _Export_Digital()
 {
-   scope* gadget_Digital_scope = new scope(
+   scope* gadget_DigitalState_scope = new scope(
+   class_<gadget::DigitalState, boost::noncopyable>("DigitalState", no_init)
+   );
+
+   enum_<gadget::DigitalState::State>("State")
+      .value("TOGGLE_OFF", gadget::DigitalState::TOGGLE_OFF)
+      .value("ON", gadget::DigitalState::ON)
+      .value("OFF", gadget::DigitalState::OFF)
+      .value("TOGGLE_ON", gadget::DigitalState::TOGGLE_ON)
+   ;
+
+   delete gadget_DigitalState_scope;
+
    class_<pyj::gadget_Digital_Wrapper, gadget::DigitalPtr, boost::noncopyable>(
        "Digital",
        "gadget.Digital is the abstract base class from which devices\n"
@@ -188,16 +200,7 @@ void _Export_Digital()
       )
       .staticmethod("create")
       .staticmethod("getInputTypeName")
-   );
-
-   enum_<gadget::Digital::State>("State")
-      .value("TOGGLE_OFF", gadget::Digital::TOGGLE_OFF)
-      .value("ON", gadget::Digital::ON)
-      .value("OFF", gadget::Digital::OFF)
-      .value("TOGGLE_ON", gadget::Digital::TOGGLE_ON)
    ;
-
-   delete gadget_Digital_scope;
 
    class_< std::vector<gadget::DigitalData> >("DigitalDataVec",
        "An indexable container of gadget.DigitalData objects."

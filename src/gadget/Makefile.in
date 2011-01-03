@@ -18,6 +18,7 @@ SRCS= \
 	_AnalogProxy.cpp			\
 	_BaseDeviceInterface.cpp		\
 	_Command.cpp				\
+	_CommandData.cpp			\
 	_CommandInterface.cpp			\
 	_CommandProxy.cpp			\
 	_Digital.cpp				\

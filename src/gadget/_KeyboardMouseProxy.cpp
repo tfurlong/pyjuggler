@@ -37,7 +37,7 @@ struct gadget_KeyboardMouseProxy_Wrapper
       /* Do nothing. */ ;
    }
 
-   vpr::Interval getTimeStamp() const
+   const vpr::Interval& getTimeStamp() const
    {
       try
       {
@@ -45,17 +45,16 @@ struct gadget_KeyboardMouseProxy_Wrapper
          {
             return getTimeStamp();
          }
-         return gadget::KeyboardMouseProxy::getTimeStamp();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return vpr::Interval();
+      return gadget::KeyboardMouseProxy::getTimeStamp();
    }
 
-   vpr::Interval default_getTimeStamp() const
+   const vpr::Interval& default_getTimeStamp() const
    {
       return gadget::KeyboardMouseProxy::getTimeStamp();
    }
@@ -83,7 +82,7 @@ struct gadget_KeyboardMouseProxy_Wrapper
       return gadget::KeyboardMouseProxy::config(p0);
    }
 
-   void set(const std::string& p0, gadget::KeyboardMousePtr p1)
+   void set(const std::string& p0, const gadget::KeyboardMousePtr& p1)
    {
       try
       {
@@ -102,7 +101,7 @@ struct gadget_KeyboardMouseProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, gadget::KeyboardMousePtr p1)
+   void default_set(const std::string& p0, const gadget::KeyboardMousePtr& p1)
    {
       gadget::TypedProxy<gadget::KeyboardMouse>::set(p0, p1);
    }
@@ -130,7 +129,7 @@ struct gadget_KeyboardMouseProxy_Wrapper
       return gadget::TypedProxy<gadget::KeyboardMouse>::refresh();
    }
 
-   std::string getDeviceName() const
+   const std::string& getDeviceName() const
    {
       try
       {
@@ -138,17 +137,16 @@ struct gadget_KeyboardMouseProxy_Wrapper
          {
             return getDeviceName();
          }
-         return gadget::KeyboardMouseProxy::getDeviceName();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
 
-      return std::string("UNKNOWN");
+      return gadget::KeyboardMouseProxy::getDeviceName();
    }
 
-   std::string default_getDeviceName() const
+   const std::string& default_getDeviceName() const
    {
       return gadget::TypedProxy<gadget::KeyboardMouse>::getDeviceName();
    }
@@ -221,6 +219,7 @@ void _Export_KeyboardMouseProxy()
       .def("create", &gadget::KeyboardMouseProxy::create)
       .def("getTimeStamp", &gadget::KeyboardMouseProxy::getTimeStamp,
            &pyj::gadget_KeyboardMouseProxy_Wrapper::default_getTimeStamp,
+           return_value_policy<copy_const_reference>(),
            "getTimeStamp() -> vpr.Interval object\n"
            "Returns the time of the last update."
       )
@@ -254,6 +253,7 @@ void _Export_KeyboardMouseProxy()
       )
       .def("getDeviceName", &gadget::KeyboardMouseProxy::getDeviceName,
            &pyj::gadget_KeyboardMouseProxy_Wrapper::default_getDeviceName,
+           return_value_policy<copy_const_reference>(),
            "getDeviceName() -> string object\n"
            "Gets the name of the device that we are proxying."
       )
@@ -276,9 +276,9 @@ void _Export_KeyboardMouseProxy()
            "If the device we are proxying does not exist, then this will\n"
            "return True."
       )
-      .def("getKeyboardMousePtr",
-           &gadget::KeyboardMouseProxy::getKeyboardMousePtr,
-           "getKeyboardMousePtr() -> gadget.KeyboardMouse object\n"
+      .def("getTypedInputDevice",
+           &gadget::KeyboardMouseProxy::getTypedInputDevice,
+           "getTypedInputDevice() -> gadget.KeyboardMouse object\n"
            "Returns the gadget.KeyboardMouse object held by this proxy."
       )
       .def("modifierOnly", &gadget::KeyboardMouseProxy::modifierOnly,
