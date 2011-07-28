@@ -20,12 +20,6 @@ struct gadget_StringProxy_Wrapper
    : gadget::StringProxy
    , wrapper<gadget::StringProxy>
 {
-   gadget_StringProxy_Wrapper(const gadget::StringProxy& p0)
-      : gadget::StringProxy(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
    gadget_StringProxy_Wrapper()
       : gadget::StringProxy()
    {
@@ -106,17 +100,18 @@ struct gadget_StringProxy_Wrapper
       return gadget::StringProxy::config(p0);
    }
 
-   void set(const std::string& p0, const gadget::StringPtr& p1)
+   void set(const std::string& p0, const gadget::StringPtr& p1,
+            const boost::optional<int>& p2 = boost::optional<int>())
    {
       try
       {
          if ( override set = this->get_override("set") )
          {
-            set(boost::ref(p0), p1);
+            set(boost::ref(p0), boost::ref(p1), boost::ref(p2));
          }
          else
          {
-            gadget::StringProxy::set(p0, p1);
+            gadget::StringProxy::set(p0, p1, p2);
          }
       }
       catch (error_already_set)
@@ -125,9 +120,10 @@ struct gadget_StringProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, const gadget::StringPtr& p1)
+   void default_set(const std::string& p0, const gadget::StringPtr& p1,
+                    const boost::optional<int>& p2 = boost::optional<int>())
    {
-      gadget::StringProxy::set(p0, p1);
+      gadget::StringProxy::set(p0, p1, p2);
    }
 
    bool refresh()
@@ -227,7 +223,11 @@ struct gadget_StringProxy_Wrapper
 // Module ======================================================================
 void _Export_StringProxy()
 {
-   class_<pyj::gadget_StringProxy_Wrapper, gadget::StringProxyPtr>(
+   class_<pyj::gadget_StringProxy_Wrapper
+        , gadget::StringProxyPtr
+        , boost::noncopyable
+        >
+      (
        "StringProxy",
        "A proxy class to string devices used by the Input Manager.\n\n"
        "A string proxy always points to a string device and a unit number\n"
@@ -261,6 +261,8 @@ void _Export_StringProxy()
            "Configures this proxy using the given jccl.ConfigElement\n"
            "instance."
       )
+      // TODO: Expose boost::optional to Python...
+      /*
       .def("set", &gadget::StringProxy::set,
            &pyj::gadget_StringProxy_Wrapper::default_set,
            "set(devName, devPtr)\n"
@@ -272,9 +274,10 @@ void _Export_StringProxy()
            "are proxying is set to devPtr.getInstanceName().\n"
            "Arguments:\n"
            "devName -- The name of the device at which we are pointing.\n"
-           "devPtr  -- Pointer to the device.  For gadget.String,\n"
-           "           this points to an instance of gadget.String."
+           "devPtr  -- Pointer to the device.  For gadget.StringProxy,\n"
+           "           this points to an instance of gadget.String.\n"
       )
+      */
       .def("refresh", &gadget::StringProxy::refresh,
            &pyj::gadget_StringProxy_Wrapper::default_refresh,
            "refresh() -> Boolean\n"

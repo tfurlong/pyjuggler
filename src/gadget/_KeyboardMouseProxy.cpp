@@ -20,12 +20,6 @@ struct gadget_KeyboardMouseProxy_Wrapper
    : gadget::KeyboardMouseProxy
    , wrapper<gadget::KeyboardMouseProxy>
 {
-   gadget_KeyboardMouseProxy_Wrapper(const gadget::KeyboardMouseProxy& p0)
-      : gadget::KeyboardMouseProxy(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
    gadget_KeyboardMouseProxy_Wrapper()
       : gadget::KeyboardMouseProxy()
    {
@@ -82,17 +76,18 @@ struct gadget_KeyboardMouseProxy_Wrapper
       return gadget::KeyboardMouseProxy::config(p0);
    }
 
-   void set(const std::string& p0, const gadget::KeyboardMousePtr& p1)
+   void set(const std::string& p0, const gadget::KeyboardMousePtr& p1,
+            const boost::optional<int>& p2 = boost::optional<int>())
    {
       try
       {
          if ( override set = this->get_override("set") )
          {
-            set(boost::ref(p0), p1);
+            set(boost::ref(p0), boost::ref(p1), boost::ref(p2));
          }
          else
          {
-            gadget::KeyboardMouseProxy::set(p0, p1);
+            gadget::KeyboardMouseProxy::set(p0, p1, p2);
          }
       }
       catch (error_already_set)
@@ -101,9 +96,10 @@ struct gadget_KeyboardMouseProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, const gadget::KeyboardMousePtr& p1)
+   void default_set(const std::string& p0, const gadget::KeyboardMousePtr& p1,
+                    const boost::optional<int>& p2 = boost::optional<int>())
    {
-      gadget::TypedProxy<gadget::KeyboardMouse>::set(p0, p1);
+      gadget::KeyboardMouseProxy::set(p0, p1, p2);
    }
 
    bool refresh()
@@ -205,7 +201,11 @@ struct gadget_KeyboardMouseProxy_Wrapper
 // Module ======================================================================
 void _Export_KeyboardMouseProxy()
 {
-   class_<pyj::gadget_KeyboardMouseProxy_Wrapper, gadget::KeyboardMouseProxyPtr>(
+   class_<pyj::gadget_KeyboardMouseProxy_Wrapper
+        , gadget::KeyboardMouseProxyPtr
+        , boost::noncopyable
+        >
+      (
        "KeyboardMouseProxy",
        "A proxy class to keyboard/mouse devices used by the Input Manager.\n\n"
        "A keyboard/mouse proxy always points to a keyboard/mouse device\n"
@@ -229,20 +229,24 @@ void _Export_KeyboardMouseProxy()
            "Configures this proxy using the given jccl.ConfigElement\n"
            "instance."
       )
+      // TODO: Expose boost::optional to Python...
+      /*
       .def("set", &gadget::KeyboardMouseProxy::set,
            &pyj::gadget_KeyboardMouseProxy_Wrapper::default_set,
            "set(devName, devPtr)\n"
            "Sets the proxy to point to the given type-specific device.\n"
            "Pre-condition:\n"
-           "devPtr must be a valid device of type gadget.Digital\n"
+           "devPtr must be a valid device of type gadget.KeyboardMouse\n"
            "Post-condition:\n"
            "The proxy now references the given device.  The device name we\n"
            "are proxying is set to devPtr.getInstanceName()."
            "Arguments:\n"
            "devName -- The name of the device at which we are pointing.\n"
-           "devPtr  -- Pointer to the device.  For gadget.Digital,\n"
-           "           this points to an instance of gadget.Digital."
+           "devPtr  -- Pointer to the device.  For gadget.KeyboardMouseProxy,\n"
+           "           this points to an instance of gadget.KeyboardMouse.\n"
+           "unitNum -- "
       )
+      */
       .def("refresh", &gadget::KeyboardMouseProxy::refresh,
            &pyj::gadget_KeyboardMouseProxy_Wrapper::default_refresh,
            "refresh() -> Boolean\n"

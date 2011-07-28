@@ -20,12 +20,6 @@ struct gadget_CommandProxy_Wrapper
    : gadget::CommandProxy
    , wrapper<gadget::CommandProxy>
 {
-   gadget_CommandProxy_Wrapper(const gadget::CommandProxy& p0)
-      : gadget::CommandProxy(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
    gadget_CommandProxy_Wrapper()
       : gadget::CommandProxy()
    {
@@ -106,17 +100,18 @@ struct gadget_CommandProxy_Wrapper
       return gadget::CommandProxy::config(p0);
    }
 
-   void set(const std::string& p0, const gadget::CommandPtr& p1)
+   void set(const std::string& p0, const gadget::CommandPtr& p1,
+            const boost::optional<int>& p2 = boost::optional<int>())
    {
       try
       {
          if ( override set = this->get_override("set") )
          {
-            set(boost::ref(p0), p1);
+            set(boost::ref(p0), boost::ref(p1), boost::ref(p2));
          }
          else
          {
-            gadget::CommandProxy::set(p0, p1);
+            gadget::CommandProxy::set(p0, p1, p2);
          }
       }
       catch (error_already_set)
@@ -125,9 +120,10 @@ struct gadget_CommandProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, const gadget::CommandPtr& p1)
+   void default_set(const std::string& p0, const gadget::CommandPtr& p1,
+                    const boost::optional<int>& p2 = boost::optional<int>())
    {
-      gadget::CommandProxy::set(p0, p1);
+      gadget::CommandProxy::set(p0, p1, p2);
    }
 
    bool refresh()
@@ -227,7 +223,11 @@ struct gadget_CommandProxy_Wrapper
 // Module ======================================================================
 void _Export_CommandProxy()
 {
-   class_<pyj::gadget_CommandProxy_Wrapper, gadget::CommandProxyPtr>(
+   class_<pyj::gadget_CommandProxy_Wrapper
+        , gadget::CommandProxyPtr
+        , boost::noncopyable
+        >
+      (
        "CommandProxy",
        "A proxy class to command-oriented devices used by the Input\n"
        "Manager.\n\n"
@@ -263,6 +263,8 @@ void _Export_CommandProxy()
            "Configures this proxy using the given jccl.ConfigElement\n"
            "instance."
       )
+      // TODO: Expose boost::optional to Python...
+      /*
       .def("set", &gadget::CommandProxy::set,
            &pyj::gadget_CommandProxy_Wrapper::default_set,
            "set(devName, devPtr)\n"
@@ -274,9 +276,11 @@ void _Export_CommandProxy()
            "are proxying is set to devPtr.getInstanceName().\n"
            "Arguments:\n"
            "devName -- The name of the device at which we are pointing.\n"
-           "devPtr  -- Pointer to the device.  For gadget.Command,\n"
-           "           this points to an instance of gadget.Command."
+           "devPtr  -- Pointer to the device.  For gadget.CommandProxy,\n"
+           "           this points to an instance of gadget.Command.\n"
+           "unitNum -- "
       )
+      */
       .def("refresh", &gadget::CommandProxy::refresh,
            &pyj::gadget_CommandProxy_Wrapper::default_refresh,
            "refresh() -> Boolean\n"

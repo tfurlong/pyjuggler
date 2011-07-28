@@ -20,12 +20,6 @@ struct gadget_AnalogProxy_Wrapper
    : gadget::AnalogProxy
    , wrapper<gadget::AnalogProxy>
 {
-   gadget_AnalogProxy_Wrapper(const gadget::AnalogProxy& p0)
-      : gadget::AnalogProxy(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
    gadget_AnalogProxy_Wrapper()
       : gadget::AnalogProxy()
    {
@@ -106,17 +100,18 @@ struct gadget_AnalogProxy_Wrapper
       return gadget::AnalogProxy::config(p0);
    }
 
-   void set(const std::string& p0, const gadget::AnalogPtr& p1)
+   void set(const std::string& p0, const gadget::AnalogPtr& p1,
+            const boost::optional<int>& p2 = boost::optional<int>())
    {
       try
       {
          if ( override set = this->get_override("set") )
          {
-            set(boost::ref(p0), p1);
+            set(boost::ref(p0), boost::ref(p1), boost::ref(p2));
          }
          else
          {
-            gadget::AnalogProxy::set(p0, p1);
+            gadget::AnalogProxy::set(p0, p1, p2);
          }
       }
       catch (error_already_set)
@@ -125,9 +120,10 @@ struct gadget_AnalogProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, const gadget::AnalogPtr& p1)
+   void default_set(const std::string& p0, const gadget::AnalogPtr& p1,
+                    const boost::optional<int>& p2 = boost::optional<int>())
    {
-      gadget::AnalogProxy::set(p0, p1);
+      gadget::AnalogProxy::set(p0, p1, p2);
    }
 
    bool refresh()
@@ -227,7 +223,11 @@ struct gadget_AnalogProxy_Wrapper
 // Module ======================================================================
 void _Export_AnalogProxy()
 {
-   class_<pyj::gadget_AnalogProxy_Wrapper, gadget::AnalogProxyPtr>(
+   class_<pyj::gadget_AnalogProxy_Wrapper
+       , gadget::AnalogProxyPtr
+       , boost::noncopyable
+       >
+      (
        "AnalogProxy",
        "A proxy class to analog devices used by the Input Manager.\n\n"
        "An analog proxy always points to an analog device and a unit\n"
@@ -262,6 +262,8 @@ void _Export_AnalogProxy()
            "Configures this proxy using the given jccl.ConfigElement\n"
            "instance."
       )
+      // TODO: Expose boost::optional to Python...
+      /*
       .def("set", &gadget::AnalogProxy::set,
            &pyj::gadget_AnalogProxy_Wrapper::default_set,
            "set(devName, devPtr)\n"
@@ -274,8 +276,10 @@ void _Export_AnalogProxy()
            "Arguments:\n"
            "devName -- The name of the device at which we are pointing.\n"
            "devPtr  -- Pointer to the device.  For gadget.AnalogProxy,\n"
-           "           this points to an instance of gadget.Analog."
+           "           this points to an instance of gadget.Analog.\n"
+           "unitNum -- "
       )
+      */
       .def("refresh", &gadget::AnalogProxy::refresh,
            &pyj::gadget_AnalogProxy_Wrapper::default_refresh,
            "refresh() -> Boolean\n"

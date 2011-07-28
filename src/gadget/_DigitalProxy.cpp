@@ -20,12 +20,6 @@ struct gadget_DigitalProxy_Wrapper
    : gadget::DigitalProxy
    , wrapper<gadget::DigitalProxy>
 {
-   gadget_DigitalProxy_Wrapper(const gadget::DigitalProxy& p0)
-      : gadget::DigitalProxy(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
    gadget_DigitalProxy_Wrapper()
       : gadget::DigitalProxy()
    {
@@ -109,17 +103,18 @@ struct gadget_DigitalProxy_Wrapper
       return gadget::DigitalProxy::config(p0);
    }
 
-   void set(const std::string& p0, const gadget::DigitalPtr& p1)
+   void set(const std::string& p0, const gadget::DigitalPtr& p1,
+            const boost::optional<int>& p2 = boost::optional<int>())
    {
       try
       {
          if ( override set = this->get_override("set") )
          {
-            set(boost::ref(p0), p1);
+            set(boost::ref(p0), boost::ref(p1), boost::ref(p2));
          }
          else
          {
-            gadget::DigitalProxy::set(p0, p1);
+            gadget::DigitalProxy::set(p0, p1, p2);
          }
       }
       catch (error_already_set)
@@ -128,9 +123,10 @@ struct gadget_DigitalProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, const gadget::DigitalPtr& p1)
+   void default_set(const std::string& p0, const gadget::DigitalPtr& p1,
+                    const boost::optional<int>& p2 = boost::optional<int>())
    {
-      gadget::DigitalProxy::set(p0, p1);
+      gadget::DigitalProxy::set(p0, p1, p2);
    }
 
    bool refresh()
@@ -233,7 +229,11 @@ struct gadget_DigitalProxy_Wrapper
 // Module ======================================================================
 void _Export_DigitalProxy()
 {
-   class_<pyj::gadget_DigitalProxy_Wrapper, gadget::DigitalProxyPtr>(
+   class_<pyj::gadget_DigitalProxy_Wrapper
+        , gadget::DigitalProxyPtr
+        , boost::noncopyable
+       >
+      (
        "DigitalProxy",
        "A proxy class to digital devices used by the Input Manager.\n\n"
        "A digital proxy always points to a digital device and a unit\n"
@@ -267,6 +267,8 @@ void _Export_DigitalProxy()
            "Configures this proxy using the given jccl.ConfigElement\n"
            "instance."
       )
+      // TODO: Expose boost::optional to Python...
+      /*
       .def("set", &gadget::DigitalProxy::set,
            &pyj::gadget_DigitalProxy_Wrapper::default_set,
            "set(devName, devPtr)\n"
@@ -278,9 +280,11 @@ void _Export_DigitalProxy()
            "are proxying is set to devPtr.getInstanceName()."
            "Arguments:\n"
            "devName -- The name of the device at which we are pointing.\n"
-           "devPtr  -- Pointer to the device.  For gadget.Digital,\n"
-           "           this points to an instance of gadget.Digital."
+           "devPtr  -- Pointer to the device.  For gadget.DigitalProxy,\n"
+           "           this points to an instance of gadget.Digital.\n"
+           "unitNum -- "
       )
+      */
       .def("refresh", &gadget::DigitalProxy::refresh,
            &pyj::gadget_DigitalProxy_Wrapper::default_refresh,
            "refresh() -> Boolean\n"

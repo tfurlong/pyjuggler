@@ -20,12 +20,6 @@ struct gadget_PositionProxy_Wrapper
    : gadget::PositionProxy
    , wrapper<gadget::PositionProxy>
 {
-   gadget_PositionProxy_Wrapper(const gadget::PositionProxy& p0)
-      : gadget::PositionProxy(p0)
-   {
-      /* Do nothing. */ ;
-   }
-
    gadget_PositionProxy_Wrapper()
       : gadget::PositionProxy()
    {
@@ -106,17 +100,18 @@ struct gadget_PositionProxy_Wrapper
       return gadget::PositionProxy::config(p0);
    }
 
-   void set(const std::string& p0, const gadget::PositionPtr& p1)
+   void set(const std::string& p0, const gadget::PositionPtr& p1,
+            const boost::optional<int>& p2 = boost::optional<int>())
    {
       try
       {
          if ( override set = this->get_override("set") )
          {
-            set(boost::ref(p0), p1);
+            set(boost::ref(p0), boost::ref(p1), boost::ref(p2));
          }
          else
          {
-            gadget::PositionProxy::set(p0, p1);
+            gadget::PositionProxy::set(p0, p1, p2);
          }
       }
       catch (error_already_set)
@@ -125,9 +120,10 @@ struct gadget_PositionProxy_Wrapper
       }
    }
 
-   void default_set(const std::string& p0, const gadget::PositionPtr& p1)
+   void default_set(const std::string& p0, const gadget::PositionPtr& p1,
+                    const boost::optional<int>& p2 = boost::optional<int>())
    {
-      gadget::PositionProxy::set(p0, p1);
+      gadget::PositionProxy::set(p0, p1, p2);
    }
 
    bool refresh()
@@ -227,7 +223,11 @@ struct gadget_PositionProxy_Wrapper
 // Module ======================================================================
 void _Export_PositionProxy()
 {
-   class_<pyj::gadget_PositionProxy_Wrapper, gadget::PositionProxyPtr>(
+   class_<pyj::gadget_PositionProxy_Wrapper
+        , gadget::PositionProxyPtr
+        , boost::noncopyable
+        >
+      (
        "PositionProxy",
        "A proxy class to positional devices used by the Input Manager.\n\n"
        "A position proxy always points to a positional device and a unit\n"
@@ -262,20 +262,24 @@ void _Export_PositionProxy()
            "Configures this proxy using the given jccl.ConfigElement\n"
            "instance."
       )
+      // TODO: Expose boost::optional to Python...
+      /*
       .def("set", &gadget::PositionProxy::set,
            &pyj::gadget_PositionProxy_Wrapper::default_set,
            "set(devName, devPtr)\n"
            "Sets the proxy to point to the given type-specific device.\n"
            "Pre-condition:\n"
-           "devPtr must be a valid device of type gadget.Digital\n"
+           "devPtr must be a valid device of type gadget.Position\n"
            "Post-condition:\n"
            "The proxy now references the given device.  The device name we\n"
            "are proxying is set to devPtr.getInstanceName().\n"
            "Arguments:\n"
            "devName -- The name of the device at which we are pointing.\n"
-           "devPtr  -- Pointer to the device.  For gadget.Digital,\n"
-           "           this points to an instance of gadget.Digital."
+           "devPtr  -- Pointer to the device.  For gadget.PositionProxy,\n"
+           "           this points to an instance of gadget.Position.\n"
+           "unitNum -- "
       )
+      */
       .def("refresh", &gadget::PositionProxy::refresh,
            &pyj::gadget_PositionProxy_Wrapper::default_refresh,
            "refresh() -> Boolean\n"
