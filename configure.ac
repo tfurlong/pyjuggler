@@ -2,7 +2,7 @@
 # Distributed under the GNU Lesser General Public License 2.1.  (See
 # accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
-AC_INIT([PyJuggler], [1.3], [vrjuggler-devel@lists.sourceforge.net])
+AC_INIT([PyJuggler], [2.1], [vrjuggler-devel@lists.sourceforge.net])
 AC_PREREQ([2.53])
 AC_COPYRIGHT([PyJuggler is (C) Copyright 2002-2011 by Patrick Hartling])
 AC_REVISION([$Revision$])
