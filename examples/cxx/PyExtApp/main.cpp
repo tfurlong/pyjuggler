@@ -2,15 +2,6 @@
 // Distributed under the GNU Lesser General Public License 2.1.  (See
 // accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
-#include <stdlib.h>
-
-#ifdef WIN32
-#  include <string.h>
-#else
-#  include <unistd.h>
-#endif
-
-#include <string>
 #include <boost/python.hpp>
 
 #include <vrj/Kernel/Kernel.h>

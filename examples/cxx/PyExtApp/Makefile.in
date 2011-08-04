@@ -24,13 +24,19 @@ else
    CXXFLAGS_OPT=-DPYJUGGLER_OPT -DJUGGLER_OPT -DNDEBUG -O2
    LDFLAGS_DBG=	-g
    LDFLAGS_OPT=	-O2
+ifeq (@PLATFORM@, Darwin)
+   LDFLAGS=	--export-dynamic $(LDFLAGS_OPT)
+else
    LDFLAGS=	-Wl,--export-dynamic $(LDFLAGS_OPT)
+endif
 endif
 
 CXX=		@CXX@
 CXXFLAGS+=	@PYTHON_INCLUDES@
-LIBS=		$(shell flagpoll vrjuggler --get-all-libs)
-EXTRA_LIBS=	$(shell flagpoll vrjuggler --get-all-extra-libs)
+LIBS=		$(shell flagpoll vrjuggler --get-all-libs)		\
+		$(shell flagpoll vrjuggler-opengl --get-all-libs)
+EXTRA_LIBS=	$(shell flagpoll vrjuggler --get-all-extra-libs)	\
+		$(shell flagpoll vrjuggler-opengl --get-all-extra-libs)
 
 #PYJUTIL_LIB=		-L$(topdir)/lib -lpyjutil
 

@@ -142,8 +142,6 @@ void _Export_Command()
            "           It must derive from the base config element type\n"
            "           'command_device'."
       )
-      .def("getInputTypeName", &gadget::Command::getInputTypeName
-      )
       .def("writeObject", &gadget::Command::writeObject,
            &pyj::gadget_Command_Wrapper::default_writeObject,
            "writeObject(writer)\n"

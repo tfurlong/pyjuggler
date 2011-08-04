@@ -152,7 +152,6 @@ void _Export_Analog()
            "           derive from the base config element type\n"
            "           'analog_device'."
       )
-      .def("getInputTypeName", &gadget::Analog::getInputTypeName)
       .def("getAnalogData", &gadget::Analog::getAnalogData,
            (args("devNum") = 0),
            "getAnalogData(devNum = 0) -> gadget.AnalogData object\n"

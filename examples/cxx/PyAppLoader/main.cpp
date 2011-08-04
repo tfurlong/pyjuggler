@@ -2,20 +2,14 @@
 // Distributed under the GNU Lesser General Public License 2.1.  (See
 // accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
-#include <iostream>
-#include <stdlib.h>
-
-#ifdef WIN32
-#  include <string.h>
-#else
-#  include <unistd.h>
-#endif
-
-#include <string>
-#include <vector>
 #include <boost/python.hpp>
 #include <boost/python/extract.hpp>
 #include <boost/python/converter/registry.hpp>
+
+#include <cstdlib>
+#include <cstring>
+#include <string>
+#include <vector>
 
 #include <vpr/vpr.h>
 #include <vpr/System.h>

@@ -9,6 +9,14 @@
 #include <gmtl/Vec.h>
 #include <gmtl/Generate.h>
 
+#ifdef VPR_OS_Darwin
+#   include <OpenGL/gl.h>
+#   include <OpenGL/glu.h>
+#else
+#   include <GL/gl.h>
+#   include <GL/glu.h>
+#endif
+
 #include <PyExtApp.h>
 
 
