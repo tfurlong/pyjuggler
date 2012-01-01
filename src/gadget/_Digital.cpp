@@ -1,4 +1,4 @@
-// PyJuggler is (C) Copyright 2002-2011 by Patrick Hartling
+// PyJuggler is (C) Copyright 2002-2012 by Patrick Hartling
 // Distributed under the GNU Lesser General Public License 2.1.  (See
 // accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
@@ -154,8 +154,6 @@ void _Export_Digital()
            "           derive from the base config element type\n"
            "           'digital_device'."
       )
-      .def("getInputTypeName", &gadget::Digital::getInputTypeName
-      )
       .def("writeObject", &gadget::Digital::writeObject,
            &pyj::gadget_Digital_Wrapper::default_writeObject,
            "writeObject(writer)\n"
@@ -199,7 +197,6 @@ void _Export_Digital()
            "Returns the current stable sample buffers for this device."
       )
       .staticmethod("create")
-      .staticmethod("getInputTypeName")
    ;
 
    class_< std::vector<gadget::DigitalData> >("DigitalDataVec",

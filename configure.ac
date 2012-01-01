@@ -1,10 +1,10 @@
-# PyJuggler is (C) Copyright 2002-2011 by Patrick Hartling
+# PyJuggler is (C) Copyright 2002-2012 by Patrick Hartling
 # Distributed under the GNU Lesser General Public License 2.1.  (See
 # accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
-AC_INIT([PyJuggler], [2.1], [vrjuggler-devel@lists.sourceforge.net])
+AC_INIT([PyJuggler], [2.1], [vrjuggler-devel@googlegroups.com])
 AC_PREREQ([2.53])
-AC_COPYRIGHT([PyJuggler is (C) Copyright 2002-2011 by Patrick Hartling])
+AC_COPYRIGHT([PyJuggler is (C) Copyright 2002-2012 by Patrick Hartling])
 AC_REVISION([$Revision$])
 AC_CONFIG_SRCDIR([src/gadgeteer-wrappers.h])
 AC_CONFIG_AUX_DIR([dpp/scripts])
