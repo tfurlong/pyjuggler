@@ -138,12 +138,10 @@
     <section>
       <title>Downloading</title>
 
-      <para>PyJuggler is distributed from the VR Juggler SourceForge.net
-      <ulink url="http://www.sourceforge.net/projects/vrjuggler/">project
-      site</ulink>. Because PyJuggler is still in the developmental stages, it
-      is recommended that users keep up to date with the latest version at all
-      times. PyJuggler will always keep up to date with the VR Juggler API,
-      and because it provides a one-to-one mapping of C++ to Python, the API
+      <para>PyJuggler is distributed from the PyJuggler Google Code <ulink
+      url="http://code.google.com/p/pyjuggler/">project site</ulink>. We
+      strive to keep PyJuggler up to date with the VR Juggler API. Because
+      PyJuggler provides a one-to-one mapping of C++ to Python, the basic API
       will be identical except for slight differences based on Python
       syntax.</para>
 
