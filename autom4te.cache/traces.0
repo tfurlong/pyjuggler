@@ -1,0 +1,2873 @@
+m4trace:dpp/config/abi.m4:101: -1- AC_DEFUN([DPP_ABI_CFG], [
+   ABI=$1
+   ISA=$2
+   : ${LIBBITSUF:=$3}
+   ABI_FLAGS="$4 $5"
+   _EXTRA_FLAGS="$4 $5"
+   PLATFORM_SDK=$5
+])
+m4trace:dpp/config/abi.m4:129: -1- AC_DEFUN([DPP_ABI_SETUP], [
+   AC_BEFORE([$0], [DPP_SYSTEM_SETUP])
+
+   dnl -----------------------------------------------------------------------
+   dnl Define the binary format.  Possible values are the following:
+   dnl     N32_M3           - On IRIX, use N32 mips3 binaries
+   dnl     N32_M4           - On IRIX, use N32 mips4 binaries
+   dnl     64_M3            - On IRIX, use 64-bit mips3 binaries
+   dnl     64_M4            - On IRIX, use 64-bit mips4 binaries
+   dnl     ELF_i386         - On an i386 OS (e.g., Linux/i386), use ELF
+   dnl                        binaries
+   dnl     ELF_x86_64       - On an AMD64/x86_64/x64 OS (e.g., Linux/amd64),
+   dnl                        use ELF binaries
+   dnl     WIN32_i386       - On an i386 Win32 OS, use Win32 binaries
+   dnl     COFF_ALPHA       - On an Alpha, use COFF binaries
+   dnl     ELF_ALPHA        - On an Alpha, use ELF binaries
+   dnl     HP               - On HP-UX, use PA-RISC binaries
+   dnl     HP64             - On HP-UX, use 64-bit PA-RISC binaries
+   dnl     DARWIN_PPC       - On Darwin, use PowerPC binaries
+   dnl     DARWIN_i386      - On Darwin, use i386 binaries
+   dnl     DARWIN_x86_64    - On Darwin, use AMD64/EM64T binaries
+   dnl     DARWIN_UNIVERSAL - On Darwin, use Mach-O universal binaries
+   dnl -----------------------------------------------------------------------
+   AC_ARG_WITH(abi,
+               [  --with-abi=<N32_M3|N32_M4|64_M3|64_M4|ELF_i386|ELF_x86_64|WIN32_i386|COFF_ALPHA|ELF_ALPHA|HP|HP64|DARWIN_PPC|DARWIN_i386|DARWIN_x86_64|DARWIN_UNIVERSAL>
+                          Define the Application Binary
+                          Interface to use],
+               DPP_ABI_TYPE="$withval")
+
+   AC_ARG_WITH([macosx-sdk],
+               [  --with-macosx-sdk=<PATH>
+                          Path to Mac OS X platform SDK   [default=none]],
+               [osx_platform_sdk="$withval"], [dpp_platform_sdk=''])
+
+   if test "x$osx_platform_sdk" != "x" ; then
+      changequote(<<, >>)
+      min_osx_ver=`echo $osx_platform_sdk | sed -e 's/.*MacOSX\(10\.[^u]*\)u*\.sdk.*/\1/'`
+      changequote([, ])
+      osx_sdk_flags="-isysroot $osx_platform_sdk -mmacosx-version-min=$min_osx_ver"
+   fi
+
+   dnl Based on the value of $abi_type, set $ABI for later use and the
+   dnl Makefile substitution variables $LIBBITSUF and $ISA.
+   case "x$DPP_ABI_TYPE" in
+      x64_M3)
+         DPP_ABI_CFG([64], [mips3], [64], [-64 -mips3])
+         ;;
+      x64_M4)
+         DPP_ABI_CFG([64], [mips4], [64], [-64 -mips4])
+         ;;
+      xN32_M3)
+         DPP_ABI_CFG([N32], [mips3], [32], [-n32 -mips3])
+         ;;
+      xN32_M4)
+         DPP_ABI_CFG([N32], [mips4], [32], [-n32 -mips4])
+         ;;
+      xELF_i386)
+         DPP_ABI_CFG([ELF], [i386], , [-m32])
+         ;;
+      xELF_x86_64)
+         DPP_ABI_CFG([ELF], [x86_64], [64], [-m64])
+         ;;
+      xWIN32_i386)
+         DPP_ABI_CFG([WIN32])
+         ;;
+      xCOFF_ALPHA)
+         DPP_ABI_CFG([COFF], [alpha])
+         ;;
+      xELF_ALPHA)
+         DPP_ABI_CFG([ELF], [alpha])
+         ;;
+      xHP)
+         DPP_ABI_CFG([HP], [pa-risc])
+         ;;
+      xHP64)
+         DPP_ABI_CFG([HP64], [pa-risc], [/pa20_64], [+DD64])
+         ;;
+      xDARWIN_PPC)
+         DPP_ABI_CFG([Mach-O], [powerpc], , [-arch ppc], [$osx_sdk_flags])
+         ;;
+      xDARWIN_i386)
+         DPP_ABI_CFG([Mach-O], [i386], , [-arch i386], [$osx_sdk_flags])
+         ;;
+      xDARWIN_x86_64)
+         DPP_ABI_CFG([Mach-O], [x86_64], , [-arch x86_64], [$osx_sdk_flags])
+         ;;
+      xDARWIN_UNIVERSAL)
+         : ${UNIVERSAL_ARCH_LIST='ppc i386'}
+         dpp_universal_arch_flags=''
+         for a in $UNIVERSAL_ARCH_LIST ; do
+            dpp_universal_arch_flags="$dpp_universal_arch_flags -arch $a"
+         done
+         DPP_ABI_CFG([Mach-O], [universal], , [$dpp_universal_arch_flags],
+                     [$osx_sdk_flags])
+         ;;
+   esac
+
+   dnl -----------------------------------------------------------------------
+   dnl Do the substition step for the variables $ABI, $ISA and $LIBBITSUF.
+   dnl -----------------------------------------------------------------------
+   AC_SUBST(ABI)
+   AC_SUBST(ISA)
+   AC_SUBST(LIBBITSUF)
+   AC_SUBST(PLATFORM_SDK)
+   AC_SUBST(UNIVERSAL_ARCH_LIST)
+])
+m4trace:dpp/config/basic_progs.m4:52: -1- AC_DEFUN([DPP_BASIC_PROGS], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+
+   AC_PROG_MAKE_SET
+
+   dnl While ranlib(1) is not part of the base IRIX installation, the VRAC
+   dnl SGIs have a ranlib(1) installed that does very bad things to ar(1)
+   dnl archives.  We also do not want to use the Cygwin ranlib(1) with the
+   dnl Visual C++ LINK.EXE command.
+   if test "x$dpp_platform" = "xIRIX" -o "x$1" = "xIRIX" -o	\
+           "x$dpp_os_type" = "xWin32" -o "x$2" = "xWin32"
+   then
+      RANLIB=':'
+   else
+      AC_PROG_RANLIB
+   fi
+
+   AC_PROG_LN_S
+
+   if test "x$USE_MAKEDEPEND" = "xY" ; then
+      AC_CHECK_PROG([MAKEDEPEND], [makedepend], [makedepend])
+   fi
+])
+m4trace:dpp/config/basic_progs.m4:92: -1- AC_DEFUN([DPP_MAKE_IS_GNU_MAKE], [
+   AC_MSG_CHECKING([whether $1 is GNU make])
+   dpp_gmake_ver_cmd='$1 --version | grep GNU 1>&AC_FD_CC'
+
+   if (eval "$dpp_gmake_ver_cmd") 2>&AC_FD_CC ; then
+      AC_MSG_RESULT(yes)
+      ifelse([$2], , :, [$2])
+   else
+      AC_MSG_RESULT(no)
+      ifelse([$3], , :, [$3])
+   fi
+])
+m4trace:dpp/config/basic_progs.m4:124: -1- AC_DEFUN([DPP_HAVE_GNU_MAKE], [
+   dpp_GMAKE=''
+
+   if test "x$GMAKE" = "x" ; then
+      AC_CHECK_PROG([dpp_make_is_gmake], [make], [make], [no], $4)
+
+      if test "x$dpp_make_is_gmake" != "xno" ; then
+         DPP_MAKE_IS_GNU_MAKE([$dpp_make_is_gmake],
+            [GMAKE="$dpp_make_is_gmake"],
+            [ AC_CHECK_PROG([dpp_gmake_is_gmake], [gmake], [gmake], [no], $4)
+              DPP_MAKE_IS_GNU_MAKE([$dpp_gmake_is_gmake],
+                                   [GMAKE="$dpp_gmake_is_gmake"], $3) ])
+      else
+         AC_CHECK_PROG([dpp_gmake_is_gmake], [gmake], [gmake], [no], $4)
+
+         if test "x$dpp_gmake_is_gmake" != "xno" ; then
+            DPP_MAKE_IS_GNU_MAKE([$dpp_gmake_is_gmake],
+                                 [GMAKE="$dpp_gmake_is_gmake"], $3)
+         else
+            ifelse([$3], , :, [$3])
+         fi
+      fi
+   fi
+
+   dnl The sed(1) expressions below will work with GNU Make 3.7x and 3.8x.
+   dnl The basic idea is to extract the "GNU Make x.yz" string and then pick
+   dnl out the "x.yz" part.
+   dnl dpp_gmake_ver_exp2 handles cases such as "3.82alpha12" by taking out
+   dnl the "alpha12" part.
+   changequote(<<, >>)
+   dpp_gmake_ver_exp1='s/^\(.*\),.*$/\1/'
+   dpp_gmake_ver_exp2='s/^\(.*[0-9]\)[a-bA-B].*$/\1/'
+   dpp_gmake_ver_exp3='s/^GNU Make[^0-9]*\(.*\)/\1/'
+   dpp_gmake_ver=`$GMAKE --version | grep 'GNU Make' | sed -e "$dpp_gmake_ver_exp1" -e "$dpp_gmake_ver_exp2" -e "$dpp_gmake_ver_exp3"`
+   changequote([, ])
+
+   DPP_VERSION_CHECK_MSG_NO_CACHE([GNU make], [$dpp_gmake_ver], [$1], [$2],
+                                  [$3])
+
+   AC_SUBST(GMAKE)
+])
+m4trace:dpp/config/compiler.m4:126: -1- AC_DEFUN([DPP_COMPILER_FLAG], [
+   AC_CACHE_CHECK([whether $1 accepts $2], $3,
+[echo 'void f(){;}' > conftest.$ac_ext
+if test -z "`$1 $2 -c conftest.$ac_ext 2>&1`"; then
+  $3='yes'
+else
+  $3='no'
+fi
+rm -f conftest*
+])
+])
+m4trace:dpp/config/compiler.m4:146: -1- AC_DEFUN([DPP_SETUP_COMPILER], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+
+   dnl Archive library command (generally ar(1)) and associated flags.
+   dnl $AR_NAME_FLAG is an extra (optional) argument that allows $AR to
+   dnl name its output file.
+   AR=''
+   ARFLAGS=''
+   AR_NAME_FLAG=''
+
+   dnl Flag for the compiler to generate dependencies
+   DEP_GEN_FLAG='-M'
+
+   dnl Shared library command (usually ld(1)) and associated flags.
+   LD=''
+   LDOPTS=''
+   LDOPTS_DBG=''
+   LDOPTS_OPT=''
+   LDOPTS_PROF=''
+   C_DLL=''
+   CXX_DLL=''
+   C_PLUGIN=''
+   CXX_PLUGIN=''
+   OBJC_DLL=''
+   OBJCXX_DLL=''
+   OBJC_PLUGIN=''
+   OBJCXX_PLUGIN=''
+
+   dnl Flag used for naming a compiled object file.
+   OBJ_NAME_FLAG='-o $[@]'
+   OBJ_BUILD_FLAG='-c'
+   EXE_NAME_FLAG='-o $[@]'
+   DYLIB_NAME_FLAG="$EXE_NAME_FLAG"
+
+   dnl Library naming conventions (prefix, extension for static libraries,
+   dnl extension for dynamic libraries respectively).
+   LIB_PREFIX='lib'
+   STATICLIB_EXT='a'
+   DYNAMICLIB_EXT=''
+
+   dnl Compiler object file debugging flags and optimization flags
+   dnl respectively.
+   DBG_FLAGS=''
+   OPT_FLAGS=''
+
+   dnl Initialize these here just to be safe.  Subsequent code will fill in
+   dnl the details.
+   C_WARNS_LEVEL_0=''
+   C_WARNS_LEVEL_1=''
+   C_WARNS_LEVEL_2=''
+   C_WARNS_LEVEL_3=''
+   C_WARNS_LEVEL_4=''
+   C_WARNS_LEVEL_5=''
+   CXX_WARNS_LEVEL_0=''
+   CXX_WARNS_LEVEL_1=''
+   CXX_WARNS_LEVEL_2=''
+   CXX_WARNS_LEVEL_3=''
+   CXX_WARNS_LEVEL_4=''
+   CXX_WARNS_LEVEL_5=''
+   OBJC_WARNS_LEVEL_0=''
+   OBJC_WARNS_LEVEL_1=''
+   OBJC_WARNS_LEVEL_2=''
+   OBJC_WARNS_LEVEL_3=''
+   OBJC_WARNS_LEVEL_4=''
+   OBJC_WARNS_LEVEL_5=''
+   OBJCXX_WARNS_LEVEL_0=''
+   OBJCXX_WARNS_LEVEL_1=''
+   OBJCXX_WARNS_LEVEL_2=''
+   OBJCXX_WARNS_LEVEL_3=''
+   OBJCXX_WARNS_LEVEL_4=''
+   OBJCXX_WARNS_LEVEL_5=''
+
+   dnl IRIX junk.
+   DSOREGFILE=''
+   DSOVERSION=''
+   DSOVERSIONOPTS=''
+
+   USE_MAKEDEPEND='N'
+
+   dpp_opt_level=${OPT_LEVEL-2}
+
+   dnl The OS for which this is being configured.  The operating systems are
+   dnl listed alphabetically.
+   case $target_os in
+      dnl IBM RS/6000 running AIX.
+      aix*)
+         DPP_SETUP_GCC($dpp_opt_level)
+         DYNAMICLIB_EXT='so'
+         ;;
+      dnl i386-class machine running Windows {98,NT} with Cygnus GNU-Win32.
+      cygwin)
+         if test "x$ICC" = "xyes" ; then
+            DPP_SETUP_ICC($dpp_opt_level)
+         elif test "x$USE_GCC" = "xyes" ; then
+            DPP_SETUP_GCC($dpp_opt_level)
+         else
+            AR='link /lib'
+            ARFLAGS="$ARFLAGS /nologo"
+            AR_NAME_FLAG='/out:'
+            CFLAGS="$CFLAGS /nologo"
+            CXXFLAGS="$CXXFLAGS /nologo"
+            DBG_FLAGS='/Od /GZ /Z7'
+            DEP_GEN_FLAG='/FD'
+            OPT_FLAGS="/Ogityb$dpp_opt_level /GB"
+            LD='link /dll'
+            LDOPTS="$LDOPTS /nologo"
+            LDOPTS_DBG='/DEBUG'
+            LDOPTS_OPT='/RELEASE'
+            C_DLL='link /dll'
+            CXX_DLL='link /dll'
+            C_PLUGIN='link /dll'
+            CXX_PLUGIN='link /dll'
+            OBJ_NAME_FLAG='/Fo$[@]'
+            OBJ_BUILD_FLAG='/c'
+            EXE_NAME_FLAG='/OUT:$[@]'
+            DYLIB_NAME_FLAG="$EXE_NAME_FLAG"
+
+            USE_MAKEDEPEND='Y'
+         fi
+
+         DEPEND_EXTRAS="-D_WIN32 -D_M_IX86 $DEPEND_EXTRAS"
+         LIB_PREFIX=''
+         STATICLIB_EXT='lib'
+         DYNAMICLIB_EXT='dll'
+
+         AC_DEFINE(WIN32, , [define if compiling on a Win32 platform])
+         AC_DEFINE(_MBCS, , [define if compiling on a Win32 platform])
+         ;;
+      dnl A machine running Mac OS X.
+      darwin*)
+         AR='libtool'
+         ARFLAGS='-static'
+         AR_NAME_FLAG='-o '
+         LD='$(CXX) -dynamiclib'
+         LDOPTS=''
+         C_DLL='$(CC) -dynamiclib'
+         CXX_DLL='$(CXX) -dynamiclib'
+         C_PLUGIN='$(CC) -bundle'
+         CXX_PLUGIN='$(CXX) -bundle'
+         OBJC_DLL='$(OBJC) -dynamiclib'
+         OBJCXX_DLL="$CXX_DLL"
+         OBJC_PLUGIN='$(OBJC) -bundle'
+         OBJCXX_PLUGIN="$CXX_PLUGIN"
+         OPT_FLAGS="-O$dpp_opt_level"
+         DBG_FLAGS='-g'
+         DYNAMICLIB_EXT='dylib'
+         CFLAGS="-fno-common $CFLAGS"
+         CXXFLAGS="-fno-common $CXXFLAGS"
+         OBJCFLAGS="-fno-common $OBJCFLAGS"
+         OBJCXXFLAGS="-fno-common $OBJCXXFLAGS"
+         ;;
+      dnl A machine running FreeBSD.
+      freebsd*)
+         if test "x$ICC" = "xyes" ; then
+            DPP_SETUP_ICC($dpp_opt_level)
+         else
+            DPP_SETUP_GCC($dpp_opt_level)
+         fi
+         DYNAMICLIB_EXT='so'
+         ;;
+      dnl A machine running DragonFly.
+      dragonfly*)
+         if test "x$ICC" = "xyes" ; then
+            DPP_SETUP_ICC($dpp_opt_level)
+         else
+            DPP_SETUP_GCC($dpp_opt_level)
+         fi
+         DYNAMICLIB_EXT='so'
+         ;;
+      dnl HP PA-RISC machine running HP-UX 10.20.
+      hpux10.20)
+         DPP_SETUP_GCC($dpp_opt_level)
+
+         if test "x$USE_GCC" != "xyes" ; then
+            CFLAGS="-Aa $CFLAGS"
+            CXXFLAGS="+p $CXXFLAGS"
+         fi
+
+         LD='ld'
+         C_DLL='ld'
+         CXX_DLL='ld'
+         C_PLUGIN='ld'
+         CXX_PLUGIN='ld'
+         LDFLAGS="$LDFLAGS -L/usr/lib/X11R6"
+         LDOPTS='-b'
+         OPT_FLAGS='+inline_level 3'
+         DYNAMICLIB_EXT='sl'
+         ;;
+      dnl HP PA-RISC machine running HP-UX 11.x.
+      hpux11*)
+         DPP_SETUP_GCC($dpp_opt_level)
+
+         if test "x$USE_GCC" != "xyes" ; then
+            CFLAGS="-Aa $CFLAGS"
+            CXXFLAGS="-AA $CXXFLAGS"
+            DEP_GEN_FLAG='-E +m'
+            LD='$(CXX)'
+            C_DLL='$(CC)'
+            CXX_DLL='$(CXX)'
+            C_PLUGIN='$(CC)'
+            CXX_PLUGIN='$(CXX)'
+            LDOPTS='-b'
+         else
+            LD='ld'
+            C_DLL='ld'
+            CXX_DLL='ld'
+            C_PLUGIN='ld'
+            CXX_PLUGIN='ld'
+         fi
+
+         LDFLAGS="$LDFLAGS -L/usr/lib/X11R6"
+         OPT_FLAGS=''
+         DYNAMICLIB_EXT='sl'
+         ;;
+      dnl A machine running IRIX 6.x.
+      irix6*)
+         if test "x$USE_GCC" = "xyes" ; then
+            DPP_SETUP_GCC($dpp_opt_level)
+
+            dpp_cc_defs_file='/etc/compiler.defaults'
+
+            if test -r "$dpp_cc_defs_file" ; then
+               dpp_cc_defs=`cat $dpp_cc_defs_file`
+               dpp_abi_val=`echo $dpp_cc_defs | sed -e 's/.*abi=\([[a-z0-9]]\{2,3\}\).*/\1/'`
+               dpp_isa_val=`echo $dpp_cc_defs | sed -e 's/.*isa=\(mips[[0-9]]\).*/\1/'`
+ 
+               dpp_abi_isa_name=''
+
+               if test "x$dpp_abi_val" = "xn32" ; then
+                  dpp_abi_isa_name='N32_'
+                  dpp_abi_val='N32'
+                  dpp_bit_suffix='32'
+               elif test "x$dpp_abi_val" = "x64" ; then
+                  dpp_abi_isa_name='64_'
+                  dpp_bit_suffix='64'
+               else
+                  AC_MSG_WARN([*** Unknown ABI type $dpp_abi_val ***])
+               fi
+
+               if test "x$dpp_isa_val" = "xmips3" ; then
+                  dpp_abi_isa_name="${dpp_abi_isa_name}M3"
+               elif test "x$dpp_isa_val" = "xmips4" ; then
+                  dpp_abi_isa_name="${dpp_abi_isa_name}M4"
+               else
+                  AC_MSG_WARN([*** Unknown ISA type $dpp_isa_val ***])
+               fi
+
+               DPP_ABI_CFG([$dpp_abi_val], [$dpp_isa_val], [$dpp_bit_suffix])
+               ABI_LIST="$dpp_abi_isa_name"
+            else
+               AC_MSG_WARN([*** Defaulting ABI list to N32_M3 ***])
+               ABI_LIST='N32_M3'
+            fi
+         else
+            STDFLAGS=''
+
+            if test "x$dpp_std" = "xyes" ; then
+               STDFLAGS='-LANG:std'
+            fi
+
+            dnl Set compiler flags and the location of $DSOREGFILE
+            dnl depending on $ABI.
+            if test "x$ABI" = "x64" ; then
+               DSOREGFILE='/usr/lib64/so_locations'
+               OPT_FLAGS="-O$dpp_opt_level -OPT:Olimit=0"
+            elif test "x$ABI" = "xN32" ; then
+               DSOREGFILE='/usr/lib32/so_locations'
+               OPT_FLAGS="-O$dpp_opt_level -OPT:Olimit=0"
+            elif test "x$ABI" = "xO32" ; then
+               DSOREGFILE='/usr/lib/so_locations'
+               OPT_FLAGS="-O$dpp_opt_level -Olimit 0"
+            fi
+
+            AR='$(CXX)'
+            ARFLAGS="$STDFLAGS -J6 -ar -WR,-v -o"
+
+            CXXFLAGS="$CXXFLAGS $STDFLAGS"
+
+            DBG_FLAGS="-g"
+dnl            _LD_REGOPTS='-check_registry $(DSOREGFILE)'
+            LDOPTS="$LDOPTS $STDFLAGS -all ${_LD_REGOPTS} -elf -rdata_shared"
+            LDFLAGS_STATIC='-B static'
+            LDFLAGS_DYNAMIC='-B dynamic'
+
+
+            DSOVERSION='sgi4.0'
+            DSOVERSIONOPTS='-set_version $(DSOVERSION)'
+
+            ABI_LIST='64_M4 64_M3 N32_M4 N32_M3'
+         fi
+
+         LD='$(CXX) -shared'
+         C_DLL='$(CC) -shared'
+         CXX_DLL='$(CXX) -shared'
+         C_PLUGIN='$(CC) -shared'
+         CXX_PLUGIN='$(CXX) -shared'
+         DYNAMICLIB_EXT='so'
+         ;;
+      dnl A machine running Linux.
+      linux*)
+         if test "x$ICC" = "xyes" ; then
+            DPP_SETUP_ICC($dpp_opt_level)
+         else
+            DPP_SETUP_GCC($dpp_opt_level)
+         fi
+         DYNAMICLIB_EXT='so'
+         ;;
+      dnl A machine running NetBSD.
+      netbsd*)
+         if test "x$ICC" = "xyes" ; then
+            DPP_SETUP_ICC($dpp_opt_level)
+         else
+            DPP_SETUP_GCC($dpp_opt_level)
+         fi
+         DYNAMICLIB_EXT='so'
+         ;;
+      dnl A machine running OpenBSD.
+      openbsd*)
+         if test "x$ICC" = "xyes" ; then
+            DPP_SETUP_ICC($dpp_opt_level)
+         else
+            DPP_SETUP_GCC($dpp_opt_level)
+         fi
+         DYNAMICLIB_EXT='so'
+         ;;
+      dnl DEC Alpha running Digital UNIX 4.0.
+      osf4.0)
+         DPP_SETUP_GCC($dpp_opt_level)
+         DYNAMICLIB_EXT='so'
+         ;;
+      dnl A machine running Solaris (aka SunOS).
+      solaris*)
+         dnl GCC.
+         if test "x$USE_GCC" = "xyes" ; then
+            DPP_SETUP_GCC($dpp_opt_level)
+         dnl Sun WorkShop.
+         else
+            AR='ar'
+            ARFLAGS='-ruv'
+            LDOPTS=''
+            OPT_FLAGS="-O$dpp_opt_level"
+            DBG_FLAGS='-g'
+            DEP_GEN_FLAG='-xM'
+         fi
+
+         LD='$(CXX) -G'
+         C_DLL='$(CC) -G'
+         CXX_DLL='$(CXX) -G'
+         C_PLUGIN='$(CC) -G'
+         CXX_PLUGIN='$(CXX) -G'
+         DYNAMICLIB_EXT='so'
+         ;;
+   esac
+
+   AC_SUBST(AR)
+   AC_SUBST(ARFLAGS)
+   AC_SUBST(AR_NAME_FLAG)
+   AC_SUBST(CFLAGS)
+   AC_SUBST(CXXFLAGS)
+   AC_SUBST(C_DLL)
+   AC_SUBST(CXX_DLL)
+   AC_SUBST(C_PLUGIN)
+   AC_SUBST(CXX_PLUGIN)
+   AC_SUBST(DEP_GEN_FLAG)
+   AC_SUBST(DEPEND_FLAGS)
+   AC_SUBST(DEPEND_EXTRAS)
+   AC_SUBST(INCLUDES)
+   AC_SUBST(LD)
+   AC_SUBST(LIBS)
+   AC_SUBST(LDOPTS)
+   AC_SUBST(LDOPTS_DBG)
+   AC_SUBST(LDOPTS_OPT)
+   AC_SUBST(LDOPTS_PROF)
+   AC_SUBST(OBJCFLAGS)
+   AC_SUBST(OBJCXXFLAGS)
+   AC_SUBST(OBJC_DLL)
+   AC_SUBST(OBJCXX_DLL)
+   AC_SUBST(OBJC_PLUGIN)
+   AC_SUBST(OBJCXX_PLUGIN)
+   AC_SUBST(OBJ_NAME_FLAG)
+   AC_SUBST(OBJ_BUILD_FLAG)
+   AC_SUBST(EXE_NAME_FLAG)
+   AC_SUBST(DYLIB_NAME_FLAG)
+
+   AC_SUBST(DBG_FLAGS)
+   AC_SUBST(OPT_FLAGS)
+
+   AC_SUBST(LDFLAGS_STATIC)
+   AC_SUBST(LDFLAGS_DYNAMIC)
+
+   AC_SUBST(LIB_PREFIX)
+   AC_SUBST(STATICLIB_EXT)
+   AC_SUBST(DYNAMICLIB_EXT)
+
+   AC_SUBST(C_WARNS_LEVEL_0)
+   AC_SUBST(C_WARNS_LEVEL_1)
+   AC_SUBST(C_WARNS_LEVEL_2)
+   AC_SUBST(C_WARNS_LEVEL_3)
+   AC_SUBST(C_WARNS_LEVEL_4)
+   AC_SUBST(C_WARNS_LEVEL_5)
+   AC_SUBST(CXX_WARNS_LEVEL_0)
+   AC_SUBST(CXX_WARNS_LEVEL_1)
+   AC_SUBST(CXX_WARNS_LEVEL_2)
+   AC_SUBST(CXX_WARNS_LEVEL_3)
+   AC_SUBST(CXX_WARNS_LEVEL_4)
+   AC_SUBST(CXX_WARNS_LEVEL_5)
+   AC_SUBST(OBJC_WARNS_LEVEL_0)
+   AC_SUBST(OBJC_WARNS_LEVEL_1)
+   AC_SUBST(OBJC_WARNS_LEVEL_2)
+   AC_SUBST(OBJC_WARNS_LEVEL_3)
+   AC_SUBST(OBJC_WARNS_LEVEL_4)
+   AC_SUBST(OBJC_WARNS_LEVEL_5)
+   AC_SUBST(OBJCXX_WARNS_LEVEL_0)
+   AC_SUBST(OBJCXX_WARNS_LEVEL_1)
+   AC_SUBST(OBJCXX_WARNS_LEVEL_2)
+   AC_SUBST(OBJCXX_WARNS_LEVEL_3)
+   AC_SUBST(OBJCXX_WARNS_LEVEL_4)
+   AC_SUBST(OBJCXX_WARNS_LEVEL_5)
+
+   AC_SUBST(DSOREGFILE)
+   AC_SUBST(DSOVERSION)
+   AC_SUBST(DSOVERSIONOPTS)
+
+   AC_SUBST(USE_MAKEDEPEND)
+])
+m4trace:dpp/config/compiler.m4:595: -1- AC_DEFUN([DPP_CHECK_CC_FALLBACKS], [
+   dpp_save_CFLAGS="$CFLAGS"
+   CFLAGS="$CFLAGS $2 $ABI_FLAGS"
+
+   dnl Get the platform-specific compiler hint value.
+   dpp_cc_var="CC_$dpp_platform"
+   dpp_cc_val=`eval echo '$''{'$dpp_cc_var'}'`
+
+   if test "x$dpp_cc_val" != "x" -a "x$CC" = "x" ; then
+      CC="$dpp_cc_val"
+   fi
+
+   if test "x$1" != "x" -o "x$CC" != "x" ; then
+      if test "x$1" != "x" ; then
+         dpp_CC_found_val=$1
+         AC_CHECK_PROG([dpp_CC_check_val], $1, $1, , $4)
+      else
+         dpp_CC_found_val="$CC"
+         AC_CHECK_PROG([dpp_CC_check_val], [$CC], [$CC], , $4)
+      fi
+
+      if test "x$dpp_CC_check_val" = "x$dpp_CC_found_val" ; then
+         CC="$dpp_CC_found_val"
+      else
+         dpp_CC_found='no'
+
+         dnl If the caller provided a list of fallbacks in the $CC_FALLBACKS
+         dnl variable, loop over them and try to use another C compiler.
+         if test "x$CC_FALLBACKS" != "x" ; then
+            for dpp_cc in $CC_FALLBACKS ; do
+               AC_CHECK_PROG([dpp_CC_check_val], [$dpp_cc], [$dpp_cc], , $4)
+               if test "x$dpp_CC_check_val" = "x$dpp_cc" ; then
+                  CC="$dpp_cc"
+                  dpp_CC_found='yes'
+                  break
+               fi
+            done
+         fi
+
+         dnl No viable C compiler was found.
+         if test "x$dpp_CC_found" = "xno" ; then
+            ifelse([$3], , :, [$3])
+         fi
+      fi
+   fi
+])
+m4trace:dpp/config/compiler.m4:652: -1- AC_DEFUN([DPP_PROG_CC], [
+   AC_REQUIRE([AC_PROG_CC])
+   AC_PROG_CPP
+   DPP_C_COMPILER_INTEL
+
+   CFLAGS="$dpp_save_CFLAGS"
+
+   if test "x$ICC" = "xyes" ; then
+      CFLAGS_DYNLIB='-KPIC'
+   dnl If GCC will be the C compiler, -fPIC is the position-independent code
+   dnl generation option.
+   elif test "x$GCC" = "xyes" ; then
+      CFLAGS_DYNLIB='-fPIC'
+   dnl Otherwise, get the platform-specific compiler PIC option hint value.
+   else
+      dpp_cc_pic_var="CC_PIC_$dpp_platform"
+      CFLAGS_DYNLIB=`eval echo '$''{'$dpp_cc_pic_var'}'`
+   fi
+
+   CFLAGS_DYNLIB="$CFLAGS_DYNLIB -DPIC"
+
+   AC_SUBST(CFLAGS_DYNLIB)
+])
+m4trace:dpp/config/compiler.m4:686: -1- AC_DEFUN([DPP_PROG_CC_NOSTDINC], [
+   DPP_COMPILER_FLAG([${CC-cc}], [-nostdinc], [dpp_cv_prog_cc_nostdinc])
+
+   dnl If the compiler supports -nostdinc, use it to clear the include path.
+   if test "x$dpp_cv_prog_cc_nostdinc" = "xyes" ; then
+      dpp_cc_nostdinc='yes'
+      CC_NOSTDINC_FLAGS='-nostdinc'
+   dnl Otherwise, check if -I- will do the job.
+   else
+      dpp_cc_nostdinc='no'
+
+      DPP_COMPILER_FLAG([${CC-cc}], [-I-], [dpp_cv_prog_cc_inc_clear])
+
+      if test "x$dpp_cv_prog_cc_nostdinc" = "xyes" ; then
+         dpp_cc_inc_clear='yes'
+         CC_NOSTDINC_FLAGS='-I-'
+      else
+         CC_NOSTDINC_FLAGS=''
+         dpp_cc_inc_clear='no'
+      fi
+   fi
+])
+m4trace:dpp/config/compiler.m4:717: -1- AC_DEFUN([DPP_PROG_CC_ANSI], [
+   DPP_COMPILER_FLAG([${CC-cc}], [-ansi], [dpp_cv_prog_cc_ansi])
+
+   if test "x$dpp_cv_prog_cc_ansi" = "xyes" ; then
+      dpp_cc_ansi='yes'
+      CC_ANSI_FLAGS='-ansi'
+   else
+      dpp_cc_ansi='no'
+      CC_ANSI_FLAGS=''
+   fi
+])
+m4trace:dpp/config/compiler.m4:737: -1- AC_DEFUN([DPP_PROG_CC_PIPE], [
+   DPP_COMPILER_FLAG([${CC-cc}], [-pipe], [dpp_cv_prog_cc_pipe])
+
+   if test "x$dpp_cv_prog_cc_pipe" = "xyes" ; then
+      dpp_cc_pipe='yes'
+      CC_PIPE_FLAGS='-pipe'
+   else
+      dpp_cc_pipe='no'
+      CC_PIPE_FLAGS=''
+   fi
+])
+m4trace:dpp/config/compiler.m4:757: -1- AC_DEFUN([DPP_PROG_CC_PROF_P], [
+   DPP_COMPILER_FLAG([${CC-cc}], [-p], [dpp_cv_prog_cc_prof_p])
+
+   if test "x$dpp_cv_prog_cc_prof_p" = "xyes" ; then
+      dpp_cc_prof_p='yes'
+      CC_PROF_FLAGS='-p'
+   else
+      dpp_cc_prof_p='no'
+      CC_PROF_FLAGS=''
+   fi
+
+   AC_SUBST(CC_PROF_FLAGS)
+])
+m4trace:dpp/config/compiler.m4:779: -1- AC_DEFUN([DPP_PROG_CC_PROF_PG], [
+   DPP_COMPILER_FLAG([${CC-cc}], [-pg], [dpp_cv_prog_cc_prof_pg])
+
+   if test "x$dpp_cv_prog_cc_prof_pg" = "xyes" ; then
+      dpp_cc_prof_pg='yes'
+      CC_PROF_FLAGS='-pg'
+   else
+      dpp_cc_prof_pg='no'
+      CC_PROF_FLAGS=''
+   fi
+
+   AC_SUBST(CC_PROF_FLAGS)
+])
+m4trace:dpp/config/compiler.m4:801: -1- AC_DEFUN([DPP_GET_EXT], [
+   AC_REQUIRE([DPP_PROG_CC])
+
+   dnl Determine the suffix for object file names.
+   AC_OBJEXT
+
+   dnl Determine the suffix for executable file names.
+   AC_EXEEXT
+])
+m4trace:dpp/config/compiler.m4:834: -1- AC_DEFUN([DPP_CHECK_CXX_FALLBACKS], [
+   dpp_save_CXXFLAGS="$CXXFLAGS"
+   CXXFLAGS="$CXXFLAGS $2 $ABI_FLAGS"
+
+   dnl Get the platform-specific compiler hint value.
+   dpp_cxx_var="CXX_$dpp_platform"
+   dpp_cxx_val=`eval echo '$''{'$dpp_cxx_var'}'`
+
+   if test "x$dpp_cxx_val" != "x" -a "x$CXX" = "x" ; then
+      CXX="$dpp_cxx_val"
+   fi
+
+   if test "x$1" != "x" -o "x$CXX" != "x" ; then
+      if test "x$1" != "x" ; then
+         dpp_CXX_found_val=$1
+         AC_CHECK_PROG([dpp_CXX_check_val], $1, $1, , $4)
+      else
+         dpp_CXX_found_val="$CXX"
+         AC_CHECK_PROG([dpp_CXX_check_val], [$CXX], [$CXX], , $4)
+      fi
+
+      if test "x$dpp_CXX_check_val" = "x$dpp_CXX_found_val" ; then
+         CXX="$dpp_CXX_found_val"
+      else
+         dpp_CXX_found='no'
+
+         dnl If the caller provided a list of fallbacks in the
+         dnl $CXX_FALLBACKS variable, loop over them and try to use another
+         dnl C++ compiler.
+         if test "x$CXX_FALLBACKS" != "x" ; then
+            for dpp_cxx in $CXX_FALLBACKS ; do
+               AC_CHECK_PROG([dpp_CXX_check_val], [$dpp_cxx], [$dpp_cxx], , $4)
+               if test "x$dpp_CXX_check_val" = "x$dpp_cxx" ; then
+                  CXX="$dpp_cxx"
+                  dpp_CXX_found='yes'
+                  break
+               fi
+            done
+         fi
+
+         dnl No viable C++ compiler was found.
+         if test "x$dpp_CXX_found" = "xno" ; then
+            ifelse([$3], , :, [$3])
+         fi
+      fi
+   fi
+])
+m4trace:dpp/config/compiler.m4:892: -1- AC_DEFUN([DPP_PROG_CXX], [
+   AC_REQUIRE([AC_PROG_CXX])
+   AC_PROG_CXXCPP
+   DPP_CXX_COMPILER_INTEL
+
+   CXXFLAGS="$dpp_save_CXXFLAGS"
+
+   if test "x$ICPC" = "xyes" ; then
+      CXXFLAGS_DYNLIB='-KPIC'
+   dnl If GCC's g++ will be the C++ compiler, -fPIC is the
+   dnl position-independent code generation option.
+   elif test "x$GXX" = "xyes" ; then
+      CXXFLAGS_DYNLIB='-fPIC'
+   dnl Otherwise, get the platform-specific compiler PIC option hint value.
+   else
+      dpp_cxx_pic_var="CXX_PIC_$dpp_platform"
+      CXXFLAGS_DYNLIB=`eval echo '$''{'$dpp_cxx_pic_var'}'`
+   fi
+
+   CXXFLAGS_DYNLIB="$CXXFLAGS_DYNLIB -DPIC"
+
+   AC_SUBST(CXXFLAGS_DYNLIB)
+])
+m4trace:dpp/config/compiler.m4:925: -1- AC_DEFUN([DPP_PROG_CXX_NOSTDINCXX], [
+   DPP_LANG_SAVE
+   DPP_LANG_CPLUSPLUS
+   DPP_COMPILER_FLAG([${CXX-c++}], [-nostdinc++], [dpp_cv_prog_cxx_nostdinc])
+   DPP_LANG_RESTORE
+
+   if test "x$dpp_cv_prog_cxx_nostdincxx" = "xyes" ; then
+      dpp_cxx_nostdincxx='yes'
+      CXX_NOSTDINCXX_FLAGS='-nostdinc++'
+   else
+      dpp_cxx_nostdincxx='no'
+      CXX_NOSTDINCXX_FLAGS=''
+   fi
+])
+m4trace:dpp/config/compiler.m4:948: -1- AC_DEFUN([DPP_PROG_CXX_ANSI], [
+   DPP_COMPILER_FLAG([${CXX-c++}], [-ansi], [dpp_cv_prog_cxx_ansi])
+
+   if test "x$dpp_cv_prog_cxx_ansi" = "xyes" ; then
+      dpp_cxx_ansi='yes'
+      CXX_ANSI_FLAGS='-ansi'
+   else
+      dpp_cxx_ansi='no'
+      CXX_ANSI_FLAGS=''
+   fi
+])
+m4trace:dpp/config/compiler.m4:968: -1- AC_DEFUN([DPP_PROG_CXX_PIPE], [
+   DPP_COMPILER_FLAG([${CXX-c++}], [-pipe], [dpp_cv_prog_cxx_pipe])
+
+   if test "x$dpp_cv_prog_cxx_pipe" = "xyes" ; then
+      dpp_cxx_pipe='yes'
+      CXX_PIPE_FLAGS='-pipe'
+   else
+      dpp_cxx_pipe='no'
+      CXX_PIPE_FLAGS=''
+   fi
+])
+m4trace:dpp/config/compiler.m4:988: -1- AC_DEFUN([DPP_PROG_CXX_PROF_P], [
+   DPP_COMPILER_FLAG([${CXX-c++}], [-p], [dpp_cv_prog_cxx_prof_p])
+
+   if test "x$dpp_cv_prog_cxx_prof_p" = "xyes" ; then
+      dpp_cxx_prof_p='yes'
+      CXX_PROF_FLAGS='-p'
+   else
+      dpp_cxx_prof_p='no'
+      CXX_PROF_FLAGS=''
+   fi
+
+   AC_SUBST(CXX_PROF_FLAGS)
+])
+m4trace:dpp/config/compiler.m4:1010: -1- AC_DEFUN([DPP_PROG_CXX_PROF_PG], [
+   DPP_COMPILER_FLAG([${CXX-c++}], [-pg], [dpp_cv_prog_cxx_prof_pg])
+
+   if test "x$dpp_cv_prog_cxx_prof_pg" = "xyes" ; then
+      dpp_cxx_prof_pg='yes'
+      CXX_PROF_FLAGS='-pg'
+   else
+      dpp_cxx_prof_pg='no'
+      CXX_PROF_FLAGS=''
+   fi
+
+   AC_SUBST(CXX_PROF_FLAGS)
+])
+m4trace:dpp/config/compiler.m4:1106: -1- AC_DEFUN([DPP_PROG_OBJC], [
+m4_ifdef([AC_PROG_OBJC], [AC_PROG_OBJC],
+[
+   dpp_save_OBJCFLAGS="$OBJCFLAGS"
+   OBJCFLAGS="$OBJCFLAGS $2 $ABI_FLAGS"
+
+   dnl Get the platform-specific compiler hint value.
+   dpp_objc_var="OBJC_$dpp_platform"
+   dpp_objc_val=`eval echo '$''{'$dpp_objc_var'}'`
+
+   if test "x$dpp_objc_val" != "x" -a "x$OBJC" = "x" ; then
+      OBJC="$dpp_objc_val"
+   fi
+
+   if test "x$1" != "x" -o "x$OBJC" != "x" ; then
+      if test "x$1" != "x" ; then
+         dpp_OBJC_found_val=$1
+         AC_CHECK_PROG([dpp_OBJC_check_val], $1, $1, , $4)
+      else
+         dpp_OBJC_found_val="$OBJC"
+         AC_CHECK_PROG([dpp_OBJC_check_val], [$OBJC], [$OBJC], , $4)
+      fi
+
+      if test "x$dpp_OBJC_check_val" = "x$dpp_OBJC_found_val" ; then
+         OBJC="$dpp_OBJC_found_val"
+      else
+         dpp_OBJC_found='no'
+
+         dnl If the caller provided a list of fallbacks in the $OBJC_FALLBACKS
+         dnl variable, loop over them and try to use another Objective-C
+         dnl compiler.
+         if test "x$OBJC_FALLBACKS" != "x" ; then
+            for dpp_objc in $OBJC_FALLBACKS ; do
+               AC_CHECK_PROG([dpp_OBJC_check_val], [$dpp_objc], [$dpp_objc], ,
+                             $4)
+               if test "x$dpp_OBJC_check_val" = "x$dpp_objc" ; then
+                  OBJC="$dpp_objc"
+                  dpp_OBJC_found='yes'
+                  break
+               fi
+            done
+         fi
+
+         dnl No viable Objective-C compiler was found.
+         if test "x$dpp_OBJC_found" = "xno" ; then
+            ifelse([$3], , :, [$3])
+         fi
+      fi
+   fi
+
+   AC_LANG_PUSH([Objective C])
+
+   AC_CHECK_TOOL(OBJC, gcc)
+   if test -z "$OBJC" ; then
+      AC_CHECK_TOOL(OBJC, cc)
+   fi
+   if test -z "$OBJC" ; then
+      AC_CHECK_PROG(OBJC, cc, cc)
+   fi
+
+   test -z "$OBJC" && AC_MSG_FAILURE([no acceptable Objective-C compiler found in \$PATH])
+dnl   AC_PROG_CPP
+
+   m4_expand_once([_AC_COMPILER_EXEEXT])[]dnl
+   m4_expand_once([_AC_COMPILER_OBJEXT])[]dnl
+   _AC_LANG_COMPILER_GNU
+   GNU_OBJC=`test $ac_compiler_gnu = yes && echo yes`
+   _AC_PROG_OBJC_G
+
+   OBJCFLAGS="$dpp_save_OBJCFLAGS"
+
+   dnl If GCC will be the Objective-C compiler, -fPIC is the
+   dnl position-independent code generation option.
+   if test "x$GNU_OBJC" = "xyes" ; then
+      OBJCFLAGS_DYNLIB='-fPIC'
+   dnl Otherwise, get the platform-specific compiler PIC option hint value.
+   else
+      dpp_objc_pic_var="OBJC_PIC_$dpp_platform"
+      OBJCFLAGS_DYNLIB=`eval echo '$''{'$dpp_objc_pic_var'}'`
+   fi
+
+   OBJCFLAGS_DYNLIB="$OBJCFLAGS_DYNLIB -DPIC"
+
+   AC_LANG_POP([Objective C])
+
+   AC_SUBST(OBJCFLAGS_DYNLIB)
+])
+])
+m4trace:dpp/config/compiler.m4:1275: -1- AC_DEFUN([DPP_PROG_OBJCXX], [
+   dpp_save_OBJCXXFLAGS="$OBJCXXFLAGS"
+   OBJCXXFLAGS="$OBJCXXFLAGS $2 $ABI_FLAGS"
+
+   dnl Get the platform-specific compiler hint value.
+   dpp_objcxx_var="OBJCXX_$dpp_platform"
+   dpp_objcxx_val=`eval echo '$''{'$dpp_objcxx_var'}'`
+
+   if test "x$dpp_objcxx_val" != "x" -a "x$OBJCXX" = "x" ; then
+      OBJCXX="$dpp_objcxx_val"
+   fi
+
+   if test "x$1" != "x" -o "x$OBJCXX" != "x" ; then
+      if test "x$1" != "x" ; then
+         dpp_OBJCXX_found_val=$1
+         AC_CHECK_PROG([dpp_OBJCXX_check_val], $1, $1, , $4)
+      else
+         dpp_OBJCXX_found_val="$OBJCXX"
+         AC_CHECK_PROG([dpp_OBJCXX_check_val], [$OBJCXX], [$OBJCXX], , $4)
+      fi
+
+      if test "x$dpp_OBJCXX_check_val" = "x$dpp_OBJCXX_found_val" ; then
+         OBJCXX="$dpp_OBJCXX_found_val"
+      else
+         dpp_OBJCXX_found='no'
+
+         dnl If the caller provided a list of fallbacks in the
+         dnl $OBJCXX_FALLBACKS variable, loop over them and try to use another
+         dnl Objective-C++ compiler.
+         if test "x$OBJCXX_FALLBACKS" != "x" ; then
+            for dpp_objcxx in $OBJCXX_FALLBACKS ; do
+               AC_CHECK_PROG([dpp_OBJCXX_check_val], [$dpp_objcxx],
+                             [$dpp_objcxx], , $4)
+               if test "x$dpp_OBJCXX_check_val" = "x$dpp_objcxx" ; then
+                  OBJCXX="$dpp_objcxx"
+                  dpp_OBJCXX_found='yes'
+                  break
+               fi
+            done
+         fi
+
+         dnl No viable Objective-C++ compiler was found.
+         if test "x$dpp_OBJCXX_found" = "xno" ; then
+            ifelse([$3], , :, [$3])
+         fi
+      fi
+   fi
+
+   AC_LANG_PUSH([Objective C++])
+
+   AC_CHECK_TOOL(OBJCXX, gcc)
+   if test -z "$OBJCXX" ; then
+      AC_CHECK_TOOL(OBJCXX, cc)
+   fi
+   if test -z "$OBJCXX" ; then
+      AC_CHECK_PROG(OBJCXX, cc, cc)
+   fi
+
+   test -z "$OBJCXX" && AC_MSG_FAILURE([no acceptable Objective-C++ compiler found in \$PATH])
+dnl   AC_PROG_CPP
+
+   m4_expand_once([_AC_COMPILER_EXEEXT])[]dnl
+   m4_expand_once([_AC_COMPILER_OBJEXT])[]dnl
+   _AC_LANG_COMPILER_GNU
+   GNU_OBJCXX=`test $ac_compiler_gnu = yes && echo yes`
+   _AC_PROG_OBJCXX_G
+
+   OBJCXXFLAGS="$dpp_save_OBJCXXFLAGS"
+
+   dnl If GCC will be the Objective-C++ compiler, -fPIC is the
+   dnl position-independent code generation option.
+   if test "x$GNU_OBJCXX" = "xyes" ; then
+      OBJCXXFLAGS_DYNLIB='-fPIC'
+   dnl Otherwise, get the platform-specific compiler PIC option hint value.
+   else
+      dpp_objcxx_pic_var="OBJCXX_PIC_$dpp_platform"
+      OBJCXXFLAGS_DYNLIB=`eval echo '$''{'$dpp_objcxx_pic_var'}'`
+   fi
+
+   OBJCXXFLAGS_DYNLIB="$OBJCXXFLAGS_DYNLIB -DPIC"
+
+   AC_LANG_POP([Objective C++])
+
+   AC_SUBST(OBJCXXFLAGS_DYNLIB)
+])
+m4trace:dpp/config/cplusplus.m4:45: -1- AC_DEFUN([DPP_STD_CPP], [
+   AC_BEFORE([$0], [DPP_SYSTEM_SETUP])
+
+   AC_ARG_ENABLE(std,
+                 [  --enable-std            Force the use of standard C++   [default=$1]],
+                 dpp_std="$enableval", dpp_std=$1)
+])
+m4trace:dpp/config/cplusplus.m4:64: -1- AC_DEFUN([DPP_CXX_TEMPLATES], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+   AC_REQUIRE([DPP_PROG_CXX])
+
+   DPP_LANG_SAVE
+   DPP_LANG_CPLUSPLUS
+
+   AC_CACHE_CHECK([for C++ template support],
+       [dpp_cv_CXX_handles_templates],
+       [AC_TRY_COMPILE([template<class T> class Test {
+public:
+Test() {;}
+};
+template<class T> void f (const Test<T>&){;}],
+                      [
+Test<double> d;
+Test<int> i;
+f(d);
+f(i);
+return 0; ],
+                      [ dpp_cv_CXX_handles_templates='yes'
+                        rm -rf ./ii_files ./SunWS_cache ],
+                      [dpp_cv_CXX_handles_templates='no'])])
+
+   DPP_LANG_RESTORE
+
+   if test "x$dpp_cv_CXX_handles_templates" = "xno" ; then
+      ifelse([$1], , :, [$1])
+   else
+      AC_DEFINE(HAVE_TEMPLATES, ,
+                [define if the C++ compiler supports basic templates])
+   fi
+])
+m4trace:dpp/config/cplusplus.m4:109: -1- AC_DEFUN([DPP_CXX_DEFAULT_TEMPLATE_PARAMETERS], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+   AC_REQUIRE([DPP_PROG_CXX])
+   AC_REQUIRE([DPP_CXX_TEMPLATES])
+
+   DPP_LANG_SAVE
+   DPP_LANG_CPLUSPLUS
+
+   AC_CACHE_CHECK([whether the C++ compiler supports default template parameters],
+      [dpp_cv_CXX_default_template_parameters],
+      [AC_TRY_COMPILE([
+template<class T = double, int N = 10> class Test {
+public:
+    int func (void) { return 0; }
+};
+],
+      [Test<float> obj; return obj.func();],
+      [ dpp_cv_CXX_default_template_parameters='yes'
+        rm -rf ./ii_files ./SunWS_cache ],
+      dpp_cv_CXX_default_template_parameters='no')])
+
+   DPP_LANG_RESTORE
+
+   if test "x$dpp_cv_CXX_default_template_parameters" = "xno" ; then
+      ifelse([$1], , :, [$1])
+   else
+      AC_DEFINE([HAVE_DEFAULT_TEMPLATE_PARAMETERS], ,
+         [define if the C++ compiler supports default template parameters])
+   fi
+])
+m4trace:dpp/config/cplusplus.m4:151: -1- AC_DEFUN([DPP_CXX_NAMESPACE], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+   AC_REQUIRE([DPP_PROG_CXX])
+
+   DPP_LANG_SAVE
+   DPP_LANG_CPLUSPLUS
+
+   AC_CACHE_CHECK([for C++ namespace support],
+      [dpp_cv_CXX_handles_namespace],
+      [AC_TRY_COMPILE([ namespace dpp_test { void func (void) {;} }; ],
+                     [ dpp_test::func(); ],
+                     [ dpp_cv_CXX_handles_namespace='yes'
+                       rm -rf ./ii_files ./SunWS_cache ],
+                     [dpp_cv_CXX_handles_namespace='no'])])
+
+   DPP_LANG_RESTORE
+
+   if test "x$dpp_cv_CXX_handles_namespace" = "xno" ; then
+      ifelse([$1], , :, [$1])
+   else
+      AC_DEFINE(HAVE_NAMESPACE, ,
+                [define if the C++ compiler supports namespaces])
+   fi
+])
+m4trace:dpp/config/cplusplus.m4:188: -1- AC_DEFUN([DPP_CXX_HAVE_STD], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+   AC_REQUIRE([DPP_PROG_CXX])
+   AC_REQUIRE([DPP_CXX_NAMESPACE])
+
+   DPP_LANG_SAVE
+   DPP_LANG_CPLUSPLUS
+
+   AC_CACHE_CHECK([for C++ standard library support], [dpp_cv_CXX_have_std],
+      [AC_TRY_COMPILE(
+[
+#include <iostream>
+#include <map>
+], ,
+          [ dpp_cv_CXX_have_std='yes'
+             rm -rf ./ii_files ./SunWS_cache ],
+          [dpp_cv_CXX_have_std='no'])])
+
+   DPP_LANG_RESTORE
+
+   if test "x$dpp_cv_CXX_have_std" = "xno" ; then
+      ifelse([$1], , :, [$1])
+   else
+      AC_DEFINE(HAVE_STD, ,
+                [define if the C++ compiler supports the standard library])
+   fi
+])
+m4trace:dpp/config/cplusplus.m4:227: -1- AC_DEFUN([DPP_CXX_INLINE], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+   AC_REQUIRE([DPP_PROG_CXX])
+
+   DPP_LANG_SAVE
+   DPP_LANG_CPLUSPLUS
+
+   AC_CACHE_CHECK([for C++ inline support],
+      [dpp_cv_CXX_handles_inline],
+      [AC_TRY_COMPILE([ inline void func (void) {;}], [ func(); ],
+                     [ dpp_cv_CXX_handles_inline='yes'
+                       rm -rf ./ii_files ./SunWS_cache ],
+                     [dpp_cv_CXX_handles_inline='no'])])
+
+   DPP_LANG_RESTORE
+
+   if test "x$dpp_cv_CXX_handles_inline" = "xno" ; then
+      ifelse([$1], , :, [$1])
+   fi
+])
+m4trace:dpp/config/cplusplus.m4:259: -1- AC_DEFUN([DPP_CXX_RTTI], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+   AC_REQUIRE([DPP_PROG_CXX])
+
+   DPP_LANG_SAVE
+   DPP_LANG_CPLUSPLUS
+
+   AC_CACHE_CHECK([for C++ RTTI support], [dpp_cv_CXX_handles_rtti],
+      [AC_TRY_COMPILE([#include <typeinfo>
+class Base
+{
+public:
+   Base (void) {;}
+   virtual int f (void) { return 0; }
+};
+
+class Derived : public Base
+{
+public:
+   Derived (void) {;}
+   virtual int f (void) { return 1; }
+}; ],
+          [
+Derived d;
+Base* ptr = &d;
+return (typeid(*ptr) == typeid(Derived)); ],
+          [ dpp_cv_CXX_handles_rtti='yes'
+            rm -rf ./ii_files ./SunWS_cache ],
+          [dpp_cv_CXX_handles_rtti='no'])])
+
+   DPP_LANG_RESTORE
+
+   if test "x$dpp_cv_CXX_handles_rtti" = "xno" ; then
+      ifelse([$1], , :, [$1])
+   else
+      AC_DEFINE(HAVE_RTTI, , [define if the C++ compiler supports RTTI])
+   fi
+])
+m4trace:dpp/config/cplusplus.m4:309: -1- AC_DEFUN([DPP_CXX_STATIC_CAST], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+   AC_REQUIRE([DPP_PROG_CXX])
+
+   DPP_LANG_SAVE
+   DPP_LANG_CPLUSPLUS
+
+   AC_CACHE_CHECK([whether the C++ compiler supports static_cast<>],
+      [dpp_cv_CXX_static_cast],
+      [AC_TRY_COMPILE([#include <typeinfo>
+class Base
+{
+public:
+   Base (void) {;}
+   virtual void f (void) = 0;
+};
+
+class Derived : public Base
+{
+public:
+   Derived (void) {;}
+   virtual void f (void) {;}
+};
+
+int testFunc (Derived& obj)
+{
+   return 0;
+}],
+           [
+Derived d;
+Base& b = d;
+Derived& d2 = static_cast<Derived&>(b);
+return testFunc(d2); ],
+           [ dpp_cv_CXX_static_cast='yes'
+             rm -rf ./ii_files ./SunWS_cache ],
+           [dpp_cv_CXX_static_cast='no'])])
+
+   DPP_LANG_RESTORE
+
+   if test "x$dpp_cv_CXX_static_cast" = "xno" ; then
+      ifelse([$1], , :, [$1])
+   else
+      AC_DEFINE(HAVE_STATIC_CAST, ,
+                [define if the C++ compiler supports static_cast<>])
+   fi
+])
+m4trace:dpp/config/cplusplus.m4:367: -1- AC_DEFUN([DPP_CXX_DYNAMIC_CAST], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+   AC_REQUIRE([DPP_PROG_CXX])
+
+   DPP_LANG_SAVE
+   DPP_LANG_CPLUSPLUS
+
+   AC_CACHE_CHECK([whether the C++ compiler supports dynamic_cast<>],
+      [dpp_cv_CXX_dynamic_cast],
+      [AC_TRY_COMPILE([#include <typeinfo>
+class Base
+{
+public:
+   Base (void) {;}
+   virtual void f (void) = 0;
+};
+
+class Derived : public Base
+{
+public:
+   Derived (void) {;}
+   virtual void f (void) {;}
+};],
+          [
+Derived d;
+Base& b = d;
+return (dynamic_cast<Derived*>(&b) ? 0 : 1); ],
+          [ dpp_cv_CXX_dynamic_cast='yes'
+            rm -rf ./ii_files ./SunWS_cache ],
+          [dpp_cv_CXX_dynamic_cast='no'])])
+
+   DPP_LANG_RESTORE
+
+   if test "x$dpp_cv_CXX_dynamic_cast" = "xno" ; then
+      ifelse([$1], , :, [$1])
+   else
+      AC_DEFINE(HAVE_DYNAMIC_CAST, ,
+                [define if the C++ compiler supports dynamic_cast<>])
+   fi
+])
+m4trace:dpp/config/cplusplus.m4:419: -1- AC_DEFUN([DPP_CXX_CONST_CAST], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+   AC_REQUIRE([DPP_PROG_CXX])
+
+   DPP_LANG_SAVE
+   DPP_LANG_CPLUSPLUS
+
+   AC_CACHE_CHECK([whether the C++ compiler supports const_cast<>],
+      [dpp_cv_CXX_const_cast],
+      [AC_TRY_COMPILE( , [
+int x = 0;
+const int& y = x;
+int& z = const_cast<int&>(y);
+return z;],
+          [ dpp_cv_CXX_const_cast='yes'
+            rm -rf ./ii_files ./SunWS_cache ],
+          [dpp_cv_CXX_const_cast='no'])])
+
+   DPP_LANG_RESTORE
+
+   if test "x$dpp_cv_CXX_const_cast" = "xno" ; then
+      ifelse([$1], , :, [$1])
+   else
+      AC_DEFINE(HAVE_CONST_CAST, ,
+                [define if the C++ compiler supports const_cast<>])
+   fi
+])
+m4trace:dpp/config/cplusplus.m4:458: -1- AC_DEFUN([DPP_CXX_EXCEPTIONS], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+   AC_REQUIRE([DPP_PROG_CXX])
+
+   DPP_LANG_SAVE
+   DPP_LANG_CPLUSPLUS
+
+   AC_CACHE_CHECK([for C++ exception support], [dpp_cv_CXX_has_exceptions],
+      [AC_TRY_COMPILE( , [try { throw 1; } catch (int i) { return i; }],
+         [dpp_cv_CXX_has_exceptions='yes'], [dpp_cv_CXX_has_exceptions='no'])])
+
+   DPP_LANG_RESTORE
+
+   if test "x$dpp_cv_CXX_has_exceptions" = "xno" ; then
+      ifelse([$1], , :, [$1])
+   else
+      AC_DEFINE(HAVE_EXCEPTIONS, ,
+                [define if the C++ compiler supports exceptions])
+   fi
+])
+m4trace:dpp/config/gcc.m4:63: -1- AC_DEFUN([DPP_WITH_GCC], [
+   dnl Force the use of GCC as the compiler.
+   AC_ARG_WITH(gcc,
+               [  --with-gcc              Force the use of GCC as the compiler],
+               USE_GCC="$withval", USE_GCC=$1)
+   AC_SUBST(USE_GCC)
+])
+m4trace:dpp/config/gcc.m4:78: -1- AC_DEFUN([DPP_SETUP_GCC], [
+   AR='ar'
+   ARFLAGS='-ruv'
+   LD='$(CXX) -shared'
+   LDOPTS=''
+   C_DLL='$(CC) -shared'
+   CXX_DLL='$(CXX) -shared'
+   C_PLUGIN='$(CC) -shared'
+   CXX_PLUGIN='$(CXX) -shared'
+   OPT_FLAGS="-O$1"
+   DBG_FLAGS='-g'
+   LDFLAGS_STATIC='-static'
+   LDFLAGS_DYNAMIC=''
+
+   # These are based on the FreeBSD 5.x build system settings.
+   C_WARNS_LEVEL_0='-w'
+   C_WARNS_LEVEL_1='-Wsystem-headers'
+   C_WARNS_LEVEL_2="$C_WARNS_LEVEL_1 -Wall -Wno-format-y2k"
+   C_WARNS_LEVEL_3="$C_WARNS_LEVEL_2 -W -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith"
+   C_WARNS_LEVEL_4="$C_WARNS_LEVEL_3 -Wreturn-type -Wcast-qual -Wwrite-strings -Wswitch -Wshadow -Wcast-align"
+   C_WARNS_LEVEL_5="$C_WARNS_LEVEL_4"
+
+   CXX_WARNS_LEVEL_0='-w'
+])
+m4trace:dpp/config/gcc.m4:115: -1- AC_DEFUN([DPP_GPLUSPLUS_VER], [
+   AC_REQUIRE([DPP_PROG_CXX])
+
+   dpp_gcc_ver=`$CXX -dumpversion` 
+   DPP_VERSION_CHECK_MSG_NO_CACHE([$CXX], [$dpp_gcc_ver], [$1], , , [$2])
+])
+m4trace:dpp/config/gcc.m4:133: -1- AC_DEFUN([DPP_GPLUSPLUS_MODERN], [
+   DPP_GPLUSPLUS_VER([2.91],
+      [AC_CHECK_PROG([CC], [egcc], [egcc], [$1])
+       AC_CHECK_PROG([CXX], [eg++], [eg++], [$1])])
+])
+m4trace:dpp/config/general.m4:74: -1- AC_DEFUN([DPP_PREREQ], [DPP_PREREQ_COMPARE(DPP_PREREQ_CANON(DPP_PREREQ_SPLIT(DPP_DPPVERSION)),
+DPP_PREREQ_CANON(DPP_PREREQ_SPLIT([$1])), [$1])])
+m4trace:dpp/config/general.m4:132: -1- AC_DEFUN([DPP_VERSION_CHECK], [
+   split_known_ver=`echo $1 | sed -e 's/\./ /g'`
+   split_req_ver=`echo $2 | sed -e 's/\./ /g'`
+
+   known_major=`echo $split_known_ver | awk '{ print $[1] }' -`
+   known_minor=`echo $split_known_ver | awk '{ print $[2] }' -`
+   known_patch=`echo $split_known_ver | awk '{ print $[3] }' -`
+
+   if test "x$known_patch" = "x" ; then
+      known_patch=0
+   fi
+
+   req_major=`echo $split_req_ver | awk '{ print $[1] }' -`
+   req_minor=`echo $split_req_ver | awk '{ print $[2] }' -`
+   req_patch=`echo $split_req_ver | awk '{ print $[3] }' -`
+
+   if test "x$req_patch" = "x" ; then
+      req_patch=0
+   fi
+
+   DPP_VERSION_COMPARE([$known_major], [$known_minor], [$known_patch],
+                       [$req_major], [$req_minor], [$req_patch],
+                       [$3], [$4])
+])
+m4trace:dpp/config/general.m4:186: -1- AC_DEFUN([DPP_VERSION_CHECK_MSG], [
+   AC_CACHE_CHECK([whether $1 version is >= $3], [$4],
+                  [DPP_VERSION_CHECK([$2], [$3], [$4="$2"], [$4='no'])])
+
+   dnl Successful version comparison.  Note that $4 is a variable name, not
+   dnl the result of evaluating a variable.  As such, we have to prepend a '$'
+   dnl to its name here in order to get its value.
+   if test "x$$4" != "xno" ; then
+      ifelse([$5], , :, [$5])
+      true
+   dnl Failed version comparison.
+   else
+      ifelse([$6], , :, [$6])
+      true
+   fi
+])
+m4trace:dpp/config/general.m4:228: -1- AC_DEFUN([DPP_VERSION_CHECK_MSG_NO_CACHE], [
+   AC_MSG_CHECKING([whether $1 version is >= $3])
+   DPP_VERSION_CHECK([$2], [$3],
+                     [AC_MSG_RESULT([yes (version $2)])
+                      $4],
+                     [AC_MSG_RESULT([no (version $2)])
+                      $5])
+])
+m4trace:dpp/config/general.m4:244: -1- AC_DEFUN([DPP_INIT], [
+   topdir=`pwd`
+])
+m4trace:dpp/config/general.m4:252: -1- AC_DEFUN([DPP_ACLOCAL_INCLUDE], [
+   test -n "$ACLOCAL_FLAGS" && ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
+
+   for k in $1 ; do ACLOCAL="$ACLOCAL -I $k" ; done
+])
+m4trace:dpp/config/general.m4:265: -1- AC_DEFUN([DPP_SUBST], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+   AC_REQUIRE([DPP_WIN32_SETUP])
+
+   if test "x$dpp_os_type" = "xWin32"; then
+      topdir=`dospath -p "$topdir"`
+   fi
+
+   AC_SUBST(topdir)
+])
+m4trace:dpp/config/general.m4:288: -1- AC_DEFUN([DPP_GET_PROJECTDIR], [
+   AC_REQUIRE([DPP_INIT])
+   AC_REQUIRE([DPP_SUBST])
+
+   dnl $srcdir is the root directory of the juggler source tree reletive to 
+   dnl where configure is being run.  To get an absolute path for 
+   dnl $projectdir, we cd there and save the value of running pwd.  
+   dnl Then return to the directory where configure is being run ($topdir).
+   dnl 
+   dnl NOTE: look for a less hacky way to do this!  srcdir is only valid to 
+   dnl       go off of in the configure script, not within individual subdirs.
+   dnl
+   cd "$srcdir"
+   projectdir=`pwd`
+   cd "$topdir"
+   
+   AC_SUBST(projectdir)
+])
+m4trace:dpp/config/general.m4:316: -1- AC_DEFUN([DPP_GEN_RECONFIG], [
+   dnl Create a script for handy reconfiguration of a build tree.  It removes
+   dnl configure's cache and status files and then runs configure with the
+   dnl same arguments.
+   : ${RECONFIG=./reconfig}
+
+   echo "creating $RECONFIG"
+   rm -f $RECONFIG
+
+[
+   cat > $RECONFIG <<RECONFIG_SCRIPT
+rm -f config.status config.cache config.log
+${0} $ac_configure_args $*
+RECONFIG_SCRIPT
+]
+
+   chmod +x $RECONFIG
+])
+m4trace:dpp/config/icc.m4:66: -1- AC_DEFUN([DPP_WITH_ICC], [
+   dnl Force the use of the Intel compiler.
+   AC_ARG_WITH(gcc,
+               [  --with-gcc              Force the use of the Intel compiler],
+               USE_ICC="$withval", USE_ICC=$1)
+   AC_SUBST(USE_ICC)
+])
+m4trace:dpp/config/icc.m4:81: -1- AC_DEFUN([DPP_SETUP_ICC], [
+   AR='ar'
+   ARFLAGS='-ruv'
+   LD='$(CXX) -shared'
+   LDOPTS=''
+   C_DLL='$(CC) -shared'
+   CXX_DLL='$(CXX) -shared'
+   C_PLUGIN='$(CC) -shared'
+   CXX_PLUGIN='$(CXX) -shared'
+   OPT_FLAGS="-O$1"
+   DBG_FLAGS='-g'
+   LDFLAGS_STATIC='-static'
+   LDFLAGS_DYNAMIC=''
+
+   # These are based on the FreeBSD 5.x build system settings.
+   C_WARNS_LEVEL_0="-w"
+   C_WARNS_LEVEL_1="-Wall -wd180,279,310,383,444,810,981,1418,1469"
+   C_WARNS_LEVEL_2="-Wall -wd180,279,310,383,810,981,1418,1469"
+   C_WARNS_LEVEL_3="-Wall -wd279,310,981,1418,1469"
+   C_WARNS_LEVEL_4="-Wall -wd279,981,1469 -Wcheck"
+   C_WARNS_LEVEL_5="-Wall -Wcheck"
+
+   CXX_WARNS_LEVEL_0='-w'
+])
+m4trace:dpp/config/icc.m4:114: -1- AC_DEFUN([DPP_C_COMPILER_INTEL], [
+   AC_CACHE_CHECK([whether we are using the Intel C compiler],
+      [dpp_cv_C_compiler_intel],
+      [AC_TRY_COMPILE([],
+[
+#ifndef __INTEL_COMPILER
+   choke me
+#endif
+],
+         [dpp_C_compiler_intel='yes'],
+         [dpp_C_compiler_intel='no'])
+      dpp_cv_C_compiler_intel="$dpp_C_compiler_intel"])
+   ICC="$dpp_cv_C_compiler_intel"
+])
+m4trace:dpp/config/icc.m4:137: -1- AC_DEFUN([DPP_CXX_COMPILER_INTEL], [
+   AC_CACHE_CHECK([whether we are using the Intel C++ compiler],
+      [dpp_cv_CXX_compiler_intel],
+      [AC_TRY_COMPILE([],
+[
+#ifndef __INTEL_COMPILER
+   choke me
+#endif
+],
+         [dpp_CXX_compiler_intel='yes'],
+         [dpp_CXX_compiler_intel='no'])
+      dpp_cv_CXX_compiler_intel="$dpp_CXX_compiler_intel"])
+   ICPC="$dpp_cv_CXX_compiler_intel"
+])
+m4trace:dpp/config/install.m4:72: -1- AC_DEFUN([DPP_INSTALLER], [
+   dnl -----------------------------------------------------------------------
+   dnl Name the user who will own installed files.
+   dnl -----------------------------------------------------------------------
+   AC_ARG_WITH(install-owner,
+               [  --with-install-owner=<USER NAME>
+                          Installed file owner name],
+               dpp_install_owner="$withval")
+
+   dnl -----------------------------------------------------------------------
+   dnl Name the group used for setting ownership on installed files.
+   dnl -----------------------------------------------------------------------
+   AC_ARG_WITH(install-group,
+               [  --with-install-group=<GROUP NAME>
+                          Installed file group name       [default=$1]],
+               dpp_install_group="$withval", dpp_install_group=$1)
+
+   dnl -----------------------------------------------------------------------
+   dnl Provide permissions for installed (normal) files.
+   dnl -----------------------------------------------------------------------
+   AC_ARG_WITH(file-perms,
+               [  --with-file-perms=<FILE PERMISSIONS>
+                          Installed file permissions      [default=$2]],
+               dpp_file_perms="$withval", dpp_file_perms=$2)
+
+   dnl -----------------------------------------------------------------------
+   dnl Provide permissions for installed executable files.
+   dnl -----------------------------------------------------------------------
+   AC_ARG_WITH(exec-perms,
+               [  --with-exec-perms=<EXEC PERMISSIONS>
+                          Installed executable permisions [default=$3]],
+               dpp_exec_perms="$withval", dpp_exec_perms=$3)
+
+   dnl -----------------------------------------------------------------------
+   dnl Provide permissions for directories in the installation tree.
+   dnl -----------------------------------------------------------------------
+   AC_ARG_WITH(dir-perms,
+               [  --with-dir-perms=<DIRECTORY PERMISSIONS>
+                          Installed directory permisions  [default=$4]],
+               dpp_dir_perms="$withval", dpp_dir_perms=$4)
+
+   FILE_PERMS="${dpp_file_perms-0644}"
+   EXEC_PERMS="${dpp_exec_perms-0755}"
+   DIR_PERMS="${dpp_dir_perms-0755}"
+
+   dpp_save_PATH="$PATH"
+   PATH="/usr/xpg4/bin:$PATH"
+
+   dnl Set $OWNER_NAME here in case the check for the user-specified owner
+   dnl failed.  This provides a simple fallback in that case.
+   OWNER_NAME=`id -un`
+
+   dnl Make sure that the named install owner is actually available and can
+   dnl be set by this user.  This is done by creating a file (conftest.c) and
+   dnl setting the owner name to be what is in ${_install_owner}.  Any output
+   dnl from chown(1) is redirected to chown_out.  If chown_out has non-zero
+   dnl length, chown(1) gave error output, and thus the name is not
+   dnl avaialble.
+   if test "x$dpp_install_owner" != "x" ; then
+      AC_MSG_CHECKING([for user $dpp_install_owner])
+      touch conftest.c
+      chown $dpp_install_owner conftest.c >chown_out 2>&1
+      if test -s chown_out ; then
+         AC_MSG_RESULT([no])
+      else
+         AC_MSG_RESULT([yes])
+         OWNER_NAME="$dpp_install_owner"
+      fi
+
+      rm -f conftest.c chown_out
+   fi
+
+   dnl Set $GROUP_NAME here in case the check for the user-specified group
+   dnl failed.  This provides a simple fallback in that case.
+   GROUP_NAME=`id -gn`
+
+   dnl Make sure that the named install group is actually available and can
+   dnl be set by this user.  This is done by creating a file (conftest.c) and
+   dnl setting the group name to be what is in ${_install_group}.  Any output
+   dnl from chgrp(1) is redirected to chgrp_out.  If chgrp_out has non-zero
+   dnl length, chgrp(1) gave error output, and thus the group is not
+   dnl avaialble.
+   if test "x$dpp_install_group" != "x" ; then
+      AC_MSG_CHECKING([for $dpp_install_group group])
+      touch conftest.c
+      chgrp $dpp_install_group conftest.c >chgrp_out 2>&1
+      if test -s chgrp_out ; then
+         AC_MSG_RESULT([no])
+      else
+         AC_MSG_RESULT([yes])
+         GROUP_NAME="$dpp_install_group"
+      fi
+
+      rm -f conftest.c chgrp_out
+   fi
+
+   PATH="$dpp_save_PATH"
+
+   dnl -----------------------------------------------------------------------
+   dnl Do the substition step for the variables defined here.
+   dnl -----------------------------------------------------------------------
+   AC_SUBST(OWNER_NAME)
+   AC_SUBST(GROUP_NAME)
+   AC_SUBST(FILE_PERMS)
+   AC_SUBST(EXEC_PERMS)
+   AC_SUBST(DIR_PERMS)
+])
+m4trace:dpp/config/install.m4:190: -1- AC_DEFUN([DPP_PROG_INSTALL], [
+   AC_REQUIRE([DPP_SYSTEM_SETUP])
+
+   USE_DPP_BSD_INSTALL='no'
+
+   dnl Allow the calling code to prevent the use of the Doozer++ BSD
+   dnl install(1) work-alike.
+   if test "x$1" != "xno" ; then
+      dnl The Doozer++ BSD install(1) script requires Perl 5.004 or newer
+      dnl (ca 1997). If PERL5 is set, then we assume that it is new enough.
+      if test "x$PERL5" != "x" -a "x$PERL5" != "xno" ; then
+         INSTALL='\$(PERL5) \$(DPP_SCRIPTDIR)/bsd-install.pl'
+         USE_DPP_BSD_INSTALL='yes'
+      elif test "x$PERL" != "xno" -o "x$PERL" != "x" ; then
+         if test $PERL_MAJOR_VER -ge 5 -a $PERL_MINOR_VER -ge 4 ; then
+            INSTALL='\$(PERL) \$(DPP_SCRIPTDIR)/bsd-install.pl'
+            USE_DPP_BSD_INSTALL='yes'
+         fi
+      fi
+   fi
+
+   if test "x$USE_DPP_BSD_INSTALL" = "xno" ; then
+      dnl If we are on a Win32 system, use $ac_install_sh for the install(1)
+      dnl program.  This prevents problems with paths if an install program is
+      dnl found elsewhere on the system.
+      if test "x$dpp_os_type" = "xWin32" ; then
+         dnl XXX: This may not be a safe value to use since it is internal to
+         dnl the generated configure script.
+         INSTALL="$ac_install_sh"
+      dnl Otherwise, use the safe AC_PROG_INSTALL macro.
+      else
+         AC_PROG_INSTALL
+         true
+      fi
+   fi
+   
+   AC_SUBST(USE_DPP_BSD_INSTALL)
+])
+m4trace:dpp/config/lang.m4:23: -1- AC_DEFUN([DPP_LANG_SAVE], [ AC_LANG_SAVE ])
+m4trace:dpp/config/lang.m4:28: -1- AC_DEFUN([DPP_LANG_RESTORE], [ AC_LANG_RESTORE ])
+m4trace:dpp/config/lang.m4:33: -1- AC_DEFUN([DPP_LANG_C], [ AC_LANG_C ])
+m4trace:dpp/config/lang.m4:38: -1- AC_DEFUN([DPP_LANG_CPLUSPLUS], [
+   AC_LANG_CPLUSPLUS
+   ac_ext='cpp'
+])
+m4trace:dpp/config/lang.m4:47: -1- AC_DEFUN([DPP_LANG_JAVA], [
+])
+m4trace:dpp/config/perl.m4:46: -1- AC_DEFUN([DPP_EXTRACT_PERL_VER], [
+   perl_ver_line=`$1 -v | grep -i 'this is perl'`
+   changequote(<<, >>)
+   PERL_VER_NUM=`echo $perl_ver_line | sed -e 's/^[^0-9]*\([1-9][^ ]*\) .*$/\1/'`
+   split_ver_num=`echo $PERL_VER_NUM | sed -e 's/[\._-]/ /g'`
+   PERL_MAJOR_VER=`echo $split_ver_num | awk '{ print $<<1>> }' -`
+   PERL_MINOR_VER=`echo $split_ver_num | awk '{ print $<<2>> }' - | sed -e 's/^0*\([^0][1-9]*\)/\1/'`
+   PERL_PATCH_VER=`echo $split_ver_num | awk '{ print $<<3>> }' - | sed -e 's/^0*\([^0][1-9]*\)/\1/'`
+   changequote([, ])
+
+   if test "x$PERL_PATCH_VER" = "x" ; then
+      PERL_PATCH_VER=0
+   fi
+])
+m4trace:dpp/config/perl.m4:78: -1- AC_DEFUN([DPP_PERL_VER], [
+   dnl Specify a directory containing a working Perl 5.004 (or newer) binary.
+   dnl There is no default since standard locations are always available.
+   AC_ARG_WITH(perl,
+               [  --with-perl=<PATH>      Directory containing Perl $1
+                          or newer binary                 [No default]],
+               dpp_user_perl_path="$withval")
+
+   changequote(<<, >>)
+   split_req_ver=`echo $1 | sed -e 's/\./ /g' -e 's/_/ /g'`
+   req_perl_major=`echo $split_req_ver | awk '{ print $<<1>> }' -`
+   req_perl_minor=`echo $split_req_ver | awk '{ print $<<2>> }' - | sed -e 's/^0*\([^0][1-9]*\)/\1/'`
+   req_perl_patch=`echo $split_req_ver | awk '{ print $<<3>> }' - | sed -e 's/^0*\([^0][1-9]*\)/\1/'`
+   changequote([, ])
+
+   if test "x$req_perl_patch" = "x" ; then
+      req_perl_patch=0
+   fi
+
+   chkPerl ( ) {
+      if test -x "${1}" ; then
+         DPP_EXTRACT_PERL_VER(${1})
+         DPP_VERSION_COMPARE($PERL_MAJOR_VER, $PERL_MINOR_VER, $PERL_PATCH_VER,
+                             $req_perl_major, $req_perl_minor, $req_perl_patch,
+                             retval=0, retval=1)
+      else
+         retval=1
+      fi
+
+      echo $retval
+   }
+
+   dpp_perl_path='$2 /usr/local/bin /usr/bin C:/Perl/bin'
+
+   dnl If $dpp_user_perl_path has a value, prepend that on $dpp_perl_path so
+   dnl that it will be checked before the standard places.
+   if test "x$dpp_user_perl_path" != "x" ; then
+      dpp_perl_path="$dpp_user_perl_path $dpp_perl_path"
+   fi
+
+   AC_CACHE_CHECK([for Perl version >= $1], [dpp_cv_usable_perl],
+      [ dpp_cv_usable_perl='no' ;
+        for dpp_dir in $dpp_perl_path ; do
+           if eval "test \"`chkPerl $dpp_dir/perl`\" -eq 0" ; then
+              dpp_cv_usable_perl="$dpp_dir/perl"
+              break
+           fi
+        done
+      ])
+
+   PERL="$dpp_cv_usable_perl"
+
+   if test "x$PERL" = "xno" ; then
+      ifelse([$4], , :, [$4])
+   else
+      DPP_EXTRACT_PERL_VER($PERL)
+      ifelse([$3], , :, [$3])
+   fi
+
+   AC_SUBST(PERL)
+])
+m4trace:dpp/config/perl.m4:158: -1- AC_DEFUN([DPP_HAVE_PERL5], [
+   dnl Specify a directory containing a working Perl 5.004 (or newer) binary.
+   dnl There is no default since standard locations are always available.
+   AC_ARG_WITH(perl,
+               [  --with-perl=<PATH>      Directory containing Perl $1
+                          or newer binary                 [No default]],
+               dpp_user_perl_path="$withval")
+
+   chkPerl5 ( ) {
+      if test -x "${1}" ; then
+         changequote(<<, >>)
+         dpp_perl_version=`${1} -v | grep -i "this is perl" | sed -e 's/.*v\(.\)\..*/\1/'`
+         changequote([, ])
+
+         if test "x$dpp_perl_version" = "x5" ; then
+            retval=0
+         else
+            retval=1
+         fi
+      else
+         retval=1
+      fi
+
+      echo $retval
+   }
+
+   dpp_perl_path='$2 /usr/local/bin /usr/bin C:/Perl/bin'
+
+   dnl If $dpp_user_perl_path has a value, prepend that on $dpp_perl_path so
+   dnl that it will be checked before the standard places.
+   if test "x$dpp_user_perl_path" != "x" ; then
+      dpp_perl_path="$dpp_user_perl_path $dpp_perl_path"
+   fi
+
+   AC_CACHE_CHECK([for Perl 5], [dpp_cv_usable_perl5],
+      [ dpp_cv_usable_perl5='no' ;
+        for dpp_dir in $dpp_perl_path ; do
+           if eval "test \"`chkPerl5 $dpp_dir/perl`\" -eq 0" ; then
+              dpp_cv_usable_perl5="$dpp_dir/perl"
+              break
+           fi
+        done
+      ])
+
+   PERL5="$dpp_cv_usable_perl5"
+
+   if test "x$PERL" = "xno" ; then
+      ifelse([$3], , :, [$3])
+   else
+      ifelse([$2], , :, [$2])
+   fi
+
+   AC_SUBST(PERL)
+   AC_SUBST(PERL5)
+])
+m4trace:dpp/config/pthreads.m4:87: -1- AC_DEFUN([DPP_ENABLE_PTHREADS], [
+   AC_ARG_ENABLE(pthreads,
+                 [  --enable-pthreads       Use of pthreads are needed      [default=$1]],
+                 PTHREADS_ENABLED="$enableval", PTHREADS_ENABLED=$1)
+])
+m4trace:dpp/config/pthreads.m4:102: -1- AC_DEFUN([DPP_CC_PTHREAD_ARG], [
+   AC_REQUIRE([DPP_PROG_CC])
+   AC_BEFORE([$0], [DPP_GET_PTHREAD_LIB])
+   AC_BEFORE([$0], [DPP_PTHREAD_FINISH])
+
+   AC_LANG_SAVE
+   AC_LANG_C
+
+   dnl Determine if -pthread is a valid compiler option.  If it is, set
+   dnl $dpp_cv_CC_accepts_pthread to 'yes'; otherwise, set it to 'no'.
+   AC_CACHE_CHECK([whether $CC accepts -pthread],
+      [dpp_cv_CC_accepts_pthread],
+      [ echo 'int main(){}' > conftest.c
+        if test -z "`${CC} -pthread -o conftest conftest.c 2>&1`" ; then
+           dpp_cv_CC_accepts_pthread='yes'
+        else
+           dpp_cv_CC_accepts_pthread='no'
+        fi
+        rm -f conftest*
+      ])
+
+   CC_ACCEPTS_PTHREAD="$dpp_cv_CC_accepts_pthread"
+
+   if test "x$CC_ACCEPTS_PTHREAD" = "xyes" ; then
+      PTHREAD_ARG='-pthread'
+   fi
+
+   AC_LANG_RESTORE
+])
+m4trace:dpp/config/pthreads.m4:141: -1- AC_DEFUN([DPP_CC_PTHREADS_ARG], [
+   AC_REQUIRE([DPP_PROG_CC])
+   AC_BEFORE([$0], [DPP_GET_PTHREAD_LIB])
+   AC_BEFORE([$0], [DPP_PTHREAD_FINISH])
+
+   AC_LANG_SAVE
+   AC_LANG_C
+
+   dnl Determine if -pthreads is a valid compiler option.  If it is, set
+   dnl $dpp_cv_CC_accepts_pthread to 'yes'; otherwise, set it to 'no'.
+   AC_CACHE_CHECK([whether $CC accepts -pthreads],
+      [dpp_cv_CC_accepts_pthreads],
+      [ echo 'int main(){}' > conftest.c
+        if test -z "`${CC} -pthreads -o conftest conftest.c 2>&1`" ; then
+           dpp_cv_CC_accepts_pthreads='yes'
+        else
+           dpp_cv_CC_accepts_pthreads='no'
+        fi
+        rm -f conftest*
+      ])
+
+   CC_ACCEPTS_PTHREADS="$dpp_cv_CC_accepts_pthreads"
+
+   if test "x$CC_ACCEPTS_PTHREADS" = "xyes" ; then
+      PTHREAD_ARG='-pthreads'
+   fi
+
+   AC_LANG_RESTORE
+])
+m4trace:dpp/config/pthreads.m4:187: -1- AC_DEFUN([DPP_GET_PTHREAD_LIB], [
+   AC_REQUIRE([DPP_CC_PTHREAD_ARG])
+   AC_REQUIRE([DPP_CC_PTHREADS_ARG])
+
+   dpp_pthread_lib=''
+
+   dnl If the compiler accepts -pthread or -pthreads, don't bother trying to
+   dnl find the pthreads library.
+   if test "x$CC_ACCEPTS_PTHREAD" = "xno" -a "x$CC_ACCEPTS_PTHREADS" = "xno"
+   then
+      AC_LANG_SAVE
+      AC_LANG_C
+
+      dnl On HP-UX 10.20, the pthreads library is in the cma library.  On
+      dnl other systems, the pthreads stuff is in libc_r.
+      dpp_pthread_lib_names="$1 pthread pthreads cma c_r"
+
+      dpp_save_orig_LIBS="$LIBS"
+
+      for lib in $dpp_pthread_lib_names ; do
+         dpp_save_LIBS="$LIBS"
+         AC_CHECK_LIB([$lib], [pthread_create],
+            [AC_CHECK_HEADER([pthread.h],
+               [ dpp_pthread_lib="-l${lib}" ; break ],
+               [AC_MSG_WARN([*** POSIX threads will not be used (header file not found) ***])])])
+         LIBS="$dpp_save_LIBS"
+      done
+
+      LIBS="$dpp_save_orig_LIBS"
+
+      AC_LANG_RESTORE
+   fi
+
+   PTHREAD_LIB="$dpp_pthread_lib"
+])
+m4trace:dpp/config/pthreads.m4:242: -1- AC_DEFUN([DPP_GET_PTHREAD_VER], [
+   AC_REQUIRE([DPP_GET_PTHREAD_LIB])
+
+   AC_LANG_SAVE
+   AC_LANG_C
+
+   dpp_save_CFLAGS="$CFLAGS"
+
+   if test "x$CC_ACCEPTS_PTHREAD" = "xyes" ; then
+      CFLAGS="$CFLAGS -pthread"
+   elif test "x$CC_ACCEPTS_PTHREADS" = "xyes" ; then
+      CFLAGS="$CFLAGS -pthreads"
+   fi
+
+   dpp_save_LIBS="$LIBS"
+   LIBS="$LIBS $PTHREAD_LIB"
+
+   AC_CACHE_CHECK([POSIX threads draft revision],
+      [dpp_cv_pthread_version],
+      [AC_TRY_LINK([#include <pthread.h> ],
+         [ pthread_t t; pthread_kill(t, 1); ],
+         [dpp_cv_pthread_version='Draft 10'],
+         [dpp_cv_pthread_version='Draft 4'])])
+
+   CFLAGS="$dpp_save_CFLAGS"
+   LIBS="$dpp_save_LIBS"
+
+   if test "x$dpp_cv_pthread_version" = "xDraft 10" ; then
+      AC_DEFINE([_PTHREADS_DRAFT_10], ,
+                [define if using POSIX threads Draft 10])
+   else
+      AC_DEFINE([_PTHREADS_DRAFT_4], , [define if using POSIX threads Draft 4])
+   fi
+
+   if test "x$2" != "x" ; then
+      dnl Define the appropriate value for _POSIX_C_SOURCE on the current
+      dnl platform.
+      if test "x$1" = "xIRIX" -o "x$1" = "xLinux" -o "x$1" = "xSolaris"
+      then
+         AC_DEFINE($2, [199506L])
+      else
+         AC_DEFINE($2, [2])
+      fi
+   fi
+
+   AC_LANG_RESTORE
+])
+m4trace:dpp/config/pthreads.m4:306: -1- AC_DEFUN([DPP_GET_POSIX_SEMAPHORE_LIB], [
+   AC_REQUIRE([DPP_CC_PTHREAD_ARG])
+   AC_REQUIRE([DPP_CC_PTHREADS_ARG])
+
+   dpp_save_CFLAGS="$CFLAGS"
+   dpp_save_LDFLAGS="$LDFLAGS"
+   dpp_save_LIBS="$LIBS"
+
+   LDFLAGS="$LDFLAGS $PTHREAD_ARG"
+   LIBS="$LIBS $PTHREAD_LIB"
+
+   AC_LANG_SAVE
+   AC_LANG_C
+
+   dpp_sem_init_found='no'
+
+   dnl Check if we have sem_init(3) available.  It may be in the standard C
+   dnl library, in libposix4, or in librt depending on the platform.
+   AC_CHECK_FUNC([sem_init], [dpp_sem_init_found='yes'],
+      [AC_CHECK_LIB([posix4], [sem_init],
+         [ SEM_LIB='-lposix4' dpp_sem_init_found='yes' ],
+         [AC_CHECK_LIB([rt], [sem_init],
+            [ SEM_LIB='-lrt' dpp_sem_init_found='yes' ], $2)])])
+
+   if test "x$dpp_sem_init_found" = "xyes" ; then
+      ifelse([$1], , :, [$1])
+   fi
+
+   AC_LANG_RESTORE
+
+   CFLAGS="$dpp_save_CFLAGS"
+   LDFLAGS="$dpp_save_LDFLAGS"
+   LIBS="$dpp_save_LIBS"
+])
+m4trace:dpp/config/pthreads.m4:352: -1- AC_DEFUN([DPP_PTHREAD_FINISH], [
+   AC_REQUIRE([DPP_CC_PTHREAD_ARG])
+   AC_REQUIRE([DPP_CC_PTHREADS_ARG])
+
+   if test "x$CC_ACCEPTS_PTHREAD" = "xyes" ; then
+      EXTRA_LDFLAGS="$EXTRA_LDFLAGS -pthread"
+   elif test "x$CC_ACCEPTS_PTHREADS" = "xyes" ; then
+      EXTRA_LDFLAGS="$EXTRA_LDFLAGS -pthreads"
+   fi
+
+   AC_SUBST(EXTRA_LDFLAGS)
+])
+m4trace:dpp/config/sys.m4:63: -1- AC_DEFUN([DPP_SYSTEM_SETUP], [
+   dnl We use AC_CANONICAL TARGET so that we can find out information about
+   dnl the build, target, and host platforms rather than only the host.
+   AC_REQUIRE([AC_CANONICAL_TARGET])
+
+   dnl Operating system release information.  This may contain anything and
+   dnl should be treated as a string.
+   OS_REL_STR=`uname -r`
+
+   dnl Operating system version number only (any miscellaneous text is
+   dnl stripped).  This will only contain a number and can be treated as a
+   dnl float-point value.
+   changequote(<<, >>)
+   OS_REL_NUM=`uname -r | sed -e 's/^[^0-9]*\([0-9][0-9]*\.[0-9][0-9]*\)[ .a-zA-Z_0-9-]*$/\1/'`
+   changequote([, ])
+
+   dnl Major and minor version numbers from $OS_REL_NUM separated for use
+   dnl with the C preprocessor.  Using cut(1) is kind of a hack, but at least
+   dnl it's a clean one.
+   OS_REL_NUM_MAJOR=`echo "$OS_REL_NUM" | cut -f1 -d'.'`
+   OS_REL_NUM_MINOR=`echo "$OS_REL_NUM" | cut -f1 -d' ' | cut -f2 -d'.'`
+
+   dnl General type of operating system (e.g., UNIX, Win32) and actual
+   dnl platform name.
+   OS_TYPE='UNIX'
+   PLATFORM=''
+
+   dnl List of supported ABIs on a given platform.
+   ABI_LIST=''
+
+   dnl The OS for which this is being configured.  The operating systems are
+   dnl listed alphabetically.
+   case $target_os in
+      dnl IBM RS/6000 running AIX.
+      aix*)
+         dnl If no ABI has been set yet, default to ELF with whatever the
+         dnl CPU architecture is.
+         if test "x$ABI" = "x" ; then
+            DPP_ABI_CFG('ELF', $target_cpu)
+         fi
+
+         PLATFORM='AIX'
+         ;;
+      dnl i386-class machine running Windows {98,NT} with Cygnus GNU-Win32.
+      cygwin)
+         dnl If no ABI has been set yet, default to WIN32 with whatever the
+         dnl CPU architecture is.
+         if test "x$ABI" = "x" ; then
+            DPP_ABI_CFG('WIN32')
+         fi
+
+         ABI_LIST='WIN32'
+         OS_TYPE='Win32'
+
+         dpp_sys_name=`uname -s`
+
+         dnl Determine the value for $PLATFORM based on what uname(1) tells
+         dnl us.  We define our own values because Cygnus' uname(1) returns
+         dnl somewhat annoying names.
+         case "$dpp_sys_name" in
+            dnl Windows NT 4.0, 5.0 (aka Windows 2000), 5.1 (Windows XP), and
+            dnl beyond (I hope).
+            *NT-*)
+               PLATFORM='WinNT'
+               ;;
+            dnl Windows 95 and 98.
+            *WIN_9*-4.*)
+               PLATFORM='Win9x'
+               ;;
+            dnl Windows ME.
+            *WIN_ME-4.*)
+               PLATFORM='WinMe'
+               ;;
+            dnl Unknown version of Windows that may not yet be supported.
+            *)
+               AC_MSG_WARN(Unknown Windows type $dpp_sys_name!)
+               ;;
+         esac
+         ;;
+      dnl A machine running Darwin (aka, Mac OS X).
+      darwin*)
+         dnl If no ABI has been set yet, default to Mach-O with whatever the
+         dnl CPU architecture is.
+         if test "x$ABI" = "x" ; then
+            if test $OS_REL_NUM_MAJOR -ge 10 ; then
+               DPP_ABI_CFG('Mach-O', 'x86_64')
+            else
+               DPP_ABI_CFG('Mach-O', $target_cpu)
+            fi
+         fi
+
+         PLATFORM='Darwin'
+         ;;
+      dnl A machine running FreeBSD.
+      freebsd*)
+         dnl If no ABI has been set yet, default to ELF with whatever the
+         dnl CPU architecture is.
+         if test "x$ABI" = "x" ; then
+            DPP_ABI_CFG('ELF', $target_cpu)
+         fi
+
+         case $target_cpu in
+            *86)
+               ABI_LIST='ELF_i386'
+               ;;
+            *)
+               ABI_LIST="ELF_$target_cpu"
+               ;;
+         esac
+
+         PLATFORM='FreeBSD'
+         ;;
+      dnl A machine running DragonFly.
+      dragonfly*)
+         dnl If no ABI has been set yet, default to ELF with whatever the
+         dnl CPU architecture is.
+         if test "x$ABI" = "x" ; then
+            DPP_ABI_CFG('ELF', $target_cpu)
+         fi
+
+         case $target_cpu in
+            *86)
+               ABI_LIST='ELF_i386'
+               ;;
+            *)
+               ABI_LIST="ELF_$target_cpu"
+               ;;
+         esac
+
+         PLATFORM='DragonFly'
+         ;;
+      dnl HP PA-RISC machine running HP-UX 10.20.
+      hpux10.20)
+         dnl If no ABI has been set yet, default to HP PA-RISC.
+         if test "x$ABI" = "x" ; then
+            DPP_ABI_CFG('HP', 'PA-RISC')
+         fi
+
+         ABI_LIST='HP HP64'
+         PLATFORM='HP'
+         ;;
+      dnl HP PA-RISC machine running HP-UX 11.x.
+      hpux11*)
+         dnl If no ABI has been set yet, default to HP PA-RISC.
+         if test "x$ABI" = "x" ; then
+            DPP_ABI_CFG('HP', 'PA-RISC')
+         fi
+
+         ABI_LIST='HP HP64'
+         PLATFORM='HP'
+         ;;
+      dnl A machine running IRIX 6.x.
+      irix6*)
+         dnl If no ABI has been set yet, default to N32_M3.
+         if test "x$ABI" = "x" -a "x$USE_GCC" != "xyes"; then
+            DPP_ABI_CFG('N32', 'mips3', '32', '-n32 -mips3')
+         fi
+
+         PLATFORM='IRIX'
+
+         if test $OS_REL_NUM_MAJOR -lt 6 ; then
+            dpp_IRIXREL='IRIX5'
+         else
+            dpp_IRIXREL='IRIX6'
+         fi
+
+         AC_DEFINE_UNQUOTED(IRIXREL, "$dpp_IRIXREL",
+            [define to \"IRIX5\" or \"IRIX6\" depending on IRIX version])
+         ;;
+      dnl A machine running Linux.
+      linux*)
+         dnl If no ABI has been set yet, default to ELF with whatever the
+         dnl CPU architecture is.
+         if test "x$ABI" = "x" ; then
+            if test -r '/etc/lsb-release' ; then
+               dpp_using_debian=1
+            else
+               dpp_using_debian=0
+            fi
+
+            case $target_cpu in
+               x86_64)
+                  dpp_libbitsuf='64'
+                  if test $dpp_using_debian -eq 1 ; then
+                     dpp_libbitsuf=''
+                  fi
+                  ;;
+               *)
+                  dpp_libbitsuf=''
+                  ;;
+
+            esac
+
+            DPP_ABI_CFG('ELF', "$target_cpu", "$dpp_libbitsuf")
+         fi
+
+         case $target_cpu in
+            *86)
+               ABI_LIST='ELF_i386'
+               ;;
+            x86_64)
+               ABI_LIST='ELF_x86_64'
+               ;;
+            *)
+               ABI_LIST="ELF_$target_cpu"
+               ;;
+         esac
+
+         PLATFORM='Linux'
+         ;;
+      dnl A machine running NetBSD.
+      netbsd*)
+         dnl If no ABI has been set yet, default to ELF with whatever the
+         dnl CPU architecture is.
+         if test "x$ABI" = "x" ; then
+            DPP_ABI_CFG('ELF', $target_cpu)
+         fi
+
+         case $target_cpu in
+            *86)
+               ABI_LIST='ELF_i386'
+               ;;
+            *)
+               ABI_LIST="ELF_$target_cpu"
+               ;;
+         esac
+
+         PLATFORM='NetBSD'
+         ;;
+      dnl A machine running OpenBSD.
+      openbsd*)
+         dnl If no ABI has been set yet, default to ELF with whatever the
+         dnl CPU architecture is.
+         if test "x$ABI" = "x" ; then
+            DPP_ABI_CFG('ELF', $target_cpu)
+         fi
+
+         case $target_cpu in
+            *86)
+               ABI_LIST='ELF_i386'
+               ;;
+            *)
+               ABI_LIST="ELF_$target_cpu"
+               ;;
+         esac
+
+         PLATFORM='OpenBSD'
+         ;;
+      dnl DEC Alpha running Digital UNIX 4.0.
+      osf4.0)
+         dnl If no ABI has been set yet, default to ALPHA (whatever that
+         dnl means).
+         if test "x$ABI" = "x" ; then
+            DPP_ABI_CFG('ALPHA')
+         fi
+
+         ABI_LIST='ALPHA'
+         PLATFORM='alpha-osf'
+         ;;
+      dnl A machine running Solaris (aka SunOS).
+      solaris*)
+         dnl If no ABI has been set yet, default to ELF with whatever the
+         dnl CPU architecture is.
+         if test "x$ABI" = "x" ; then
+            DPP_ABI_CFG('ELF', $target_cpu)
+         fi
+
+         case $target_cpu in
+            *86)
+               ABI_LIST='ELF_i386'
+               ;;
+            *)
+               ABI_LIST="ELF_$target_cpu"
+               ;;
+         esac
+
+         PLATFORM='Solaris'
+         ;;
+      dnl Unkown operating system (to config.guess).
+      unknown)
+         dnl If no ABI has been set yet, default to the OS (which will be
+         dnl 'unknown') with whatever the CPU architecture is.
+         if test "x$ABI" = "x" ; then
+            DPP_ABI_CFG($target_os, $target_cpu)
+         fi  
+
+         PLATFORM='UNKNOWN'
+         ;;
+   esac
+
+   if test "x$PLATFORM" = "x" ; then
+      AC_MSG_WARN(Unknown target OS!)
+      PLATFORM='UNKNOWN'
+      OS_TYPE='UNKNOWN'
+   fi
+
+   dpp_platform="$PLATFORM"
+   dpp_os_type="$OS_TYPE"
+
+   AC_SUBST(ABI_LIST)
+   AC_SUBST(OS_TYPE)
+   AC_SUBST(PLATFORM)
+])
+m4trace:dpp/config/win32.m4:58: -1- AC_DEFUN([DPP_WIN32_SETUP], [
+   AC_PATH_PROG([CYGPATH], [cygpath], [no])
+
+   dnl UNIX path translator.  This converts a UNIX-style path to a DOS/Win32
+   dnl path.  With this routine, we can safely use UNIX paths for all Win32
+   dnl variables while the configure script runs.  Then, immediately before
+   dnl Makefile substitution is done, we can translate all the paths to
+   dnl DOS-style for use in the Makefiles.
+   dospath ( ) {
+      dnl The first expression changes a "//C" drive name to "C:".  It has a
+      dnl pair of surrounding []'s because those symbols have special meaning
+      dnl to m4(1).  Without them, the first pair of []'s in the regular
+      dnl expression will be lost.  Similarly, the second expression chagnes
+      dnl a "/cygdrive/C" drive name to "C:".
+      dnl The third expression ensures that a path beginning with / is
+      dnl returned as being a directory on the home drive.  The UNIX utilities
+      dnl treat $HOMEDRIVE as the root directory and will give, for example,
+      dnl /tmp instead of //D/tmp if D: is the home drive.  The expression
+      dnl simply prepends "$HOMEDRIVE" (after evaluation) to the path.
+      dpp_drive_exp=['s/^\/\/\([[:alpha:]]\)/\1:/']
+      dpp_drive_exp2=['s/^\/cygdrive\/\([[:alpha:]]\)/\1:/']
+      dpp_add_home_exp=["s/^\//$HOMEDRIVE\//"]
+
+      dnl If we have a value in $CYGPATH, use it to convert the path from
+      dnl UNIX to Win32.
+      if test "x$CYGPATH" != "xno" ; then
+         dnl The -p option tells that we are given a simple path.
+         if test "x${1}" = "x-p" ; then
+            dpp_retval=`$CYGPATH --windows ${2} | sed -e ['s/\\\\/\//g']`
+         else
+            dnl With the newer Cygwin code, we can use $CYGPATH to get the
+            dnl Win32 version of /.
+            dpp_cygroot=`$CYGPATH --windows / | sed -e ['s/\\\\/\//g']`
+            dpp_cygroot_exp=["s|^\/|$dpp_cygroot\/|"]
+            dpp_retval=`echo ${1} | sed -e "$dpp_drive_exp" -e "$dpp_drive_exp2" -e "$dpp_cygroot_exp" -e "$dpp_add_home_exp"`
+         fi
+      dnl Otherwise, use only sed(1) which is a little more clumsy.
+      else
+         dnl Ignore the -p option in this case.
+         if test "x${1}" = "x-p" ; then
+            dpp_unix_path="${2}"
+         else
+            dpp_unix_path="${1}"
+         fi
+
+         dpp_retval=`echo $dpp_unix_path | sed -e "$dpp_drive_exp" -e "$dpp_drive_exp2" -e "$dpp_add_home_exp"`
+      fi
+
+      echo "$dpp_retval"
+   }
+
+   dnl DOS path translator.  This converts a DOS-style path to a UNIX path.
+   unixpath ( ) {
+      dnl All expressions hers are enclosed in []'s because those symbols
+      dnl have special meaning to m4(1).  This is the same situation as
+      dnl above.
+
+       dnl Ignore the -p option in this case.
+      if test "x${1}" = "x-p" ; then
+         dpp_dos_path="${2}"
+      else
+         dpp_dos_path="${1}"
+      fi
+
+      dnl If we have a value in $CYGPATH, use it to convert the path from
+      dnl Win32 to UNIX.
+      dnl The -p option tells that we are given a simple path.
+      if test "x$CYGPATH" != "xno" -a "x${1}" != "x-p" ; then
+         dpp_retval=`$CYGPATH --unix $dpp_dos_path`
+      dnl Otherwise, use sed(1) which is a little more clumsy.
+      else
+         dnl This changes \'s to /'s and escapes any whitespace in the path.
+         dpp_slash_exp=['s/\\/\//g']
+         dpp_ws_esc_exp=['s/ /\\ /g']
+         dpp_unix_root=`echo "$dpp_dos_path" | sed -e "$dpp_slash_exp" -e "$dpp_ws_esc_exp"`
+
+         dnl This changes the leading "C:" to "//C" (for the appropriate
+         dnl drive letter).
+         dpp_colon_rem_exp=['s/\([[:alpha:]]\):/\/\/\1/g']
+         dpp_colon_rem_root=`echo "$dpp_unix_root" | sed -e "$dpp_colon_rem_exp"`
+
+         dnl This changes any ";" into ":"
+         dpp_semicolon_exp=['s/\;/:/g']
+         dpp_retval=`echo "$dpp_colon_rem_root" | sed -e "$dpp_semicolon_exp"`
+      fi
+
+      echo "$dpp_retval"
+   }
+])
+m4trace:dpp/config/win32.m4:171: -1- AC_DEFUN([DPP_PROG_CYGCL], [
+   AC_CHECK_PROG([dpp_cygcl], [cygcl], [cygcl], [no], $1)
+
+   if test "x$dpp_cygcl" = "xno" ; then
+      DPP_USING_CYGCL='no'
+      ifelse([$3], , :, [$3])
+   else
+      DPP_USING_CYGCL='yes'
+      CXX='cygcl'
+      CC="$CXX"
+
+      ifelse([$2], , :, [$2])
+   fi
+])
+m4trace:dpp/config/win32.m4:209: -1- AC_DEFUN([DPP_PROG_MSVCCC], [
+   AC_CHECK_PROG([dpp_msvccc], [msvccc], [msvccc], [no], $1)
+
+   if test "x$dpp_msvccc" = "xno" ; then
+      DPP_USING_MSVCCC='no'
+      ifelse([$3], , :, [$3])
+   else
+      AC_MSG_WARN([*** msvccc has many bugs--consider using cygcl from Doozer++ instead ***])
+
+      DPP_USING_MSVCCC='yes'
+      CXX='msvccc'
+      CC="$CXX"
+
+      ifelse([$2], , :, [$2])
+   fi
+])
+m4trace:configure.ac:5: -1- m4_pattern_forbid([^_?A[CHUM]_])
+m4trace:configure.ac:5: -1- m4_pattern_forbid([_AC_])
+m4trace:configure.ac:5: -1- m4_pattern_forbid([^LIBOBJS$], [do not use LIBOBJS directly, use AC_LIBOBJ (see section `AC_LIBOBJ vs LIBOBJS'])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^AS_FLAGS$])
+m4trace:configure.ac:5: -1- m4_pattern_forbid([^_?m4_])
+m4trace:configure.ac:5: -1- m4_pattern_forbid([^dnl$])
+m4trace:configure.ac:5: -1- m4_pattern_forbid([^_?AS_])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^SHELL$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PATH_SEPARATOR$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PACKAGE_URL$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^exec_prefix$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^prefix$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^program_transform_name$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^bindir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^sbindir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^libexecdir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^datarootdir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^datadir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^sysconfdir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^sharedstatedir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^localstatedir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^includedir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^oldincludedir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^docdir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^infodir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^htmldir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^dvidir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^pdfdir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^psdir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^libdir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^localedir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^mandir$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^PACKAGE_URL$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^DEFS$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^ECHO_C$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^ECHO_N$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^ECHO_T$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^build_alias$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^host_alias$])
+m4trace:configure.ac:5: -1- m4_pattern_allow([^target_alias$])
+m4trace:configure.ac:11: -1- DPP_PREREQ([1.5.1])
+m4trace:configure.ac:12: -1- DPP_INIT
+m4trace:configure.ac:22: -1- DPP_STD_CPP([yes])
+m4trace:configure.ac:66: -1- DPP_WITH_GCC([no])
+m4trace:configure.ac:66: -1- m4_pattern_allow([^USE_GCC$])
+m4trace:configure.ac:69: -1- DPP_ABI_SETUP
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([64], [mips3], [64], [-64 -mips3])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([64], [mips4], [64], [-64 -mips4])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([N32], [mips3], [32], [-n32 -mips3])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([N32], [mips4], [32], [-n32 -mips4])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([ELF], [i386], [], [-m32])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([ELF], [x86_64], [64], [-m64])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([WIN32])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([COFF], [alpha])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([ELF], [alpha])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([HP], [pa-risc])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([HP64], [pa-risc], [/pa20_64], [+DD64])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([Mach-O], [powerpc], [], [-arch ppc], [$osx_sdk_flags])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([Mach-O], [i386], [], [-arch i386], [$osx_sdk_flags])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([Mach-O], [x86_64], [], [-arch x86_64], [$osx_sdk_flags])
+m4trace:configure.ac:69: -1- DPP_ABI_CFG([Mach-O], [universal], [], [$dpp_universal_arch_flags], [$osx_sdk_flags])
+m4trace:configure.ac:69: -1- m4_pattern_allow([^ABI$])
+m4trace:configure.ac:69: -1- m4_pattern_allow([^ISA$])
+m4trace:configure.ac:69: -1- m4_pattern_allow([^LIBBITSUF$])
+m4trace:configure.ac:69: -1- m4_pattern_allow([^PLATFORM_SDK$])
+m4trace:configure.ac:69: -1- m4_pattern_allow([^UNIVERSAL_ARCH_LIST$])
+m4trace:configure.ac:77: -1- _m4_warn([obsolete], [The macro `AC_CANONICAL_SYSTEM' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:1857: AC_CANONICAL_SYSTEM is expanded from...
+configure.ac:77: the top level])
+m4trace:configure.ac:77: -1- m4_pattern_allow([^build$])
+m4trace:configure.ac:77: -1- m4_pattern_allow([^build_cpu$])
+m4trace:configure.ac:77: -1- m4_pattern_allow([^build_vendor$])
+m4trace:configure.ac:77: -1- m4_pattern_allow([^build_os$])
+m4trace:configure.ac:77: -1- m4_pattern_allow([^host$])
+m4trace:configure.ac:77: -1- m4_pattern_allow([^host_cpu$])
+m4trace:configure.ac:77: -1- m4_pattern_allow([^host_vendor$])
+m4trace:configure.ac:77: -1- m4_pattern_allow([^host_os$])
+m4trace:configure.ac:77: -1- m4_pattern_allow([^target$])
+m4trace:configure.ac:77: -1- m4_pattern_allow([^target_cpu$])
+m4trace:configure.ac:77: -1- m4_pattern_allow([^target_vendor$])
+m4trace:configure.ac:77: -1- m4_pattern_allow([^target_os$])
+m4trace:configure.ac:78: -1- DPP_SYSTEM_SETUP
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['ELF'], [$target_cpu])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['WIN32'])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['Mach-O'], ['x86_64'])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['Mach-O'], [$target_cpu])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['ELF'], [$target_cpu])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['ELF'], [$target_cpu])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['HP'], ['PA-RISC'])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['HP'], ['PA-RISC'])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['N32'], ['mips3'], ['32'], ['-n32 -mips3'])
+m4trace:configure.ac:78: -1- m4_pattern_allow([^IRIXREL$])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['ELF'], ["$target_cpu"], ["$dpp_libbitsuf"])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['ELF'], [$target_cpu])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['ELF'], [$target_cpu])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['ALPHA'])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG(['ELF'], [$target_cpu])
+m4trace:configure.ac:78: -1- DPP_ABI_CFG([$target_os], [$target_cpu])
+m4trace:configure.ac:78: -1- m4_pattern_allow([^ABI_LIST$])
+m4trace:configure.ac:78: -1- m4_pattern_allow([^OS_TYPE$])
+m4trace:configure.ac:78: -1- m4_pattern_allow([^PLATFORM$])
+m4trace:configure.ac:85: -1- DPP_CC_PTHREAD_ARG
+m4trace:configure.ac:85: -1- DPP_PROG_CC
+m4trace:configure.ac:85: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^CFLAGS$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^LDFLAGS$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^CC$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^ac_ct_CC$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^EXEEXT$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^OBJEXT$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^CPP$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^CPP$])
+m4trace:configure.ac:85: -1- DPP_C_COMPILER_INTEL
+m4trace:configure.ac:85: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2614: AC_TRY_COMPILE is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
+../../lib/autoconf/general.m4:2052: AC_CACHE_CHECK is expanded from...
+dpp/config/icc.m4:114: DPP_C_COMPILER_INTEL is expanded from...
+dpp/config/compiler.m4:652: DPP_PROG_CC is expanded from...
+dpp/config/pthreads.m4:102: DPP_CC_PTHREAD_ARG is expanded from...
+configure.ac:85: the top level])
+m4trace:configure.ac:85: -1- m4_pattern_allow([^CFLAGS_DYNLIB$])
+m4trace:configure.ac:85: -1- _m4_warn([obsolete], [The macro `AC_LANG_SAVE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:125: AC_LANG_SAVE is expanded from...
+dpp/config/pthreads.m4:102: DPP_CC_PTHREAD_ARG is expanded from...
+configure.ac:85: the top level])
+m4trace:configure.ac:85: -1- _m4_warn([obsolete], [The macro `AC_LANG_C' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/c.m4:72: AC_LANG_C is expanded from...
+dpp/config/pthreads.m4:102: DPP_CC_PTHREAD_ARG is expanded from...
+configure.ac:85: the top level])
+m4trace:configure.ac:85: -1- _m4_warn([obsolete], [The macro `AC_LANG_RESTORE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:134: AC_LANG_RESTORE is expanded from...
+dpp/config/pthreads.m4:102: DPP_CC_PTHREAD_ARG is expanded from...
+configure.ac:85: the top level])
+m4trace:configure.ac:88: -1- DPP_CC_PTHREADS_ARG
+m4trace:configure.ac:88: -1- _m4_warn([obsolete], [The macro `AC_LANG_SAVE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:125: AC_LANG_SAVE is expanded from...
+dpp/config/pthreads.m4:141: DPP_CC_PTHREADS_ARG is expanded from...
+configure.ac:88: the top level])
+m4trace:configure.ac:88: -1- _m4_warn([obsolete], [The macro `AC_LANG_C' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/c.m4:72: AC_LANG_C is expanded from...
+dpp/config/pthreads.m4:141: DPP_CC_PTHREADS_ARG is expanded from...
+configure.ac:88: the top level])
+m4trace:configure.ac:88: -1- _m4_warn([obsolete], [The macro `AC_LANG_RESTORE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:134: AC_LANG_RESTORE is expanded from...
+dpp/config/pthreads.m4:141: DPP_CC_PTHREADS_ARG is expanded from...
+configure.ac:88: the top level])
+m4trace:configure.ac:92: -1- DPP_HAVE_PERL5([], [], [AC_MSG_ERROR([*** Perl is required ***])])
+m4trace:configure.ac:92: -1- m4_pattern_allow([^PERL$])
+m4trace:configure.ac:92: -1- m4_pattern_allow([^PERL5$])
+m4trace:configure.ac:93: -1- DPP_HAVE_GNU_MAKE([3.78], [], [AC_MSG_ERROR([*** The build system requires GNU make 3.78 or newer ***])])
+m4trace:configure.ac:93: -1- m4_pattern_allow([^dpp_make_is_gmake$])
+m4trace:configure.ac:93: -1- DPP_MAKE_IS_GNU_MAKE([$dpp_make_is_gmake], [GMAKE="$dpp_make_is_gmake"], [ AC_CHECK_PROG([dpp_gmake_is_gmake], [gmake], [gmake], [no], )
+              DPP_MAKE_IS_GNU_MAKE([$dpp_gmake_is_gmake],
+                                   [GMAKE="$dpp_gmake_is_gmake"], AC_MSG_ERROR([*** The build system requires GNU make 3.78 or newer ***])) ])
+m4trace:configure.ac:93: -1- _m4_warn([obsolete], [The macro `AC_FD_CC' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:383: AC_FD_CC is expanded from...
+dpp/config/basic_progs.m4:92: DPP_MAKE_IS_GNU_MAKE is expanded from...
+dpp/config/basic_progs.m4:124: DPP_HAVE_GNU_MAKE is expanded from...
+configure.ac:93: the top level])
+m4trace:configure.ac:93: -1- _m4_warn([obsolete], [The macro `AC_FD_CC' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:383: AC_FD_CC is expanded from...
+dpp/config/basic_progs.m4:92: DPP_MAKE_IS_GNU_MAKE is expanded from...
+dpp/config/basic_progs.m4:124: DPP_HAVE_GNU_MAKE is expanded from...
+configure.ac:93: the top level])
+m4trace:configure.ac:93: -1- m4_pattern_allow([^dpp_gmake_is_gmake$])
+m4trace:configure.ac:93: -1- DPP_MAKE_IS_GNU_MAKE([$dpp_gmake_is_gmake], [GMAKE="$dpp_gmake_is_gmake"], [as_fn_error $? "*** The build system requires GNU make 3.78 or newer ***" "$LINENO" 5])
+m4trace:configure.ac:93: -1- _m4_warn([obsolete], [The macro `AC_FD_CC' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:383: AC_FD_CC is expanded from...
+dpp/config/basic_progs.m4:92: DPP_MAKE_IS_GNU_MAKE is expanded from...
+dpp/config/basic_progs.m4:92: DPP_MAKE_IS_GNU_MAKE is expanded from...
+dpp/config/basic_progs.m4:124: DPP_HAVE_GNU_MAKE is expanded from...
+configure.ac:93: the top level])
+m4trace:configure.ac:93: -1- _m4_warn([obsolete], [The macro `AC_FD_CC' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:383: AC_FD_CC is expanded from...
+dpp/config/basic_progs.m4:92: DPP_MAKE_IS_GNU_MAKE is expanded from...
+dpp/config/basic_progs.m4:92: DPP_MAKE_IS_GNU_MAKE is expanded from...
+dpp/config/basic_progs.m4:124: DPP_HAVE_GNU_MAKE is expanded from...
+configure.ac:93: the top level])
+m4trace:configure.ac:93: -1- m4_pattern_allow([^dpp_gmake_is_gmake$])
+m4trace:configure.ac:93: -1- DPP_MAKE_IS_GNU_MAKE([$dpp_gmake_is_gmake], [GMAKE="$dpp_gmake_is_gmake"], [as_fn_error $? "*** The build system requires GNU make 3.78 or newer ***" "$LINENO" 5])
+m4trace:configure.ac:93: -1- _m4_warn([obsolete], [The macro `AC_FD_CC' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:383: AC_FD_CC is expanded from...
+dpp/config/basic_progs.m4:92: DPP_MAKE_IS_GNU_MAKE is expanded from...
+dpp/config/basic_progs.m4:124: DPP_HAVE_GNU_MAKE is expanded from...
+configure.ac:93: the top level])
+m4trace:configure.ac:93: -1- _m4_warn([obsolete], [The macro `AC_FD_CC' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:383: AC_FD_CC is expanded from...
+dpp/config/basic_progs.m4:92: DPP_MAKE_IS_GNU_MAKE is expanded from...
+dpp/config/basic_progs.m4:124: DPP_HAVE_GNU_MAKE is expanded from...
+configure.ac:93: the top level])
+m4trace:configure.ac:93: -1- DPP_VERSION_CHECK_MSG_NO_CACHE([GNU make], [$dpp_gmake_ver], [3.78], [], [AC_MSG_ERROR([*** The build system requires GNU make 3.78 or newer ***])])
+m4trace:configure.ac:93: -1- DPP_VERSION_CHECK([$dpp_gmake_ver], [3.78], [AC_MSG_RESULT([yes (version $dpp_gmake_ver)])
+                      ], [AC_MSG_RESULT([no (version $dpp_gmake_ver)])
+                      AC_MSG_ERROR([*** The build system requires GNU make 3.78 or newer ***])])
+m4trace:configure.ac:93: -1- m4_pattern_allow([^GMAKE$])
+m4trace:configure.ac:95: -1- DPP_BASIC_PROGS([$PLATFORM], [$OS_TYPE])
+m4trace:configure.ac:95: -1- m4_pattern_allow([^SET_MAKE$])
+m4trace:configure.ac:95: -1- m4_pattern_allow([^RANLIB$])
+m4trace:configure.ac:95: -1- m4_pattern_allow([^LN_S$])
+m4trace:configure.ac:95: -1- m4_pattern_allow([^MAKEDEPEND$])
+m4trace:configure.ac:96: -1- DPP_PROG_INSTALL
+m4trace:configure.ac:96: -1- m4_pattern_allow([^INSTALL_PROGRAM$])
+m4trace:configure.ac:96: -1- m4_pattern_allow([^INSTALL_SCRIPT$])
+m4trace:configure.ac:96: -1- m4_pattern_allow([^INSTALL_DATA$])
+m4trace:configure.ac:96: -1- m4_pattern_allow([^USE_DPP_BSD_INSTALL$])
+m4trace:configure.ac:102: -1- m4_pattern_allow([^OBJCOPY$])
+m4trace:configure.ac:109: -1- m4_pattern_allow([^PYTHON$])
+m4trace:configure.ac:123: -1- _m4_warn([cross], [cannot check for file existence when cross compiling], [../../lib/autoconf/general.m4:2777: AC_CHECK_FILE is expanded from...
+configure.ac:123: the top level])
+m4trace:configure.ac:149: -1- DPP_GET_PTHREAD_LIB
+m4trace:configure.ac:149: -1- _m4_warn([obsolete], [The macro `AC_LANG_SAVE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:125: AC_LANG_SAVE is expanded from...
+dpp/config/pthreads.m4:187: DPP_GET_PTHREAD_LIB is expanded from...
+configure.ac:149: the top level])
+m4trace:configure.ac:149: -1- _m4_warn([obsolete], [The macro `AC_LANG_C' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/c.m4:72: AC_LANG_C is expanded from...
+dpp/config/pthreads.m4:187: DPP_GET_PTHREAD_LIB is expanded from...
+configure.ac:149: the top level])
+m4trace:configure.ac:149: -1- m4_pattern_allow([^GREP$])
+m4trace:configure.ac:149: -1- m4_pattern_allow([^EGREP$])
+m4trace:configure.ac:149: -1- m4_pattern_allow([^STDC_HEADERS$])
+m4trace:configure.ac:149: -1- _m4_warn([obsolete], [The macro `AC_LANG_RESTORE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:134: AC_LANG_RESTORE is expanded from...
+dpp/config/pthreads.m4:187: DPP_GET_PTHREAD_LIB is expanded from...
+configure.ac:149: the top level])
+m4trace:configure.ac:187: -1- DPP_LANG_SAVE
+m4trace:configure.ac:187: -1- _m4_warn([obsolete], [The macro `AC_LANG_SAVE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:125: AC_LANG_SAVE is expanded from...
+dpp/config/lang.m4:23: DPP_LANG_SAVE is expanded from...
+configure.ac:187: the top level])
+m4trace:configure.ac:188: -1- DPP_LANG_C
+m4trace:configure.ac:188: -1- _m4_warn([obsolete], [The macro `AC_LANG_C' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/c.m4:72: AC_LANG_C is expanded from...
+dpp/config/lang.m4:33: DPP_LANG_C is expanded from...
+configure.ac:188: the top level])
+m4trace:configure.ac:193: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+../../lib/m4sugar/m4sh.m4:639: AS_IF is expanded from...
+../../lib/autoconf/general.m4:2031: AC_CACHE_VAL is expanded from...
+../../lib/autoconf/general.m4:2052: AC_CACHE_CHECK is expanded from...
+configure.ac:193: the top level])
+m4trace:configure.ac:211: -1- DPP_LANG_RESTORE
+m4trace:configure.ac:211: -1- _m4_warn([obsolete], [The macro `AC_LANG_RESTORE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:134: AC_LANG_RESTORE is expanded from...
+dpp/config/lang.m4:28: DPP_LANG_RESTORE is expanded from...
+configure.ac:211: the top level])
+m4trace:configure.ac:239: -1- DPP_LANG_SAVE
+m4trace:configure.ac:239: -1- _m4_warn([obsolete], [The macro `AC_LANG_SAVE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:125: AC_LANG_SAVE is expanded from...
+dpp/config/lang.m4:23: DPP_LANG_SAVE is expanded from...
+configure.ac:239: the top level])
+m4trace:configure.ac:240: -1- DPP_LANG_CPLUSPLUS
+m4trace:configure.ac:240: -1- _m4_warn([obsolete], [The macro `AC_LANG_CPLUSPLUS' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/c.m4:252: AC_LANG_CPLUSPLUS is expanded from...
+dpp/config/lang.m4:38: DPP_LANG_CPLUSPLUS is expanded from...
+configure.ac:240: the top level])
+m4trace:configure.ac:247: -1- m4_pattern_allow([^CXX$])
+m4trace:configure.ac:247: -1- m4_pattern_allow([^CXXFLAGS$])
+m4trace:configure.ac:247: -1- m4_pattern_allow([^LDFLAGS$])
+m4trace:configure.ac:247: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.ac:247: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:247: -1- m4_pattern_allow([^CXX$])
+m4trace:configure.ac:247: -1- m4_pattern_allow([^ac_ct_CXX$])
+m4trace:configure.ac:247: -1- m4_pattern_allow([^CXXCPP$])
+m4trace:configure.ac:247: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.ac:247: -1- m4_pattern_allow([^CXXCPP$])
+m4trace:configure.ac:259: -1- DPP_LANG_RESTORE
+m4trace:configure.ac:259: -1- _m4_warn([obsolete], [The macro `AC_LANG_RESTORE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:134: AC_LANG_RESTORE is expanded from...
+dpp/config/lang.m4:28: DPP_LANG_RESTORE is expanded from...
+configure.ac:259: the top level])
+m4trace:configure.ac:274: -1- DPP_VERSION_CHECK_MSG_NO_CACHE([Boost], [$pyj_boost_version], [$req_boost_version], [], [AC_MSG_ERROR([*** Boost $req_boost_version is required for PyJuggler ***])])
+m4trace:configure.ac:274: -1- DPP_VERSION_CHECK([$pyj_boost_version], [$req_boost_version], [AC_MSG_RESULT([yes (version $pyj_boost_version)])
+                      ], [AC_MSG_RESULT([no (version $pyj_boost_version)])
+                      AC_MSG_ERROR([*** Boost $req_boost_version is required for PyJuggler ***])])
+m4trace:configure.ac:343: -1- DPP_LANG_SAVE
+m4trace:configure.ac:343: -1- _m4_warn([obsolete], [The macro `AC_LANG_SAVE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:125: AC_LANG_SAVE is expanded from...
+dpp/config/lang.m4:23: DPP_LANG_SAVE is expanded from...
+configure.ac:343: the top level])
+m4trace:configure.ac:344: -1- DPP_LANG_CPLUSPLUS
+m4trace:configure.ac:344: -1- _m4_warn([obsolete], [The macro `AC_LANG_CPLUSPLUS' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/c.m4:252: AC_LANG_CPLUSPLUS is expanded from...
+dpp/config/lang.m4:38: DPP_LANG_CPLUSPLUS is expanded from...
+configure.ac:344: the top level])
+m4trace:configure.ac:371: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+configure.ac:371: the top level])
+m4trace:configure.ac:386: -1- DPP_LANG_RESTORE
+m4trace:configure.ac:386: -1- _m4_warn([obsolete], [The macro `AC_LANG_RESTORE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:134: AC_LANG_RESTORE is expanded from...
+dpp/config/lang.m4:28: DPP_LANG_RESTORE is expanded from...
+configure.ac:386: the top level])
+m4trace:configure.ac:449: -1- m4_pattern_allow([^XMKMF$])
+m4trace:configure.ac:464: -1- DPP_LANG_SAVE
+m4trace:configure.ac:464: -1- _m4_warn([obsolete], [The macro `AC_LANG_SAVE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:125: AC_LANG_SAVE is expanded from...
+dpp/config/lang.m4:23: DPP_LANG_SAVE is expanded from...
+configure.ac:464: the top level])
+m4trace:configure.ac:465: -1- DPP_LANG_CPLUSPLUS
+m4trace:configure.ac:465: -1- _m4_warn([obsolete], [The macro `AC_LANG_CPLUSPLUS' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/c.m4:252: AC_LANG_CPLUSPLUS is expanded from...
+dpp/config/lang.m4:38: DPP_LANG_CPLUSPLUS is expanded from...
+configure.ac:465: the top level])
+m4trace:configure.ac:474: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+configure.ac:474: the top level])
+m4trace:configure.ac:494: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+configure.ac:494: the top level])
+m4trace:configure.ac:520: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2687: AC_TRY_LINK is expanded from...
+configure.ac:520: the top level])
+m4trace:configure.ac:542: -1- DPP_LANG_RESTORE
+m4trace:configure.ac:542: -1- _m4_warn([obsolete], [The macro `AC_LANG_RESTORE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/lang.m4:134: AC_LANG_RESTORE is expanded from...
+dpp/config/lang.m4:28: DPP_LANG_RESTORE is expanded from...
+configure.ac:542: the top level])
+m4trace:configure.ac:553: -1- m4_pattern_allow([^OPENSG_CONFIG$])
+m4trace:configure.ac:567: -1- DPP_INSTALLER([], [0644], [0755], [0755])
+m4trace:configure.ac:567: -1- m4_pattern_allow([^OWNER_NAME$])
+m4trace:configure.ac:567: -1- m4_pattern_allow([^GROUP_NAME$])
+m4trace:configure.ac:567: -1- m4_pattern_allow([^FILE_PERMS$])
+m4trace:configure.ac:567: -1- m4_pattern_allow([^EXEC_PERMS$])
+m4trace:configure.ac:567: -1- m4_pattern_allow([^DIR_PERMS$])
+m4trace:configure.ac:583: -1- DPP_PTHREAD_FINISH
+m4trace:configure.ac:583: -1- m4_pattern_allow([^EXTRA_LDFLAGS$])
+m4trace:configure.ac:589: -1- DPP_SUBST
+m4trace:configure.ac:589: -1- DPP_WIN32_SETUP
+m4trace:configure.ac:589: -1- m4_pattern_allow([^CYGPATH$])
+m4trace:configure.ac:589: -1- m4_pattern_allow([^topdir$])
+m4trace:configure.ac:591: -1- m4_pattern_allow([^USE_OBJCOPY$])
+m4trace:configure.ac:592: -1- m4_pattern_allow([^EXTRA_LINK_FLAGS$])
+m4trace:configure.ac:593: -1- m4_pattern_allow([^PYJUTIL_LDFLAGS_DBG$])
+m4trace:configure.ac:594: -1- m4_pattern_allow([^PYJUTIL_LDFLAGS_OPT$])
+m4trace:configure.ac:596: -1- m4_pattern_allow([^HAVE_OSG$])
+m4trace:configure.ac:597: -1- m4_pattern_allow([^OSG_INCLUDES$])
+m4trace:configure.ac:598: -1- m4_pattern_allow([^OT_LDFLAGS$])
+m4trace:configure.ac:599: -1- m4_pattern_allow([^PRODUCER_LDFLAGS$])
+m4trace:configure.ac:600: -1- m4_pattern_allow([^OSG_LDFLAGS$])
+m4trace:configure.ac:601: -1- m4_pattern_allow([^OSG_LIBS$])
+m4trace:configure.ac:603: -1- m4_pattern_allow([^HAVE_OPENSG$])
+m4trace:configure.ac:604: -1- m4_pattern_allow([^OPENSG_INCLUDES$])
+m4trace:configure.ac:605: -1- m4_pattern_allow([^OPENSG_LDFLAGS$])
+m4trace:configure.ac:606: -1- m4_pattern_allow([^OPENSG_LIBS$])
+m4trace:configure.ac:608: -1- m4_pattern_allow([^PYTHON_ROOT$])
+m4trace:configure.ac:609: -1- m4_pattern_allow([^PYTHON_INCLUDES$])
+m4trace:configure.ac:610: -1- m4_pattern_allow([^PYTHON_LIB_OPT$])
+m4trace:configure.ac:611: -1- m4_pattern_allow([^PYTHON_LIB_DBG$])
+m4trace:configure.ac:612: -1- m4_pattern_allow([^PYMOD_EXT$])
+m4trace:configure.ac:613: -1- m4_pattern_allow([^UTIL_LIB$])
+m4trace:configure.ac:614: -1- m4_pattern_allow([^PYTHON_LIB_DEPS$])
+m4trace:configure.ac:615: -1- m4_pattern_allow([^PYTHON_LDFLAGS$])
+m4trace:configure.ac:616: -1- m4_pattern_allow([^PYTHON_VERSION$])
+m4trace:configure.ac:618: -1- m4_pattern_allow([^PYSTE$])
+m4trace:configure.ac:620: -1- m4_pattern_allow([^BOOST_PYTHON_CXXFLAGS$])
+m4trace:configure.ac:621: -1- m4_pattern_allow([^BOOST_PYTHON_INCLUDES$])
+m4trace:configure.ac:622: -1- m4_pattern_allow([^BOOST_PYTHON_LDFLAGS_OPT$])
+m4trace:configure.ac:623: -1- m4_pattern_allow([^BOOST_PYTHON_LDFLAGS_DBG$])
+m4trace:configure.ac:649: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:649: -1- m4_pattern_allow([^LTLIBOBJS$])
