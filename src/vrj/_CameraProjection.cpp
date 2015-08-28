@@ -31,18 +31,22 @@ struct vrj_CameraProjection_Wrapper
       /* Do nothing. */ ;
    }
 
-   void calcViewMatrix(const gmtl::Point3f& p0, const float p1)
+   virtual void calcViewMatrix(const gmtl::Matrix44f& cameraPos,
+                               const gmtl::Point3f& cameraPoint,
+                               const float scaleFactor)
    {
       try
       {
-         if ( override calcViewMatrix = this->get_override("calcViewMatrix") )
-         {
-            calcViewMatrix(boost::ref(p0), p1);
-         }
-         else
-         {
-            vrj::CameraProjection::calcViewMatrix(p0, p1);
-         }
+        //  if ( override calcViewMatrix = this->get_override("calcViewMatrix") )
+        //  {
+        //     calcViewMatrix(boost::ref(p0), p1);
+        //  }
+        //  else
+        //  {
+            vrj::CameraProjection::calcViewMatrix(cameraPos,
+                                                  cameraPoint,
+                                                  scaleFactor);
+        //  }
       }
       catch (error_already_set)
       {
@@ -50,13 +54,13 @@ struct vrj_CameraProjection_Wrapper
       }
    }
 
-   void default_calcViewMatrix(const gmtl::Point3f& p0, const float p1)
-   {
-      vrj::CameraProjection::calcViewMatrix(p0, p1);
-   }
+   // void default_calcViewMatrix(const gmtl::Point3f& p0, const float p1)
+   // {
+   //    vrj::CameraProjection::calcViewMatrix(p0, p1);
+   // }
 };
 
-}// namespace 
+}// namespace
 
 
 // Module ======================================================================
@@ -74,7 +78,7 @@ void _Export_CameraProjection()
       )
       .def_readwrite("mVertFOV", &vrj::CameraProjection::mVertFOV)
       .def("calcViewMatrix", &vrj::CameraProjection::calcViewMatrix,
-           &pyj::vrj_CameraProjection_Wrapper::default_calcViewMatrix,
+           &pyj::vrj_CameraProjection_Wrapper::calcViewMatrix,
            "calcViewMatrix(cameraPos, scaleFactor)\n"
            "Calculates the view matrix and frustum for the camera.\n"
            "Calculates a perspective transform for the given settings.\n"
