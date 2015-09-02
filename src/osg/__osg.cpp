@@ -6,21 +6,20 @@
 #include <boost/python.hpp>
 
 // Exports =====================================================================
-void _Export_UserData();
+void _Export_App();
 
 // Module ======================================================================
-BOOST_PYTHON_MODULE(cluster)
+BOOST_PYTHON_MODULE(__osg)
 {
    boost::python::scope().attr("__doc__") =
-      "PyJuggler.cluster is an extension module written in Boost.Python that\n"
-      "exposes some C++ classes from the 'cluster' namespace of the\n"
-      "Gadgeteer library.  The exposed classes are those that tend to be of\n"
-      "the most value for writing cluster-aware VR Juggler application\n"
-      "objects.\n\n"
-      "Refer to the Gadgeteer and VR Juggler 2.0 C++ documentation for\n"
-      "general usage details:\n"
-      "   http://www.vrjuggler.org/gadgeteer/docs.php\n"
+      "PyJuggler.vrj.osg is an extension module written in Boost.Python that\n"
+      "exposes the C++ class vrj::osg::App for use in the authoring of\n"
+      "VR Juggler application objects based on Open Scene Graph.  To\n"
+      "accomplish this, PyOSG must be used together with vrj.OsgApp.\n\n"
+      "Refer to the VR Juggler 3.0 C++ documentation for general usage\n"
+      "details:\n"
       "   http://www.vrjuggler.org/vrjuggler/docs.php"
    ;
-   _Export_UserData();
+
+   _Export_App();
 }

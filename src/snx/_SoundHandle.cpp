@@ -597,11 +597,11 @@ void _Export_SoundHandle()
            "trigger()\n"
            "Triggers a sound once."
       )
-      .def("isPlaying", &snx::SoundHandle::isPlaying,
-           &pyj::snx_SoundHandle_Wrapper::default_isPlaying,
-           "isPlaying() -> Boolean\n"
-           "Is the sound currently playing?"
-      )
+    //   .def("isPlaying", &snx::SoundHandle::isPlaying,
+    //        &pyj::snx_SoundHandle_Wrapper::default_isPlaying,
+    //        "isPlaying() -> Boolean\n"
+    //        "Is the sound currently playing?"
+    //   )
       .def("setRetriggerable", &snx::SoundHandle::setRetriggerable,
            &pyj::snx_SoundHandle_Wrapper::default_setRetriggerable,
            "setRetriggerable(onOff)\n"
@@ -612,11 +612,11 @@ void _Export_SoundHandle()
            "Arguments:\n"
            "onOff -- A Boolean value enabling or disabling retriggering."
       )
-      .def("isRetriggerable", &snx::SoundHandle::isRetriggerable,
-           &pyj::snx_SoundHandle_Wrapper::default_isRetriggerable,
-           "isRetriggerable() -> Boolean\n"
-           "Is the sound retriggerable?"
-      )
+    //   .def("isRetriggerable", &snx::SoundHandle::isRetriggerable,
+    //        &pyj::snx_SoundHandle_Wrapper::default_isRetriggerable,
+    //        "isRetriggerable() -> Boolean\n"
+    //        "Is the sound retriggerable?"
+    //   )
       .def("stop", &snx::SoundHandle::stop,
            &pyj::snx_SoundHandle_Wrapper::default_stop,
            "stop()\n"
@@ -634,11 +634,11 @@ void _Export_SoundHandle()
            "Resumes playback from a paused state.  This does nothing if the\n"
            "sound was not paused."
       )
-      .def("isPaused", &snx::SoundHandle::isPaused,
-           &pyj::snx_SoundHandle_Wrapper::default_isPaused,
-           "isPaused() -> Boolean\n"
-           "If the sound is paused, then return True."
-      )
+    //   .def("isPaused", &snx::SoundHandle::isPaused,
+    //        &pyj::snx_SoundHandle_Wrapper::default_isPaused,
+    //        "isPaused() -> Boolean\n"
+    //        "If the sound is paused, then return True."
+    //   )
       .def("setAmbient", &snx::SoundHandle::setAmbient,
            &pyj::snx_SoundHandle_Wrapper::default_setAmbient_1,
            "setAmbient(ambient)\n"
@@ -654,11 +654,11 @@ void _Export_SoundHandle()
            "Sets the sound as being positional."
       )
       .def("setAmbient", &pyj::snx_SoundHandle_Wrapper::default_setAmbient_0)
-      .def("isAmbient", &snx::SoundHandle::isAmbient,
-           &pyj::snx_SoundHandle_Wrapper::default_isAmbient,
-           "isAmbient() -> Boolean\n"
-           "Is the sound ambient?"
-      )
+    //   .def("isAmbient", &snx::SoundHandle::isAmbient,
+    //        &pyj::snx_SoundHandle_Wrapper::default_isAmbient,
+    //        "isAmbient() -> Boolean\n"
+    //        "Is the sound ambient?"
+    //   )
       .def("setPitchBend", &snx::SoundHandle::setPitchBend,
            &pyj::snx_SoundHandle_Wrapper::default_setPitchBend,
            "setPitchBend(amount)\n"
@@ -711,14 +711,14 @@ void _Export_SoundHandle()
            "matrix -- A gmtl.Matrix44f object representing the position\n"
            "          of the listener."
       )
-      .def("getListenerPosition", &snx::SoundHandle::getListenerPosition,
-           &pyj::snx_SoundHandle_Wrapper::default_getListenerPosition,
-           "getListenerPosition(matrix)\n"
-           "Gets the listeners's 3D position.\n\n"
-           "Arguments:\n"
-           "matrix -- A gmtl.Matrix44f object used to store the position\n"
-           "          of the listener."
-      )
+    //   .def("getListenerPosition", &snx::SoundHandle::getListenerPosition,
+    //        &pyj::snx_SoundHandle_Wrapper::default_getListenerPosition,
+    //        "getListenerPosition(matrix)\n"
+    //        "Gets the listeners's 3D position.\n\n"
+    //        "Arguments:\n"
+    //        "matrix -- A gmtl.Matrix44f object used to store the position\n"
+    //        "          of the listener."
+    //   )
       .def("configure", &snx::SoundHandle::configure,
            &pyj::snx_SoundHandle_Wrapper::default_configure,
            "configure(description)\n"

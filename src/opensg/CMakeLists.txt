@@ -1,11 +1,12 @@
 set(SRC_FILES
-    opensg.cpp
+    __opensg.cpp
     _App.cpp
 )
-set(TARGET_NAME opensg)
+set(TARGET_NAME __opensg)
 
 # PYTHON_ADD_MODULE(${TARGET_NAME} opensg.cpp)
 add_library(${TARGET_NAME} SHARED ${SRC_FILES})
+set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
 
 target_include_directories(${TARGET_NAME} PRIVATE
                           "${Boost_INCLUDE_DIRS}"
@@ -24,4 +25,5 @@ target_link_libraries(${TARGET_NAME}
                      "${JCCL15_LIBRARY}"
 )
 
-install (TARGETS ${TARGET_NAME} DESTINATION PyJuggler)
+install (TARGETS ${TARGET_NAME} DESTINATION PyJuggler/opensg)
+install (FILES __init__.py DESTINATION PyJuggler/opensg)

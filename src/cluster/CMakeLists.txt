@@ -1,30 +1,32 @@
 set(SRC_FILES
-    cluster.cpp
+    __cluster.cpp
     _UserData.cpp
-    ${CMAKE_SOURCE_DIR}/pyjutil/InterpreterGuard.cpp
 )
-set(TARGET_NAME cluster)
+set(TARGET_NAME __cluster)
 
 # PYTHON_ADD_MODULE(${TARGET_NAME} cluster.cpp)
 add_library(${TARGET_NAME} SHARED ${SRC_FILES})
+set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
 
 target_include_directories(${TARGET_NAME} PRIVATE
-                          "${CMAKE_SOURCE_DIR}"
+                          "${CMAKE_SOURCE_DIR}/include"
                           "${Boost_INCLUDE_DIRS}"
-                          "${PYTHON_INCLUDE_DIRS}"
+                          "${CPPDOM_INCLUDE_DIR}"
                           "${GADGETEER21_INCLUDE_DIR}"
                           "${JCCL15_INCLUDE_DIR}"
+                          "${PYTHON_INCLUDE_DIRS}"
                           "${VPR23_INCLUDE_DIR}"
-                          "${CPPDOM_INCLUDE_DIR}"
 )
 
 target_link_libraries(${TARGET_NAME}
                      "${Boost_LIBRARIES}"
-                     "${PYTHON_LIBRARIES}"
+                     "${CPPDOM_LIBRARY}"
                      "${GADGETEER21_LIBRARY}"
                      "${JCCL15_LIBRARY}"
+                     "${PYTHON_LIBRARIES}"
                      "${VPR23_LIBRARY}"
-                     "${CPPDOM_LIBRARY}"
+                     pyjutil
 )
 
-install (TARGETS ${TARGET_NAME} DESTINATION PyJuggler)
+install (TARGETS ${TARGET_NAME} DESTINATION PyJuggler/cluster)
+install (FILES __init__.py DESTINATION PyJuggler/cluster)

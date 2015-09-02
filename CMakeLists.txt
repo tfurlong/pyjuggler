@@ -32,9 +32,8 @@ find_package(Boost COMPONENTS python)
 message(STATUS "Boost_LIBRARIES = ${Boost_LIBRARIES}")
 
 # ENABLE_TESTING()
-# target_include_directories(${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS})
-# link_libraries(${Boost_LIBRARIES} ${PYTHON_LIBRARIES}) # Deprecated but so convenient!
 
+add_subdirectory("${CMAKE_SOURCE_DIR}/pyjutil")
 add_subdirectory("${CMAKE_SOURCE_DIR}/dist")
 add_subdirectory("${CMAKE_SOURCE_DIR}/src/cluster")
 add_subdirectory("${CMAKE_SOURCE_DIR}/src/gadget")
@@ -42,7 +41,7 @@ add_subdirectory("${CMAKE_SOURCE_DIR}/src/jccl")
 add_subdirectory("${CMAKE_SOURCE_DIR}/src/opengl")
 # add_subdirectory("${CMAKE_SOURCE_DIR}/src/opensg")
 # add_subdirectory("${CMAKE_SOURCE_DIR}/src/osg")
-add_subdirectory("${CMAKE_SOURCE_DIR}/src/snx")
+# add_subdirectory("${CMAKE_SOURCE_DIR}/src/snx")
 add_subdirectory("${CMAKE_SOURCE_DIR}/src/vpr")
 add_subdirectory("${CMAKE_SOURCE_DIR}/src/vrj")
 

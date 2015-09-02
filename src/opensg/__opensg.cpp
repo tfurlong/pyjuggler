@@ -9,7 +9,7 @@
 void _Export_App();
 
 // Module ======================================================================
-BOOST_PYTHON_MODULE(opensg)
+BOOST_PYTHON_MODULE(__opensg)
 {
    boost::python::scope().attr("__doc__") =
       "PyJuggler.vrj.opensg is an extension module written in Boost.Python\n"

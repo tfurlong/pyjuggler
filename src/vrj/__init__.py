@@ -4,6 +4,7 @@
 
 # Import everything from __vrj into our namespace.
 from __vrj import *
+import opengl
 
 __doc__ = '''PyJuggler.vrj is a module that imports the symbols from
 PyJuggler.__vrj into its namespace. PyJuggler.vrj.opengl, PyJuggler.vrj.osg,

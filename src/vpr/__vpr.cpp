@@ -17,7 +17,7 @@ void _Export_SerializableObject();
 void _Export_GUID();
 
 // Module ======================================================================
-BOOST_PYTHON_MODULE(vpr)
+BOOST_PYTHON_MODULE(__vpr)
 {
    boost::python::scope().attr("__doc__") =
       "PyJuggler.vpr is an extension module written in Boost.Python that\n"

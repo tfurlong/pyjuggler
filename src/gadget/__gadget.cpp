@@ -40,7 +40,7 @@ void _Export_MouseEvent();
 void _Export_PositionUnitConversion();
 
 // Module ======================================================================
-BOOST_PYTHON_MODULE(gadget)
+BOOST_PYTHON_MODULE(__gadget)
 {
    boost::python::scope().attr("__doc__") =
       "PyJuggler.gadget is an extension module written in Boost.Python that\n"

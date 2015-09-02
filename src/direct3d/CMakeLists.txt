@@ -1,11 +1,12 @@
 set(SRC_FILES
-    direct3d.cpp
+    __direct3d.cpp
     _App.cpp
 )
-set(TARGET_NAME direct3d)
+set(TARGET_NAME __direct3d)
 
 # PYTHON_ADD_MODULE(${TARGET_NAME} direct3d.cpp)
 add_library(${TARGET_NAME} SHARED ${SRC_FILES})
+set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
 
 target_include_directories(${TARGET_NAME} PRIVATE
                           "${Boost_INCLUDE_DIRS}"
@@ -26,4 +27,5 @@ target_link_libraries(${TARGET_NAME}
                      "${GADGETEER21_LIBRARY}"
 )
 
-install (TARGETS ${TARGET_NAME} DESTINATION PyJuggler)
+install (TARGETS ${TARGET_NAME} DESTINATION PyJuggler/direct3d)
+install (FILES __init__.py DESTINATION PyJuggler/direct3d)

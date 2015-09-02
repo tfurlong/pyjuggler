@@ -15,7 +15,7 @@ void _Export_PropertyDefinition();
 void _Export_VarType();
 
 // Module ======================================================================
-BOOST_PYTHON_MODULE(jccl)
+BOOST_PYTHON_MODULE(__jccl)
 {
    boost::python::scope().attr("__doc__") =
       "PyJuggler.jccl is an extension module written in Boost.Python that\n"

@@ -7,23 +7,19 @@
 
 // Exports =====================================================================
 void _Export_App();
-void _Export_ContextData();
-void _Export_DrawManager();
 
 // Module ======================================================================
-BOOST_PYTHON_MODULE(opengl)
+BOOST_PYTHON_MODULE(__direct3d)
 {
    boost::python::scope().attr("__doc__") =
-      "PyJuggler.vrj.opengl is an extension module written in Boost.Python\n"
-      "that exposes the C++ classes from the vrj::opengl namespace.  To use\n"
-      "OpenGL with VR Juggler in Python, PyOpenGL must be used together with\n"
-      "vrj.opengl.App.\n\n"
+      "PyJuggler.vrj.direct3d is an extension module written in Boost.Python\n"
+      "that exposes the C++ classes from the vrj::direct3d namespace.  To\n"
+      "use Direct3D with VR Juggler in Python, PyOpenGL must be used together\n"
+      "with vrj.direct3d.App.\n\n"
       "Refer to the VR Juggler 3.0 C++ documentation for general usage\n"
       "details:\n"
       "   http://www.vrjuggler.org/vrjuggler/docs.php"
    ;
 
    _Export_App();
-   _Export_ContextData();
-   _Export_DrawManager();
 }

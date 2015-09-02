@@ -14,7 +14,7 @@ void _Export_SoundImplementation();
 void _Export_SoundInfo();
 
 // Module ======================================================================
-BOOST_PYTHON_MODULE(snx)
+BOOST_PYTHON_MODULE(__snx)
 {
    boost::python::scope().attr("__doc__") =
       "PyJuggler.snx is an extension module written in Boost.Python that\n"

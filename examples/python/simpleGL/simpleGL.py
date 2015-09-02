@@ -51,27 +51,28 @@ class SimpleGlApp(vrj.opengl.App):
             self.mGrabbed = False
 
     def bufferPreDraw(self):
-        glClearColor(0.0, 0.0, 0.0, 0.0)
+        glClearColor(0.0, 1.0, 0.0, 0.0)
         glClear(GL_COLOR_BUFFER_BIT)
 
     def draw(self):
-        box_offset = gmtl.Vec3f(0.0, 6.0, 0.0)
-        box_rotate = gmtl.EulerAngleXYZf(0.0, 0.0, 0.0)
+        box_offset = (0.0, 0.0, 5.0)
+        # box_rotate = gmtl.EulerAngleXYZf(0.0, 0.0, 0.0)
 #        box_transform = gmtl.makeTransMatrix44(gmtl.Vec3f(0.0, 6.0, 0.0))
 
         # Move the box to the wand's position if the box is grabbed.
-        if self.mGrabbed:
-            wand_transform = self.mWand.getData()
-            box_offset      = gmtl.makeTransVec3(wand_transform)
-            box_rotate      = gmtl.makeRotEulerAngleXYZ(wand_transform)
+        # if self.mGrabbed:
+        #     wand_transform = self.mWand.getData()
+        #     box_offset      = gmtl.makeTransVec3(wand_transform)
+        #     box_rotate      = gmtl.makeRotEulerAngleXYZ(wand_transform)
 
         glClear(GL_DEPTH_BUFFER_BIT)
         glPushMatrix()
         glTranslatef(box_offset[0], box_offset[1], box_offset[2])
-        glRotatef(gmtl.Math.rad2Deg(box_rotate[0]), 1.0, 0.0, 0.0)
-        glRotatef(gmtl.Math.rad2Deg(box_rotate[1]), 0.0, 1.0, 0.0)
-        glRotatef(gmtl.Math.rad2Deg(box_rotate[2]), 0.0, 0.0, 1.0)
+        # glRotatef(gmtl.Math.rad2Deg(box_rotate[0]), 1.0, 0.0, 0.0)
+        # glRotatef(gmtl.Math.rad2Deg(box_rotate[1]), 0.0, 1.0, 0.0)
+        # glRotatef(gmtl.Math.rad2Deg(box_rotate[2]), 0.0, 0.0, 1.0)
 #        glMultMatrixf(box_transform.mData)
+        glColor(1, 0, 0)
         self.drawbox(-0.5, 0.5, -0.5, 0.5, -0.5, 0.5, GL_QUADS)
         glPopMatrix()
 
@@ -129,7 +130,7 @@ class SimpleGlApp(vrj.opengl.App):
 
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_NORMALIZE)
-        glEnable(GL_LIGHTING)
+        # glEnable(GL_LIGHTING)
         glEnable(GL_LIGHT0)
 #        glEnable(GL_COLOR_MATERIAL)
         glShadeModel(GL_SMOOTH)
