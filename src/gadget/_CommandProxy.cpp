@@ -194,7 +194,7 @@ struct gadget_CommandProxy_Wrapper
       return gadget::CommandProxy::isStupefied();
    }
 
-   virtual const int getData() const
+   virtual int getData() const
    {
       try
       {
@@ -211,13 +211,13 @@ struct gadget_CommandProxy_Wrapper
       return gadget::CommandProxy::getData();
    }
 
-   const int default_getData() const
-   {
-      return gadget::CommandProxy::getData();
-   }
+   // const int default_getData() const
+   // {
+   //    return gadget::CommandProxy::getData();
+   // }
 };
 
-}// namespace 
+}// namespace
 
 
 // Module ======================================================================
@@ -303,7 +303,7 @@ void _Export_CommandProxy()
            "return True."
       )
       .def("getData", &gadget::CommandProxy::getData,
-           &pyj::gadget_CommandProxy_Wrapper::default_getData,
+           &pyj::gadget_CommandProxy_Wrapper::getData,
            "getData() -> int\n"
            "Gets the current command data value."
       )

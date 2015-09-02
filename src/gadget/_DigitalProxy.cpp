@@ -200,7 +200,7 @@ struct gadget_DigitalProxy_Wrapper
       return gadget::DigitalProxy::isStupefied();
    }
 
-   virtual const gadget::DigitalState::State getData() const
+   virtual gadget::DigitalState::State getData() const
    {
       try
       {
@@ -217,13 +217,13 @@ struct gadget_DigitalProxy_Wrapper
       return gadget::DigitalProxy::getData();
    }
 
-   const gadget::DigitalState::State default_getData() const
-   {
-      return gadget::DigitalProxy::getData();
-   }
+   // const gadget::DigitalState::State default_getData() const
+   // {
+   //    return gadget::DigitalProxy::getData();
+   // }
 };
 
-}// namespace 
+}// namespace
 
 
 // Module ======================================================================
@@ -307,7 +307,7 @@ void _Export_DigitalProxy()
            "return True."
       )
       .def("getData", &gadget::DigitalProxy::getData,
-           &pyj::gadget_DigitalProxy_Wrapper::default_getData,
+           &pyj::gadget_DigitalProxy_Wrapper::getData,
            "getData() -> gadget.DigitalState.State\n"
            "Gets the current digital data value."
       )
