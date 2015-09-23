@@ -8,7 +8,7 @@ import sys
 sys.path.append('/home/STUDENTS/cemegginson/usr/pythonlibs/PyJuggler')
 sys.path.append('/home/STUDENTS/cemegginson/usr/lib64')
 from OpenGL.GL import *
-# import gmtl
+import gmtl
 
 import os
 
@@ -29,17 +29,17 @@ class SimpleGlApp(vrj.opengl.App):
         self.mButton0 = gadget.DigitalInterface()
         self.mButton1 = gadget.DigitalInterface()
         self.mButton2 = gadget.DigitalInterface()
-        self.mWand     = gadget.PositionInterface()
-        self.mHead     = gadget.PositionInterface()
+        self.mWand = gadget.PositionInterface()
+        self.mHead = gadget.PositionInterface()
 
         self.mGrabbed = False
 
     def init(self):
-        self.mButton0.init("VJButton0")
-        self.mButton1.init("VJButton1")
-        self.mButton2.init("VJButton2")
-        self.mWand.init("VJWand")
-        self.mHead.init("VJHead")
+        self.mButton0.init("DigitalProxy-Button0")
+        self.mButton1.init("DigitalProxy-Button1")
+        self.mButton2.init("DigitalProxy-Button2")
+        self.mWand.init("SimPositionDevice-Wand")
+        self.mHead.init("SimPositionDevice-Head")
 
     def contextInit(self):
         self.initGLState()
@@ -55,32 +55,32 @@ class SimpleGlApp(vrj.opengl.App):
         glClear(GL_COLOR_BUFFER_BIT)
 
     def draw(self):
-        box_offset = (0.0, 0.0, 0.0)
-        # box_rotate = gmtl.EulerAngleXYZf(0.0, 0.0, 0.0)
-#        box_transform = gmtl.makeTransMatrix44(gmtl.Vec3f(0.0, 6.0, 0.0))
+        box_offset = (0.0, 5.0, 0.0)
+        box_rotate = gmtl.EulerAngleXYZf(0.0, 0.0, 0.0)
+        box_transform = gmtl.makeTransMatrix44(gmtl.Vec3f(0.0, 6.0, 0.0))
 
         # Move the box to the wand's position if the box is grabbed.
-        # if self.mGrabbed:
-        #     wand_transform = self.mWand.getData()
-        #     box_offset      = gmtl.makeTransVec3(wand_transform)
-        #     box_rotate      = gmtl.makeRotEulerAngleXYZ(wand_transform)
+        if self.mGrabbed:
+            wand_transform = self.mWand.getData()
+            box_offset = gmtl.makeTransVec3(wand_transform)
+            box_rotate = gmtl.makeRotEulerAngleXYZ(wand_transform)
 
         glClear(GL_DEPTH_BUFFER_BIT)
         glPushMatrix()
         glTranslatef(box_offset[0], box_offset[1], box_offset[2])
-        # glRotatef(gmtl.Math.rad2Deg(box_rotate[0]), 1.0, 0.0, 0.0)
-        # glRotatef(gmtl.Math.rad2Deg(box_rotate[1]), 0.0, 1.0, 0.0)
-        # glRotatef(gmtl.Math.rad2Deg(box_rotate[2]), 0.0, 0.0, 1.0)
-#        glMultMatrixf(box_transform.mData)
+        glRotatef(gmtl.Math.rad2Deg(box_rotate[0]), 1.0, 0.0, 0.0)
+        glRotatef(gmtl.Math.rad2Deg(box_rotate[1]), 0.0, 1.0, 0.0)
+        glRotatef(gmtl.Math.rad2Deg(box_rotate[2]), 0.0, 0.0, 1.0)
+        glMultMatrixf(box_transform.mData)
         glColor(1, 0, 0)
         self.drawbox(-0.5, 0.5, -0.5, 0.5, -0.5, 0.5, GL_QUADS)
         glPopMatrix()
 
     def drawbox(self, x0, x1, y0, y1, z0, z1, type):
-        n = [ [-1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0],
-                [0.0, -1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, -1.0] ]
-        faces = [ [0, 1, 2, 3], [3, 2, 6, 7], [7, 6, 5, 4],
-                     [4, 5, 1, 0], [5, 6, 2, 1], [7, 4, 0, 3] ]
+        n = [[-1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0],
+             [0.0, -1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, -1.0]]
+        faces = [[0, 1, 2, 3], [3, 2, 6, 7], [7, 6, 5, 4],
+                 [4, 5, 1, 0], [5, 6, 2, 1], [7, 4, 0, 3]]
 
         if x0 > x1:
             tmp = x0
@@ -95,8 +95,8 @@ class SimpleGlApp(vrj.opengl.App):
             z0 = z1
             z1 = tmp
 
-        v = [ [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0],
-                [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0] ]
+        v = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0],
+             [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
         v[0][0] = v[1][0] = v[2][0] = v[3][0] = x0
         v[4][0] = v[5][0] = v[6][0] = v[7][0] = x1
         v[0][1] = v[1][1] = v[4][1] = v[5][1] = y0
@@ -132,10 +132,10 @@ class SimpleGlApp(vrj.opengl.App):
         glEnable(GL_NORMALIZE)
         # glEnable(GL_LIGHTING)
         glEnable(GL_LIGHT0)
-#        glEnable(GL_COLOR_MATERIAL)
+        # glEnable(GL_COLOR_MATERIAL)
         glShadeModel(GL_SMOOTH)
 
-app     = SimpleGlApp()
+app = SimpleGlApp()
 kernel = vrj.Kernel.instance()
 
 for arg in sys.argv[1:]:
