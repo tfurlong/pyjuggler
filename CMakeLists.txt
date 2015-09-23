@@ -19,6 +19,7 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
 	endif()
 endif()
 
+find_package(Boost COMPONENTS python)
 find_package(PythonInterp)
 find_package(PythonLibs)
 find_package(JCCL15)
@@ -27,7 +28,6 @@ find_package(VPR23)
 find_package(VRJ31)
 find_package(VRJOGL31)
 find_package(VRJuggler31)
-find_package(Boost COMPONENTS python)
 
 message(STATUS "Boost_LIBRARIES = ${Boost_LIBRARIES}")
 
