@@ -7,11 +7,13 @@ add_library(${TARGET_NAME} SHARED ${SRC_FILES})
 target_include_directories(${TARGET_NAME} PRIVATE
                            "${CMAKE_SOURCE_DIR}/include"
                            "${CMAKE_SOURCE_DIR}/include/pyjutil"
+                           "${Boost_INCLUDE_DIRS}"
                            "${PYTHON_INCLUDE_DIRS}"
                            "${VPR23_INCLUDE_DIR}"
 )
 
 target_link_libraries(${TARGET_NAME}
+                      "${Boost_LIBRARIES}"
                       "${PYTHON_LIBRARIES}"
                       "${VPR23_LIBRARY}"
 )
