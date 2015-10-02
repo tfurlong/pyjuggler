@@ -55,7 +55,7 @@ class SimpleGlApp(vrj.opengl.App):
         glClear(GL_COLOR_BUFFER_BIT)
 
     def draw(self):
-        box_offset = (0.0, 5.0, 0.0)
+        box_offset = (0.0, 0.0, 0.0)
         box_rotate = gmtl.EulerAngleXYZf(0.0, 0.0, 0.0)
         box_transform = gmtl.makeTransMatrix44(gmtl.Vec3f(0.0, 6.0, 0.0))
 
