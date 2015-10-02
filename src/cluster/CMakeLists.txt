@@ -7,6 +7,7 @@ set(TARGET_NAME __cluster)
 # PYTHON_ADD_MODULE(${TARGET_NAME} cluster.cpp)
 add_library(${TARGET_NAME} SHARED ${SRC_FILES})
 set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
+set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
 
 target_include_directories(${TARGET_NAME} PRIVATE
                           "${CMAKE_SOURCE_DIR}/include"

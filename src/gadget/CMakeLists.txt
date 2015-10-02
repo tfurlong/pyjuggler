@@ -38,6 +38,7 @@ set(TARGET_NAME __gadget)
 # PYTHON_ADD_MODULE(${TARGET_NAME} gadget.cpp)
 add_library(${TARGET_NAME} SHARED ${SRC_FILES})
 set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
+set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
 
 target_include_directories(${TARGET_NAME} PRIVATE
                           "${CMAKE_SOURCE_DIR}/include"
