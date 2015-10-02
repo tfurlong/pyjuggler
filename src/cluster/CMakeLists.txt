@@ -7,7 +7,12 @@ set(TARGET_NAME __cluster)
 # PYTHON_ADD_MODULE(${TARGET_NAME} cluster.cpp)
 add_library(${TARGET_NAME} SHARED ${SRC_FILES})
 set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
-set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
+
+# Python on Windows is lame and will only load binary libraries with the .pyd
+# extension.
+if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
+    set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
+endif()
 
 target_include_directories(${TARGET_NAME} PRIVATE
                           "${CMAKE_SOURCE_DIR}/include"
