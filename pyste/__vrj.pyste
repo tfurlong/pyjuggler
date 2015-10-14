@@ -25,8 +25,8 @@ exclude(User.getHeadPosProxy)
 exclude(User.config)
 
 # -----------------------------------------------------------------------------
-# XXX: The classes beyond this point have questinoable value.  They are not
-# needed for applicatinos, but they can be useful for simplifying work on
+# XXX: The classes beyond this point have questionable value.  They are not
+# needed for applications, but they can be useful for simplifying work on
 # Python-based extensions to VR Juggler itself.
 # -----------------------------------------------------------------------------
 Display = Class('vrj::Display', 'vrj/Display/Display.h')

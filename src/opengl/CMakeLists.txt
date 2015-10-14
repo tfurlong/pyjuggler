@@ -6,29 +6,27 @@ set(SRC_FILES
 )
 set(TARGET_NAME __opengl)
 
-# PYTHON_ADD_MODULE(TARGET_NAME opengl.cpp)
-add_library(${TARGET_NAME} SHARED ${SRC_FILES})
-set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
+python_add_module(${TARGET_NAME} ${SRC_FILES})
 
 target_include_directories(${TARGET_NAME} PRIVATE
+                          ${Boost_INCLUDE_DIRS}
+                          ${PYTHON_INCLUDE_DIRS}
+                          ${VRJOGL31_INCLUDE_DIRS}
                           "${CMAKE_SOURCE_DIR}/include"
-                          "${Boost_INCLUDE_DIRS}"
                           "${CPPDOM_INCLUDE_DIR}"
                           "${GADGETEER21_INCLUDE_DIR}"
                           "${GMTL_INCLUDE_DIR}"
                           "${JCCL15_INCLUDE_DIR}"
-                          "${PYTHON_INCLUDE_DIRS}"
                           "${VPR23_INCLUDE_DIR}"
                           "${VRJ31_INCLUDE_DIR}"
-                          "${VRJOGL31_INCLUDE_DIRS}"
 )
 
 target_link_libraries(${TARGET_NAME}
-                     "${Boost_LIBRARIES}"
+                     ${Boost_LIBRARIES}
+                     ${PYTHON_LIBRARIES}
                      "${CPPDOM_LIBRARY}"
                      "${GADGETEER21_LIBRARY}"
                      "${JCCL15_LIBRARY}"
-                     "${PYTHON_LIBRARIES}"
                      "${VPR23_LIBRARY}"
                      "${VRJ31_LIBRARY}"
                      "${VRJOGL31_LIBRARY}"

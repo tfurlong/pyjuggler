@@ -8,21 +8,19 @@ set(SRC_FILES
 )
 set(TARGET_NAME __snx)
 
-# PYTHON_ADD_MODULE(${TARGET_NAME} snx.cpp)
-add_library(${TARGET_NAME} SHARED ${SRC_FILES})
-set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
+python_add_module(${TARGET_NAME} ${SRC_FILES})
 
 target_include_directories(${TARGET_NAME} PRIVATE
-                          "${Boost_INCLUDE_DIRS}"
-                          "${PYTHON_INCLUDE_DIRS}"
+                          ${Boost_INCLUDE_DIRS}
+                          ${PYTHON_INCLUDE_DIRS}
                           "${SONIX15_INCLUDE_DIR}"
                           "${VPR23_INCLUDE_DIR}"
                           "${GMTL_INCLUDE_DIR}"
 )
 
 target_link_libraries(${TARGET_NAME}
-                     "${Boost_LIBRARIES}"
-                     "${PYTHON_LIBRARIES}"
+                     ${Boost_LIBRARIES}
+                     ${PYTHON_LIBRARIES}
                      "${SONIX15_LIBRARY}"
                      "${VPR23_LIBRARY}"
 )
