@@ -4,14 +4,15 @@ set(SRC_FILES
 )
 set(TARGET_NAME __direct3d)
 
-# PYTHON_ADD_MODULE(${TARGET_NAME} direct3d.cpp)
-add_library(${TARGET_NAME} SHARED ${SRC_FILES})
-set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
-set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
+# add_library(${TARGET_NAME} SHARED ${SRC_FILES})
+# set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
+# set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
+
+python_add_module(${TARGET_NAME} ${SRC_FILES})
 
 target_include_directories(${TARGET_NAME} PRIVATE
-                          "${Boost_INCLUDE_DIRS}"
-                          "${PYTHON_INCLUDE_DIRS}"
+                          ${Boost_INCLUDE_DIRS}
+                          ${PYTHON_INCLUDE_DIRS}
                           "${VRJ31_INCLUDE_DIR}"
                           "${VPR23_INCLUDE_DIR}"
                           "${JCCL15_INCLUDE_DIR}"
@@ -20,8 +21,8 @@ target_include_directories(${TARGET_NAME} PRIVATE
 )
 
 target_link_libraries(${TARGET_NAME}
-                     "${Boost_LIBRARIES}"
-                     "${PYTHON_LIBRARIES}"
+                     ${Boost_LIBRARIES}
+                     ${PYTHON_LIBRARIES}
                      "${VRJ31_LIBRARY}"
                      "${VPR23_LIBRARY}"
                      "${JCCL15_LIBRARY}"
