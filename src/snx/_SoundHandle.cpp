@@ -751,6 +751,7 @@ void _Export_SoundHandle()
            "be invoked on this handle after calling init()."
       )
       .def("getName", &snx::SoundHandle::getName,
+          return_value_policy<copy_const_reference>(),
           "getName() -> string object.\n"
           "Gets the name of this handle."
       )
