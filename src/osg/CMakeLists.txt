@@ -4,16 +4,6 @@ set(SRC_FILES
 )
 set(TARGET_NAME __osg)
 
-# PYTHON_ADD_MODULE(${TARGET_NAME} osg.cpp)
-# add_library(${TARGET_NAME} SHARED ${SRC_FILES})
-# set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
-
-# Python on Windows is lame and will only load binary libraries with the .pyd
-# extension.
-# if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
-#     set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
-# endif()
-
 python_add_module(${TARGET_NAME} ${SRC_FILES})
 
 target_include_directories(${TARGET_NAME} PRIVATE
@@ -32,5 +22,5 @@ target_link_libraries(${TARGET_NAME}
                      "${JCCL15_LIBRARY}"
 )
 
-install (TARGETS ${TARGET_NAME} DESTINATION PyJuggler/osg)
-install (FILES __init__.py DESTINATION PyJuggler/osg)
+install (TARGETS ${TARGET_NAME} DESTINATION PyJuggler/vrj/osg)
+install (FILES __init__.py DESTINATION PyJuggler/vrj/osg)

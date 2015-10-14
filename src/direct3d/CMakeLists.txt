@@ -4,10 +4,6 @@ set(SRC_FILES
 )
 set(TARGET_NAME __direct3d)
 
-# add_library(${TARGET_NAME} SHARED ${SRC_FILES})
-# set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
-# set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
-
 python_add_module(${TARGET_NAME} ${SRC_FILES})
 
 target_include_directories(${TARGET_NAME} PRIVATE

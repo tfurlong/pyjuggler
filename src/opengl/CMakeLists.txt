@@ -6,16 +6,6 @@ set(SRC_FILES
 )
 set(TARGET_NAME __opengl)
 
-# PYTHON_ADD_MODULE(TARGET_NAME opengl.cpp)
-# add_library(${TARGET_NAME} SHARED ${SRC_FILES})
-# set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "")
-
-# Python on Windows is lame and will only load binary libraries with the .pyd
-# extension.
-# if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
-#     set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".pyd")
-# endif()
-
 python_add_module(${TARGET_NAME} ${SRC_FILES})
 
 target_include_directories(${TARGET_NAME} PRIVATE
