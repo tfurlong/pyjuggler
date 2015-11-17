@@ -5,8 +5,8 @@
 # accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
 import sys
-sys.path.append('/home/STUDENTS/cemegginson/usr/pythonlibs/PyJuggler')
-sys.path.append('/home/STUDENTS/cemegginson/usr/lib64')
+# sys.path.append('/home/STUDENTS/cemegginson/usr/pythonlibs/PyJuggler')
+# sys.path.append('/home/STUDENTS/cemegginson/usr/lib64')
 from OpenGL.GL import *
 import gmtl
 
@@ -38,8 +38,8 @@ class SimpleGlApp(vrj.opengl.App):
         self.mButton0.init("DigitalProxy-Button0")
         self.mButton1.init("DigitalProxy-Button1")
         self.mButton2.init("DigitalProxy-Button2")
-        self.mWand.init("SimPositionDevice-Wand")
-        self.mHead.init("SimPositionDevice-Head")
+        self.mWand.init("PositionProxy-Wand")
+        self.mHead.init("PositionProxy-Head")
 
     def contextInit(self):
         self.initGLState()
@@ -51,13 +51,13 @@ class SimpleGlApp(vrj.opengl.App):
             self.mGrabbed = False
 
     def bufferPreDraw(self):
-        glClearColor(0.0, 0.0, 0.0, 0.0)
+        glClearColor(0.2, 0.2, 0.2, 0.0)
         glClear(GL_COLOR_BUFFER_BIT)
 
     def draw(self):
-        box_offset = (0.0, 0.0, 0.0)
+        box_offset = (0.0, 1.8, -2.0)
         box_rotate = gmtl.EulerAngleXYZf(0.0, 0.0, 0.0)
-        box_transform = gmtl.makeTransMatrix44(gmtl.Vec3f(0.0, 6.0, 0.0))
+        box_transform = gmtl.makeTransMatrix44(gmtl.Vec3f(0.0, 0.0, 0.0))
 
         # Move the box to the wand's position if the box is grabbed.
         if self.mGrabbed:
@@ -71,10 +71,13 @@ class SimpleGlApp(vrj.opengl.App):
         glRotatef(gmtl.Math.rad2Deg(box_rotate[0]), 1.0, 0.0, 0.0)
         glRotatef(gmtl.Math.rad2Deg(box_rotate[1]), 0.0, 1.0, 0.0)
         glRotatef(gmtl.Math.rad2Deg(box_rotate[2]), 0.0, 0.0, 1.0)
-        glMultMatrixf(box_transform.mData)
+        # glMultMatrixf(box_transform.mData)
         glColor(1, 0, 0)
         self.drawbox(-0.5, 0.5, -0.5, 0.5, -0.5, 0.5, GL_QUADS)
         glPopMatrix()
+
+    def getDrawScaleFactor(self):
+        return gadget.PositionUnitConversion.ConvertToMeters;
 
     def drawbox(self, x0, x1, y0, y1, z0, z1, type):
         n = [[-1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0],
