@@ -5,8 +5,6 @@
 # accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
 import sys
-# sys.path.append('/home/STUDENTS/cemegginson/usr/pythonlibs/PyJuggler')
-# sys.path.append('/home/STUDENTS/cemegginson/usr/lib64')
 from OpenGL.GL import *
 import gmtl
 
@@ -138,12 +136,18 @@ class SimpleGlApp(vrj.opengl.App):
         # glEnable(GL_COLOR_MATERIAL)
         glShadeModel(GL_SMOOTH)
 
-app = SimpleGlApp()
-kernel = vrj.Kernel.instance()
+def main():
+    app = SimpleGlApp()
+    kernel = vrj.Kernel.instance()
+    print(sys.argv[1:])
+    kernel.init(sys.argv[1:])
 
-for arg in sys.argv[1:]:
-    kernel.loadConfigFile(arg)
+    # for arg in sys.argv[1:]:
+    #     kernel.loadConfigFile(arg)
 
-kernel.start()
-kernel.setApplication(app)
-kernel.waitForKernelStop()
+    kernel.start()
+    kernel.setApplication(app)
+    kernel.waitForKernelStop()
+
+if __name__ == "__main__":
+    main()

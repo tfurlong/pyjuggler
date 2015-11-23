@@ -6,14 +6,22 @@
 #include <boost/python.hpp>
 #include <boost/cstdint.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <boost/program_options.hpp>
 
 // Includes ====================================================================
 #include <vrj/Kernel/Kernel.h>
 #include <vrj/Kernel/App.h>
 #include <vrj/Kernel/User.h>
 
+#include <string>
+#include <vector>
+
 // Using =======================================================================
 using namespace boost::python;
+namespace bpo = boost::program_options;
+
+// Typedefs ====================================================================
+typedef std::vector<std::string>  StringStore;
 
 // Declarations ================================================================
 namespace pyj
@@ -120,6 +128,50 @@ struct vrj_Kernel_Wrapper : vrj::Kernel, wrapper<vrj::Kernel>
    }
 };
 
+void processArgs(int argc, char* argv[])
+{
+    bpo::options_description descCL("Command-Line options");
+
+    vrj::Kernel* kernel = vrj::Kernel::instance();
+
+    // add VR Juggler options
+    descCL.add(kernel->getGeneralOptions());
+    descCL.add(kernel->getClusterOptions());
+    descCL.add(kernel->getConfigOptions());
+
+    // hold results of argument parsing
+    bpo::variables_map vm;
+
+    bpo::store(
+        bpo::command_line_parser(argc, argv)
+            .options(descCL)
+            .run(),
+        vm);
+    bpo::notify(vm);
+
+    if (vm.count("help"))
+    {
+        std::cerr << "Usage: " << argv[0] << " [OPTIONS]\n"
+                  << descCL
+                  << std::endl;
+        std::exit(EXIT_SUCCESS);
+    }
+
+    kernel->init(vm);
+
+    if (vm.count("jconf"))
+    {
+        StringStore const& jconfFiles = vm["jconf"].as<StringStore>();
+        StringStore::const_iterator jIt  = jconfFiles.begin();
+        StringStore::const_iterator jEnd = jconfFiles.end();
+
+        for (; jIt != jEnd; ++jIt)
+        {
+            kernel->loadConfigFile(*jIt);
+        }
+    }
+}
+
 void vrj_Kernel_init(vrj::Kernel* kernel, list pythonArgv)
 {
    const int orig_len = extract<int>(pythonArgv.attr("__len__")());
@@ -131,7 +183,9 @@ void vrj_Kernel_init(vrj::Kernel* kernel, list pythonArgv)
       argv[i] = extract<char*>(pythonArgv[i]);
    }
 
-   kernel->init(argc, &argv[0]);
+   processArgs(argc, &argv[0]);
+
+   // kernel->init(argc, &argv[0]);
 
    // vrj::Kernel::init() may have removed items from argv by relocating them
    // to the range [argc,orig_len) within argv. We need to remove each of
@@ -154,7 +208,7 @@ void vrj_Kernel_waitForKernelStop(vrj::Kernel* kernel)
    Py_END_ALLOW_THREADS;
 }
 
-}// namespace 
+}  // namespace pyj
 
 
 // Module ======================================================================
