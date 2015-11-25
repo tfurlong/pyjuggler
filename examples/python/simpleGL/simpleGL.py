@@ -139,8 +139,8 @@ class SimpleGlApp(vrj.opengl.App):
 def main():
     app = SimpleGlApp()
     kernel = vrj.Kernel.instance()
-    print(sys.argv[1:])
-    kernel.init(sys.argv[1:])
+    print(sys.argv)
+    kernel.init(sys.argv)
 
     # for arg in sys.argv[1:]:
     #     kernel.loadConfigFile(arg)
