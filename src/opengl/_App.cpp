@@ -712,7 +712,7 @@ struct vrj_opengl_App_Wrapper : vrj::opengl::App, wrapper<vrj::opengl::App>
    }
 };
 
-}// namespace 
+}// namespace
 
 
 // Module ======================================================================
@@ -924,10 +924,10 @@ void _Export_App()
            "the return value is True, this application will be allowed to\n"
            "enter the system."
       )
-//      .def("getDrawManager", &vrj::opengl::App::getDrawManager,
-//           &pyj::vrj_opengl_App_Wrapper::default_getDrawManager,
-//           return_internal_reference<1>()
-//      )
+     .def("getDrawManager", &vrj::opengl::App::getDrawManager,
+        //   &pyj::vrj_opengl_App_Wrapper::default_getDrawManager,
+          return_internal_reference<1>()
+     )
       .def("configProcessPending",
            &jccl::ConfigElementHandler::configProcessPending,
            &pyj::vrj_opengl_App_Wrapper::default_configProcessPending,
