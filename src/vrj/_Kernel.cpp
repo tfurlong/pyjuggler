@@ -183,7 +183,7 @@ void vrj_Kernel_init(vrj::Kernel* kernel, list pythonArgv)
       argv[i] = extract<char*>(pythonArgv[i]);
    }
 
-   processArgs(argc, &argv[0]);
+   processArgs(argc, argv.data());
 
    // kernel->init(argc, &argv[0]);
 
