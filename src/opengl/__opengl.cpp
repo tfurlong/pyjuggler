@@ -9,6 +9,7 @@
 void _Export_App();
 void _Export_ContextData();
 void _Export_DrawManager();
+void _Export_UserData();
 
 // Module ======================================================================
 BOOST_PYTHON_MODULE(__opengl)
@@ -26,4 +27,5 @@ BOOST_PYTHON_MODULE(__opengl)
    _Export_App();
    _Export_ContextData();
    _Export_DrawManager();
+   _Export_UserData();
 }

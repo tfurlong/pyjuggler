@@ -23,8 +23,8 @@ modules = [
    'PyJuggler.cluster',
    'PyJuggler.vrj',
    'PyJuggler.__vrj',
-   'PyJuggler.__osgapp',
-   'PyJuggler.__opensgapp',
+   # 'PyJuggler.__osgapp',
+   # 'PyJuggler.__opensgapp',
 ]
 
 sys.argv.insert(1, '-w')

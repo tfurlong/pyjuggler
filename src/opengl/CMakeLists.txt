@@ -3,6 +3,7 @@ set(SRC_FILES
     _App.cpp
     _ContextData.cpp
     _DrawManager.cpp
+    _UserData.cpp
 )
 set(TARGET_NAME __opengl)
 

@@ -380,7 +380,7 @@ void setCpuAffinityStrategy(vrj::opengl::DrawManager* mgr, object callable)
    mgr->setCpuAffinityStrategy(boost::bind(invokeCallback, callable, _1));
 }
 
-}
+}  // namespace pyj
 
 void _Export_DrawManager()
 {
@@ -495,14 +495,12 @@ void _Export_DrawManager()
            "Arguments:\n"
            "element -- A jccl.ConfigElement object."
       )
-      // vrj::opengl::UserData is not currently exposed to Python.
-      /*
       .def("currentUserData", &vrj::opengl::DrawManager::currentUserData,
+           return_value_policy<reference_existing_object>(),
            "Gets pointer to the current user data. Should be used in the\n"
            "draw() function.\n\n"
            "NOTE: This user data is valid ONLY in draw()!"
       )
-      */
       .def("getCurrentContext", &vrj::opengl::DrawManager::getCurrentContext,
            "Returns a unique identifier for the current context.\n\n"
            "NOTE: This user data is valid ONLY in contextInit() and draw()!"
