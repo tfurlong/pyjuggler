@@ -13,6 +13,11 @@
 #include <pyjutil/InterpreterGuard.h>
 #include <pyjutil/Debug.h>
 
+// Helper Function Includes ====================================================
+#include <boost/cast.hpp>
+#include <gmtl/gmtl.h>
+
+#include <iostream>
 // Using =======================================================================
 using namespace boost::python;
 
@@ -675,9 +680,9 @@ struct vrj_opengl_App_Wrapper : vrj::opengl::App, wrapper<vrj::opengl::App>
       return NULL;
    }
 
-   void default_getDrawManager()
+   vrj::DrawManager* default_getDrawManager()
    {
-      vrj::opengl::App::getDrawManager();
+      return vrj::opengl::App::getDrawManager();
    }
 
    int configProcessPending()
@@ -710,9 +715,37 @@ struct vrj_opengl_App_Wrapper : vrj::opengl::App, wrapper<vrj::opengl::App>
    {
       return jccl::ConfigElementHandler::configProcessPending();
    }
+
+   // Custom PyJuggler exclusive helper method to get the Projection View Matrix
+   gmtl::Matrix44f getPVMatrix() {
+      vrj::opengl::UserData*   udata =
+        boost::polymorphic_downcast<vrj::opengl::DrawManager*>(
+            getDrawManager())->currentUserData();
+
+      vrj::ProjectionPtr const proj  = udata->getProjection();
+
+      vrj::Frustum const& frust = proj->getFrustum();
+
+      gmtl::Matrix44f matView;
+      matView.set(proj->getViewMatrix().getData());
+
+      gmtl::Matrix44f matProj;
+      gmtl::setFrustum(
+         matProj,
+         frust[vrj::Frustum::VJ_LEFT],
+         frust[vrj::Frustum::VJ_TOP],
+         frust[vrj::Frustum::VJ_RIGHT],
+         frust[vrj::Frustum::VJ_BOTTOM],
+         frust[vrj::Frustum::VJ_NEAR],
+         frust[vrj::Frustum::VJ_FAR]);
+
+      gmtl::Matrix44f matPV = matProj * matView;
+
+      return matPV;
+   }
 };
 
-}// namespace
+}  // namespace pyj
 
 
 // Module ======================================================================
@@ -925,7 +958,7 @@ void _Export_App()
            "enter the system."
       )
      .def("getDrawManager", &vrj::opengl::App::getDrawManager,
-        //   &pyj::vrj_opengl_App_Wrapper::default_getDrawManager,
+          &pyj::vrj_opengl_App_Wrapper::default_getDrawManager,
           return_internal_reference<1>()
      )
       .def("configProcessPending",
@@ -933,6 +966,11 @@ void _Export_App()
            &pyj::vrj_opengl_App_Wrapper::default_configProcessPending,
            "configProcessPending() -> int\n"
            "Inherited from jccl.ConfigElementHandler and not overridden."
+      )
+      .def("getPVMatrix",
+           &pyj::vrj_opengl_App_Wrapper::getPVMatrix,
+           "getPVMatrix() -> float*\n"
+           "Custom PyJuggler helper function that returns the PV matrix."
       )
    ;
 }

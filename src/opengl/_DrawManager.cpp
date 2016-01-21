@@ -496,7 +496,8 @@ void _Export_DrawManager()
            "element -- A jccl.ConfigElement object."
       )
       .def("currentUserData", &vrj::opengl::DrawManager::currentUserData,
-           return_value_policy<reference_existing_object>(),
+        //    return_value_policy<reference_existing_object>(),
+           return_internal_reference<1>(),
            "Gets pointer to the current user data. Should be used in the\n"
            "draw() function.\n\n"
            "NOTE: This user data is valid ONLY in draw()!"
