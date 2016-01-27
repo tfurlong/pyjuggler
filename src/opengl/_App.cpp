@@ -717,7 +717,7 @@ struct vrj_opengl_App_Wrapper : vrj::opengl::App, wrapper<vrj::opengl::App>
    }
 
    // Custom PyJuggler exclusive helper method to get the Projection View Matrix
-   gmtl::Matrix44f getPVMatrix() {
+   list getPVMatrix() {
       vrj::opengl::UserData*   udata =
         boost::polymorphic_downcast<vrj::opengl::DrawManager*>(
             getDrawManager())->currentUserData();
@@ -740,8 +740,13 @@ struct vrj_opengl_App_Wrapper : vrj::opengl::App, wrapper<vrj::opengl::App>
          frust[vrj::Frustum::VJ_FAR]);
 
       gmtl::Matrix44f matPV = matProj * matView;
+      list out_data;
+      float const* mat = matPV.getData();
+      for (int i = 0; i < 16; i++) {
+         out_data.append(mat[i]);
+      }
 
-      return matPV;
+      return out_data;
    }
 };
 
@@ -969,7 +974,7 @@ void _Export_App()
       )
       .def("getPVMatrix",
            &pyj::vrj_opengl_App_Wrapper::getPVMatrix,
-           "getPVMatrix() -> float*\n"
+           "getPVMatrix() -> list\n"
            "Custom PyJuggler helper function that returns the PV matrix."
       )
    ;
