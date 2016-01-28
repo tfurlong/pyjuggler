@@ -100,7 +100,7 @@ struct snx_SoundHandle_Wrapper
       snx::SoundHandle::trigger(p0);
    }
 
-   bool isPlaying()
+   bool isPlaying() const
    {
       try
       {
@@ -118,7 +118,7 @@ struct snx_SoundHandle_Wrapper
       return false;
    }
 
-   bool default_isPlaying()
+   bool default_isPlaying() const
    {
       return snx::SoundHandle::isPlaying();
    }
@@ -148,7 +148,7 @@ struct snx_SoundHandle_Wrapper
       snx::SoundHandle::setRetriggerable(p0);
    }
 
-   bool isRetriggerable()
+   bool isRetriggerable() const
    {
       try
       {
@@ -167,7 +167,7 @@ struct snx_SoundHandle_Wrapper
       return false;
    }
 
-   bool default_isRetriggerable()
+   bool default_isRetriggerable() const
    {
       return snx::SoundHandle::isRetriggerable();
    }
@@ -244,7 +244,7 @@ struct snx_SoundHandle_Wrapper
       snx::SoundHandle::unpause();
    }
 
-   bool isPaused()
+   bool isPaused() const
    {
       try
       {
@@ -262,7 +262,7 @@ struct snx_SoundHandle_Wrapper
       return false;
    }
 
-   bool default_isPaused()
+   bool default_isPaused() const
    {
       return snx::SoundHandle::isPaused();
    }
@@ -296,7 +296,7 @@ struct snx_SoundHandle_Wrapper
       snx::SoundHandle::setAmbient(p0);
    }
 
-   bool isAmbient()
+   bool isAmbient() const
    {
       try
       {
@@ -314,7 +314,7 @@ struct snx_SoundHandle_Wrapper
       return false;
    }
 
-   bool default_isAmbient()
+   bool default_isAmbient() const
    {
       return snx::SoundHandle::isAmbient();
    }
@@ -471,7 +471,7 @@ struct snx_SoundHandle_Wrapper
       snx::SoundHandle::setListenerPosition(p0);
    }
 
-   void getListenerPosition(gmtl::Matrix44f& p0)
+   void getListenerPosition(gmtl::Matrix44f& p0) const
    {
       try
       {
@@ -491,7 +491,7 @@ struct snx_SoundHandle_Wrapper
       }
    }
 
-   void default_getListenerPosition(gmtl::Matrix44f& p0)
+   void default_getListenerPosition(gmtl::Matrix44f& p0) const
    {
       snx::SoundHandle::getListenerPosition(p0);
    }
@@ -548,7 +548,7 @@ struct snx_SoundHandle_Wrapper
 };
 
 
-}// namespace pyj
+}  // namespace pyj
 
 
 // Module ======================================================================
@@ -598,7 +598,7 @@ void _Export_SoundHandle()
            "Triggers a sound once."
       )
       .def("isPlaying", &snx::SoundHandle::isPlaying,
-         //   &pyj::snx_SoundHandle_Wrapper::default_isPlaying,
+           &pyj::snx_SoundHandle_Wrapper::default_isPlaying,
            "isPlaying() -> Boolean\n"
            "Is the sound currently playing?"
       )
@@ -613,7 +613,7 @@ void _Export_SoundHandle()
            "onOff -- A Boolean value enabling or disabling retriggering."
       )
       .def("isRetriggerable", &snx::SoundHandle::isRetriggerable,
-         //   &pyj::snx_SoundHandle_Wrapper::default_isRetriggerable,
+           &pyj::snx_SoundHandle_Wrapper::default_isRetriggerable,
            "isRetriggerable() -> Boolean\n"
            "Is the sound retriggerable?"
       )
@@ -635,7 +635,7 @@ void _Export_SoundHandle()
            "sound was not paused."
       )
       .def("isPaused", &snx::SoundHandle::isPaused,
-         //   &pyj::snx_SoundHandle_Wrapper::default_isPaused,
+           &pyj::snx_SoundHandle_Wrapper::default_isPaused,
            "isPaused() -> Boolean\n"
            "If the sound is paused, then return True."
       )
@@ -655,7 +655,7 @@ void _Export_SoundHandle()
       )
       .def("setAmbient", &pyj::snx_SoundHandle_Wrapper::default_setAmbient_0)
       .def("isAmbient", &snx::SoundHandle::isAmbient,
-         //   &pyj::snx_SoundHandle_Wrapper::default_isAmbient,
+           &pyj::snx_SoundHandle_Wrapper::default_isAmbient,
            "isAmbient() -> Boolean\n"
            "Is the sound ambient?"
       )
@@ -712,7 +712,7 @@ void _Export_SoundHandle()
            "          of the listener."
       )
       .def("getListenerPosition", &snx::SoundHandle::getListenerPosition,
-         //   &pyj::snx_SoundHandle_Wrapper::default_getListenerPosition,
+           &pyj::snx_SoundHandle_Wrapper::default_getListenerPosition,
            "getListenerPosition(matrix)\n"
            "Gets the listeners's 3D position.\n\n"
            "Arguments:\n"

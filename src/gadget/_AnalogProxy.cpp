@@ -194,7 +194,7 @@ struct gadget_AnalogProxy_Wrapper
       return gadget::AnalogProxy::isStupefied();
    }
 
-   virtual float getData() const
+   virtual gadget::AnalogProxy::get_data_return_type getData() const
    {
       try
       {
@@ -211,13 +211,13 @@ struct gadget_AnalogProxy_Wrapper
       return gadget::AnalogProxy::getData();
    }
 
-   // const float default_getData() const
-   // {
-   //    return gadget::AnalogProxy::getData();
-   // }
+   gadget::AnalogProxy::get_data_return_type default_getData() const
+   {
+      return gadget::AnalogProxy::getData();
+   }
 };
 
-}// namespace
+}  // namespace
 
 
 // Module ======================================================================
@@ -302,7 +302,7 @@ void _Export_AnalogProxy()
            "return True."
       )
       .def("getData", &gadget::AnalogProxy::getData,
-           &pyj::gadget_AnalogProxy_Wrapper::getData,
+           &pyj::gadget_AnalogProxy_Wrapper::default_getData,
            "getData() -> float\n"
            "Gets the current normalized analog data value. This value will\n"
            "be in the range [0.0,1.0]."
