@@ -35,7 +35,7 @@ struct snx_SoundImplementation_Adapter : snx::SoundImplementation
       /* Do nothing. */ ;
    }
 
-   virtual tuple getPositionWrapper(const std::string& alias)
+   virtual tuple getPositionWrapper(const std::string& alias) const
    {
       float p0, p1, p2;
       snx::SoundImplementation::getPosition(alias, p0, p1, p2);
@@ -100,7 +100,7 @@ struct snx_SoundImplementation_Wrapper
       snx::SoundImplementation::trigger(p0, p1);
    }
 
-   bool isPlaying(const std::string& p0)
+   bool isPlaying(const std::string& p0) const
    {
       try
       {
@@ -118,7 +118,7 @@ struct snx_SoundImplementation_Wrapper
       return false;
    }
 
-   bool default_isPlaying(const std::string& p0)
+   bool default_isPlaying(const std::string& p0) const
    {
       return snx::SoundImplementation::isPlaying(p0);
    }
@@ -148,7 +148,7 @@ struct snx_SoundImplementation_Wrapper
       snx::SoundImplementation::setRetriggerable(p0, p1);
    }
 
-   bool isRetriggerable(const std::string& p0)
+   bool isRetriggerable(const std::string& p0) const
    {
       try
       {
@@ -166,7 +166,7 @@ struct snx_SoundImplementation_Wrapper
       return false;
    }
 
-   bool default_isRetriggerable(const std::string& p0)
+   bool default_isRetriggerable(const std::string& p0) const
    {
       return snx::SoundImplementation::isRetriggerable(p0);
    }
@@ -243,7 +243,7 @@ struct snx_SoundImplementation_Wrapper
       snx::SoundImplementation::unpause(p0);
    }
 
-   bool isPaused(const std::string& p0)
+   bool isPaused(const std::string& p0) const
    {
       try
       {
@@ -261,7 +261,7 @@ struct snx_SoundImplementation_Wrapper
       return false;
    }
 
-   bool default_isPaused(const std::string& p0)
+   bool default_isPaused(const std::string& p0) const
    {
       return snx::SoundImplementation::isPaused(p0);
    }
@@ -290,7 +290,7 @@ struct snx_SoundImplementation_Wrapper
       snx::SoundImplementation::setAmbient(p0, p1);
    }
 
-   bool isAmbient(const std::string& p0)
+   bool isAmbient(const std::string& p0) const
    {
       try
       {
@@ -308,7 +308,7 @@ struct snx_SoundImplementation_Wrapper
       return false;
    }
 
-   bool default_isAmbient(const std::string& p0)
+   bool default_isAmbient(const std::string& p0) const
    {
       return snx::SoundImplementation::isAmbient(p0);
    }
@@ -410,7 +410,7 @@ struct snx_SoundImplementation_Wrapper
       snx::SoundImplementation::setPosition(p0, p1, p2, p3);
    }
 
-   void getPosition(const std::string& p0, float& p1, float& p2, float& p3)
+   void getPosition(const std::string& p0, float& p1, float& p2, float& p3) const
    {
       tuple result = getPositionWrapper(p0);
       p1 = extract<float>(result[0]);
@@ -418,7 +418,7 @@ struct snx_SoundImplementation_Wrapper
       p3 = extract<float>(result[2]);
    }
 
-   tuple getPositionWrapper(const std::string& p0)
+   tuple getPositionWrapper(const std::string& p0) const
    {
       try
       {
@@ -436,7 +436,7 @@ struct snx_SoundImplementation_Wrapper
       return make_tuple();
    }
 
-   tuple default_getPositionWrapper(const std::string& p0)
+   tuple default_getPositionWrapper(const std::string& p0) const
    {
       return snx_SoundImplementation_Adapter::getPositionWrapper(p0);
    }
@@ -466,7 +466,7 @@ struct snx_SoundImplementation_Wrapper
       snx::SoundImplementation::setListenerPosition(p0);
    }
 
-   void getListenerPosition(gmtl::Matrix44f& p0)
+   void getListenerPosition(gmtl::Matrix44f& p0) const
    {
       try
       {
@@ -486,7 +486,7 @@ struct snx_SoundImplementation_Wrapper
       }
    }
 
-   void default_getListenerPosition(gmtl::Matrix44f& p0)
+   void default_getListenerPosition(gmtl::Matrix44f& p0) const
    {
       snx::SoundImplementation::getListenerPosition(p0);
    }
@@ -719,6 +719,36 @@ struct snx_SoundImplementation_Wrapper
       this->get_override("unbind")(boost::ref(p0));
    }
 
+   const snx::SoundInfo& lookup(const std::string& p0) const
+   {
+      try
+      {
+         if ( override lookup = this->get_override("lookup") )
+         {
+#if defined(_MSC_VER) || \
+    (defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2)
+            return call<snx::SoundInfo&, std::string>(lookup.ptr(),
+                                                      boost::ref(p0));
+#else
+            return lookup(boost::ref(p0));
+#endif
+         }
+         return snx::SoundImplementation::lookup(p0);
+      }
+      catch (error_already_set)
+      {
+         PyErr_Print();
+      }
+
+      // XXX: I am not sure if this is the best way to handle this case.
+      return default_lookupConst(p0);
+   }
+
+   const snx::SoundInfo& default_lookupConst(const std::string& p0) const
+   {
+      return snx::SoundImplementation::lookup(p0);
+   }
+
    snx::SoundInfo& lookup(const std::string& p0)
    {
       try
@@ -773,45 +803,45 @@ struct snx_SoundImplementation_Wrapper
       snx::SoundImplementation::setName(p0);
    }
 
-//    std::string& name()
-//    {
-//       try
-//       {
-//          if ( override name = this->get_override("name") )
-//          {
-// #if defined(_MSC_VER) || \
-//     (defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2)
-//             return call<std::string&>(name.ptr());
-// #else
-//             return name();
-// #endif
-//          }
-//          return snx::SoundImplementation::name();
-//       }
-//       catch (error_already_set)
-//       {
-//          PyErr_Print();
-//       }
-//
-//       return default_name();
-//    }
-
-   std::string& name()
+   const std::string& name() const
    {
       try
       {
-         snx::SoundImplementation::name();
+         if ( override name = this->get_override("name") )
+         {
+#if defined(_MSC_VER) || \
+    (defined(__GNUC__) && __GNUC__ == 3 && __GNUC_MINOR__ == 2)
+            return call<std::string&>(name.ptr());
+#else
+            return name();
+#endif
+         }
+         return snx::SoundImplementation::name();
       }
       catch (error_already_set)
       {
          PyErr_Print();
       }
+
+      return default_name();
    }
 
-   // std::string& default_name()
+   // const std::string& name() const
    // {
-   //    return snx::SoundImplementation::name();
+   //    try
+   //    {
+   //       snx::SoundImplementation::name();
+   //    }
+   //    catch (error_already_set)
+   //    {
+   //       PyErr_Print();
+   //    }
    // }
+
+   const std::string& default_name() const
+   {
+      return snx::SoundImplementation::name();
+   }
 
    void destroy()
    {
@@ -829,13 +859,14 @@ struct snx_SoundImplementation_Wrapper
 };
 
 
-}// namespace pyj
+}  // namespace pyj
 
 
 // Module ======================================================================
 void _Export_SoundImplementation()
 {
    snx::SoundInfo& (snx::SoundImplementation::*lookupP)(const std::string&) = &snx::SoundImplementation::lookup;
+   snx::SoundInfo const& (snx::SoundImplementation::*lookupConstP)(const std::string&) const = &snx::SoundImplementation::lookup;
 
    class_<pyj::snx_SoundImplementation_Wrapper, boost::noncopyable>
       ("SoundImplementation",
@@ -863,7 +894,7 @@ void _Export_SoundImplementation()
            "          forever.  The default is to play the sound once.\n\n"
       )
       .def("isPlaying", &snx::SoundImplementation::isPlaying,
-         //   &pyj::snx_SoundImplementation_Wrapper::default_isPlaying,
+           &pyj::snx_SoundImplementation_Wrapper::default_isPlaying,
            "isPlaying(alias) -> Boolean\n"
            "Is the named sound currently playing?\n\n"
            "Arguments:\n"
@@ -881,7 +912,7 @@ void _Export_SoundImplementation()
            "onOff -- A Boolean value enabling or disabling retriggering."
       )
       .def("isRetriggerable", &snx::SoundImplementation::isRetriggerable,
-         //   &pyj::snx_SoundImplementation_Wrapper::default_isRetriggerable,
+           &pyj::snx_SoundImplementation_Wrapper::default_isRetriggerable,
            "isRetriggerable(alais) -> Boolean\n"
            "Is the named sound retriggerable?\n\n"
            "Arguments:\n"
@@ -911,7 +942,7 @@ void _Export_SoundImplementation()
            "alias -- The alias of the sound to unpause."
       )
       .def("isPaused", &snx::SoundImplementation::isPaused,
-         //   &pyj::snx_SoundImplementation_Wrapper::default_isPaused,
+           &pyj::snx_SoundImplementation_Wrapper::default_isPaused,
            "isPaused(alias) -> Boolean\n"
            "If the sound is paused, then return True.\n\n"
            "Arguments:\n"
@@ -931,7 +962,7 @@ void _Export_SoundImplementation()
            "           ambient (True) or positional (False).\n\n"
       )
       .def("isAmbient", &snx::SoundImplementation::isAmbient,
-         //   &pyj::snx_SoundImplementation_Wrapper::default_isAmbient,
+           &pyj::snx_SoundImplementation_Wrapper::default_isAmbient,
            "isAmbient(alias) -> Boolean\n"
            "Is the named sound ambient?\n\n"
            "Arguments:\n"
@@ -1001,7 +1032,7 @@ void _Export_SoundImplementation()
       )
       .def("getListenerPosition",
            &snx::SoundImplementation::getListenerPosition,
-         //   &pyj::snx_SoundImplementation_Wrapper::default_getListenerPosition,
+           &pyj::snx_SoundImplementation_Wrapper::default_getListenerPosition,
            "getListenerPosition(matrix)\n"
            "Gets the listeners's 3D position.\n\n"
            "Arguments:\n"
@@ -1121,14 +1152,18 @@ void _Export_SoundImplementation()
            "alias -- The alias of the sound data to be unbound."
       )
       .def("lookup", lookupP,
-         //   &pyj::snx_SoundImplementation_Wrapper::default_lookup,
+           &pyj::snx_SoundImplementation_Wrapper::default_lookup,
+           return_internal_reference<1>()
+      )
+      .def("lookup", lookupConstP,
+           &pyj::snx_SoundImplementation_Wrapper::default_lookupConst,
            return_internal_reference<1>()
       )
       .def("setName", &snx::SoundImplementation::setName,
            &pyj::snx_SoundImplementation_Wrapper::default_setName
       )
       .def("name", &snx::SoundImplementation::name,
-         //   &pyj::snx_SoundImplementation_Wrapper::default_name,
+           &pyj::snx_SoundImplementation_Wrapper::default_name,
            return_internal_reference<1>()
       )
       .def("copy", &snx::SoundImplementation::copy,
