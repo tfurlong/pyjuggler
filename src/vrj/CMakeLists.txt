@@ -3,6 +3,7 @@ set(SRC_FILES
     _App.cpp
     _CameraProjection.cpp
     _Display.cpp
+    _DrawManager.cpp
     _Frustum.cpp
     _Kernel.cpp
     _Projection.cpp
