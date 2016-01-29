@@ -384,9 +384,7 @@ void setCpuAffinityStrategy(vrj::opengl::DrawManager* mgr, object callable)
 
 void _Export_DrawManager()
 {
-   // vrj::DrawManager is not listed in bases<> because that class is not
-   // exposed to Python.
-   class_<pyj::vrj_opengl_DrawManager_Wrapper, boost::noncopyable>(
+   class_<pyj::vrj_opengl_DrawManager_Wrapper, bases<vrj::DrawManager>, boost::noncopyable>(
       "DrawManager",
       "Concrete Singleton Class for OpenGL drawing.  Responsible for all\n"
       "OpenGL-based rendering.\n\n"
