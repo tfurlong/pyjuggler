@@ -51,6 +51,7 @@ BOOST_PYTHON_MODULE(__vrj)
    _Export_Kernel();
    _Export_Projection();
    _Export_Display();
+   _Export_DrawManager()
    _Export_Viewport();
    _Export_SimViewport();
    _Export_Frustum();
