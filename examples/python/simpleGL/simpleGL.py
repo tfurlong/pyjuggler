@@ -5,10 +5,21 @@
 # accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
 import sys
+
+# import logging
+# logging.basicConfig(level=logging.DEBUG)
+
+import OpenGL
+# OpenGL.FULL_LOGGING = True
 from OpenGL.GL import *
+from OpenGL.arrays import vbo
+from OpenGLContext.arrays import *
+from OpenGL.GL import shaders
 import gmtl
+import numpy as np
 
 import os
+import pprint
 
 if sys.platform == 'darwin':
     os.environ['NO_RTRC_PLUGIN'] = "1"
@@ -18,6 +29,7 @@ if sys.platform == 'darwin':
 # import PyJuggler.vrj first.
 from PyJuggler import *
 import PyJuggler.vrj as vrj
+import PyJuggler.gadget as gadget
 
 
 class SimpleGlApp(vrj.opengl.App):
@@ -31,16 +43,83 @@ class SimpleGlApp(vrj.opengl.App):
         self.mHead = gadget.PositionInterface()
 
         self.mGrabbed = False
+        self.frame    = 0
 
     def init(self):
         self.mButton0.init("DigitalProxy-Button0")
         self.mButton1.init("DigitalProxy-Button1")
         self.mButton2.init("DigitalProxy-Button2")
-        self.mWand.init("PositionProxy-Wand")
-        self.mHead.init("PositionProxy-Head")
+        self.mWand.init("SimPositionDevice-Wand")
+        self.mHead.init("SimPositionDevice-Head")
+
+    def getDrawScaleFactor(self):
+        return gadget.PositionUnitConversion.ConvertToMeters
 
     def contextInit(self):
         self.initGLState()
+
+        vertex_shader = shaders.compileShader("""#version 430
+        uniform mat4 pvm_matrix;
+        layout(location = 0) in vec3 vertex_position_modelspace;
+        void main() {
+            vec4 v = vec4(vertex_position_modelspace, 1);
+            gl_Position = pvm_matrix * v;
+        }""", GL_VERTEX_SHADER)
+
+        fragment_shader = shaders.compileShader("""#version 430
+        out vec4 fragment_color;
+        void main() {
+            fragment_color = vec4(0, 1, 0, 1);
+        }""", GL_FRAGMENT_SHADER)
+
+        self.shader = shaders.compileProgram(vertex_shader, fragment_shader)
+
+        self.pvm_matrix = glGetUniformLocation(self.shader, 'pvm_matrix')
+
+        self.vbo = vbo.VBO(
+            array([
+                -1.0, -1.0, -1.0,
+                -1.0, -1.0, 1.0,
+                -1.0, 1.0, 1.0,
+                1.0, 1.0, -1.0,
+                -1.0, -1.0, -1.0,
+                -1.0, 1.0, -1.0,
+                1.0, -1.0, 1.0,
+                -1.0, -1.0, -1.0,
+                1.0, -1.0, -1.0,
+                1.0, 1.0, -1.0,
+                1.0, -1.0, -1.0,
+                -1.0, -1.0, -1.0,
+                -1.0, -1.0, -1.0,
+                -1.0, 1.0, 1.0,
+                -1.0, 1.0, -1.0,
+                1.0, -1.0, 1.0,
+                -1.0, -1.0, 1.0,
+                -1.0, -1.0, -1.0,
+                -1.0, 1.0, 1.0,
+                -1.0, -1.0, 1.0,
+                1.0, -1.0, 1.0,
+                1.0, 1.0, 1.0,
+                1.0, -1.0,-1.0,
+                1.0, 1.0, -1.0,
+                1.0, -1.0, -1.0,
+                1.0, 1.0, 1.0,
+                1.0, -1.0, 1.0,
+                1.0, 1.0, 1.0,
+                1.0, 1.0, -1.0,
+                -1.0, 1.0, -1.0,
+                1.0, 1.0, 1.0,
+                -1.0, 1.0, -1.0,
+                -1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0,
+                -1.0, 1.0, 1.0,
+                1.0, -1.0, 1.0,
+            ], 'f')
+        )
+
+        self.vertex_array_id = 0
+        glGenVertexArrays(1, self.vertex_array_id)
+        glBindVertexArray(self.vertex_array_id)
 
     def preFrame(self):
         if self.mButton0.getData():
@@ -49,73 +128,51 @@ class SimpleGlApp(vrj.opengl.App):
             self.mGrabbed = False
 
     def bufferPreDraw(self):
-        glClearColor(0.2, 0.2, 0.2, 0.0)
+        glClearColor(0.1, 0.1, 0.1, 1.0)
         glClear(GL_COLOR_BUFFER_BIT)
 
     def draw(self):
-        box_offset = (0.0, 1.8, -2.0)
-        box_rotate = gmtl.EulerAngleXYZf(0.0, 0.0, 0.0)
-        box_transform = gmtl.makeTransMatrix44(gmtl.Vec3f(0.0, 0.0, 0.0))
+        glClear(GL_DEPTH_BUFFER_BIT)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+
+        user_data = self.getDrawManager().currentUserData()
+        projection = user_data.getProjection()
+        print(projection)
+
+        pv_matrix_data = self.getPVMatrix()
+        print(pv_matrix_data)
+
+        pv_matrix = gmtl.Matrix44f()
+        pv_matrix.set(pv_matrix_data)
+
+        box_rotate = gmtl.Matrix44f()
+        box_translate = gmtl.Matrix44f()
+        box_transform = gmtl.Matrix44f()
 
         # Move the box to the wand's position if the box is grabbed.
         if self.mGrabbed:
             wand_transform = self.mWand.getData()
-            box_offset = gmtl.makeTransVec3(wand_transform)
-            box_rotate = gmtl.makeRotEulerAngleXYZ(wand_transform)
+            gmtl.setRot(box_rotate, gmtl.makeRotEulerAngleXYZ(wand_transform))
+            box_translate = gmtl.makeTrans(gmtl.makeTransVec3(wand_transform))
+        else:
+            box_offset = gmtl.Vec3f(0.0, 0.0, -2.0)
+            gmtl.setRot(box_rotate, gmtl.EulerAngleXYZf(0.0, 0.0, 0.0))
+            box_translate = gmtl.makeTransMatrix44(box_offset)
 
-        glClear(GL_DEPTH_BUFFER_BIT)
-        glPushMatrix()
-        glTranslatef(box_offset[0], box_offset[1], box_offset[2])
-        glRotatef(gmtl.Math.rad2Deg(box_rotate[0]), 1.0, 0.0, 0.0)
-        glRotatef(gmtl.Math.rad2Deg(box_rotate[1]), 0.0, 1.0, 0.0)
-        glRotatef(gmtl.Math.rad2Deg(box_rotate[2]), 0.0, 0.0, 1.0)
-        # glMultMatrixf(box_transform.mData)
-        glColor(1, 0, 0)
-        self.drawbox(-0.5, 0.5, -0.5, 0.5, -0.5, 0.5, GL_QUADS)
-        glPopMatrix()
+        gmtl.mult(box_transform, box_rotate, box_translate)
+        pvm_matrix = gmtl.Matrix44f()
+        gmtl.mult(pvm_matrix, pv_matrix, box_transform)
 
-    def getDrawScaleFactor(self):
-        return gadget.PositionUnitConversion.ConvertToMeters;
+        shaders.glUseProgram(self.shader)
+        glUniformMatrix4fv(self.pvm_matrix, 1, GL_FALSE, pvm_matrix.getData())
 
-    def drawbox(self, x0, x1, y0, y1, z0, z1, type):
-        n = [[-1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0],
-             [0.0, -1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, -1.0]]
-        faces = [[0, 1, 2, 3], [3, 2, 6, 7], [7, 6, 5, 4],
-                 [4, 5, 1, 0], [5, 6, 2, 1], [7, 4, 0, 3]]
-
-        if x0 > x1:
-            tmp = x0
-            x0 = x1
-            x1 = tmp
-        if y0 > y1:
-            tmp = y0
-            y0 = y1
-            y1 = tmp
-        if z0 > z1:
-            tmp = z0
-            z0 = z1
-            z1 = tmp
-
-        v = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0],
-             [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]]
-        v[0][0] = v[1][0] = v[2][0] = v[3][0] = x0
-        v[4][0] = v[5][0] = v[6][0] = v[7][0] = x1
-        v[0][1] = v[1][1] = v[4][1] = v[5][1] = y0
-        v[2][1] = v[3][1] = v[6][1] = v[7][1] = y1
-        v[0][2] = v[3][2] = v[4][2] = v[7][2] = z0
-        v[1][2] = v[2][2] = v[5][2] = v[6][2] = z1
-
-        for i in range(6):
-            glBegin(type)
-            glNormal3d(n[i][0], n[i][1], n[i][2])
-            glVertex3d(v[faces[i][0]][0], v[faces[i][0]][1], v[faces[i][0]][2])
-            glNormal3d(n[i][0], n[i][1], n[i][2])
-            glVertex3d(v[faces[i][1]][0], v[faces[i][1]][1], v[faces[i][1]][2])
-            glNormal3d(n[i][0], n[i][1], n[i][2])
-            glVertex3d(v[faces[i][2]][0], v[faces[i][2]][1], v[faces[i][2]][2])
-            glNormal3d(n[i][0], n[i][1], n[i][2])
-            glVertex3d(v[faces[i][3]][0], v[faces[i][3]][1], v[faces[i][3]][2])
-            glEnd()
+        glEnableVertexAttribArray(0)
+        self.vbo.bind()
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, None)
+        glDrawArrays(GL_TRIANGLES, 0, 12*3)
+        glDisableVertexAttribArray(0)
+        self.vbo.unbind()
+        # glDisableClientState(GL_VERTEX_ARRAY)
 
     def initGLState(self):
         glLight(GL_LIGHT0, GL_AMBIENT, [0.1, 0.1, 0.1, 1.0])
@@ -139,11 +196,9 @@ class SimpleGlApp(vrj.opengl.App):
 def main():
     app = SimpleGlApp()
     kernel = vrj.Kernel.instance()
-    print(sys.argv)
-    kernel.init(sys.argv)
 
-    # for arg in sys.argv[1:]:
-    #     kernel.loadConfigFile(arg)
+    for arg in sys.argv[1:]:
+        kernel.loadConfigFile(arg)
 
     kernel.start()
     kernel.setApplication(app)
