@@ -30,220 +30,38 @@ struct vrj_DrawManager_Wrapper
 
    void draw()
    {
-      vpr::DebugOutputGuard og(
-         pyjDBG_CXX, vprDBG_VERB_LVL,
-         "vrj_DrawManager_Wrapper::draw()\n",
-         "vrj_DrawManager_Wrapper::draw() done.\n"
-      );
-      PyJuggler::InterpreterGuard guard;
-
-      try
-      {
-         if ( override draw = this->get_override("draw") )
-         {
-            draw();
-         }
-         else
-         {
-            vrj::DrawManager::draw();
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
+      this->get_override("draw");
    }
-
-   // void default_draw()
-   // {
-   //    vrj::DrawManager::draw();
-   // }
 
    void sync()
    {
-      vpr::DebugOutputGuard og(
-         pyjDBG_CXX, vprDBG_VERB_LVL,
-         "vrj_DrawManager_Wrapper::sync()\n",
-         "vrj_DrawManager_Wrapper::sync() done.\n"
-      );
-      PyJuggler::InterpreterGuard guard;
-
-      try
-      {
-         if ( override sync = this->get_override("sync") )
-         {
-            sync();
-         }
-         else
-         {
-            vrj::DrawManager::sync();
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
+      this->get_override("sync");
    }
-
-   // void default_sync()
-   // {
-   //    vrj::DrawManager::sync();
-   // }
 
    void initAPI()
    {
-      vpr::DebugOutputGuard og(
-         pyjDBG_CXX, vprDBG_VERB_LVL,
-         "vrj_DrawManager_Wrapper::initAPI()\n",
-         "vrj_DrawManager_Wrapper::initAPI() done.\n"
-      );
-      PyJuggler::InterpreterGuard guard;
-
-      try
-      {
-         if ( override initAPI = this->get_override("initAPI") )
-         {
-            initAPI();
-         }
-         else
-         {
-            vrj::DrawManager::initAPI();
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
+      this->get_override("initAPI");
    }
-
-   // void default_initAPI()
-   // {
-   //    vrj::DrawManager::initAPI();
-   // }
 
    void addDisplay(vrj::DisplayPtr display)
    {
-      vpr::DebugOutputGuard og(
-         pyjDBG_CXX, vprDBG_VERB_LVL,
-         "vrj_DrawManager_Wrapper::addDisplay()\n",
-         "vrj_DrawManager_Wrapper::addDisplay() done.\n"
-      );
-      PyJuggler::InterpreterGuard guard;
-
-      try
-      {
-         if ( override addDisplay = this->get_override("addDisplay") )
-         {
-            addDisplay(display);
-         }
-         else
-         {
-            vrj::DrawManager::addDisplay(display);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
+      this->get_override("addDisplay");
    }
-
-   // void default_addDisplay(vrj::DisplayPtr display)
-   // {
-   //    vrj::DrawManager::addDisplay(display);
-   // }
 
    void removeDisplay(vrj::DisplayPtr display)
    {
-      vpr::DebugOutputGuard og(
-         pyjDBG_CXX, vprDBG_VERB_LVL,
-         "vrj_DrawManager_Wrapper::removeDisplay()\n",
-         "vrj_DrawManager_Wrapper::removeDisplay() done.\n"
-      );
-      PyJuggler::InterpreterGuard guard;
-
-      try
-      {
-         if ( override removeDisplay = this->get_override("removeDisplay") )
-         {
-            removeDisplay(display);
-         }
-         else
-         {
-            vrj::DrawManager::removeDisplay(display);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
+      this->get_override("removeDisplay");
    }
-
-   // void default_removeDisplay(vrj::DisplayPtr display)
-   // {
-   //    vrj::DrawManager::removeDisplay(display);
-   // }
 
    void closeAPI()
    {
-      vpr::DebugOutputGuard og(
-         pyjDBG_CXX, vprDBG_VERB_LVL,
-         "vrj_DrawManager_Wrapper::closeAPI()\n",
-         "vrj_DrawManager_Wrapper::closeAPI() done.\n"
-      );
-      PyJuggler::InterpreterGuard guard;
-
-      try
-      {
-         if ( override closeAPI = this->get_override("closeAPI") )
-         {
-            closeAPI();
-         }
-         else
-         {
-            vrj::DrawManager::closeAPI();
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
+      this->get_override("closeAPI");
    }
-
-   // void default_closeAPI()
-   // {
-   //    vrj::DrawManager::closeAPI();
-   // }
 
    void setApp(vrj::App* app)
    {
-      vpr::DebugOutputGuard og(
-         pyjDBG_CXX, vprDBG_VERB_LVL,
-         "vrj_DrawManager_Wrapper::setApp()\n",
-         "vrj_DrawManager_Wrapper::setApp() done.\n"
-      );
-      PyJuggler::InterpreterGuard guard;
-
-      try
-      {
-         if ( override setApp = this->get_override("setApp") )
-         {
-            setApp(app);
-         }
-         else
-         {
-            vrj::DrawManager::setApp(app);
-         }
-      }
-      catch (error_already_set)
-      {
-         PyErr_Print();
-      }
+      this->get_override("setApp");
    }
-
-   // void default_setApp(vrj::App* app)
-   // {
-   //    vrj::DrawManager::setApp(app);
-   // }
 };
 
 }  // namespace pyj
