@@ -16,7 +16,6 @@ from OpenGL.arrays import vbo
 from OpenGLContext.arrays import *
 from OpenGL.GL import shaders
 import gmtl
-import numpy as np
 
 import os
 import pprint
@@ -135,12 +134,11 @@ class SimpleGlApp(vrj.opengl.App):
         glClear(GL_DEPTH_BUFFER_BIT)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
 
-        user_data = self.getDrawManager().currentUserData()
-        projection = user_data.getProjection()
-        print(projection)
+        # user_data = self.getDrawManager().currentUserData()
+        # projection = user_data.getProjection()
+        # print(projection)
 
         pv_matrix_data = self.getPVMatrix()
-        print(pv_matrix_data)
 
         pv_matrix = gmtl.Matrix44f()
         pv_matrix.set(pv_matrix_data)
@@ -153,7 +151,7 @@ class SimpleGlApp(vrj.opengl.App):
         if self.mGrabbed:
             wand_transform = self.mWand.getData()
             gmtl.setRot(box_rotate, gmtl.makeRotEulerAngleXYZ(wand_transform))
-            box_translate = gmtl.makeTrans(gmtl.makeTransVec3(wand_transform))
+            box_translate = gmtl.makeTransMatrix44(gmtl.makeTransVec3(wand_transform))
         else:
             box_offset = gmtl.Vec3f(0.0, 0.0, -2.0)
             gmtl.setRot(box_rotate, gmtl.EulerAngleXYZf(0.0, 0.0, 0.0))
@@ -196,9 +194,7 @@ class SimpleGlApp(vrj.opengl.App):
 def main():
     app = SimpleGlApp()
     kernel = vrj.Kernel.instance()
-
-    for arg in sys.argv[1:]:
-        kernel.loadConfigFile(arg)
+    kernel.init(sys.argv)
 
     kernel.start()
     kernel.setApplication(app)

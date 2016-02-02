@@ -12,6 +12,7 @@ set PATH=D:\tools\freealut\bin;%PATH%
 set PATH=D:\tools\openal\bin;%PATH%
 set PATH=D:\tools\vrjuggler\bin;%PATH%
 set PATH=D:\tools\xml-cppdom\bin;%PATH%
+set PATH=D:\tools\pythonlibs\PyJuggler;%PATH%
 set PATH=C:\Python27-x86_64\DLLs;%PATH%
 
 rem set python module search path
