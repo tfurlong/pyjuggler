@@ -48,8 +48,10 @@ class SimpleGlApp(vrj.opengl.App):
         self.mButton0.init("DigitalProxy-Button0")
         self.mButton1.init("DigitalProxy-Button1")
         self.mButton2.init("DigitalProxy-Button2")
-        self.mWand.init("SimPositionDevice-Wand")
-        self.mHead.init("SimPositionDevice-Head")
+        # self.mWand.init("SimPositionDevice-Wand")
+        # self.mHead.init("SimPositionDevice-Head")
+        self.mWand.init("PositionProxy-Wand")
+        self.mHead.init("PositionProxy-Head")
 
     def getDrawScaleFactor(self):
         return gadget.PositionUnitConversion.ConvertToMeters
@@ -149,15 +151,13 @@ class SimpleGlApp(vrj.opengl.App):
 
         # Move the box to the wand's position if the box is grabbed.
         if self.mGrabbed:
-            wand_transform = self.mWand.getData()
-            gmtl.setRot(box_rotate, gmtl.makeRotEulerAngleXYZ(wand_transform))
-            box_translate = gmtl.makeTransMatrix44(gmtl.makeTransVec3(wand_transform))
+            box_transform = self.mWand.getData(1)
         else:
             box_offset = gmtl.Vec3f(0.0, 0.0, -2.0)
             gmtl.setRot(box_rotate, gmtl.EulerAngleXYZf(0.0, 0.0, 0.0))
             box_translate = gmtl.makeTransMatrix44(box_offset)
+            gmtl.mult(box_transform, box_rotate, box_translate)
 
-        gmtl.mult(box_transform, box_rotate, box_translate)
         pvm_matrix = gmtl.Matrix44f()
         gmtl.mult(pvm_matrix, pv_matrix, box_transform)
 
