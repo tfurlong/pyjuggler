@@ -380,13 +380,11 @@ void setCpuAffinityStrategy(vrj::opengl::DrawManager* mgr, object callable)
    mgr->setCpuAffinityStrategy(boost::bind(invokeCallback, callable, _1));
 }
 
-}
+}  // namespace pyj
 
 void _Export_DrawManager()
 {
-   // vrj::DrawManager is not listed in bases<> because that class is not
-   // exposed to Python.
-   class_<pyj::vrj_opengl_DrawManager_Wrapper, boost::noncopyable>(
+   class_<pyj::vrj_opengl_DrawManager_Wrapper, bases<vrj::DrawManager>, boost::noncopyable>(
       "DrawManager",
       "Concrete Singleton Class for OpenGL drawing.  Responsible for all\n"
       "OpenGL-based rendering.\n\n"
@@ -495,14 +493,12 @@ void _Export_DrawManager()
            "Arguments:\n"
            "element -- A jccl.ConfigElement object."
       )
-      // vrj::opengl::UserData is not currently exposed to Python.
-      /*
       .def("currentUserData", &vrj::opengl::DrawManager::currentUserData,
+           return_internal_reference<1>(),
            "Gets pointer to the current user data. Should be used in the\n"
            "draw() function.\n\n"
            "NOTE: This user data is valid ONLY in draw()!"
       )
-      */
       .def("getCurrentContext", &vrj::opengl::DrawManager::getCurrentContext,
            "Returns a unique identifier for the current context.\n\n"
            "NOTE: This user data is valid ONLY in contextInit() and draw()!"

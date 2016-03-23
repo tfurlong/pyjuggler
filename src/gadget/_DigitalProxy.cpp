@@ -200,7 +200,7 @@ struct gadget_DigitalProxy_Wrapper
       return gadget::DigitalProxy::isStupefied();
    }
 
-   virtual const gadget::DigitalState::State getData() const
+   virtual DigitalProxy::get_data_return_type getData() const
    {
       try
       {
@@ -217,13 +217,13 @@ struct gadget_DigitalProxy_Wrapper
       return gadget::DigitalProxy::getData();
    }
 
-   const gadget::DigitalState::State default_getData() const
+   DigitalProxy::get_data_return_type default_getData() const
    {
       return gadget::DigitalProxy::getData();
    }
 };
 
-}// namespace 
+}  // namespace pyj
 
 
 // Module ======================================================================

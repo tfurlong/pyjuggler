@@ -1,0 +1,5 @@
+build/
+PyJuggler/
+*.fo
+*.html
+*.pdf

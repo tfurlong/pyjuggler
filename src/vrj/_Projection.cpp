@@ -5,6 +5,7 @@
 // Boost Includes ==============================================================
 #include <boost/python.hpp>
 #include <boost/cstdint.hpp>
+#include <boost/python/register_ptr_to_python.hpp>
 
 // Includes ====================================================================
 #include <vrj/Display/Viewport.h>
@@ -50,7 +51,7 @@ tuple Projection_getNearFar()
    return make_tuple(near_val, far_val);
 }
 
-}// namespace 
+}// namespace
 
 
 // Module ======================================================================
@@ -137,5 +138,6 @@ void _Export_Projection()
       .value("LEFT", vrj::Projection::LEFT)
    ;
 
+   register_ptr_to_python<boost::shared_ptr<vrj::Projection>>();
    delete vrj_Projection_scope;
 }

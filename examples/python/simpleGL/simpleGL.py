@@ -5,139 +5,200 @@
 # accompanying file COPYING.txt or http://www.gnu.org/copyleft/lesser.txt)
 
 import sys
+
+# import logging
+# logging.basicConfig(level=logging.DEBUG)
+
+import OpenGL
+# OpenGL.FULL_LOGGING = True
 from OpenGL.GL import *
+from OpenGL.arrays import vbo
+from OpenGLContext.arrays import *
+from OpenGL.GL import shaders
 import gmtl
 
 import os
+import pprint
 
 if sys.platform == 'darwin':
-   os.environ['NO_RTRC_PLUGIN'] = "1"
-   os.environ['NO_PERF_PLUGIN'] = "1"
+    os.environ['NO_RTRC_PLUGIN'] = "1"
+    os.environ['NO_PERF_PLUGIN'] = "1"
 
 # NOTE: If you import the individual modules from PyJuggler, make sure to
 # import PyJuggler.vrj first.
 from PyJuggler import *
-import PyJuggler.vrj.opengl as vrj.opengl
+import PyJuggler.vrj as vrj
+import PyJuggler.gadget as gadget
 
 
 class SimpleGlApp(vrj.opengl.App):
-   def __init__(self):
-      vrj.opengl.App.__init__(self)
+    def __init__(self):
+        vrj.opengl.App.__init__(self)
 
-      self.mButton0 = gadget.DigitalInterface()
-      self.mButton1 = gadget.DigitalInterface()
-      self.mButton2 = gadget.DigitalInterface()
-      self.mWand    = gadget.PositionInterface()
-      self.mHead    = gadget.PositionInterface()
+        self.mButton0 = gadget.DigitalInterface()
+        self.mButton1 = gadget.DigitalInterface()
+        self.mButton2 = gadget.DigitalInterface()
+        self.mWand = gadget.PositionInterface()
+        self.mHead = gadget.PositionInterface()
 
-      self.mGrabbed = False
+        self.mGrabbed = False
+        self.frame    = 0
 
-   def init(self):
-      self.mButton0.init("VJButton0")
-      self.mButton1.init("VJButton1")
-      self.mButton2.init("VJButton2")
-      self.mWand.init("VJWand")
-      self.mHead.init("VJHead")
+    def init(self):
+        self.mButton0.init("DigitalProxy-Button0")
+        self.mButton1.init("DigitalProxy-Button1")
+        self.mButton2.init("DigitalProxy-Button2")
+        # self.mWand.init("SimPositionDevice-Wand")
+        # self.mHead.init("SimPositionDevice-Head")
+        self.mWand.init("PositionProxy-Wand")
+        self.mHead.init("PositionProxy-Head")
 
-   def contextInit(self):
-      self.initGLState()
+    def getDrawScaleFactor(self):
+        return gadget.PositionUnitConversion.ConvertToMeters
 
-   def preFrame(self):
-      if self.mButton0.getData():
-         self.mGrabbed = True
-      else:
-         self.mGrabbed = False
+    def contextInit(self):
+        self.initGLState()
 
-   def bufferPreDraw(self):
-      glClearColor(0.0, 0.0, 0.0, 0.0)
-      glClear(GL_COLOR_BUFFER_BIT)
+        vertex_shader = shaders.compileShader("""#version 430
+        uniform mat4 pvm_matrix;
+        layout(location = 0) in vec3 vertex_position_modelspace;
+        void main() {
+            vec4 v = vec4(vertex_position_modelspace, 1);
+            gl_Position = pvm_matrix * v;
+        }""", GL_VERTEX_SHADER)
 
-   def draw(self):
-      box_offset = gmtl.Vec3f(0.0, 6.0, 0.0)
-      box_rotate = gmtl.EulerAngleXYZf(0.0, 0.0, 0.0)
-#      box_transform = gmtl.makeTransMatrix44(gmtl.Vec3f(0.0, 6.0, 0.0))
+        fragment_shader = shaders.compileShader("""#version 430
+        out vec4 fragment_color;
+        void main() {
+            fragment_color = vec4(0, 1, 0, 1);
+        }""", GL_FRAGMENT_SHADER)
 
-      # Move the box to the wand's position if the box is grabbed.
-      if self.mGrabbed:
-         wand_transform = self.mWand.getData()
-         box_offset     = gmtl.makeTransVec3(wand_transform)
-         box_rotate     = gmtl.makeRotEulerAngleXYZ(wand_transform)
+        self.shader = shaders.compileProgram(vertex_shader, fragment_shader)
 
-      glClear(GL_DEPTH_BUFFER_BIT)
-      glPushMatrix()
-      glTranslatef(box_offset[0], box_offset[1], box_offset[2])
-      glRotatef(gmtl.Math.rad2Deg(box_rotate[0]), 1.0, 0.0, 0.0)
-      glRotatef(gmtl.Math.rad2Deg(box_rotate[1]), 0.0, 1.0, 0.0)
-      glRotatef(gmtl.Math.rad2Deg(box_rotate[2]), 0.0, 0.0, 1.0)
-#      glMultMatrixf(box_transform.mData)
-      self.drawbox(-0.5, 0.5, -0.5, 0.5, -0.5, 0.5, GL_QUADS)
-      glPopMatrix()
+        self.pvm_matrix = glGetUniformLocation(self.shader, 'pvm_matrix')
 
-   def drawbox(self, x0, x1, y0, y1, z0, z1, type):
-      n = [ [-1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [1.0, 0.0, 0.0],
-            [0.0, -1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, -1.0] ]
-      faces = [ [0, 1, 2, 3], [3, 2, 6, 7], [7, 6, 5, 4],
-                [4, 5, 1, 0], [5, 6, 2, 1], [7, 4, 0, 3] ]
+        self.vbo = vbo.VBO(
+            array([
+                -1.0, -1.0, -1.0,
+                -1.0, -1.0, 1.0,
+                -1.0, 1.0, 1.0,
+                1.0, 1.0, -1.0,
+                -1.0, -1.0, -1.0,
+                -1.0, 1.0, -1.0,
+                1.0, -1.0, 1.0,
+                -1.0, -1.0, -1.0,
+                1.0, -1.0, -1.0,
+                1.0, 1.0, -1.0,
+                1.0, -1.0, -1.0,
+                -1.0, -1.0, -1.0,
+                -1.0, -1.0, -1.0,
+                -1.0, 1.0, 1.0,
+                -1.0, 1.0, -1.0,
+                1.0, -1.0, 1.0,
+                -1.0, -1.0, 1.0,
+                -1.0, -1.0, -1.0,
+                -1.0, 1.0, 1.0,
+                -1.0, -1.0, 1.0,
+                1.0, -1.0, 1.0,
+                1.0, 1.0, 1.0,
+                1.0, -1.0,-1.0,
+                1.0, 1.0, -1.0,
+                1.0, -1.0, -1.0,
+                1.0, 1.0, 1.0,
+                1.0, -1.0, 1.0,
+                1.0, 1.0, 1.0,
+                1.0, 1.0, -1.0,
+                -1.0, 1.0, -1.0,
+                1.0, 1.0, 1.0,
+                -1.0, 1.0, -1.0,
+                -1.0, 1.0, 1.0,
+                1.0, 1.0, 1.0,
+                -1.0, 1.0, 1.0,
+                1.0, -1.0, 1.0,
+            ], 'f')
+        )
 
-      if x0 > x1:
-         tmp = x0
-         x0 = x1
-         x1 = tmp
-      if y0 > y1:
-         tmp = y0
-         y0 = y1
-         y1 = tmp
-      if z0 > z1:
-         tmp = z0
-         z0 = z1
-         z1 = tmp
+        self.vertex_array_id = 0
+        glGenVertexArrays(1, self.vertex_array_id)
+        glBindVertexArray(self.vertex_array_id)
 
-      v = [ [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0],
-            [0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0] ]
-      v[0][0] = v[1][0] = v[2][0] = v[3][0] = x0
-      v[4][0] = v[5][0] = v[6][0] = v[7][0] = x1
-      v[0][1] = v[1][1] = v[4][1] = v[5][1] = y0
-      v[2][1] = v[3][1] = v[6][1] = v[7][1] = y1
-      v[0][2] = v[3][2] = v[4][2] = v[7][2] = z0
-      v[1][2] = v[2][2] = v[5][2] = v[6][2] = z1
+    def preFrame(self):
+        if self.mButton0.getData():
+            self.mGrabbed = True
+        else:
+            self.mGrabbed = False
 
-      for i in range(6):
-         glBegin(type)
-         glNormal3d(n[i][0], n[i][1], n[i][2])
-         glVertex3d(v[faces[i][0]][0], v[faces[i][0]][1], v[faces[i][0]][2])
-         glNormal3d(n[i][0], n[i][1], n[i][2])
-         glVertex3d(v[faces[i][1]][0], v[faces[i][1]][1], v[faces[i][1]][2])
-         glNormal3d(n[i][0], n[i][1], n[i][2])
-         glVertex3d(v[faces[i][2]][0], v[faces[i][2]][1], v[faces[i][2]][2])
-         glNormal3d(n[i][0], n[i][1], n[i][2])
-         glVertex3d(v[faces[i][3]][0], v[faces[i][3]][1], v[faces[i][3]][2])
-         glEnd()
+    def bufferPreDraw(self):
+        glClearColor(0.1, 0.1, 0.1, 1.0)
+        glClear(GL_COLOR_BUFFER_BIT)
 
-   def initGLState(self):
-      glLight(GL_LIGHT0, GL_AMBIENT, [0.1, 0.1, 0.1, 1.0])
-      glLight(GL_LIGHT0, GL_DIFFUSE, [0.8, 0.8, 0.8, 1.0])
-      glLight(GL_LIGHT0, GL_SPECULAR, [1.0, 1.0, 1.0, 1.0])
-      glLight(GL_LIGHT0, GL_POSITION, [0.0, 0.75, 0.75, 0.0])
+    def draw(self):
+        glClear(GL_DEPTH_BUFFER_BIT)
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
 
-      glMaterial(GL_FRONT, GL_AMBIENT, [0.7, 0.7, 0.7, 1.0])
-      glMaterial(GL_FRONT, GL_DIFFUSE, [1.0, 0.5, 0.8, 1.0])
-      glMaterial(GL_FRONT, GL_SPECULAR, [1.0, 1.0, 1.0, 1.0])
-      glMaterial(GL_FRONT, GL_SHININESS, [50.0])
-      glMaterial(GL_FRONT, GL_EMISSION, [0.0, 0.0, 0.0, 1.0])
+        # user_data = self.getDrawManager().currentUserData()
+        # projection = user_data.getProjection()
+        # print(projection)
 
-      glEnable(GL_DEPTH_TEST)
-      glEnable(GL_NORMALIZE)
-      glEnable(GL_LIGHTING)
-      glEnable(GL_LIGHT0)
-#      glEnable(GL_COLOR_MATERIAL)
-      glShadeModel(GL_SMOOTH)
+        pv_matrix_data = self.getPVMatrix()
 
-app    = SimpleGlApp()
-kernel = vrj.Kernel.instance()
+        pv_matrix = gmtl.Matrix44f()
+        pv_matrix.set(pv_matrix_data)
 
-for arg in sys.argv[1:]:
-   kernel.loadConfigFile(arg)
+        box_rotate = gmtl.Matrix44f()
+        box_translate = gmtl.Matrix44f()
+        box_transform = gmtl.Matrix44f()
 
-kernel.start()
-kernel.setApplication(app)
-kernel.waitForKernelStop()
+        # Move the box to the wand's position if the box is grabbed.
+        if self.mGrabbed:
+            box_transform = self.mWand.getData(1)
+        else:
+            box_offset = gmtl.Vec3f(0.0, 0.0, -2.0)
+            gmtl.setRot(box_rotate, gmtl.EulerAngleXYZf(0.0, 0.0, 0.0))
+            box_translate = gmtl.makeTransMatrix44(box_offset)
+            gmtl.mult(box_transform, box_rotate, box_translate)
+
+        pvm_matrix = gmtl.Matrix44f()
+        gmtl.mult(pvm_matrix, pv_matrix, box_transform)
+
+        shaders.glUseProgram(self.shader)
+        glUniformMatrix4fv(self.pvm_matrix, 1, GL_FALSE, pvm_matrix.getData())
+
+        glEnableVertexAttribArray(0)
+        self.vbo.bind()
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, None)
+        glDrawArrays(GL_TRIANGLES, 0, 12*3)
+        glDisableVertexAttribArray(0)
+        self.vbo.unbind()
+        # glDisableClientState(GL_VERTEX_ARRAY)
+
+    def initGLState(self):
+        glLight(GL_LIGHT0, GL_AMBIENT, [0.1, 0.1, 0.1, 1.0])
+        glLight(GL_LIGHT0, GL_DIFFUSE, [0.8, 0.8, 0.8, 1.0])
+        glLight(GL_LIGHT0, GL_SPECULAR, [1.0, 1.0, 1.0, 1.0])
+        glLight(GL_LIGHT0, GL_POSITION, [0.0, 0.75, 0.75, 0.0])
+
+        glMaterial(GL_FRONT, GL_AMBIENT, [0.7, 0.7, 0.7, 1.0])
+        glMaterial(GL_FRONT, GL_DIFFUSE, [1.0, 0.5, 0.8, 1.0])
+        glMaterial(GL_FRONT, GL_SPECULAR, [1.0, 1.0, 1.0, 1.0])
+        glMaterial(GL_FRONT, GL_SHININESS, [50.0])
+        glMaterial(GL_FRONT, GL_EMISSION, [0.0, 0.0, 0.0, 1.0])
+
+        glEnable(GL_DEPTH_TEST)
+        glEnable(GL_NORMALIZE)
+        # glEnable(GL_LIGHTING)
+        glEnable(GL_LIGHT0)
+        # glEnable(GL_COLOR_MATERIAL)
+        glShadeModel(GL_SMOOTH)
+
+def main():
+    app = SimpleGlApp()
+    kernel = vrj.Kernel.instance()
+    kernel.init(sys.argv)
+
+    kernel.start()
+    kernel.setApplication(app)
+    kernel.waitForKernelStop()
+
+if __name__ == "__main__":
+    main()

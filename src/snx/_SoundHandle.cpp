@@ -100,7 +100,7 @@ struct snx_SoundHandle_Wrapper
       snx::SoundHandle::trigger(p0);
    }
 
-   bool isPlaying()
+   bool isPlaying() const
    {
       try
       {
@@ -118,7 +118,7 @@ struct snx_SoundHandle_Wrapper
       return false;
    }
 
-   bool default_isPlaying()
+   bool default_isPlaying() const
    {
       return snx::SoundHandle::isPlaying();
    }
@@ -148,7 +148,7 @@ struct snx_SoundHandle_Wrapper
       snx::SoundHandle::setRetriggerable(p0);
    }
 
-   bool isRetriggerable()
+   bool isRetriggerable() const
    {
       try
       {
@@ -167,7 +167,7 @@ struct snx_SoundHandle_Wrapper
       return false;
    }
 
-   bool default_isRetriggerable()
+   bool default_isRetriggerable() const
    {
       return snx::SoundHandle::isRetriggerable();
    }
@@ -244,7 +244,7 @@ struct snx_SoundHandle_Wrapper
       snx::SoundHandle::unpause();
    }
 
-   bool isPaused()
+   bool isPaused() const
    {
       try
       {
@@ -262,7 +262,7 @@ struct snx_SoundHandle_Wrapper
       return false;
    }
 
-   bool default_isPaused()
+   bool default_isPaused() const
    {
       return snx::SoundHandle::isPaused();
    }
@@ -296,7 +296,7 @@ struct snx_SoundHandle_Wrapper
       snx::SoundHandle::setAmbient(p0);
    }
 
-   bool isAmbient()
+   bool isAmbient() const
    {
       try
       {
@@ -314,7 +314,7 @@ struct snx_SoundHandle_Wrapper
       return false;
    }
 
-   bool default_isAmbient()
+   bool default_isAmbient() const
    {
       return snx::SoundHandle::isAmbient();
    }
@@ -471,7 +471,7 @@ struct snx_SoundHandle_Wrapper
       snx::SoundHandle::setListenerPosition(p0);
    }
 
-   void getListenerPosition(gmtl::Matrix44f& p0)
+   void getListenerPosition(gmtl::Matrix44f& p0) const
    {
       try
       {
@@ -491,7 +491,7 @@ struct snx_SoundHandle_Wrapper
       }
    }
 
-   void default_getListenerPosition(gmtl::Matrix44f& p0)
+   void default_getListenerPosition(gmtl::Matrix44f& p0) const
    {
       snx::SoundHandle::getListenerPosition(p0);
    }
@@ -548,7 +548,7 @@ struct snx_SoundHandle_Wrapper
 };
 
 
-}// namespace pyj
+}  // namespace pyj
 
 
 // Module ======================================================================
@@ -569,7 +569,7 @@ void _Export_SoundHandle()
           "Default constructor.  Call init() after constructing to name\n"
           "this handle.\n\n"
           "Post-conditions:\n"
-          "This sound handle is not associated with any nae.  init() must\n"
+          "This sound handle is not associated with any name.  init() must\n"
           "be called to assign a name to this handle.\n\n"
           "__init__(name)\n"
           "Name constructor.  This assigns the given name to this sound\n"
@@ -751,6 +751,7 @@ void _Export_SoundHandle()
            "be invoked on this handle after calling init()."
       )
       .def("getName", &snx::SoundHandle::getName,
+          return_value_policy<copy_const_reference>(),
           "getName() -> string object.\n"
           "Gets the name of this handle."
       )

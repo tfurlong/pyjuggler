@@ -293,7 +293,7 @@ ifdef USE_JADEPROC
 %.pdf: %.xml
 	$(TEX_ENV) $(JADEPROC) -i $< -o $@ -d $(DB_SGML_DTD)		\
           -s $(DSSSL_DIR)/print/docbook.dsl
-         
+
 else
 %.tex: %.xml
 	$(JADE) -t tex -d $(DSSSL_DIR)/print/docbook.dsl $<
